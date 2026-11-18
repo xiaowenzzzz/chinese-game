@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>帮嘟嘟摘苹果 - 二年级生字大挑战</title>
+<style>
+  * {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "KaiTi", "STKaiti", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(180deg, #87CEEB 0%, #E0F7FA 75%, #8BC34A 75%, #689F38 100%);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 顶部计分与控制栏 */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 30px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 10;
+  }
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #E65100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .stats {
+    display: flex;
+    gap: 25px;
+    font-size: 26px;
+    font-weight: bold;
+  }
+  .score-box { color: #D32F2F; background: #FFEBEE; padding: 6px 20px; border-radius: 20px; border: 2px solid #EF9A9A; }
+  .timer-box { color: #1565C0; background: #E3F2FD; padding: 6px 20px; border-radius: 20px; border: 2px solid #90CAF9; }
+  
+  .controls {
+    display: flex;
+    gap: 12px;
+  }
+  button {
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+  }
+  button:active { transform: translateY(3px); box-shadow: none; }
+  .btn-mode { background: #FFB300; color: #3E2723; }
+  .btn-sound { background: #4CAF50; color: white; }
+  .btn-start { background: #FF5722; color: white; font-size: 24px; padding: 10px 28px; }
+
+  /* 主游戏区 */
+  .main-stage {
+    flex: 1;
+    display: flex;
+    position: relative;
+    padding: 15px 30px;
+  }
+
+  /* 左侧：小狮子嘟嘟与题目面板 */
+  .left-panel {
+    width: 34%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    z-index: 5;
+  }
+
+  .prompt-card {
+    background: #FFFDE7;
+    border: 5px solid #FFA000;
+    border-radius: 28px;
+    padding: 20px 25px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    margin-top: 10px;
+  }
+  .prompt-hint {
+    font-size: 22px;
+    color: #795548;
+    margin-bottom: 8px;
+  }
+  .prompt-target {
+    font-size: 56px;
+    font-weight: bold;
+    color: #D84315;
+    letter-spacing: 3px;
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .speak-btn {
+    margin-top: 10px;
+    background: #29B6F6;
+    color: white;
+    font-size: 20px;
+    padding: 6px 18px;
+    border-radius: 20px;
+  }
+
+  /* 小狮子嘟嘟 SVG 容器 */
+  .dudu-container {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    transition: transform 0.3s;
+  }
+  .dudu-happy { animation: bounce 0.5s ease; }
+  .dudu-sad { animation: shake 0.4s ease; }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-25px) scale(1.05); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-12px); }
+    75% { transform: translateX(12px); }
+  }
+
+  /* 右侧：大苹果树 */
+  .right-tree-area {
+    width: 66%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 树冠与树干 */
+  .tree-trunk {
+    position: absolute;
+    bottom: -20px;
+    width: 130px;
+    height: 260px;
+    background: linear-gradient(90deg, #5D4037, #795548, #4E342E);
+    border-radius: 20px;
+    z-index: 1;
+  }
+  .tree-canopy {
+    position: relative;
+    width: 92%;
+    height: 92%;
+    background: radial-gradient(circle at 30% 30%, #66BB6A, #2E7D32);
+    border-radius: 50% 50% 45% 45%;
+    box-shadow: inset -15px -15px 30px rgba(0,0,0,0.2), 0 12px 25px rgba(0,0,0,0.2);
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    padding: 45px 60px;
+    gap: 15px;
+    align-items: center;
+    justify-items: center;
+  }
+
+  /* 苹果样式 */
+  .apple {
+    width: 118px;
+    height: 118px;
+    background: radial-gradient(circle at 35% 30%, #FF5252, #D32F2F 70%, #B71C1C);
+    border-radius: 48% 48% 52% 52%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    font-weight: bold;
+    color: #FFF;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    cursor: pointer;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.25);
+    transition: transform 0.15s;
+    animation: sway 3s infinite ease-in-out;
+  }
+  .apple:nth-child(odd) { animation-delay: 0.5s; }
+  .apple:active { transform: scale(0.9); }
+
+  /* 苹果叶子与果柄 */
+  .apple::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    width: 8px;
+    height: 18px;
+    background: #4E342E;
+    border-radius: 4px;
+  }
+  .apple::after {
+    content: "";
+    position: absolute;
+    top: -12px;
+    right: 32px;
+    width: 24px;
+    height: 14px;
+    background: #8BC34A;
+    border-radius: 50% 0 50% 0;
+    transform: rotate(-15deg);
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+
+  /* 摘下苹果掉落动画 */
+  .apple-picked {
+    animation: dropToBasket 0.55s forwards ease-in !important;
+    pointer-events: none;
+  }
+  @keyframes dropToBasket {
+    0% { transform: scale(1.2); opacity: 1; }
+    100% { transform: translate(-450px, 320px) scale(0.2); opacity: 0; }
+  }
+
+  /* 点错抖动 */
+  .apple-wrong {
+    animation: wrongShake 0.4s !important;
+    background: #757575 !important;
+  }
+  @keyframes wrongShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+  }
+
+  /* 结算弹窗 */
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+  .modal-box {
+    background: #FFFDE7;
+    border: 6px solid #FF9800;
+    border-radius: 30px;
+    padding: 35px 50px;
+    text-align: center;
+    max-width: 520px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  }
+  .modal-box h2 { font-size: 38px; color: #E65100; margin: 0 0 15px; }
+  .modal-box p { font-size: 24px; color: #4E342E; line-height: 1.6; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+  <!-- 顶部栏 -->
+  <div class="header">
+    <div class="title">🦁 帮嘟嘟摘苹果 · 生字大挑战</div>
+    <div class="stats">
+      <div class="score-box">🍎 苹果：<span id="score">0</span> 个</div>
+      <div class="timer-box">⏱️ 时间：<span id="timer">60</span> 秒</div>
+    </div>
+    <div class="controls">
+      <button class="btn-mode" id="modeBtn" onclick="toggleMode()">模式：看拼音找字</button>
+      <button class="btn-start" onclick="startGame()">🔄 重新开始</button>
+    </div>
+  </div>
+
+  <!-- 主舞台 -->
+  <div class="main-stage">
+    <!-- 左侧：提示牌 + 卡通小狮子嘟嘟 -->
+    <div class="left-panel">
+      <div class="prompt-card">
+        <div class="prompt-hint" id="promptHint">请拍击对应的生字苹果：</div>
+        <div class="prompt-target" id="promptTarget">准备开始</div>
+        <button class="speak-btn" onclick="speakCurrent()">🔊 再听一遍</button>
+      </div>
+
+      <!-- 卡通小狮子“嘟嘟”（戴蓝色安全帽 + 橙色围巾 + 苹果篮子） -->
+      <div class="dudu-container" id="dudu">
+        <svg viewBox="0 0 300 300" width="100%" height="100%">
+          <!-- 尾巴 -->
+          <path d="M220 220 Q265 190 255 150" stroke="#E69D45" stroke-width="12" fill="none" stroke-linecap="round"/>
+          <circle cx="255" cy="148" r="14" fill="#8D4925"/>
+          <!-- 鬃毛 -->
+          <circle cx="150" cy="130" r="82" fill="#D97724"/>
+          <circle cx="150" cy="130" r="74" fill="#E88D32"/>
+          <!-- 身体 -->
+          <ellipse cx="150" cy="235" rx="58" ry="52" fill="#F6B959"/>
+          <ellipse cx="150" cy="238" rx="36" ry="38" fill="#FFF3D6"/>
+          <!-- 耳朵 -->
+          <circle cx="92" cy="76" r="22" fill="#F6B959" stroke="#D97724" stroke-width="5"/>
+          <circle cx="208" cy="76" r="22" fill="#F6B959" stroke="#D97724" stroke-width="5"/>
+          <!-- 脸部 -->
+          <circle cx="150" cy="132" r="58" fill="#F6B959"/>
+          <!-- 蓝色安全帽（呼应课件形象） -->
+          <path d="M98 92 Q150 42 202 92 Z" fill="#3B82F6"/>
+          <rect x="88" y="88" width="124" height="12" rx="6" fill="#2563EB"/>
+          <circle cx="150" cy="65" r="8" fill="#93C5FD"/>
+          <!-- 眼睛 -->
+          <circle cx="130" cy="126" r="8" fill="#2D1B14"/>
+          <circle cx="170" cy="126" r="8" fill="#2D1B14"/>
+          <circle cx="132" cy="123" r="3" fill="#FFF"/>
+          <circle cx="172" cy="123" r="3" fill="#FFF"/>
+          <!-- 腮红 -->
+          <ellipse cx="112" cy="142" rx="10" ry="6" fill="#FF8A80" opacity="0.7"/>
+          <ellipse cx="188" cy="142" rx="10" ry="6" fill="#FF8A80" opacity="0.7"/>
+          <!-- 鼻子与微笑 -->
+          <polygon points="143,138 157,138 150,147" fill="#5D4037"/>
+          <path d="M136 154 Q150 168 164 154" stroke="#5D4037" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- 橙色围巾 -->
+          <path d="M105 182 Q150 202 195 182 L190 198 Q150 216 110 198 Z" fill="#F97316"/>
+          <rect x="165" y="192" width="18" height="36" rx="5" fill="#EA580C"/>
+          <!-- 竹篮子 -->
+          <path d="M95 245 L205 245 L192 292 L108 292 Z" fill="#A16207" stroke="#713F12" stroke-width="4"/>
+          <line x1="100" y1="262" x2="200" y2="262" stroke="#713F12" stroke-width="3"/>
+          <line x1="104" y1="278" x2="196" y2="278" stroke="#713F12" stroke-width="3"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 右侧：苹果树 -->
+    <div class="right-tree-area">
+      <div class="tree-trunk"></div>
+      <div class="tree-canopy" id="treeCanopy">
+        <!-- 苹果由 JS 动态生成 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 开始/结束弹窗 -->
+  <div class="modal" id="startModal">
+    <div class="modal-box">
+      <h2>🦁 帮嘟嘟摘苹果</h2>
+      <p>安全小卫士嘟嘟要去摘生字苹果啦！<br>听读音或看组词，在白板上快速拍出正确的汉字苹果！</p>
+      <p style="font-size: 20px; color: #D84315;">包含生字：邻、居、互、相、光、照、美、丽、极、安、跑</p>
+      <button class="btn-start" onclick="startGame()">🚀 开始闯关！</button>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="endModal">
+    <div class="modal-box">
+      <h2>🎉 时间到！闯关成功！</h2>
+      <p>你帮嘟嘟一共摘到了 <strong style="font-size:36px; color:#D32F2F;" id="finalScore">0</strong> 个大苹果！</p>
+      <button class="btn-start" onclick="startGame()">🔄 再玩一局</button>
+    </div>
+  </div>
+
+<script>
+  // 核心生字库（包含用户指定的11个字）
+  const wordBank = [
+    { char: "邻", pinyin: "lín", phrase: "（  ）居", speak: "邻，邻居的邻" },
+    { char: "居", pinyin: "jū",  phrase: "邻（  ）", speak: "居，居住的居" },
+    { char: "互", pinyin: "hù",  phrase: "（  ）相", speak: "互，互相的互" },
+    { char: "相", pinyin: "xiāng", phrase: "互（  ）", speak: "相，互相的相" },
+    { char: "光", pinyin: "guāng", phrase: "阳（  ）", speak: "光，阳光的光" },
+    { char: "照", pinyin: "zhào", phrase: "（  ）耀", speak: "照，照耀的照" },
+    { char: "美", pinyin: "měi", phrase: "（  ）丽", speak: "美，美丽的美的" },
+    { char: "丽", pinyin: "lì",  phrase: "美（  ）", speak: "丽，美丽的丽" },
+    { char: "极", pinyin: "jí",  phrase: "好（  ）了", speak: "极，好极了的极" },
+    { char: "安", pinyin: "ān",  phrase: "（  ）全", speak: "安，安全的安" },
+    { char: "跑", pinyin: "pǎo", phrase: "奔（  ）", speak: "跑，奔跑的跑" }
+  ];
+
+  let score = 0;
+  let timeLeft = 60;
+  let timerInterval = null;
+  let currentTarget = null;
+  let gameMode = "pinyin"; // "pinyin" 或 "phrase"
+  let audioCtx = null;
+
+  // 初始化 Web Audio 音效（无需外部音频文件）
+  function playTone(type) {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === "correct") {
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+      osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+      osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.4);
+    } else {
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+      osc.frequency.linearRampToValueAtTime(120, audioCtx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.3);
+    }
+  }
+
+  // 语音朗读提示
+  function speakCurrent() {
+    if (!currentTarget || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(currentTarget.speak);
+    utter.lang = "zh-CN";
+    utter.rate = 0.9;
+    window.speechSynthesis.speak(utter);
+  }
+
+  // 切换游戏模式
+  function toggleMode() {
+    const btn = document.getElementById("modeBtn");
+    if (gameMode === "pinyin") {
+      gameMode = "phrase";
+      btn.textContent = "模式：看组词填空";
+    } else {
+      gameMode = "pinyin";
+      btn.textContent = "模式：看拼音找字";
+    }
+    if (currentTarget) updatePromptDisplay();
+  }
+
+  function updatePromptDisplay() {
+    const hintEl = document.getElementById("promptHint");
+    const targetEl = document.getElementById("promptTarget");
+    if (gameMode === "pinyin") {
+      hintEl.textContent = "请拍出这个拼音对应的生字：";
+      targetEl.textContent = currentTarget.pinyin;
+    } else {
+      hintEl.textContent = "请把正确的生字苹果放进括号里：";
+      targetEl.textContent = currentTarget.phrase;
+    }
+  }
+
+  // 洗牌函数
+  function shuffle(arr) {
+    return [...arr].sort(() => Math.random() - 0.5);
+  }
+
+  // 生成树上的11个生字苹果（加1个随机重复高频字凑满12格）
+  function renderApples() {
+    const canopy = document.getElementById("treeCanopy");
+    canopy.innerHTML = "";
+    const extra = wordBank[Math.floor(Math.random() * wordBank.length)];
+    const displayList = shuffle([...wordBank, extra]);
+
+    displayList.forEach(item => {
+      const apple = document.createElement("div");
+      apple.className = "apple";
+      apple.textContent = item.char;
+      apple.onclick = () => handleAppleClick(apple, item);
+      canopy.appendChild(apple);
+    });
+  }
+
+  // 抽取下一题
+  function nextQuestion() {
+    // 确保选中的字当前在树上还存在
+    const remainingApples = Array.from(document.querySelectorAll(".apple:not(.apple-picked)"));
+    if (remainingApples.length <= 2) {
+      renderApples(); // 苹果快摘完时重新长满一树
+    }
+    const availableChars = Array.from(document.querySelectorAll(".apple:not(.apple-picked)")).map(el => el.textContent);
+    const candidates = wordBank.filter(w => availableChars.includes(w.char));
+    currentTarget = candidates[Math.floor(Math.random() * candidates.length)];
+
+    updatePromptDisplay();
+    speakCurrent();
+  }
+
+  // 点击苹果处理
+  function handleAppleClick(appleEl, item) {
+    if (!currentTarget) return;
+    const dudu = document.getElementById("dudu");
+
+    if (item.char === currentTarget.char) {
+      // 答对
+      playTone("correct");
+      score++;
+      document.getElementById("score").textContent = score;
+      appleEl.classList.add("apple-picked");
+
+      dudu.classList.remove("dudu-happy", "dudu-sad");
+      void dudu.offsetWidth;
+      dudu.classList.add("dudu-happy");
+
+      setTimeout(nextQuestion, 350);
+    } else {
+      // 答错
+      playTone("wrong");
+      appleEl.classList.remove("apple-wrong");
+      void appleEl.offsetWidth;
+      appleEl.classList.add("apple-wrong");
+
+      dudu.classList.remove("dudu-happy", "dudu-sad");
+      void dudu.offsetWidth;
+      dudu.classList.add("dudu-sad");
+    }
+  }
+
+  // 开始游戏
+  function startGame() {
+    document.getElementById("startModal").classList.add("hidden");
+    document.getElementById("endModal").classList.add("hidden");
+    score = 0;
+    timeLeft = 60;
+    document.getElementById("score").textContent = score;
+    document.getElementById("timer").textContent = timeLeft;
+
+    renderApples();
+    nextQuestion();
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      document.getElementById("timer").textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById("finalScore").textContent = score;
+        document.getElementById("endModal").classList.remove("hidden");
+      }
+    }, 1000);
+  }
+</script>
+</body>
+</html>
