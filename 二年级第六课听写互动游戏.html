@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>安全上学大冒险 - 2A 第六课《你怎么上学》听写</title>
+    <!-- 引入 Tailwind CSS 进行响应式与童趣界面布局 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Hanzi Writer 用于汉字智能笔顺识别与动画演示 -->
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+    <style>
+        /* 优先使用楷体以符合小学汉字教学规范 */
+        body {
+            font-family: "KaiTi", "STKaiti", "BiauKai", "PingFang SC", "Microsoft YaHei", sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+            background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 55%, #bbf7d0 55%, #86efac 100%);
+        }
+
+        /* 自定义卡通按钮立体投影 */
+        .btn-cartoon {
+            transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.18);
+        }
+        .btn-cartoon:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+        }
+
+        /* 田字格背景绘制 */
+        .tian-zi-ge {
+            background-color: #fffbeb;
+            border: 6px solid #f59e0b;
+            border-radius: 24px;
+            box-shadow: 0 12px 28px rgba(245, 158, 11, 0.25), inset 0 0 20px rgba(253, 230, 138, 0.4);
+            position: relative;
+            touch-action: none; /* 防止触控白板书写时页面跟着滚动 */
+        }
+
+        /* 田字格内部虚线十字与对角线 */
+        .tian-zi-ge-grid {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 当前正在书写的字卡呼吸光圈 */
+        @keyframes pulseRing {
+            0%, 100% {
+                transform: scale(1.06);
+                box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.45);
+            }
+            50% {
+                transform: scale(1.12);
+                box-shadow: 0 0 0 8px rgba(249, 115, 22, 0.2);
+            }
+        }
+        .active-char-card {
+            animation: pulseRing 1.6s infinite ease-in-out;
+        }
+
+        /* 小学生头像走路弹跳动画 */
+        @keyframes walkBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(-6deg); }
+            75% { transform: translateY(-10px) rotate(6deg); }
+        }
+        .walking-avatar {
+            animation: walkBounce 0.45s ease-in-out infinite;
+        }
+
+        /* 飘浮云朵动画 */
+        @keyframes floatCloud {
+            0% { transform: translateX(-10px); }
+            50% { transform: translateX(15px); }
+            100% { transform: translateX(-10px); }
+        }
+        .cloud-anim {
+            animation: floatCloud 6s ease-in-out infinite;
+        }
+
+        /* 掉落星星特效 */
+        @keyframes starPop {
+            0% { transform: translate(-50%, -50%) scale(0.3) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.4) rotate(360deg); opacity: 0; }
+        }
+        .star-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 2.2rem;
+            animation: starPop 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-5 text-slate-800">
+
+    <!-- 装饰背景云朵与太阳 -->
+    <div class="fixed top-3 left-6 text-5xl sm:text-6xl pointer-events-none opacity-90 z-0">☀️</div>
+    <div class="fixed top-6 left-1/4 text-4xl sm:text-5xl pointer-events-none opacity-75 cloud-anim z-0">☁️</div>
+    <div class="fixed top-4 right-1/4 text-4xl sm:text-5xl pointer-events-none opacity-75 cloud-anim z-0" style="animation-delay: 2s;">☁️</div>
+
+    <!-- 顶部：标题与上学路线进度条 -->
+    <header class="relative z-10 max-w-6xl w-full mx-auto bg-white/90 backdrop-blur-md rounded-3xl p-3 sm:p-4 shadow-lg border-4 border-sky-300">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-3">
+                <span class="bg-amber-400 text-amber-950 font-bold px-3 py-1 rounded-full text-sm sm:text-base shadow-sm">
+                    SISB 2A 第六课
+                </span>
+                <h1 class="text-xl sm:text-3xl font-extrabold text-sky-800 tracking-wide">
+                    🎒 安全上学大冒险
+                </h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-100 border-2 border-emerald-400 text-emerald-800 px-4 py-1 rounded-2xl font-bold text-base sm:text-xl">
+                    关卡：<span id="level-indicator" class="text-orange-600 text-xl sm:text-2xl">1</span> / 10
+                </div>
+                <div class="bg-amber-100 border-2 border-amber-400 text-amber-800 px-4 py-1 rounded-2xl font-bold text-base sm:text-xl">
+                    ⭐ 星星：<span id="star-count" class="text-orange-600 text-xl sm:text-2xl">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 上学路线可视化轨道 -->
+        <div class="relative bg-slate-100 rounded-2xl p-3 sm:p-4 border-2 border-slate-300 overflow-hidden">
+            <!-- 公路虚线背景 -->
+            <div class="absolute inset-x-6 top-1/2 -translate-y-1/2 h-4 bg-slate-600 rounded-full flex items-center justify-between px-4">
+                <div class="w-full border-t-2 border-dashed border-amber-300"></div>
+            </div>
+
+            <!-- 10个关卡节点 + 终点学校 -->
+            <div id="route-nodes" class="relative z-10 flex items-center justify-between px-1 sm:px-3">
+                <!-- 由 JS 动态渲染节点图标 -->
+            </div>
+
+            <!-- 移动的小学生角色 -->
+            <div id="student-avatar" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 transition-all duration-700 ease-out pointer-events-none" style="left: 4%;">
+                <div class="bg-yellow-300 border-4 border-orange-500 rounded-full w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shadow-xl text-2xl sm:text-3xl">
+                    🧒
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主游戏交互区：左侧情景与词卡提示，右侧超大田字格与老师控制栏 -->
+    <main class="relative z-10 max-w-6xl w-full mx-auto my-3 sm:my-4 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
+        
+        <!-- 左侧面板（占 6 列）：情景故事 + 听写词卡 -->
+        <section class="lg:col-span-6 bg-white/95 rounded-3xl p-4 sm:p-6 shadow-xl border-4 border-emerald-300 flex flex-col justify-between">
+            <div>
+                <!-- 场景标签与朗读大按钮 -->
+                <div class="flex items-center justify-between gap-2 mb-3">
+                    <span id="scene-badge" class="inline-flex items-center gap-2 bg-sky-100 text-sky-800 border-2 border-sky-300 px-4 py-1.5 rounded-2xl text-lg sm:text-xl font-bold">
+                        🚏 第1站：巴士站
+                    </span>
+                    <button onclick="speakCurrentPrompt()" class="btn-cartoon bg-amber-400 hover:bg-amber-300 text-amber-950 font-bold px-4 py-2 rounded-2xl text-lg sm:text-xl flex items-center gap-2 border-2 border-amber-500">
+                        <span>🔊</span> 听读音
+                    </button>
+                </div>
+
+                <!-- 情景故事提示框（含第9关红绿灯交互） -->
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 sm:p-4 mb-4 flex items-center gap-3">
+                    <div id="scene-illustration" class="text-4xl sm:text-5xl shrink-0 bg-white p-2.5 rounded-2xl shadow-sm border border-amber-200">
+                        🚌
+                    </div>
+                    <div class="flex-1">
+                        <p id="story-prompt" class="text-lg sm:text-2xl font-bold text-slate-800 leading-snug">
+                            巴士来啦！请写出“坐”字上车吧！
+                        </p>
+                        <p id="english-meaning" class="text-base sm:text-lg text-slate-500 font-sans mt-1">
+                            Meaning: Take a bus
+                        </p>
+                    </div>
+                    <!-- 第9关专属红绿灯指示器 -->
+                    <div id="traffic-light-box" class="hidden flex-col items-center bg-slate-800 p-2 rounded-xl border-2 border-slate-600 gap-1.5 shrink-0">
+                        <div id="light-red" class="w-6 h-6 rounded-full bg-red-500 shadow-[0_0_12px_#ef4444]"></div>
+                        <div id="light-green" class="w-6 h-6 rounded-full bg-emerald-950"></div>
+                    </div>
+                </div>
+
+                <!-- 听写词组展示区（自动适配单字、双字词及第10关整句） -->
+                <div class="bg-sky-50/80 border-2 border-sky-200 rounded-2xl p-3 sm:p-5 text-center">
+                    <div class="text-sm sm:text-base text-sky-700 font-bold mb-2">
+                        👇 请在右侧田字格写出橙色框内的汉字 👇
+                    </div>
+                    <div id="word-cards-container" class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 my-2">
+                        <!-- 由 JS 动态生成每个字卡 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部实时鼓励状态栏 -->
+            <div id="feedback-banner" class="mt-4 bg-emerald-100 border-2 border-emerald-300 text-emerald-900 rounded-2xl p-3 text-center text-lg sm:text-xl font-bold transition-all">
+                ✨ 准备好了吗？用触控笔在田字格里写一写吧！
+            </div>
+        </section>
+
+        <!-- 右侧面板（占 6 列）：超大田字格 + Smartboard 老师工具栏 -->
+        <section class="lg:col-span-6 bg-white/95 rounded-3xl p-4 sm:p-6 shadow-xl border-4 border-amber-300 flex flex-col items-center justify-between">
+            
+            <!-- 当前目标字拼音与笔画提示 -->
+            <div class="w-full flex items-center justify-between px-2 mb-2">
+                <div class="flex items-center gap-2">
+                    <span class="text-base sm:text-lg font-bold text-slate-500">当前书写：</span>
+                    <span id="current-pinyin" class="text-2xl sm:text-3xl font-extrabold text-orange-600 font-sans bg-orange-50 px-3 py-0.5 rounded-xl border border-orange-200">
+                        zuò
+                    </span>
+                </div>
+                <div id="stroke-hint-badge" class="text-base sm:text-lg font-bold text-sky-700 bg-sky-100 px-3 py-1 rounded-xl">
+                    笔顺测验中 ✍️
+                </div>
+            </div>
+
+            <!-- 超大田字格容器 -->
+            <div id="writer-wrapper" class="tian-zi-ge w-[270px] h-[270px] sm:w-[330px] sm:h-[330px] flex items-center justify-center my-1">
+                <!-- SVG 田字格米字虚线背景 -->
+                <svg class="tian-zi-ge-grid w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <line x1="50" y1="0" x2="50" y2="100" stroke="#fcd34d" stroke-width="1.2" stroke-dasharray="3,3" />
+                    <line x1="0" y1="50" x2="100" y2="50" stroke="#fcd34d" stroke-width="1.2" stroke-dasharray="3,3" />
+                    <line x1="0" y1="0" x2="100" y2="100" stroke="#fde68a" stroke-width="0.9" stroke-dasharray="3,3" />
+                    <line x1="100" y1="0" x2="0" y2="100" stroke="#fde68a" stroke-width="0.9" stroke-dasharray="3,3" />
+                </svg>
+                <!-- Hanzi Writer 挂载点 -->
+                <div id="character-target-div" class="relative z-10"></div>
+            </div>
+
+            <!-- Smartboard 老师辅助工具栏（超大触控按钮） -->
+            <div class="w-full grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-3">
+                <button onclick="animateCurrentChar()" class="btn-cartoon bg-sky-500 hover:bg-sky-400 text-white font-bold py-3 px-2 rounded-2xl text-base sm:text-lg flex flex-col items-center justify-center gap-1 border-2 border-sky-600">
+                    <span class="text-xl">👀</span>
+                    <span>看笔顺</span>
+                </button>
+
+                <button id="btn-toggle-outline" onclick="toggleOutline()" class="btn-cartoon bg-purple-500 hover:bg-purple-400 text-white font-bold py-3 px-2 rounded-2xl text-base sm:text-lg flex flex-col items-center justify-center gap-1 border-2 border-purple-600">
+                    <span class="text-xl">💡</span>
+                    <span id="outline-btn-text">显示底纹</span>
+                </button>
+
+                <button onclick="resetCurrentChar()" class="btn-cartoon bg-orange-500 hover:bg-orange-400 text-white font-bold py-3 px-2 rounded-2xl text-base sm:text-lg flex flex-col items-center justify-center gap-1 border-2 border-orange-600">
+                    <span class="text-xl">🔄</span>
+                    <span>重写本字</span>
+                </button>
+
+                <button onclick="skipToNextLevel()" class="btn-cartoon bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3 px-2 rounded-2xl text-base sm:text-lg flex flex-col items-center justify-center gap-1 border-2 border-emerald-600">
+                    <span class="text-xl">⏭️</span>
+                    <span>下一关</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 关卡选择快捷抽屉（方便老师课堂随时点选任意一关） -->
+    <footer class="relative z-10 max-w-6xl w-full mx-auto bg-white/85 backdrop-blur-sm rounded-2xl px-4 py-2 border-2 border-emerald-300 flex flex-wrap items-center justify-between gap-2">
+        <span class="text-sm sm:text-base font-bold text-slate-600">🎯 快速选关：</span>
+        <div id="quick-level-buttons" class="flex flex-wrap items-center gap-1.5">
+            <!-- 由 JS 生成 1-10 关快捷按钮 -->
+        </div>
+    </footer>
+
+    <!-- 全屏通关庆祝弹窗 -->
+    <div id="victory-modal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white border-8 border-amber-400 rounded-3xl max-w-xl w-full p-6 sm:p-8 text-center shadow-2xl transform transition-all">
+            <div class="text-7xl sm:text-8xl mb-3 animate-bounce">🏆</div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-orange-600 mb-2">
+                太棒了！安全到达学校！
+            </h2>
+            <p class="text-xl sm:text-2xl text-slate-700 font-bold mb-4">
+                你已经顺利完成了 2A 第六课全部听写挑战！
+            </p>
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 mb-6">
+                <div class="text-lg text-amber-800 font-bold">本次获得总星星数</div>
+                <div class="text-4xl font-extrabold text-orange-500 mt-1">
+                    ⭐ <span id="final-stars">0</span> 颗星星
+                </div>
+            </div>
+            <button onclick="restartGame()" class="btn-cartoon w-full bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold py-4 px-6 rounded-2xl text-2xl border-2 border-emerald-600">
+                🔄 再玩一次
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. 关卡词库数据配置（严格对应 SISB 2A 第六课听写表）
+        // ==========================================
+        const LEVELS = [
+            {
+                id: 1,
+                stationName: "巴士站",
+                icon: "🚏",
+                illustration: "🚌",
+                promptText: "巴士来啦！请写出“坐”字上车吧！",
+                speechText: "坐巴士，请写出，坐",
+                meaning: "Take a bus",
+                displayItems: [
+                    { char: "坐", pinyin: "zuò", isTarget: true },
+                    { char: "巴", pinyin: "bā", isTarget: false },
+                    { char: "士", pinyin: "shì", isTarget: false }
+                ]
+            },
+            {
+                id: 2,
+                stationName: "学校门口",
+                icon: "🏫",
+                illustration: "🎒",
+                promptText: "我们来到了哪里？请写出“校”字！",
+                speechText: "学校，请写出，校",
+                meaning: "School",
+                displayItems: [
+                    { char: "学", pinyin: "xué", isTarget: false },
+                    { char: "校", pinyin: "xiào", isTarget: true }
+                ]
+            },
+            {
+                id: 3,
+                stationName: "人行道",
+                icon: "🚶",
+                illustration: "👟",
+                promptText: "在人行道上慢慢走，请写出“走”字！",
+                speechText: "走，请写出，走",
+                meaning: "Walk",
+                displayItems: [
+                    { char: "走", pinyin: "zǒu", isTarget: true }
+                ]
+            },
+            {
+                id: 4,
+                stationName: "过天桥",
+                icon: "🌉",
+                illustration: "🌉",
+                promptText: "安全过马路要走天桥，请写出“行人”！",
+                speechText: "行人天桥，请写出，行人",
+                meaning: "Footbridge",
+                displayItems: [
+                    { char: "行", pinyin: "xíng", isTarget: true },
+                    { char: "人", pinyin: "rén", isTarget: true },
+                    { char: "天", pinyin: "tiān", isTarget: false },
+                    { char: "桥", pinyin: "qiáo", isTarget: false }
+                ]
+            },
+            {
+                id: 5,
+                stationName: "遇见老师",
+                icon: "👩‍🏫",
+                illustration: "🙋",
+                promptText: "早上遇见老师说早安，请写出“安”字！",
+                speechText: "早安，请写出，安",
+                meaning: "Good morning",
+                displayItems: [
+                    { char: "早", pinyin: "zǎo", isTarget: false },
+                    { char: "安", pinyin: "ān", isTarget: true }
+                ]
+            },
+            {
+                id: 6,
+                stationName: "好天气",
+                icon: "☀️",
+                illustration: "🌤️",
+                promptText: "今天天气真好，请写出“阳光”！",
+                speechText: "阳光，请写出，阳光",
+                meaning: "Sunshine",
+                displayItems: [
+                    { char: "阳", pinyin: "yáng", isTarget: true },
+                    { char: "光", pinyin: "guāng", isTarget: true }
+                ]
+            },
+            {
+                id: 7,
+                stationName: "校园风景",
+                icon: "🌸",
+                illustration: "🌺",
+                promptText: "校园里的花朵真好看，请写出“美丽”！",
+                speechText: "美丽，请写出，美丽",
+                meaning: "Beautiful",
+                displayItems: [
+                    { char: "美", pinyin: "měi", isTarget: true },
+                    { char: "丽", pinyin: "lì", isTarget: true }
+                ]
+            },
+            {
+                id: 8,
+                stationName: "操场运动",
+                icon: "🏃",
+                illustration: "👟",
+                promptText: "在操场上快乐运动，请写出“跑”字！",
+                speechText: "跑步，请写出，跑",
+                meaning: "Run",
+                displayItems: [
+                    { char: "跑", pinyin: "pǎo", isTarget: true },
+                    { char: "步", pinyin: "bù", isTarget: false }
+                ]
+            },
+            {
+                id: 9,
+                stationName: "安全过马路",
+                icon: "🚦",
+                illustration: "🛑",
+                isTrafficLevel: true,
+                promptText: "等车子停了再走，这样【 】安全。",
+                speechText: "等车子停了再走，这样才安全。请写出，才",
+                meaning: "Wait for the car to stop before crossing, it is safer.",
+                displayItems: [
+                    { char: "这", pinyin: "zhè", isTarget: false },
+                    { char: "样", pinyin: "yàng", isTarget: false },
+                    { char: "才", pinyin: "cái", isTarget: true },
+                    { char: "安", pinyin: "ān", isTarget: false },
+                    { char: "全", pinyin: "quán", isTarget: false }
+                ]
+            },
+            {
+                id: 10,
+                stationName: "终极挑战",
+                icon: "🌳",
+                illustration: "🏫",
+                isFinalSentence: true,
+                promptText: "终极整句挑战：听写《学校有高高的树。》",
+                speechText: "学校有高高的树。",
+                meaning: "There are tall trees in the school.",
+                displayItems: [
+                    { char: "学", pinyin: "xué", isTarget: true },
+                    { char: "校", pinyin: "xiào", isTarget: true },
+                    { char: "有", pinyin: "yǒu", isTarget: true },
+                    { char: "高", pinyin: "gāo", isTarget: true },
+                    { char: "高", pinyin: "gāo", isTarget: true },
+                    { char: "的", pinyin: "de", isTarget: true },
+                    { char: "树", pinyin: "shù", isTarget: true }
+                ]
+            }
+        ];
+
+        // ==========================================
+        // 2. 游戏全局状态管理
+        // ==========================================
+        let currentLevelIndex = 0;      // 当前关卡索引 (0 - 9)
+        let targetQueue = [];           // 当前关卡需要书写的目标字索引列表
+        let currentQueuePos = 0;        // 当前正在写 targetQueue 中的第几个字
+        let completedDisplayIndices = new Set(); // 当前关卡已写完的字索引
+        let showOutline = false;        // 是否显示描红底纹（听写模式默认关闭）
+        let starsEarned = 0;            // 累计获得的星星数量
+        let writerInstance = null;      // HanziWriter 实例
+        let audioCtx = null;            // Web Audio API 上下文
+
+        // ==========================================
+        // 3. Web Audio API 音效合成器（无需外部音频文件）
+        // ==========================================
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // 播放清脆写对叮咚音效
+        function playSuccessTone() {
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, now); // D5
+                osc.frequency.setValueAtTime(880, now + 0.12); // A5
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            } catch (e) {}
+        }
+
+        // 播放温和写错提示音（不刺耳）
+        function playGentleErrorTone() {
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(240, now);
+                osc.frequency.linearRampToValueAtTime(190, now + 0.22);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            } catch (e) {}
+        }
+
+        // 播放过关欢呼琶音
+        function playLevelClearFanfare() {
+            try {
+                initAudio();
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5 E5 G5 C6
+                notes.forEach((freq, idx) => {
+                    const now = audioCtx.currentTime + idx * 0.1;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now);
+                    gain.gain.setValueAtTime(0.22, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                });
+            } catch (e) {}
+        }
+
+        // ==========================================
+        // 4. Web Speech API 中文语音报听写
+        // ==========================================
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.85; // 适合二年级学生的清晰语速
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function speakCurrentPrompt() {
+            initAudio();
+            const level = LEVELS[currentLevelIndex];
+            speakText(level.speechText);
+        }
+
+        // ==========================================
+        // 5. 视觉特效：星星粒子爆发
+        // ==========================================
+        function spawnStarParticles(count = 12) {
+            const wrapper = document.getElementById('writer-wrapper');
+            const rect = wrapper.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const emojis = ['⭐', '🌟', '✨', '🎉'];
+
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'star-particle';
+                el.textContent = emojis[i % emojis.length];
+                el.style.left = `${centerX}px`;
+                el.style.top = `${centerY}px`;
+                const angle = (Math.PI * 2 * i) / count;
+                const dist = 100 + Math.random() * 110;
+                el.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+                el.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 950);
+            }
+        }
+
+        // ==========================================
+        // 6. 路线进度条与快捷选关渲染
+        // ==========================================
+        function renderRouteAndQuickButtons() {
+            const routeContainer = document.getElementById('route-nodes');
+            const quickContainer = document.getElementById('quick-level-buttons');
+            routeContainer.innerHTML = '';
+            quickContainer.innerHTML = '';
+
+            LEVELS.forEach((lvl, idx) => {
+                // 路线节点
+                const node = document.createElement('div');
+                const isPassed = idx < currentLevelIndex;
+                const isCurrent = idx === currentLevelIndex;
+                node.className = `w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-sm sm:text-lg font-bold border-2 transition-all ${
+                    isPassed ? 'bg-emerald-400 border-emerald-600 text-white' :
+                    isCurrent ? 'bg-amber-300 border-orange-500 scale-110 shadow-md' :
+                    'bg-white border-slate-300 text-slate-500'
+                }`;
+                node.textContent = lvl.icon;
+                node.title = `第${lvl.id}关：${lvl.stationName}`;
+                routeContainer.appendChild(node);
+
+                // 底部快捷选关按钮
+                const btn = document.createElement('button');
+                btn.className = `px-2.5 py-1 rounded-xl text-sm sm:text-base font-bold border transition-all ${
+                    isCurrent
+                        ? 'bg-orange-500 text-white border-orange-600 shadow-sm'
+                        : 'bg-slate-100 hover:bg-sky-100 text-slate-700 border-slate-300'
+                }`;
+                btn.textContent = `${lvl.id}`;
+                btn.onclick = () => loadLevel(idx);
+                quickContainer.appendChild(btn);
+            });
+
+            // 终点学校建筑标志
+            const schoolNode = document.createElement('div');
+            schoolNode.className = 'w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-rose-500 border-2 border-rose-700 text-white flex items-center justify-center text-lg sm:text-2xl shadow-md';
+            schoolNode.textContent = '🏫';
+            routeContainer.appendChild(schoolNode);
+
+            updateAvatarPosition(false);
+        }
+
+        function updateAvatarPosition(animateWalk = true) {
+            const avatar = document.getElementById('student-avatar');
+            // 11个节点（10个关卡 + 1个学校终点），计算百分比位置
+            const totalSteps = LEVELS.length;
+            const percent = 4 + (currentLevelIndex / totalSteps) * 92;
+            avatar.style.left = `${percent}%`;
+
+            if (animateWalk) {
+                avatar.classList.add('walking-avatar');
+                setTimeout(() => avatar.classList.remove('walking-avatar'), 750);
+            }
+        }
+
+        // ==========================================
+        // 7. 关卡加载与词卡渲染
+        // ==========================================
+        function loadLevel(index) {
+            currentLevelIndex = index;
+            const level = LEVELS[index];
+
+            // 提取需要听写的目标字索引
+            targetQueue = [];
+            level.displayItems.forEach((item, idx) => {
+                if (item.isTarget) targetQueue.push(idx);
+            });
+            currentQueuePos = 0;
+            completedDisplayIndices.clear();
+
+            // 更新顶部和左侧界面文案
+            document.getElementById('level-indicator').textContent = level.id;
+            document.getElementById('scene-badge').textContent = `${level.icon} 第${level.id}站：${level.stationName}`;
+            document.getElementById('scene-illustration').textContent = level.illustration;
+            document.getElementById('story-prompt').textContent = level.promptText;
+            document.getElementById('english-meaning').textContent = `Meaning: ${level.meaning}`;
+
+            // 第9关红绿灯状态重置
+            const trafficBox = document.getElementById('traffic-light-box');
+            if (level.isTrafficLevel) {
+                trafficBox.classList.remove('hidden');
+                trafficBox.classList.add('flex');
+                setTrafficLight('red');
+            } else {
+                trafficBox.classList.add('hidden');
+                trafficBox.classList.remove('flex');
+            }
+
+            setFeedbackBanner("✨ 请看橙色框里的字，按正确笔顺写出来吧！", "neutral");
+            renderRouteAndQuickButtons();
+            renderWordCards();
+            initHanziWriterForCurrentChar();
+        }
+
+        function setTrafficLight(color) {
+            const redEl = document.getElementById('light-red');
+            const greenEl = document.getElementById('light-green');
+            if (color === 'red') {
+                redEl.className = 'w-6 h-6 rounded-full bg-red-500 shadow-[0_0_12px_#ef4444]';
+                greenEl.className = 'w-6 h-6 rounded-full bg-emerald-950';
+            } else {
+                redEl.className = 'w-6 h-6 rounded-full bg-red-950';
+                greenEl.className = 'w-6 h-6 rounded-full bg-emerald-400 shadow-[0_0_14px_#34d399]';
+            }
+        }
+
+        function renderWordCards() {
+            const level = LEVELS[currentLevelIndex];
+            const container = document.getElementById('word-cards-container');
+            container.innerHTML = '';
+
+            const activeDisplayIdx = targetQueue[currentQueuePos];
+
+            level.displayItems.forEach((item, idx) => {
+                const isCurrentTarget = (idx === activeDisplayIdx);
+                const isDone = completedDisplayIndices.has(idx);
+
+                const card = document.createElement('div');
+                // 针对第10关7个字适当缩小卡片宽度，保证不换行拥挤
+                const sizeClass = level.isFinalSentence
+                    ? 'w-12 h-16 sm:w-14 sm:h-20'
+                    : 'w-16 h-20 sm:w-20 sm:h-24';
+
+                let styleClass = 'bg-white border-2 border-slate-300 text-slate-700';
+                if (item.isTarget) {
+                    if (isDone) {
+                        styleClass = 'bg-emerald-100 border-4 border-emerald-500 text-emerald-800';
+                    } else if (isCurrentTarget) {
+                        styleClass = 'bg-amber-100 border-4 border-orange-500 text-orange-600 active-char-card';
+                    } else {
+                        styleClass = 'bg-orange-50 border-2 border-dashed border-orange-400 text-orange-400';
+                    }
+                }
+
+                card.className = `${sizeClass} rounded-2xl flex flex-col items-center justify-center shadow-sm transition-all ${styleClass}`;
+
+                // 拼音标签
+                const pinyinEl = document.createElement('span');
+                pinyinEl.className = 'text-xs sm:text-sm font-sans font-bold text-slate-500 leading-none mb-1';
+                pinyinEl.textContent = item.pinyin;
+
+                // 汉字显示逻辑：非听写字直接显示；听写字未完成时显示“？”（如果开启了底纹提示则显示半透明字）
+                const charEl = document.createElement('span');
+                charEl.className = level.isFinalSentence ? 'text-2xl sm:text-3xl font-extrabold' : 'text-3xl sm:text-4xl font-extrabold';
+                if (!item.isTarget || isDone) {
+                    charEl.textContent = item.char;
+                } else {
+                    charEl.textContent = showOutline ? item.char : '？';
+                }
+
+                card.appendChild(pinyinEl);
+                card.appendChild(charEl);
+                container.appendChild(card);
+            });
+
+            // 第10关末尾补充句号展示（全部写完后点亮）
+            if (level.isFinalSentence) {
+                const periodEl = document.createElement('div');
+                const allDone = completedDisplayIndices.size === targetQueue.length;
+                periodEl.className = `w-10 h-16 sm:w-12 sm:h-20 rounded-2xl flex items-end justify-center pb-2 text-3xl sm:text-4xl font-extrabold border-2 transition-all ${
+                    allDone
+                        ? 'bg-emerald-100 border-emerald-500 text-emerald-700 scale-110'
+                        : 'bg-slate-100 border-dashed border-slate-300 text-slate-300'
+                }`;
+                periodEl.textContent = '。';
+                container.appendChild(periodEl);
+            }
+        }
+
+        // ==========================================
+        // 8. Hanzi Writer 智能笔顺测验初始化与交互
+        // ==========================================
+        function getCanvasSize() {
+            const wrapper = document.getElementById('writer-wrapper');
+            return Math.min(wrapper.clientWidth - 16, wrapper.clientHeight - 16);
+        }
+
+        function initHanziWriterForCurrentChar() {
+            const targetDiv = document.getElementById('character-target-div');
+            targetDiv.innerHTML = '';
+
+            const level = LEVELS[currentLevelIndex];
+            const activeDisplayIdx = targetQueue[currentQueuePos];
+            const charObj = level.displayItems[activeDisplayIdx];
+
+            document.getElementById('current-pinyin').textContent = charObj.pinyin;
+            document.getElementById('stroke-hint-badge').textContent = '笔顺测验中 ✍️';
+
+            const size = getCanvasSize();
+            writerInstance = HanziWriter.create('character-target-div', charObj.char, {
+                width: size,
+                height: size,
+                padding: 12,
+                showCharacter: false,
+                showOutline: showOutline,
+                outlineColor: '#cbd5e1',
+                strokeColor: '#1e293b',
+                highlightColor: '#f97316',
+                drawingColor: '#ea580c',
+                drawingWidth: 22, // 粗线条更适合白板触控书写
+                showHintAfterMisses: 2, // 连续写错2次自动高亮提示下一笔
+                highlightOnComplete: true,
+                charDataLoader: function(char, onComplete) {
+                    fetch(`https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0/${char}.json`)
+                        .then(res => res.json())
+                        .then(onComplete)
+                        .catch(() => {
+                            setFeedbackBanner("⚠️ 汉字数据加载中，请检查网络连接", "warn");
+                        });
+                }
+            });
+
+            startQuizMode();
+        }
+
+        function startQuizMode() {
+            if (!writerInstance) return;
+            writerInstance.quiz({
+                leniency: 1.25, // 适当放宽手写判定容差，照顾二年级小学生触控手感
+                onCorrectStroke: function() {
+                    playSuccessTone();
+                    setFeedbackBanner("👍 笔画顺序真准确！继续写下一笔！", "good");
+                },
+                onMistake: function() {
+                    playGentleErrorTone();
+                    setFeedbackBanner("💡 哎呀，注意笔顺或位置哦，再试一次！", "warn");
+                },
+                onComplete: function() {
+                    handleCharacterCompleted();
+                }
+            });
+        }
+
+        function handleCharacterCompleted() {
+            playLevelClearFanfare();
+            spawnStarParticles(14);
+
+            // 增加星星积分
+            starsEarned += 1;
+            document.getElementById('star-count').textContent = starsEarned;
+
+            // 标记当前字已完成
+            const activeDisplayIdx = targetQueue[currentQueuePos];
+            completedDisplayIndices.add(activeDisplayIdx);
+            renderWordCards();
+
+            const level = LEVELS[currentLevelIndex];
+
+            // 第9关写出“才”字后红灯变绿灯
+            if (level.isTrafficLevel) {
+                setTrafficLight('green');
+                document.getElementById('story-prompt').textContent = "等车子停了再走，这样【才】安全。绿灯亮啦！";
+            }
+
+            // 判断本关是否还有下一个需要写的字
+            if (currentQueuePos + 1 < targetQueue.length) {
+                currentQueuePos++;
+                setFeedbackBanner("🌟 太棒了！写对啦！准备写下一个字...", "good");
+                setTimeout(() => {
+                    initHanziWriterForCurrentChar();
+                }, 900);
+            } else {
+                // 本关全部汉字完成！
+                setFeedbackBanner(`🎉 恭喜通过第 ${level.id} 关！继续前进！`, "good");
+                speakText("太棒了！");
+
+                if (currentLevelIndex + 1 < LEVELS.length) {
+                    setTimeout(() => {
+                        loadLevel(currentLevelIndex + 1);
+                    }, 1400);
+                } else {
+                    // 全部 10 关通关！小人走到终点学校
+                    currentLevelIndex = LEVELS.length;
+                    updateAvatarPosition(true);
+                    setTimeout(() => {
+                        showVictoryModal();
+                    }, 1100);
+                }
+            }
+        }
+
+        // ==========================================
+        // 9. 老师辅助控制栏按钮事件
+        // ==========================================
+        function animateCurrentChar() {
+            if (!writerInstance) return;
+            initAudio();
+            document.getElementById('stroke-hint-badge').textContent = '笔顺演示中 👀';
+            setFeedbackBanner("👀 请仔细看田字格里的正确笔顺演示！", "neutral");
+            writerInstance.animateCharacter({
+                onComplete: function() {
+                    setTimeout(() => {
+                        document.getElementById('stroke-hint-badge').textContent = '轮到你写啦 ✍️';
+                        startQuizMode();
+                    }, 400);
+                }
+            });
+        }
+
+        function toggleOutline() {
+            showOutline = !showOutline;
+            const btnText = document.getElementById('outline-btn-text');
+            if (showOutline) {
+                btnText.textContent = '隐藏底纹';
+                if (writerInstance) writerInstance.showOutline();
+                setFeedbackBanner("💡 已开启描红底纹，可以照着描红练习哦！", "neutral");
+            } else {
+                btnText.textContent = '显示底纹';
+                if (writerInstance) writerInstance.hideOutline();
+                setFeedbackBanner("🙈 已隐藏底纹，进入听写小考验模式！", "neutral");
+            }
+            renderWordCards();
+        }
+
+        function resetCurrentChar() {
+            initAudio();
+            initHanziWriterForCurrentChar();
+            setFeedbackBanner("🔄 已清空田字格，请重新书写本字！", "neutral");
+        }
+
+        function skipToNextLevel() {
+            initAudio();
+            if (currentLevelIndex + 1 < LEVELS.length) {
+                loadLevel(currentLevelIndex + 1);
+            } else {
+                showVictoryModal();
+            }
+        }
+
+        function setFeedbackBanner(text, type) {
+            const banner = document.getElementById('feedback-banner');
+            banner.textContent = text;
+            banner.className = "mt-4 rounded-2xl p-3 text-center text-lg sm:text-xl font-bold transition-all border-2 ";
+            if (type === 'good') {
+                banner.className += "bg-emerald-100 border-emerald-400 text-emerald-900";
+            } else if (type === 'warn') {
+                banner.className += "bg-orange-100 border-orange-400 text-orange-900";
+            } else {
+                banner.className += "bg-sky-100 border-sky-300 text-sky-900";
+            }
+        }
+
+        // ==========================================
+        // 10. 通关结算与重新开始
+        // ==========================================
+        function showVictoryModal() {
+            playLevelClearFanfare();
+            spawnStarParticles(25);
+            document.getElementById('final-stars').textContent = starsEarned;
+            const modal = document.getElementById('victory-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function restartGame() {
+            starsEarned = 0;
+            document.getElementById('star-count').textContent = '0';
+            const modal = document.getElementById('victory-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            loadLevel(0);
+        }
+
+        // 窗口尺寸变化时自适应重新渲染田字格尺寸
+        window.addEventListener('resize', () => {
+            if (currentLevelIndex < LEVELS.length) {
+                initHanziWriterForCurrentChar();
+            }
+        });
+
+        // 页面加载完成后自动启动第 1 关
+        window.onload = function() {
+            loadLevel(0);
+        };
+    </script>
+</body>
+</html>
