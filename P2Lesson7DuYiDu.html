@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阳光咖啡店大冒险：沉浸经营版</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+
+  :root {
+    --wood-dark: #5C3A21;
+    --wood-light: #D4A373;
+    --floor-cream: #FAEDCD;
+    --floor-tile: #FEFAE0;
+    --accent-orange: #FF7B00;
+    --accent-green: #2EC4B6;
+    --accent-pink: #FF5D8F;
+    --accent-gold: #FFB703;
+  }
+
+  * { box-sizing: border-box; user-select: none; }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #E9EDC9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  #app {
+    width: 98vw;
+    max-width: 1040px;
+    height: 92vh;
+    max-height: 700px;
+    background: var(--floor-cream);
+    border: 8px solid var(--wood-dark);
+    border-radius: 32px;
+    box-shadow: 0 16px 40px rgba(92, 58, 33, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* 顶部招牌与状态栏 */
+  .top-bar {
+    background: var(--wood-dark);
+    color: #FFF;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
+
+  .shop-sign {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--accent-gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hud-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .hud-pill {
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-weight: 900;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .combo-badge {
+    background: linear-gradient(45deg, #FF512F, #F09819);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-weight: 900;
+    animation: pop 0.3s ease;
+  }
+
+  /* 咖啡店俯视主地图 */
+  .cafe-map {
+    flex: 1;
+    background-image: 
+      linear-gradient(45deg, var(--floor-tile) 25%, transparent 25%), 
+      linear-gradient(-45deg, var(--floor-tile) 25%, transparent 25%), 
+      linear-gradient(45deg, transparent 75%, var(--floor-tile) 75%), 
+      linear-gradient(-45deg, transparent 75%, var(--floor-tile) 75%);
+    background-size: 60px 60px;
+    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px 25px;
+  }
+
+  /* 店铺解锁装饰栏 */
+  .decor-shelf {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(212, 163, 115, 0.35);
+    border-radius: 18px;
+    padding: 8px 20px;
+    border: 2px dashed var(--wood-light);
+  }
+
+  .mission-banner {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--wood-dark);
+  }
+
+  .decor-items {
+    display: flex;
+    gap: 12px;
+    font-size: 1.8rem;
+  }
+
+  .decor-slot {
+    width: 42px;
+    height: 42px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: grayscale(100%) opacity(0.3);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .decor-slot.unlocked {
+    filter: grayscale(0%) opacity(1);
+    transform: scale(1.15);
+    background: #FFF;
+    box-shadow: 0 4px 10px rgba(255, 183, 3, 0.4);
+  }
+
+  /* === 模式 1：拖拽找座位地图 === */
+  .seating-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    gap: 20px;
+    margin: 10px 0;
+  }
+
+  /* 门口红地毯排队区 */
+  .red-carpet {
+    width: 260px;
+    height: 100%;
+    background: linear-gradient(180deg, #E63946, #D62828);
+    border: 5px solid #FFB703;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(214, 40, 40, 0.25);
+    position: relative;
+  }
+
+  .carpet-label {
+    position: absolute;
+    top: 10px;
+    background: #FFB703;
+    color: #5C3A21;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 0.9rem;
+  }
+
+  .draggable-customer {
+    background: #FFF;
+    color: var(--wood-dark);
+    border-radius: 24px;
+    padding: 15px;
+    width: 210px;
+    text-align: center;
+    cursor: grab;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border: 4px solid var(--accent-gold);
+    transition: transform 0.2s;
+    touch-action: none;
+  }
+
+  .draggable-customer:active {
+    cursor: grabbing;
+    transform: scale(1.08);
+  }
+
+  .cust-emoji {
+    font-size: 4.5rem;
+    line-height: 1.1;
+    animation: bounce 2s infinite;
+  }
+
+  .cust-pinyin {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #E63946;
+    margin-top: 5px;
+  }
+
+  .cust-word-hint {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--wood-dark);
+  }
+
+  .cust-en {
+    background: #F1FAEE;
+    color: #1D3557;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  /* 4张咖啡圆桌网格 */
+  .tables-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    height: 100%;
+  }
+
+  .cafe-table {
+    background: radial-gradient(circle, #FFF8EB 60%, #E6CCB2 100%);
+    border: 6px solid var(--wood-light);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 8px 0 #B08968;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .cafe-table.drag-over {
+    transform: scale(1.05);
+    border-color: var(--accent-green);
+    background: #E0FBF6;
+  }
+
+  .table-char {
+    font-size: 3.4rem;
+    font-weight: 900;
+    color: var(--wood-dark);
+  }
+
+  .table-sub {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #8C6D53;
+  }
+
+  /* === 模式 2：魔法料理台（点餐制作） === */
+  .kitchen-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .order-ticket {
+    background: #FFF;
+    border: 4px dashed var(--accent-orange);
+    border-radius: 24px;
+    padding: 15px 35px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  .magic-pot {
+    font-size: 5rem;
+    background: #FFF3E0;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid var(--accent-orange);
+    transition: transform 0.3s;
+  }
+
+  .bubble-zone {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 15px;
+  }
+
+  .ingredient-bubble {
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #FFFFFF, #FFE5EC);
+    border: 4px solid var(--accent-pink);
+    box-shadow: 0 10px 20px rgba(255, 93, 143, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--wood-dark);
+    cursor: pointer;
+    animation: float 3s ease-in-out infinite;
+    transition: transform 0.15s;
+  }
+
+  .ingredient-bubble:nth-child(2) { animation-delay: 0.5s; background: radial-gradient(circle at 30% 30%, #FFF, #E0FBF6); border-color: var(--accent-green); }
+  .ingredient-bubble:nth-child(3) { animation-delay: 1s; background: radial-gradient(circle at 30% 30%, #FFF, #FFF3B0); border-color: var(--accent-gold); }
+  .ingredient-bubble:nth-child(4) { animation-delay: 1.5s; background: radial-gradient(circle at 30% 30%, #FFF, #E2ECE9); border-color: #4EA8DE; }
+
+  .ingredient-bubble:hover { transform: scale(1.12); }
+
+  /* === 模式 3：健康少放打地鼠 === */
+  .whack-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 720px;
+    margin: auto;
+  }
+
+  .plate-hole {
+    background: #FFF;
+    border: 5px solid var(--wood-light);
+    border-radius: 50%;
+    height: 145px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: inset 0 6px 12px rgba(0,0,0,0.1);
+    transition: transform 0.1s;
+    position: relative;
+  }
+
+  .plate-hole:active { transform: scale(0.92); }
+
+  .food-item {
+    text-align: center;
+    animation: pop 0.25s ease;
+  }
+
+  .food-emoji { font-size: 3rem; }
+  .food-label { font-size: 1.3rem; font-weight: 900; }
+  .food-en { font-size: 0.85rem; color: #666; font-weight: 700; }
+
+  /* 覆盖层（开始/结算） */
+  .full-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(254, 250, 224, 0.96);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .big-btn {
+    background: var(--accent-orange);
+    color: #FFF;
+    border: none;
+    padding: 16px 45px;
+    font-size: 1.6rem;
+    font-weight: 900;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 0 #C85A00;
+    margin-top: 20px;
+    transition: all 0.1s;
+  }
+
+  .big-btn:active {
+    transform: translateY(5px);
+    box-shadow: 0 3px 0 #C85A00;
+  }
+
+  .floating-feedback {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #2EC4B6;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    pointer-events: none;
+    z-index: 30;
+    animation: flyUp 0.9s forwards;
+  }
+
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+  @keyframes pop { 0% { transform: scale(0.5); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+  @keyframes flyUp { 0% { opacity: 1; transform: translate(-50%, -30%); } 100% { opacity: 0; transform: translate(-50%, -120%); } }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- 顶部招牌 -->
+  <div class="top-bar">
+    <div class="shop-sign">☕ 阳光咖啡店大冒险</div>
+    <div class="hud-group">
+      <div id="combo-display" class="combo-badge hidden">🔥 3连击！</div>
+      <div class="hud-pill">🚩 第 <span id="stage-num">1</span>/3 关</div>
+      <div class="hud-pill">🪙 金币 <span id="coins-num">0</span></div>
+    </div>
+  </div>
+
+  <!-- 咖啡店俯视地图 -->
+  <div class="cafe-map">
+    <!-- 顶部任务与解锁装饰 -->
+    <div class="decor-shelf">
+      <div id="mission-text" class="mission-banner">任务：把客人拖到正确的座位上！</div>
+      <div class="decor-items" title="赚金币解锁咖啡店装饰！">
+        <div id="decor-1" class="decor-slot">🌻</div>
+        <div id="decor-2" class="decor-slot">☕</div>
+        <div id="decor-3" class="decor-slot">🧸</div>
+        <div id="decor-4" class="decor-slot">🎈</div>
+      </div>
+    </div>
+
+    <!-- 关卡 1：拖拽找座位 -->
+    <div id="mode-seating" class="seating-area">
+      <div class="red-carpet">
+        <div class="carpet-label">🚪 门口排队区</div>
+        <div id="cust-card" class="draggable-customer" draggable="true">
+          <div id="cust-emoji" class="cust-emoji">🐻</div>
+          <div id="cust-pinyin" class="cust-pinyin">pái duì</div>
+          <div id="cust-word" class="cust-word-hint">排 [ ? ]</div>
+          <div id="cust-en" class="cust-en">Line up / Queue</div>
+        </div>
+        <div style="font-size: 0.9rem; margin-top: 10px; font-weight: 800;">👉 拖动或点击右边桌子</div>
+      </div>
+
+      <div id="tables-grid" class="tables-grid">
+        <!-- 4张桌子动态生成 -->
+      </div>
+    </div>
+
+    <!-- 关卡 2：魔法料理台 -->
+    <div id="mode-kitchen" class="kitchen-stage hidden">
+      <div class="order-ticket">
+        <div id="pot-icon" class="magic-pot">🍹</div>
+        <div>
+          <div id="kitchen-pinyin" style="font-size: 1.4rem; font-weight: 900; color: #E63946;">nǎi chá</div>
+          <div id="kitchen-word" style="font-size: 2.3rem; font-weight: 900; color: #5C3A21;">奶 [ ? ]</div>
+          <div id="kitchen-en" style="background: #F3E5F5; color: #6A1B9A; padding: 4px 14px; border-radius: 12px; font-weight: 900; display: inline-block; margin-top: 5px;">Milk Tea</div>
+        </div>
+      </div>
+
+      <div style="font-weight: 900; color: #5C3A21; font-size: 1.15rem;">✨ 点击正确的生字气泡，放进魔法料理台！</div>
+      <div id="bubble-zone" class="bubble-zone">
+        <!-- 气泡动态生成 -->
+      </div>
+    </div>
+
+    <!-- 关卡 3：健康少放保卫战 -->
+    <div id="mode-whack" class="kitchen-stage hidden">
+      <div style="background: #FFE5EC; border: 3px solid #FF5D8F; padding: 10px 25px; border-radius: 20px; font-weight: 900; color: #C9184A; font-size: 1.2rem;">
+        ⚡ 赶走“太多糖、太多油、炸鸡怪”！（已赶走：<span id="whack-count">0</span>/6）
+      </div>
+      <div id="whack-grid" class="whack-grid">
+        <!-- 6个餐盘动态生成 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 开始画面 -->
+  <div id="start-overlay" class="full-overlay">
+    <div style="font-size: 5.5rem; animation: bounce 1.5s infinite;">🏪☕🐻</div>
+    <h1 style="font-size: 2.6rem; color: #5C3A21; margin: 10px 0;">阳光咖啡店大冒险</h1>
+    <p style="font-size: 1.25rem; color: #7F5539; max-width: 620px; line-height: 1.6;">
+      第 7 课 15 个生字大挑战！<br>
+      <b>第一关</b>：拖动小动物找座位（队、找、座、位）<br>
+      <b>第二关</b>：魔法料理做早餐（茶、糖、炒、油、炸、冰、温、咖、啡、饭、青）<br>
+      <b>第三关</b>：赶走“太多糖/太多油”健康大作战！
+    </p>
+    <button class="big-btn" onclick="startGame()">开店营业啦！ ▶</button>
+  </div>
+
+  <!-- 通关画面 -->
+  <div id="end-overlay" class="full-overlay hidden">
+    <div style="font-size: 5.5rem;">🏆🎉👑</div>
+    <h1 style="font-size: 2.6rem; color: #5C3A21; margin: 10px 0;">五星级小店长诞生！</h1>
+    <p id="final-stats" style="font-size: 1.35rem; color: #7F5539; font-weight: 800;">
+      你一共赚到了 180 枚金币，解锁了全部豪华装饰！
+    </p>
+    <button class="big-btn" onclick="startGame()">再玩一次 ↻</button>
+  </div>
+</div>
+
+<script>
+  // 第一关题库：队、找、座、位
+  const stage1Data = [
+    { emoji: "🐻", pinyin: "pái duì", word: "排 [ ? ]", full: "排队", en: "Line up / Queue", ans: "队", options: ["队", "位", "找", "座"] },
+    { emoji: "🐰", pinyin: "zhǎo dào", word: "[ ? ] 到", full: "找到", en: "Find / Look for", ans: "找", options: ["找", "炒", "炸", "青"] },
+    { emoji: "🐼", pinyin: "zuò wèi", word: "[ ? ] 位", full: "座位", en: "Seat", ans: "座", options: ["座", "茶", "糖", "饭"] },
+    { emoji: "🦊", pinyin: "zuò wèi", word: "座 [ ? ]", full: "座位", en: "Seat / Place", ans: "位", options: ["位", "队", "温", "冰"] }
+  ];
+
+  // 第二关题库：茶、糖、炒、油、炸、冰、温、咖、啡、饭、青
+  const stage2Data = [
+    { pot: "🧋", pinyin: "nǎi chá", word: "奶 [ ? ]", full: "奶茶", en: "Milk Tea", ans: "茶", options: ["茶", "青", "饭", "油"] },
+    { pot: "☕", pinyin: "kā fēi", word: "[ ? ] 啡", full: "咖啡", en: "Coffee", ans: "咖", options: ["咖", "啡", "炒", "找"] },
+    { pot: "☕", pinyin: "kā fēi", word: "咖 [ ? ]", full: "咖啡", en: "Coffee", ans: "啡", options: ["啡", "茶", "座", "位"] },
+    { pot: "♨️", pinyin: "wēn shuǐ", word: "[ ? ] 水", full: "温水", en: "Warm Water", ans: "温", options: ["温", "冰", "油", "糖"] },
+    { pot: "🧊", pinyin: "bīng shuǐ", word: "[ ? ] 水", full: "冰水", en: "Ice Water", ans: "冰", options: ["冰", "温", "炸", "队"] },
+    { pot: "🍬", pinyin: "bái táng", word: "白 [ ? ]", full: "白糖", en: "White Sugar", ans: "糖", options: ["糖", "炒", "青", "茶"] },
+    { pot: "🍳", pinyin: "chǎo fàn", word: "[ ? ] 饭", full: "炒饭", en: "Fried Rice", ans: "炒", options: ["炒", "炸", "温", "咖"] },
+    { pot: "🍚", pinyin: "chǎo fàn", word: "炒 [ ? ]", full: "炒饭", en: "Fried Rice", ans: "饭", options: ["饭", "茶", "找", "糖"] },
+    { pot: "🥬", pinyin: "qīng cài", word: "[ ? ] 菜", full: "青菜", en: "Green Vegetables", ans: "青", options: ["青", "冰", "位", "啡"] },
+    { pot: "🥗", pinyin: "shǎo yóu", word: "少 [ ? ]", full: "少油", en: "Less oil", ans: "油", options: ["油", "座", "队", "糖"] },
+    { pot: "🍗", pinyin: "zhá jī", word: "[ ? ] 鸡", full: "炸鸡", en: "Fried Chicken", ans: "炸", options: ["炸", "炒", "温", "茶"] }
+  ];
+
+  // 第三关：健康少放打地鼠素材
+  const badItems = [
+    { emoji: "🍬", label: "太多糖", en: "Too much sugar" },
+    { emoji: "🛢️", label: "太多油", en: "Too much oil" },
+    { emoji: "🍗", label: "油炸鸡", en: "Fried chicken" }
+  ];
+  const goodItems = [
+    { emoji: "🥬", label: "青菜", en: "Vegetables" },
+    { emoji: "♨️", label: "温水", en: "Warm water" },
+    { emoji: "🍵", label: "茶水", en: "Plain tea" }
+  ];
+
+  let coins = 0;
+  let combo = 0;
+  let s1Index = 0;
+  let s2Index = 0;
+  let whackCount = 0;
+  let whackTimer = null;
+
+  // 真人语音朗读 (TTS)
+  function speakWord(zh, en) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u1 = new SpeechSynthesisUtterance(zh);
+      u1.lang = 'zh-CN';
+      u1.rate = 0.95;
+      const u2 = new SpeechSynthesisUtterance(en);
+      u2.lang = 'en-US';
+      u2.rate = 0.95;
+      window.speechSynthesis.speak(u1);
+      window.speechSynthesis.speak(u2);
+    }
+  }
+
+  // 合成音效
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playSfx(type) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    const now = audioCtx.currentTime;
+
+    if (type === 'coin') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, now);
+      osc.frequency.setValueAtTime(880, now + 0.08);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+      osc.start(now); osc.stop(now + 0.35);
+    } else if (type === 'bonk') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(300, now);
+      osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+      osc.start(now); osc.stop(now + 0.2);
+    } else if (type === 'err') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(160, now);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+      osc.start(now); osc.stop(now + 0.25);
+    }
+  }
+
+  function showFloatText(text, color = '#2EC4B6') {
+    const el = document.createElement('div');
+    el.className = 'floating-feedback';
+    el.style.color = color;
+    el.innerText = text;
+    document.getElementById('app').appendChild(el);
+    setTimeout(() => el.remove(), 900);
+  }
+
+  function addScore() {
+    combo++;
+    const bonus = combo >= 3 ? 20 : 10;
+    coins += bonus;
+    document.getElementById('coins-num').innerText = coins;
+
+    const comboEl = document.getElementById('combo-display');
+    if (combo >= 2) {
+      comboEl.classList.remove('hidden');
+      comboEl.innerText = `🔥 ${combo}连击！`;
+    }
+
+    // 解锁咖啡店豪华装饰
+    if (coins >= 30) document.getElementById('decor-1').classList.add('unlocked');
+    if (coins >= 70) document.getElementById('decor-2').classList.add('unlocked');
+    if (coins >= 120) document.getElementById('decor-3').classList.add('unlocked');
+    if (coins >= 160) document.getElementById('decor-4').classList.add('unlocked');
+
+    showFloatText(combo >= 3 ? `🔥 +${bonus} 双倍金币！` : `🪙 +${bonus} 金币！`);
+  }
+
+  function resetCombo() {
+    combo = 0;
+    document.getElementById('combo-display').classList.add('hidden');
+  }
+
+  function startGame() {
+    coins = 0; combo = 0; s1Index = 0; s2Index = 0; whackCount = 0;
+    document.getElementById('coins-num').innerText = '0';
+    document.getElementById('combo-display').classList.add('hidden');
+    document.querySelectorAll('.decor-slot').forEach(el => el.classList.remove('unlocked'));
+    document.getElementById('start-overlay').classList.add('hidden');
+    document.getElementById('end-overlay').classList.add('hidden');
+
+    startStage1();
+  }
+
+  // === 关卡 1：拖拽/点击找座位 ===
+  function startStage1() {
+    document.getElementById('stage-num').innerText = '1';
+    document.getElementById('mission-text').innerText = '第一关：把客人拖到（或点击）对应的座位圆桌！';
+    document.getElementById('mode-seating').classList.remove('hidden');
+    document.getElementById('mode-kitchen').classList.add('hidden');
+    document.getElementById('mode-whack').classList.add('hidden');
+    loadStage1Q();
+  }
+
+  function loadStage1Q() {
+    const q = stage1Data[s1Index];
+    document.getElementById('cust-emoji').innerText = q.emoji;
+    document.getElementById('cust-pinyin').innerText = q.pinyin;
+    document.getElementById('cust-word').innerText = q.word;
+    document.getElementById('cust-en').innerText = q.en;
+
+    const grid = document.getElementById('tables-grid');
+    grid.innerHTML = '';
+    const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+    shuffled.forEach((char, i) => {
+      const table = document.createElement('div');
+      table.className = 'cafe-table';
+      table.innerHTML = `
+        <div style="font-size: 1.4rem;">🪑</div>
+        <div class="table-char">${char}</div>
+        <div class="table-sub">${i + 1}号圆桌</div>
+      `;
+
+      // 支持拖拽放入
+      table.ondragover = (e) => { e.preventDefault(); table.classList.add('drag-over'); };
+      table.ondragleave = () => table.classList.remove('drag-over');
+      table.ondrop = (e) => {
+        e.preventDefault();
+        table.classList.remove('drag-over');
+        handleStage1Choice(char, table);
+      };
+
+      // 同时支持直接点击（方便平板/触屏白板）
+      table.onclick = () => handleStage1Choice(char, table);
+      grid.appendChild(table);
+    });
+  }
+
+  function handleStage1Choice(char, tableEl) {
+    const q = stage1Data[s1Index];
+    if (char === q.ans) {
+      playSfx('coin');
+      speakWord(q.full, q.en);
+      addScore();
+      tableEl.innerHTML = `<div style="font-size:3.5rem;">${q.emoji}❤️</div><div style="font-weight:900;color:#2EC4B6;">${q.full}！</div>`;
+      setTimeout(() => {
+        s1Index++;
+        if (s1Index < stage1Data.length) loadStage1Q();
+        else startStage2();
+      }, 1100);
+    } else {
+      playSfx('err');
+      resetCombo();
+      showFloatText('再看一看拼音提示哦！', '#E63946');
+    }
+  }
+
+  // === 关卡 2：魔法料理台 ===
+  function startStage2() {
+    document.getElementById('stage-num').innerText = '2';
+    document.getElementById('mission-text').innerText = '第二关：点击正确的生字气泡，制作美味早餐！';
+    document.getElementById('mode-seating').classList.add('hidden');
+    document.getElementById('mode-kitchen').classList.remove('hidden');
+    loadStage2Q();
+  }
+
+  function loadStage2Q() {
+    const q = stage2Data[s2Index];
+    document.getElementById('pot-icon').innerText = '🍳';
+    document.getElementById('kitchen-pinyin').innerText = q.pinyin;
+    document.getElementById('kitchen-word').innerText = q.word;
+    document.getElementById('kitchen-en').innerText = q.en;
+
+    const zone = document.getElementById('bubble-zone');
+    zone.innerHTML = '';
+    const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+    shuffled.forEach(char => {
+      const b = document.createElement('div');
+      b.className = 'ingredient-bubble';
+      b.innerText = char;
+      b.onclick = () => {
+        if (char === q.ans) {
+          playSfx('coin');
+          speakWord(q.full, q.en);
+          addScore();
+          document.getElementById('pot-icon').innerText = q.pot;
+          document.getElementById('pot-icon').style.transform = 'scale(1.25)';
+          document.getElementById('kitchen-word').innerText = q.full;
+          setTimeout(() => {
+            document.getElementById('pot-icon').style.transform = 'scale(1)';
+            s2Index++;
+            if (s2Index < stage2Data.length) loadStage2Q();
+            else startStage3();
+          }, 1100);
+        } else {
+          playSfx('err');
+          resetCombo();
+          b.style.opacity = '0.3';
+          showFloatText('不对哦，换一个气泡试试！', '#E63946');
+        }
+      };
+      zone.appendChild(b);
+    });
+  }
+
+  // === 关卡 3：健康少放打地鼠 ===
+  function startStage3() {
+    document.getElementById('stage-num').innerText = '3';
+    document.getElementById('mission-text').innerText = '第三关：健康小卫士！快点走“太多糖、太多油、油炸鸡”！';
+    document.getElementById('mode-kitchen').classList.add('hidden');
+    document.getElementById('mode-whack').classList.remove('hidden');
+    whackCount = 0;
+    document.getElementById('whack-count').innerText = '0';
+
+    const grid = document.getElementById('whack-grid');
+    grid.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+      const hole = document.createElement('div');
+      hole.className = 'plate-hole';
+      hole.id = `hole-${i}`;
+      grid.appendChild(hole);
+    }
+
+    whackTimer = setInterval(spawnWhackItems, 1300);
+    spawnWhackItems();
+  }
+
+  function spawnWhackItems() {
+    for (let i = 0; i < 6; i++) {
+      const hole = document.getElementById(`hole-${i}`);
+      hole.innerHTML = '';
+      hole.onclick = null;
+    }
+
+    // 随机挑2个盘子放“不健康食物”，1个盘子放“健康食物”
+    const indices = [0, 1, 2, 3, 4, 5].sort(() => Math.random() - 0.5);
+    
+    indices.slice(0, 2).forEach(idx => {
+      const bad = badItems[Math.floor(Math.random() * badItems.length)];
+      const hole = document.getElementById(`hole-${idx}`);
+      hole.innerHTML = `<div class="food-item"><div class="food-emoji">${bad.emoji}</div><div class="food-label" style="color:#E63946;">${bad.label}</div><div class="food-en">${bad.en}</div></div>`;
+      hole.onclick = () => {
+        playSfx('bonk');
+        addScore();
+        whackCount++;
+        document.getElementById('whack-count').innerText = whackCount;
+        hole.innerHTML = '<div style="font-size:2.5rem;">💥</div>';
+        hole.onclick = null;
+        if (whackCount >= 6) {
+          clearInterval(whackTimer);
+          setTimeout(finishGame, 600);
+        }
+      };
+    });
+
+    const good = goodItems[Math.floor(Math.random() * goodItems.length)];
+    const goodHole = document.getElementById(`hole-${indices[2]}`);
+    goodHole.innerHTML = `<div class="food-item"><div class="food-emoji">${good.emoji}</div><div class="food-label" style="color:#2EC4B6;">${good.label}</div><div class="food-en">${good.en}</div></div>`;
+    goodHole.onclick = () => {
+      playSfx('err');
+      resetCombo();
+      showFloatText('哎呀！这是健康食物不能赶走哦！', '#E63946');
+    };
+  }
+
+  function finishGame() {
+    speakWord('恭喜你，闯关成功！', 'Congratulations!');
+    document.getElementById('end-overlay').classList.remove('hidden');
+    document.getElementById('final-stats').innerText =
+      `你一共赚到了 ${coins} 枚金币，把咖啡店经营得超级棒！`;
+  }
+</script>
+
+</body>
+</html>
