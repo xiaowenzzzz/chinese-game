@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- ==========================================================
+         原创教学互动课件版权声明 (Copyright Notice)
+         作者 / Author: Franky Laoshi
+         课程 / Course: SISB 2A 第六课《你怎么上学》听写大冒险
+         未经原作者 Franky Laoshi 授权，请勿擅自篡改署名或用于商业用途
+         ========================================================== -->
     <meta charset="UTF-8">
+    <meta name="author" content="Franky Laoshi">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>安全上学大冒险 - 2A 第六课《你怎么上学》听写</title>
+    <title>安全上学大冒险 - 2A 第六课《你怎么上学》听写 | Franky Laoshi</title>
     <!-- 引入 Tailwind CSS 进行响应式与童趣界面布局 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 Hanzi Writer 用于汉字智能笔顺识别与动画演示 -->
@@ -251,11 +258,20 @@
         </section>
     </main>
 
-    <!-- 关卡选择快捷抽屉（方便老师课堂随时点选任意一关） -->
+    <!-- 关卡选择快捷抽屉 + Franky Laoshi 个人专属防伪版权标志 -->
     <footer class="relative z-10 max-w-6xl w-full mx-auto bg-white/85 backdrop-blur-sm rounded-2xl px-4 py-2 border-2 border-emerald-300 flex flex-wrap items-center justify-between gap-2">
-        <span class="text-sm sm:text-base font-bold text-slate-600">🎯 快速选关：</span>
-        <div id="quick-level-buttons" class="flex flex-wrap items-center gap-1.5">
-            <!-- 由 JS 生成 1-10 关快捷按钮 -->
+        <div class="flex flex-wrap items-center gap-2">
+            <span class="text-sm sm:text-base font-bold text-slate-600">🎯 快速选关：</span>
+            <div id="quick-level-buttons" class="flex flex-wrap items-center gap-1.5">
+                <!-- 由 JS 生成 1-10 关快捷按钮 -->
+            </div>
+        </div>
+        <!-- 个人专属防伪徽章 -->
+        <div class="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 px-3 py-1 rounded-full shadow-sm select-none">
+            <span class="text-sm">🛡️</span>
+            <span class="text-xs sm:text-sm font-sans font-bold text-amber-900 tracking-wide">
+                Original Design by <span class="text-orange-600 underline decoration-amber-400 decoration-2">Franky Laoshi</span>
+            </span>
         </div>
     </footer>
 
@@ -269,7 +285,7 @@
             <p class="text-xl sm:text-2xl text-slate-700 font-bold mb-4">
                 你已经顺利完成了 2A 第六课全部听写挑战！
             </p>
-            <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 mb-6">
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 mb-5">
                 <div class="text-lg text-amber-800 font-bold">本次获得总星星数</div>
                 <div class="text-4xl font-extrabold text-orange-500 mt-1">
                     ⭐ <span id="final-stars">0</span> 颗星星
@@ -278,10 +294,22 @@
             <button onclick="restartGame()" class="btn-cartoon w-full bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold py-4 px-6 rounded-2xl text-2xl border-2 border-emerald-600">
                 🔄 再玩一次
             </button>
+            <!-- 通关证书防伪印章 -->
+            <div class="mt-4 text-xs sm:text-sm font-sans font-semibold text-slate-400 tracking-wider">
+                ✦ Certified Interactive Courseware · Franky Laoshi ✦
+            </div>
         </div>
     </div>
 
     <script>
+        // ==========================================
+        // 0. Franky Laoshi 控制台防伪版权声明
+        // ==========================================
+        console.log(
+            "%c🛡️ 原创华文互动课件 | Created by Franky Laoshi ",
+            "background: linear-gradient(90deg, #f59e0b, #ea580c); color: #fff; font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 8px;"
+        );
+
         // ==========================================
         // 1. 关卡词库数据配置（严格对应 SISB 2A 第六课听写表）
         // ==========================================
