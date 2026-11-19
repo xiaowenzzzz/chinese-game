@@ -28,14 +28,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 30px;
+      padding: 10px 30px;
       background: rgba(255, 255, 255, 0.85);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       z-index: 10;
+      flex-shrink: 0;
     }
 
     .title-badge {
-      font-size: 26px;
+      font-size: clamp(20px, 2.2vw, 26px);
       font-weight: bold;
       color: #ff6b00;
       display: flex;
@@ -45,15 +46,15 @@
 
     .stats {
       display: flex;
-      gap: 25px;
-      font-size: 24px;
+      gap: 20px;
+      font-size: clamp(18px, 2vw, 24px);
       font-weight: bold;
       color: #2c3e50;
     }
 
     .stat-box {
       background: #fff3cd;
-      padding: 6px 18px;
+      padding: 5px 16px;
       border-radius: 30px;
       border: 3px solid #ffc107;
     }
@@ -61,35 +62,36 @@
     /* 太阳装饰 */
     .sun {
       position: absolute;
-      top: 80px;
-      right: 60px;
-      width: 85px;
-      height: 85px;
+      top: 70px;
+      right: 50px;
+      width: 75px;
+      height: 75px;
       background: #ffd93d;
       border-radius: 50%;
       box-shadow: 0 0 30px #ffeb3b;
       z-index: 1;
     }
 
-    /* 题目提示牌区域（改为左右双栏，不占纵向空间） */
+    /* 题目提示牌区域（横向紧凑排版，留出充足下方空间） */
     .prompt-area {
       position: relative;
       z-index: 12;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 8px;
+      margin: 8px 0;
+      flex-shrink: 0;
     }
 
     .question-board {
       background: #ffffff;
-      border: 6px solid #ff9f1c;
-      border-radius: 28px;
-      padding: 14px 55px 14px 40px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      border: 5px solid #ff9f1c;
+      border-radius: 26px;
+      padding: 10px 50px 10px 35px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
       display: flex;
       align-items: center;
-      gap: 30px;
+      gap: 25px;
       position: relative;
     }
 
@@ -99,15 +101,15 @@
 
     .pinyin-hint {
       font-family: Arial, sans-serif;
-      font-size: 36px;
+      font-size: clamp(26px, 3.5vh, 36px);
       font-weight: bold;
       color: #e63946;
       letter-spacing: 3px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .word-context {
-      font-size: 44px;
+      font-size: clamp(32px, 4.5vh, 44px);
       font-weight: bold;
       color: #1d3557;
     }
@@ -115,12 +117,12 @@
     /* 英文释义盒子 */
     .english-hint {
       font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 28px;
+      font-size: clamp(20px, 2.8vh, 26px);
       font-weight: bold;
       color: #1d3557;
       background: #e0fbfc;
-      padding: 12px 22px;
-      border-radius: 20px;
+      padding: 10px 20px;
+      border-radius: 18px;
       border: 3px solid #3d5a80;
       max-width: 340px;
       text-align: center;
@@ -128,9 +130,9 @@
 
     .blank-slot {
       display: inline-block;
-      width: 60px;
-      height: 60px;
-      line-height: 56px;
+      width: 54px;
+      height: 54px;
+      line-height: 50px;
       border-bottom: 5px solid #ff9f1c;
       color: #2a9d8f;
       margin: 0 6px;
@@ -139,15 +141,15 @@
 
     .speak-btn {
       position: absolute;
-      right: -28px;
+      right: -25px;
       top: 50%;
       transform: translateY(-50%);
-      width: 65px;
-      height: 65px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: #4cc9f0;
       border: 4px solid #fff;
-      font-size: 30px;
+      font-size: 26px;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       transition: transform 0.1s;
@@ -156,34 +158,36 @@
       transform: translateY(-50%) scale(0.92);
     }
 
-    /* 马路与斑马线主舞台 */
+    /* 马路与斑马线主舞台（弹性占据剩余空间） */
     .road-stage {
       position: relative;
       width: 100%;
-      height: 340px;
+      flex: 1;
+      max-height: 46vh;
+      min-height: 220px;
       background: #4a5568;
-      border-top: 10px solid #cbd5e0;
-      border-bottom: 10px solid #cbd5e0;
+      border-top: 8px solid #cbd5e0;
+      border-bottom: 8px solid #cbd5e0;
       display: flex;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     /* 斑马线条纹 */
     .crosswalk {
       position: absolute;
-      left: 220px;
-      right: 180px;
+      left: 200px;
+      right: 160px;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      padding: 15px 0;
+      padding: 12px 0;
       opacity: 0.85;
     }
 
     .stripe {
-      height: 26px;
+      height: 12%;
       background: #ffffff;
       border-radius: 6px;
     }
@@ -191,15 +195,15 @@
     /* 红绿灯 */
     .traffic-light {
       position: absolute;
-      right: 45px;
-      top: -115px;
-      width: 76px;
+      right: 40px;
+      top: -105px;
+      width: 68px;
       background: #2d3748;
-      border-radius: 20px;
-      padding: 12px;
+      border-radius: 18px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       border: 4px solid #1a202c;
       box-shadow: 0 8px 16px rgba(0,0,0,0.3);
       z-index: 6;
@@ -207,16 +211,16 @@
 
     .traffic-pole {
       position: absolute;
-      right: 77px;
-      top: 25px;
+      right: 68px;
+      top: 15px;
       width: 12px;
-      height: 110px;
+      height: 95px;
       background: #2d3748;
     }
 
     .light {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: #4a5568;
       transition: all 0.2s;
@@ -241,8 +245,8 @@
     .school-bus {
       position: absolute;
       right: 20px;
-      bottom: 20px;
-      font-size: 90px;
+      bottom: 15px;
+      font-size: clamp(65px, 10vh, 90px);
       z-index: 4;
       filter: drop-shadow(0 6px 8px rgba(0,0,0,0.3));
     }
@@ -251,9 +255,9 @@
     .dudu-character {
       position: absolute;
       left: 30px;
-      bottom: 25px;
-      width: 170px;
-      height: 190px;
+      bottom: 15px;
+      width: 150px;
+      height: 170px;
       z-index: 8;
       transition: left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -268,7 +272,7 @@
 
     @keyframes jump {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-45px) scale(1.08); }
+      50% { transform: translateY(-40px) scale(1.08); }
     }
 
     @keyframes shake {
@@ -280,33 +284,33 @@
     /* 选项按钮区 */
     .options-container {
       position: relative;
-      z-index: 9;
+      z-index: 20;
       margin: 0 auto;
       display: flex;
-      gap: 45px;
+      gap: 40px;
       justify-content: center;
       align-items: center;
     }
 
     .option-card {
-      width: 165px;
-      height: 165px;
+      width: clamp(120px, 18vh, 165px);
+      height: clamp(120px, 18vh, 165px);
       background: linear-gradient(145deg, #ffffff, #f0f4f8);
-      border: 7px solid #3a86ff;
-      border-radius: 32px;
-      font-size: 92px;
+      border: 6px solid #3a86ff;
+      border-radius: 28px;
+      font-size: clamp(64px, 10vh, 92px);
       font-weight: bold;
       color: #1d3557;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      box-shadow: 0 12px 0 #2667cc, 0 16px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 0 #2667cc, 0 14px 20px rgba(0,0,0,0.3);
       transition: all 0.15s;
     }
 
     .option-card:active {
-      transform: translateY(8px);
+      transform: translateY(6px);
       box-shadow: 0 4px 0 #2667cc;
     }
 
@@ -314,14 +318,14 @@
       background: #34c759;
       border-color: #248a3d;
       color: white;
-      box-shadow: 0 12px 0 #248a3d;
+      box-shadow: 0 10px 0 #248a3d;
     }
 
     .option-card.wrong {
       background: #ff3b30;
       border-color: #c92a2a;
       color: white;
-      box-shadow: 0 12px 0 #c92a2a;
+      box-shadow: 0 10px 0 #c92a2a;
     }
 
     /* 通关弹窗 */
@@ -351,13 +355,13 @@
     }
 
     .modal-title {
-      font-size: 52px;
+      font-size: 48px;
       color: #ff6b00;
       margin: 10px 0;
     }
 
     .modal-desc {
-      font-size: 30px;
+      font-size: 28px;
       color: #333;
       margin-bottom: 30px;
     }
@@ -366,8 +370,8 @@
       background: #34c759;
       color: white;
       border: none;
-      padding: 18px 50px;
-      font-size: 34px;
+      padding: 16px 45px;
+      font-size: 30px;
       font-weight: bold;
       border-radius: 50px;
       cursor: pointer;
@@ -392,7 +396,7 @@
 
   <div class="sun"></div>
 
-  <!-- 题目提示区（左右双栏布局） -->
+  <!-- 题目提示区 -->
   <div class="prompt-area">
     <div class="question-board">
       <div class="zh-section">
@@ -426,7 +430,7 @@
     <div class="school-bus">🚌</div>
 
     <div class="dudu-character" id="dudu">
-      <svg viewBox="0 0 200 220" width="170" height="190">
+      <svg viewBox="0 0 200 220" width="150" height="170">
         <path d="M 35 155 Q 10 130 20 105" stroke="#f59e0b" stroke-width="10" fill="none" stroke-linecap="round"/>
         <circle cx="20" cy="102" r="10" fill="#b45309"/>
         <rect x="62" y="125" width="76" height="65" rx="25" fill="#fbbf24"/>
@@ -491,32 +495,37 @@
     let score = 0;
     let isLocked = false;
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let audioCtx = null;
     function playTone(type) {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
 
-      if (type === 'correct') {
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
-        osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.4);
-      } else {
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(130, audioCtx.currentTime + 0.25);
-        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
-      }
+        if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+          osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+          osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.4);
+        } else {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+          osc.frequency.linearRampToValueAtTime(130, audioCtx.currentTime + 0.25);
+          gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.3);
+        }
+      } catch (e) {}
     }
 
     function speakCurrentWord() {
@@ -617,3 +626,24 @@
         btn.classList.add('wrong');
         setTrafficLight('Red');
         playTone('wrong');
+        dudu.classList.remove('dudu-shake');
+        void dudu.offsetWidth;
+        dudu.classList.add('dudu-shake');
+
+        setTimeout(() => {
+          btn.classList.remove('wrong');
+          setTrafficLight('Yellow');
+        }, 700);
+      }
+    }
+
+    // 兼容不同加载时机，确保脚本立即执行渲染选项
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startGame);
+    } else {
+      startGame();
+    }
+    window.addEventListener('resize', updateDuduPosition);
+  </script>
+</body>
+</html>
