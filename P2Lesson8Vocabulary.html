@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>第八课《感谢我周围的人》- Superhero Community Adventure</title>
+<title>第八课《感谢我周围的人》- Superhero Community Adventure | Franky Laoshi</title>
 <style>
   :root {
     --comic-blue: #1976d2;
@@ -77,6 +77,49 @@
     transform: rotate(-1deg);
   }
 
+  /* =========================================================
+     个人专属防伪徽章：Franky Laoshi（美漫贴纸印章风）
+     ========================================================= */
+  .author-stamp {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: var(--comic-yellow);
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    padding: 5px 14px;
+    font-size: 0.86rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    box-shadow: 4px 4px 0 var(--ink);
+    transform: rotate(3deg);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 20;
+    transition: transform 0.2s ease;
+  }
+  .author-stamp:hover {
+    transform: rotate(0deg) scale(1.06);
+  }
+  .author-stamp .stamp-sub {
+    background: var(--comic-yellow);
+    color: var(--ink);
+    font-size: 0.68rem;
+    padding: 1px 6px;
+    border-radius: 6px;
+    border: 1.5px solid var(--ink);
+  }
+
+  @media (max-width: 820px) {
+    .author-stamp {
+      position: static;
+      margin-top: 10px;
+      transform: rotate(0deg);
+    }
+  }
+
   /* 主漫画画板容器 */
   .container {
     width: 95%;
@@ -89,6 +132,20 @@
     box-shadow: 10px 10px 0 var(--ink);
     text-align: center;
     position: relative;
+    overflow: hidden;
+  }
+
+  /* 画布右下角半透明防伪暗纹 */
+  .container::after {
+    content: "🦸‍♂️ FRANKY LAOSHI";
+    position: absolute;
+    bottom: 10px;
+    right: 18px;
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: rgba(26, 26, 26, 0.16);
+    pointer-events: none;
   }
 
   /* 导航与按钮 */
@@ -480,6 +537,12 @@
     🦸‍♂️ <ruby>第<rt>dì</rt>八<rt>bā</rt>课<rt>kè</rt></ruby>《<ruby>感<rt>gǎn</rt>谢<rt>xiè</rt>我<rt>wǒ</rt>周<rt>zhōu</rt>围<rt>wéi</rt>的<rt>de</rt>人<rt>rén</rt></ruby>》<ruby>听<rt>tīng</rt>说<rt>shuō</rt>剧<rt>jù</rt>场<rt>chǎng</rt></ruby>
   </h1>
   <div class="subtitle-badge">⚡ SUPERHERO COMMUNITY ADVENTURE · 二年级华文互动游戏 ⚡</div>
+
+  <!-- 个人专属美漫防伪徽章 -->
+  <div class="author-stamp" title="Original Classroom Design by Franky Laoshi">
+    <span>⚡ Franky Laoshi</span>
+    <span class="stamp-sub">ORIGINAL</span>
+  </div>
 </header>
 
 <div class="container">
