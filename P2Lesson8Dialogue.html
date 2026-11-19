@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第八课《感谢我周围的人》- 超级英雄课堂对话剧场</title>
+<style>
+  :root {
+    --comic-blue: #1976d2;
+    --comic-yellow: #ffd600;
+    --comic-red: #ff1744;
+    --comic-green: #00c853;
+    --comic-cream: #fffde7;
+    --ink: #1a1a1a;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    user-select: none;
+  }
+
+  body {
+    margin: 0;
+    padding: 0 0 40px 0;
+    background-color: #29b6f6;
+    background-image:
+      radial-gradient(#0288d1 2px, transparent 2px),
+      radial-gradient(#81d4fa 2px, #29b6f6 2px);
+    background-size: 32px 32px;
+    background-position: 0 0, 16px 16px;
+    min-height: 100vh;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 全局隐藏英文控制 */
+  body.hide-english .en-text {
+    display: none !important;
+  }
+
+  /* 拼音注音排版 */
+  ruby { ruby-align: center; }
+  rt { font-size: 0.56em; color: #37474f; font-weight: 700; letter-spacing: 0; }
+
+  header {
+    width: 100%;
+    background: linear-gradient(135deg, #d50000 0%, #ff1744 50%, #ff5252 100%);
+    color: white;
+    padding: 14px 20px;
+    text-align: center;
+    border-bottom: 5px solid var(--ink);
+    box-shadow: 0 5px 0 rgba(0,0,0,0.2);
+  }
+  header h1 {
+    margin: 0;
+    font-size: 1.7rem;
+    line-height: 1.9;
+    text-shadow: 2px 2px 0 var(--ink), -1px -1px 0 var(--ink);
+  }
+  header rt { color: #fff59d; text-shadow: 1px 1px 0 var(--ink); }
+  .subtitle-badge {
+    display: inline-block;
+    background: var(--comic-yellow);
+    color: var(--ink);
+    font-weight: 900;
+    font-size: 0.88rem;
+    padding: 4px 16px;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
+    margin-top: 4px;
+  }
+
+  .container {
+    width: 95%;
+    max-width: 1060px;
+    background: var(--comic-cream);
+    border: 5px solid var(--ink);
+    border-radius: 24px;
+    margin: 20px auto;
+    padding: 22px;
+    box-shadow: 10px 10px 0 var(--ink);
+    text-align: center;
+  }
+
+  /* 顶部控制栏 */
+  .top-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 3px dashed #bdbdbd;
+  }
+
+  .mode-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .comic-btn {
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    padding: 8px 14px;
+    font-size: 0.95rem;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.25;
+  }
+  .comic-btn span.btn-en { font-size: 0.72rem; font-weight: 600; opacity: 0.9; margin-top: 2px; }
+  .comic-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+  .comic-btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+
+  .btn-tab { background: var(--comic-yellow); color: var(--ink); }
+  .btn-tab.active { background: var(--comic-red); color: white; }
+
+  .control-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .pill-btn {
+    background: white;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 6px 13px;
+    font-size: 0.86rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .pill-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+  .pill-btn.active { background: var(--comic-green); color: white; }
+  .pill-btn.en-toggle-btn { background: #e1f5fe; color: #01579b; }
+  .pill-btn.en-toggle-btn.off { background: #eceff1; color: #546e7a; }
+
+  /* 课堂小组积分板 */
+  .scoreboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    background: #e1f5fe;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 10px 16px;
+    margin-bottom: 18px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .team-box {
+    font-size: 1.05rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 3px solid var(--ink);
+  }
+  .score-num { font-size: 1.55rem; color: var(--comic-red); min-width: 28px; }
+  .score-btn {
+    background: var(--comic-green);
+    color: white;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-weight: 900;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  /* 漫画情景剧场舞台 */
+  .comic-stage {
+    background: linear-gradient(180deg, #e3f2fd 0%, #fff9c4 65%, #c8e6c9 100%);
+    border: 4px solid var(--ink);
+    border-radius: 22px;
+    padding: 22px;
+    box-shadow: 6px 6px 0 var(--ink);
+    margin-bottom: 20px;
+  }
+
+  .hero-showcase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .hero-illustration-frame {
+    width: 156px;
+    height: 156px;
+    background: radial-gradient(circle, #ffffff 40%, #bbdefb 100%);
+    border: 5px solid var(--ink);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 6px 6px 0 var(--ink);
+    margin-bottom: 10px;
+    overflow: hidden;
+    padding: 6px;
+  }
+  .hero-illustration-frame svg {
+    width: 100%;
+    height: 100%;
+  }
+  .hero-clue-tag {
+    background: var(--comic-blue);
+    color: white;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 5px 18px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  /* 对话气泡双栏 */
+  .dialogue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 18px;
+    margin-top: 10px;
+  }
+  .bubble-card {
+    background: white;
+    border: 4px solid var(--ink);
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 5px 5px 0 var(--ink);
+    text-align: left;
+    position: relative;
+  }
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+  .role-a { background: #bbdefb; }
+  .role-b { background: #ffecb3; }
+
+  .sentence-cn {
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 2.2;
+    color: var(--ink);
+  }
+  .sentence-en {
+    font-size: 0.95rem;
+    color: #546e7a;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  /* 遮罩/答案揭示样式 */
+  .blank-box {
+    display: inline-block;
+    min-width: 110px;
+    padding: 0 8px;
+    border-bottom: 4px dashed var(--comic-red);
+    color: var(--comic-red);
+    text-align: center;
+    background: #fff3e0;
+    border-radius: 8px 8px 0 0;
+  }
+  .blank-box.revealed {
+    border-bottom: 4px solid var(--comic-green);
+    color: #1b5e20;
+    background: #e8f5e9;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .mini-btn {
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.88rem;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+    background: #f5f5f5;
+  }
+  .mini-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+  .mini-speak { background: #ff7043; color: white; }
+  .mini-reveal { background: var(--comic-yellow); color: var(--ink); }
+
+  /* 选项卡片网格 */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .option-card {
+    background: white;
+    border: 4px solid var(--ink);
+    border-radius: 18px;
+    padding: 12px 10px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .option-card:hover { transform: translateY(-4px); background: #e3f2fd; }
+  .option-card .opt-art {
+    width: 105px;
+    height: 105px;
+    background: #fffde7;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 4px;
+    margin-bottom: 8px;
+  }
+  .option-card .opt-art svg { width: 100%; height: 100%; }
+  .option-card .opt-ruby { font-size: 1.35rem; font-weight: 900; line-height: 1.9; }
+  .option-card .opt-en { font-size: 0.82rem; color: #607d8b; font-weight: 700; }
+  .option-card.correct { background: #b9f6ca !important; animation: pop 0.4s; }
+  .option-card.wrong { background: #ff8a80 !important; animation: shake 0.4s; }
+
+  /* 高清 SVG 幸运大转盘（放大至380px，图标更清晰） */
+  .wheel-wrapper {
+    position: relative;
+    width: 380px;
+    height: 380px;
+    max-width: 90vw;
+    max-height: 90vw;
+    margin: 24px auto 14px;
+  }
+  .wheel-pointer {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 36px solid var(--comic-red);
+    filter: drop-shadow(0 3px 0 var(--ink));
+    z-index: 10;
+  }
+  .wheel-svg-box {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 6px solid var(--ink);
+    box-shadow: 0 0 0 6px var(--comic-yellow), 0 8px 0 var(--ink);
+    overflow: hidden;
+    background: white;
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+  }
+  .wheel-center-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: var(--comic-red);
+    color: white;
+    border: 4px solid var(--ink);
+    box-shadow: 0 4px 0 var(--ink);
+    font-weight: 900;
+    font-size: 1.15rem;
+    cursor: pointer;
+    z-index: 5;
+  }
+  .wheel-center-btn:active {
+    transform: translate(-50%, -46%);
+    box-shadow: 0 1px 0 var(--ink);
+  }
+
+  /* 底部大控制按钮 */
+  .bottom-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .next-btn {
+    background: var(--comic-green);
+    color: white;
+    font-size: 1.12rem;
+    padding: 12px 26px;
+  }
+
+  /* 彩带 */
+  .confetti {
+    position: fixed;
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--ink);
+    top: -20px;
+    z-index: 9999;
+    animation: fall linear forwards;
+  }
+  @keyframes fall { to { transform: translateY(105vh) rotate(720deg); } }
+  @keyframes pop { 50% { transform: scale(1.06); } }
+  @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>
+    🦸‍♂️ <ruby>第<rt>dì</rt>八<rt>bā</rt>课<rt>kè</rt></ruby>《<ruby>感<rt>gǎn</rt>谢<rt>xiè</rt>我<rt>wǒ</rt>周<rt>zhōu</rt>围<rt>wéi</rt>的<rt>de</rt>人<rt>rén</rt></ruby>》<ruby>课<rt>kè</rt>堂<rt>táng</rt>对<rt>duì</rt>话<rt>huà</rt>剧<rt>jù</rt>场<rt>chǎng</rt></ruby>
+  </h1>
+  <div class="subtitle-badge en-text">⚡ SUPERHERO COMMUNITY DIALOGUE & LUCKY WHEEL ⚡</div>
+</header>
+
+<div class="container">
+  <!-- 顶部模式与语速/英文开关控制 -->
+  <div class="top-bar">
+    <div class="mode-tabs">
+      <button class="comic-btn btn-tab active" id="tab-dialogue" onclick="switchMode('dialogue')">
+        <span>🎭 1. 公园情景剧场</span>
+        <span class="btn-en en-text">Role-Play Dialogue</span>
+      </button>
+      <button class="comic-btn btn-tab" id="tab-guess" onclick="switchMode('guess')">
+        <span>🕵️ 2. 英雄身份猜猜猜</span>
+        <span class="btn-en en-text">Guess the Hero</span>
+      </button>
+      <button class="comic-btn btn-tab" id="tab-wheel" onclick="switchMode('wheel')">
+        <span>🎡 3. 幸运大转盘</span>
+        <span class="btn-en en-text">Lucky Wheel Spin</span>
+      </button>
+      <button class="comic-btn btn-tab" id="tab-list" onclick="switchMode('list')">
+        <span>📖 4. 句型总览表</span>
+        <span class="btn-en en-text">All 10 Heroes</span>
+      </button>
+    </div>
+
+    <div class="control-group">
+      <button class="pill-btn en-toggle-btn" id="btn-toggle-en" onclick="toggleEnglish()">
+        👁️ 隐藏英文 (Hide EN)
+      </button>
+      <button class="pill-btn active" id="speed-slow" onclick="setSpeed(0.60)">🐢 慢速 <span class="en-text">(Slow)</span></button>
+      <button class="pill-btn" id="speed-normal" onclick="setSpeed(0.85)">🐇 正常 <span class="en-text">(Normal)</span></button>
+    </div>
+  </div>
+
+  <!-- 课堂小组积分板 -->
+  <div class="scoreboard">
+    <div class="team-box">
+      <span>🔴 <ruby>红<rt>hóng</rt>队<rt>duì</rt></ruby> <span class="en-text">(Red Team)</span>:</span>
+      <span class="score-num" id="score-red">0</span>
+      <button class="score-btn" onclick="addScore('red', 1)">+1 ⭐</button>
+    </div>
+    <div class="team-box">
+      <span>🔵 <ruby>蓝<rt>lán</rt>队<rt>duì</rt></ruby> <span class="en-text">(Blue Team)</span>:</span>
+      <span class="score-num" id="score-blue">0</span>
+      <button class="score-btn" onclick="addScore('blue', 1)">+1 ⭐</button>
+    </div>
+  </div>
+
+  <!-- 主舞台区域 -->
+  <div id="main-area"></div>
+</div>
+
+<script>
+// 10个专属高清美漫风格矢量插画 SVG 库
+const heroSVGs = {
+  // 1. 建筑工人
+  1: `<svg viewBox="0 0 120 120">
+    <rect x="6" y="75" width="38" height="38" fill="#d84315" stroke="#1a1a1a" stroke-width="3" rx="4"/>
+    <line x1="6" y1="88" x2="44" y2="88" stroke="#ffccbc" stroke-width="2.5"/>
+    <line x1="6" y1="101" x2="44" y2="101" stroke="#ffccbc" stroke-width="2.5"/>
+    <line x1="25" y1="75" x2="25" y2="88" stroke="#ffccbc" stroke-width="2.5"/>
+    <line x1="16" y1="88" x2="16" y2="101" stroke="#ffccbc" stroke-width="2.5"/>
+    <line x1="34" y1="88" x2="34" y2="101" stroke="#ffccbc" stroke-width="2.5"/>
+    <path d="M46 112 C46 86 98 86 98 112 Z" fill="#1976d2" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M56 88 L88 88 L84 112 L60 112 Z" fill="#ff9100" stroke="#1a1a1a" stroke-width="3"/>
+    <line x1="58" y1="98" x2="86" y2="98" stroke="#fff59d" stroke-width="3"/>
+    <circle cx="72" cy="60" r="21" fill="#ffcc80" stroke="#1a1a1a" stroke-width="3.5"/>
+    <circle cx="65" cy="59" r="2.8" fill="#1a1a1a"/>
+    <circle cx="79" cy="59" r="2.8" fill="#1a1a1a"/>
+    <path d="M66 68 Q72 74 78 68" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M49 48 C49 26 95 26 95 48 Z" fill="#ffd600" stroke="#1a1a1a" stroke-width="3.5"/>
+    <rect x="44" y="45" width="56" height="7" rx="3.5" fill="#ffab00" stroke="#1a1a1a" stroke-width="3"/>
+    <path d="M32 62 L46 72 L36 82 Z" fill="#90a4ae" stroke="#1a1a1a" stroke-width="3"/>
+    <line x1="41" y1="77" x2="50" y2="88" stroke="#6d4c41" stroke-width="4" stroke-linecap="round"/>
+  </svg>`,
+
+  // 2. 清洁工人
+  2: `<svg viewBox="0 0 120 120">
+    <path d="M44 112 C44 85 96 85 96 112 Z" fill="#00acc1" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M56 87 L84 87 L81 112 L59 112 Z" fill="#aeea00" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="70" cy="58" r="21" fill="#ffe0b2" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M50 52 C50 32 90 32 90 52 C84 44 56 44 50 52 Z" fill="#4e342e" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="63" cy="58" r="2.8" fill="#1a1a1a"/>
+    <circle cx="77" cy="58" r="2.8" fill="#1a1a1a"/>
+    <path d="M64 67 Q70 73 76 67" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <line x1="28" y1="32" x2="36" y2="92" stroke="#8d6e63" stroke-width="5" stroke-linecap="round"/>
+    <path d="M22 92 L50 88 L54 110 L18 112 Z" fill="#ffd600" stroke="#1a1a1a" stroke-width="3.5"/>
+    <line x1="28" y1="98" x2="27" y2="110" stroke="#1a1a1a" stroke-width="2"/>
+    <line x1="36" y1="97" x2="36" y2="109" stroke="#1a1a1a" stroke-width="2"/>
+    <line x1="44" y1="96" x2="45" y2="108" stroke="#1a1a1a" stroke-width="2"/>
+    <polygon points="16,42 19,48 25,48 20,52 22,58 16,54 10,58 12,52 7,48 13,48" fill="#ffd600" stroke="#1a1a1a" stroke-width="2"/>
+  </svg>`,
+
+  // 3. 消防员
+  3: `<svg viewBox="0 0 120 120">
+    <path d="M12 95 C10 80 22 72 20 60 C28 68 32 76 30 85 C35 78 38 86 34 98 Z" fill="#ff3d00" stroke="#1a1a1a" stroke-width="3"/>
+    <path d="M18 95 C17 86 24 82 23 74 C28 79 29 86 26 95 Z" fill="#ffd600"/>
+    <path d="M44 112 C44 85 98 85 98 112 Z" fill="#d50000" stroke="#1a1a1a" stroke-width="3.5"/>
+    <rect x="54" y="92" width="34" height="7" fill="#ffd600" stroke="#1a1a1a" stroke-width="2.5"/>
+    <circle cx="71" cy="60" r="21" fill="#ffcc80" stroke="#1a1a1a" stroke-width="3.5"/>
+    <circle cx="64" cy="59" r="2.8" fill="#1a1a1a"/>
+    <circle cx="78" cy="59" r="2.8" fill="#1a1a1a"/>
+    <path d="M65 68 Q71 74 77 68" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M48 48 C48 24 94 24 94 48 L100 53 L42 53 Z" fill="#ff1744" stroke="#1a1a1a" stroke-width="3.5"/>
+    <rect x="64" y="29" width="14" height="14" rx="3" fill="#ffd600" stroke="#1a1a1a" stroke-width="2.5"/>
+    <path d="M30 86 Q45 86 52 96" fill="none" stroke="#29b6f6" stroke-width="6" stroke-linecap="round"/>
+  </svg>`,
+
+  // 4. 演员
+  4: `<svg viewBox="0 0 120 120">
+    <path d="M36 112 C36 84 86 84 86 112 Z" fill="#ab47bc" stroke="#1a1a1a" stroke-width="3.5"/>
+    <polygon points="61,88 53,96 61,102 69,96" fill="#ffd600" stroke="#1a1a1a" stroke-width="2.5"/>
+    <circle cx="61" cy="56" r="21" fill="#ffe0b2" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M40 50 C38 26 84 26 82 50 C76 38 46 38 40 50 Z" fill="#3e2723" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="38" cy="42" r="8" fill="#3e2723" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="84" cy="42" r="8" fill="#3e2723" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="54" cy="56" r="2.8" fill="#1a1a1a"/>
+    <circle cx="68" cy="56" r="2.8" fill="#1a1a1a"/>
+    <path d="M55 65 Q61 72 67 65" fill="none" stroke="#d50000" stroke-width="3" stroke-linecap="round"/>
+    <path d="M86 58 L108 58 L106 78 C106 85 88 85 88 78 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="3"/>
+    <path d="M92 66 Q94 63 96 66 M100 66 Q102 63 104 66" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+    <path d="M93 74 Q97 79 101 74" fill="none" stroke="#d50000" stroke-width="2.5"/>
+    <polygon points="22,22 25,29 32,29 26,34 28,41 22,36 16,41 18,34 12,29 19,29" fill="#ffd600" stroke="#1a1a1a" stroke-width="2"/>
+  </svg>`,
+
+  // 5. 园丁
+  5: `<svg viewBox="0 0 120 120">
+    <path d="M46 112 C46 85 98 85 98 112 Z" fill="#43a047" stroke="#1a1a1a" stroke-width="3.5"/>
+    <rect x="58" y="88" width="28" height="24" fill="#1e88e5" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="72" cy="58" r="21" fill="#ffcc80" stroke="#1a1a1a" stroke-width="3.5"/>
+    <circle cx="65" cy="58" r="2.8" fill="#1a1a1a"/>
+    <circle cx="79" cy="58" r="2.8" fill="#1a1a1a"/>
+    <path d="M66 67 Q72 73 78 67" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="72" cy="42" rx="34" ry="8" fill="#ffe082" stroke="#1a1a1a" stroke-width="3"/>
+    <path d="M52 42 C52 24 92 24 92 42 Z" fill="#ffca28" stroke="#1a1a1a" stroke-width="3.5"/>
+    <line x1="24" y1="86" x2="24" y2="112" stroke="#2e7d32" stroke-width="4"/>
+    <circle cx="24" cy="78" r="7" fill="#ffd600" stroke="#1a1a1a" stroke-width="2.5"/>
+    <circle cx="24" cy="67" r="6" fill="#ff4081" stroke="#1a1a1a" stroke-width="2"/>
+    <circle cx="34" cy="75" r="6" fill="#ff4081" stroke="#1a1a1a" stroke-width="2"/>
+    <circle cx="14" cy="75" r="6" fill="#ff4081" stroke="#1a1a1a" stroke-width="2"/>
+    <circle cx="24" cy="88" r="6" fill="#ff4081" stroke="#1a1a1a" stroke-width="2"/>
+  </svg>`,
+
+  // 6. 司机
+  6: `<svg viewBox="0 0 120 120">
+    <path d="M36 112 C36 84 86 84 86 112 Z" fill="#1565c0" stroke="#1a1a1a" stroke-width="3.5"/>
+    <polygon points="61,88 57,104 61,109 65,104" fill="#ff1744" stroke="#1a1a1a" stroke-width="2"/>
+    <circle cx="61" cy="54" r="20" fill="#ffe0b2" stroke="#1a1a1a" stroke-width="3.5"/>
+    <circle cx="54" cy="54" r="2.8" fill="#1a1a1a"/>
+    <circle cx="68" cy="54" r="2.8" fill="#1a1a1a"/>
+    <path d="M55 63 Q61 69 67 63" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M41 40 L81 40 L76 26 L46 26 Z" fill="#0d47a1" stroke="#1a1a1a" stroke-width="3.5"/>
+    <rect x="38" y="39" width="46" height="6" rx="2" fill="#1a1a1a"/>
+    <circle cx="61" cy="96" r="18" fill="none" stroke="#37474f" stroke-width="6"/>
+    <circle cx="61" cy="96" r="6" fill="#ffd600" stroke="#1a1a1a" stroke-width="2.5"/>
+    <line x1="45" y1="96" x2="77" y2="96" stroke="#37474f" stroke-width="4"/>
+  </svg>`,
+
+  // 7. 医生
+  7: `<svg viewBox="0 0 120 120">
+    <path d="M34 112 C34 82 86 82 86 112 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M52 84 L60 104 L68 84" fill="#4fc3f7" stroke="#1a1a1a" stroke-width="2.5"/>
+    <circle cx="60" cy="54" r="21" fill="#ffe0b2" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M39 50 C39 26 81 26 81 50 C74 38 46 38 39 50 Z" fill="#212121" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="53" cy="54" r="2.8" fill="#1a1a1a"/>
+    <circle cx="67" cy="54" r="2.8" fill="#1a1a1a"/>
+    <path d="M54 63 Q60 69 66 63" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M46 84 C44 102 76 102 74 84" fill="none" stroke="#d50000" stroke-width="4"/>
+    <circle cx="75" cy="98" r="6" fill="#cfd8dc" stroke="#1a1a1a" stroke-width="2.5"/>
+    <rect x="92" y="34" width="10" height="26" rx="2" fill="#ff1744" stroke="#1a1a1a" stroke-width="2.5"/>
+    <rect x="84" y="42" width="26" height="10" rx="2" fill="#ff1744" stroke="#1a1a1a" stroke-width="2.5"/>
+  </svg>`,
+
+  // 8. 护士
+  8: `<svg viewBox="0 0 120 120">
+    <path d="M36 112 C36 84 86 84 86 112 Z" fill="#f48fb1" stroke="#1a1a1a" stroke-width="3.5"/>
+    <circle cx="61" cy="58" r="20" fill="#ffe0b2" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M41 54 C41 34 81 34 81 54 C74 44 48 44 41 54 Z" fill="#5d4037" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="54" cy="58" r="2.8" fill="#1a1a1a"/>
+    <circle cx="68" cy="58" r="2.8" fill="#1a1a1a"/>
+    <path d="M55 67 Q61 73 67 67" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M45 36 L77 36 L73 22 L49 22 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="3"/>
+    <path d="M61 25 L61 33 M57 29 L65 29" stroke="#ff1744" stroke-width="3" stroke-linecap="round"/>
+    <rect x="82" y="86" width="28" height="22" rx="4" fill="#ffffff" stroke="#1a1a1a" stroke-width="3"/>
+    <path d="M96 91 L96 103 M90 97 L102 97" stroke="#ff1744" stroke-width="3.5" stroke-linecap="round"/>
+  </svg>`,
+
+  // 9. 小贩
+  9: `<svg viewBox="0 0 120 120">
+    <path d="M44 112 C44 85 96 85 96 112 Z" fill="#ff7043" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M56 87 L84 87 L82 112 L58 112 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="70" cy="56" r="21" fill="#ffcc80" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M49 48 C49 28 91 28 91 48 Z" fill="#ffffff" stroke="#1a1a1a" stroke-width="3.5"/>
+    <circle cx="63" cy="56" r="2.8" fill="#1a1a1a"/>
+    <circle cx="77" cy="56" r="2.8" fill="#1a1a1a"/>
+    <path d="M64 65 Q70 71 76 65" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M12 92 L46 92 C44 108 14 108 12 92 Z" fill="#ffd600" stroke="#1a1a1a" stroke-width="3.5"/>
+    <path d="M18 86 Q24 76 30 86 Q36 76 42 86" fill="none" stroke="#ffab00" stroke-width="3.5"/>
+    <line x1="20" y1="68" x2="36" y2="86" stroke="#6d4c41" stroke-width="3" stroke-linecap="round"/>
+    <line x1="28" y1="66" x2="40" y2="86" stroke="#6d4c41" stroke-width="3" stroke-linecap="round"/>
+  </svg>`,
+
+  // 10. 警察
+  10: `<svg viewBox="0 0 120 120">
+    <path d="M36 112 C36 84 86 84 86 112 Z" fill="#1a237e" stroke="#1a1a1a" stroke-width="3.5"/>
+    <polygon points="73,94 76,99 81,99 77,103 78,108 73,105 68,108 69,103 65,99 70,99" fill="#ffd600" stroke="#1a1a1a" stroke-width="2"/>
+    <circle cx="61" cy="56" r="20" fill="#ffe0b2" stroke="#1a1a1a" stroke-width="3.5"/>
+    <circle cx="54" cy="56" r="2.8" fill="#1a1a1a"/>
+    <circle cx="68" cy="56" r="2.8" fill="#1a1a1a"/>
+    <path d="M55 65 Q61 71 67 65" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M37 38 L85 38 L78 22 L44 22 Z" fill="#283593" stroke="#1a1a1a" stroke-width="3.5"/>
+    <rect x="36" y="38" width="50" height="6" rx="2" fill="#1a1a1a"/>
+    <circle cx="61" cy="30" r="4.5" fill="#ffd600" stroke="#1a1a1a" stroke-width="2"/>
+    <path d="M88 64 L106 64 L104 82 C104 90 97 94 97 94 C97 94 90 90 90 82 Z" fill="#ffd600" stroke="#1a1a1a" stroke-width="3"/>
+  </svg>`
+};
+
+// 严格仅包含本课10个核心词汇及对应动作短语
+const lessonData = [
+  {
+    id: 1,
+    jobPlain: "建筑工人",
+    jobRuby: "<ruby>建<rt>jiàn</rt>筑<rt>zhù</rt>工<rt>gōng</rt>人<rt>rén</rt></ruby>",
+    jobEn: "construction worker",
+    actionPlain: "盖房子",
+    actionRuby: "<ruby>盖<rt>gài</rt>房<rt>fáng</rt>子<rt>zi</rt></ruby>",
+    actionEn: "build houses",
+    clueRuby: "<ruby>我<rt>wǒ</rt>戴<rt>dài</rt>着<rt>zhe</rt>安<rt>ān</rt>全<rt>quán</rt>帽<rt>mào</rt>，我<rt>wǒ</rt>会<rt>huì</rt>盖<rt>gài</rt>房<rt>fáng</rt>子<rt>zi</rt>。</ruby>",
+    cluePlain: "我戴着安全帽，我会盖房子。",
+    clueEn: "I wear a safety helmet, and I can build houses."
+  },
+  {
+    id: 2,
+    jobPlain: "清洁工人",
+    jobRuby: "<ruby>清<rt>qīng</rt>洁<rt>jié</rt>工<rt>gōng</rt>人<rt>rén</rt></ruby>",
+    jobEn: "cleaner",
+    actionPlain: "打扫卫生",
+    actionRuby: "<ruby>打<rt>dǎ</rt>扫<rt>sǎo</rt>卫<rt>wèi</rt>生<rt>shēng</rt></ruby>",
+    actionEn: "clean the streets",
+    clueRuby: "<ruby>我<rt>wǒ</rt>拿<rt>ná</rt>着<rt>zhe</rt>扫<rt>sào</rt>把<rt>ba</rt>，我<rt>wǒ</rt>会<rt>huì</rt>打<rt>dǎ</rt>扫<rt>sǎo</rt>卫<rt>wèi</rt>生<rt>shēng</rt>。</ruby>",
+    cluePlain: "我拿着扫把，我会打扫卫生。",
+    clueEn: "I hold a broom, and I can clean the streets."
+  },
+  {
+    id: 3,
+    jobPlain: "消防员",
+    jobRuby: "<ruby>消<rt>xiāo</rt>防<rt>fáng</rt>员<rt>yuán</rt></ruby>",
+    jobEn: "firefighter",
+    actionPlain: "灭火",
+    actionRuby: "<ruby>灭<rt>miè</rt>火<rt>huǒ</rt></ruby>",
+    actionEn: "put out fires",
+    clueRuby: "<ruby>我<rt>wǒ</rt>穿<rt>chuān</rt>着<rt>zhe</rt>消<rt>xiāo</rt>防<rt>fáng</rt>衣<rt>yī</rt>，我<rt>wǒ</rt>会<rt>huì</rt>灭<rt>miè</rt>火<rt>huǒ</rt>。</ruby>",
+    cluePlain: "我穿着消防衣，我会灭火。",
+    clueEn: "I wear a fire suit, and I can put out fires."
+  },
+  {
+    id: 4,
+    jobPlain: "演员",
+    jobRuby: "<ruby>演<rt>yǎn</rt>员<rt>yuán</rt></ruby>",
+    jobEn: "actor / actress",
+    actionPlain: "演戏",
+    actionRuby: "<ruby>演<rt>yǎn</rt>戏<rt>xì</rt></ruby>",
+    actionEn: "act on stage",
+    clueRuby: "<ruby>我<rt>wǒ</rt>在<rt>zài</rt>舞<rt>wǔ</rt>台<rt>tái</rt>上<rt>shàng</rt>表<rt>biǎo</rt>演<rt>yǎn</rt>，我<rt>wǒ</rt>会<rt>huì</rt>演<rt>yǎn</rt>戏<rt>xì</rt>。</ruby>",
+    cluePlain: "我在舞台上表演，我会演戏。",
+    clueEn: "I perform on stage, and I can act."
+  },
+  {
+    id: 5,
+    jobPlain: "园丁",
+    jobRuby: "<ruby>园<rt>yuán</rt>丁<rt>dīng</rt></ruby>",
+    jobEn: "gardener",
+    actionPlain: "种花",
+    actionRuby: "<ruby>种<rt>zhòng</rt>花<rt>huā</rt></ruby>",
+    actionEn: "plant flowers",
+    clueRuby: "<ruby>我<rt>wǒ</rt>在<rt>zài</rt>公<rt>gōng</rt>园<rt>yuán</rt>里<rt>lǐ</rt>工<rt>gōng</rt>作<rt>zuò</rt>，我<rt>wǒ</rt>会<rt>huì</rt>种<rt>zhòng</rt>花<rt>huā</rt>。</ruby>",
+    cluePlain: "我在公园里工作，我会种花。",
+    clueEn: "I work in the park, and I can plant flowers."
+  },
+  {
+    id: 6,
+    jobPlain: "司机",
+    jobRuby: "<ruby>司<rt>sī</rt>机<rt>jī</rt></ruby>",
+    jobEn: "driver",
+    actionPlain: "开车",
+    actionRuby: "<ruby>开<rt>kāi</rt>车<rt>chē</rt></ruby>",
+    actionEn: "drive a bus",
+    clueRuby: "<ruby>我<rt>wǒ</rt>每<rt>měi</rt>天<rt>tiān</rt>送<rt>sòng</rt>同<rt>tóng</rt>学<rt>xué</rt>上<rt>shàng</rt>学<rt>xué</rt>，我<rt>wǒ</rt>会<rt>huì</rt>开<rt>kāi</rt>车<rt>chē</rt>。</ruby>",
+    cluePlain: "我每天送同学上学，我会开车。",
+    clueEn: "I take students to school every day, and I can drive."
+  },
+  {
+    id: 7,
+    jobPlain: "医生",
+    jobRuby: "<ruby>医<rt>yī</rt>生<rt>shēng</rt></ruby>",
+    jobEn: "doctor",
+    actionPlain: "看病",
+    actionRuby: "<ruby>看<rt>kàn</rt>病<rt>bìng</rt></ruby>",
+    actionEn: "treat patients",
+    clueRuby: "<ruby>我<rt>wǒ</rt>在<rt>zài</rt>医<rt>yī</rt>院<rt>yuàn</rt>里<rt>lǐ</rt>工<rt>gōng</rt>作<rt>zuò</rt>，我<rt>wǒ</rt>会<rt>huì</rt>看<rt>kàn</rt>病<rt>bìng</rt>。</ruby>",
+    cluePlain: "我在医院里工作，我会看病。",
+    clueEn: "I work in a hospital, and I can treat sick people."
+  },
+  {
+    id: 8,
+    jobPlain: "护士",
+    jobRuby: "<ruby>护<rt>hù</rt>士<rt>shi</rt></ruby>",
+    jobEn: "nurse",
+    actionPlain: "照顾病人",
+    actionRuby: "<ruby>照<rt>zhào</rt>顾<rt>gù</rt>病<rt>bìng</rt>人<rt>rén</rt></ruby>",
+    actionEn: "take care of patients",
+    clueRuby: "<ruby>我<rt>wǒ</rt>帮<rt>bāng</rt>助<rt>zhù</rt>医<rt>yī</rt>生<rt>shēng</rt>，我<rt>wǒ</rt>会<rt>huì</rt>照<rt>zhào</rt>顾<rt>gù</rt>病<rt>bìng</rt>人<rt>rén</rt>。</ruby>",
+    cluePlain: "我帮助医生，我会照顾病人。",
+    clueEn: "I help the doctor, and I can take care of patients."
+  },
+  {
+    id: 9,
+    jobPlain: "小贩",
+    jobRuby: "<ruby>小<rt>xiǎo</rt>贩<rt>fàn</rt></ruby>",
+    jobEn: "hawker / vendor",
+    actionPlain: "卖东西",
+    actionRuby: "<ruby>卖<rt>mài</rt>东<rt>dōng</rt>西<rt>xi</rt></ruby>",
+    actionEn: "sell food",
+    clueRuby: "<ruby>我<rt>wǒ</rt>在<rt>zài</rt>熟<rt>shú</rt>食<rt>shí</rt>中<rt>zhōng</rt>心<rt>xīn</rt>工<rt>gōng</rt>作<rt>zuò</rt>，我<rt>wǒ</rt>会<rt>huì</rt>卖<rt>mài</rt>东<rt>dōng</rt>西<rt>xi</rt>。</ruby>",
+    cluePlain: "我在熟食中心工作，我会卖东西。",
+    clueEn: "I work at a hawker center, and I can sell food."
+  },
+  {
+    id: 10,
+    jobPlain: "警察",
+    jobRuby: "<ruby>警<rt>jǐng</rt>察<rt>chá</rt></ruby>",
+    jobEn: "police officer",
+    actionPlain: "抓坏人",
+    actionRuby: "<ruby>抓<rt>zhuā</rt>坏<rt>huài</rt>人<rt>rén</rt></ruby>",
+    actionEn: "catch bad guys",
+    clueRuby: "<ruby>我<rt>wǒ</rt>保<rt>bǎo</rt>护<rt>hù</rt>大<rt>dà</rt>家<rt>jiā</rt>的<rt>de</rt>安<rt>ān</rt>全<rt>quán</rt>，我<rt>wǒ</rt>会<rt>huì</rt>抓<rt>zhuā</rt>坏<rt>huài</rt>人<rt>rén</rt>。</ruby>",
+    cluePlain: "我保护大家的安全，我会抓坏人。",
+    clueEn: "I keep everyone safe, and I can catch bad guys."
+  }
+];
+
+let currentMode = 'dialogue';
+let currentIndex = 4; // 默认展示“园丁 / 种花”
+let speechRate = 0.60;
+let scores = { red: 0, blue: 0 };
+let isRevealed = false;
+let showEnglish = true;
+let wheelRotation = 0;
+let isSpinning = false;
+
+function toggleEnglish() {
+  showEnglish = !showEnglish;
+  document.body.classList.toggle('hide-english', !showEnglish);
+  const btn = document.getElementById('btn-toggle-en');
+  if (showEnglish) {
+    btn.innerHTML = "👁️ 隐藏英文 (Hide EN)";
+    btn.classList.remove('off');
+  } else {
+    btn.innerHTML = "🙈 显示英文 (Show EN)";
+    btn.classList.add('off');
+  }
+}
+
+function setSpeed(rate) {
+  speechRate = rate;
+  document.getElementById('speed-slow').classList.toggle('active', rate === 0.60);
+  document.getElementById('speed-normal').classList.toggle('active', rate === 0.85);
+}
+
+function speak(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'zh-CN';
+    utter.rate = speechRate;
+    window.speechSynthesis.speak(utter);
+  }
+}
+
+function addScore(team, pts) {
+  scores[team] += pts;
+  document.getElementById(`score-${team}`).innerText = scores[team];
+  launchConfetti();
+}
+
+function launchConfetti() {
+  const colors = ['#ff1744', '#ffd600', '#00c853', '#29b6f6', '#aa00ff'];
+  for (let i = 0; i < 24; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDuration = (Math.random() * 1.1 + 0.9) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2000);
+  }
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(`tab-${mode}`).classList.add('active');
+
+  if (mode === 'dialogue') renderDialogueMode();
+  else if (mode === 'guess') renderGuessMode();
+  else if (mode === 'wheel') renderWheelMode();
+  else if (mode === 'list') renderListMode();
+}
+
+/* =========================================================
+   模式 1：公园情景剧场（课堂两人对话盲说练习）
+   ========================================================= */
+function renderDialogueMode() {
+  isRevealed = false;
+  const item = lessonData[currentIndex];
+  const area = document.getElementById('main-area');
+
+  area.innerHTML = `
+    <div class="comic-stage">
+      <div class="hero-showcase">
+        <div class="hero-illustration-frame">${heroSVGs[item.id]}</div>
+        <div class="hero-clue-tag">
+          🗣️ <ruby>请<rt>qǐng</rt>两<rt>liǎng</rt>位<rt>wèi</rt>同<rt>tóng</rt>学<rt>xué</rt>看<rt>kàn</rt>图<rt>tú</rt>对<rt>duì</rt>话<rt>huà</rt>！</ruby>
+          <span class="en-text">(Pair Dialogue Practice)</span>
+        </div>
+      </div>
+
+      <div class="dialogue-grid">
+        <div class="bubble-card">
+          <div class="role-badge role-a">👦 <ruby>同<rt>tóng</rt>学<rt>xué</rt></ruby> A <span class="en-text">(Ask)</span></div>
+          <div class="sentence-cn">
+            “<ruby>他<rt>tā</rt>是<rt>shì</rt>做<rt>zuò</rt>什<rt>shén</rt>么<rt>me</rt>工<rt>gōng</rt>作<rt>zuò</rt>的<rt>de</rt>？</ruby>”
+          </div>
+          <div class="sentence-en en-text">“What job does he/she do?”</div>
+          <div class="card-actions">
+            <button class="mini-btn mini-speak" onclick="speak('他是做什么工作的？')">
+              🔊 <ruby>听<rt>tīng</rt>问<rt>wèn</rt>句<rt>jù</rt></ruby> <span class="en-text">(Listen Q)</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bubble-card">
+          <div class="role-badge role-b">👧 <ruby>同<rt>tóng</rt>学<rt>xué</rt></ruby> B <span class="en-text">(Answer)</span></div>
+          <div class="sentence-cn">
+            “<ruby>他<rt>tā</rt>是<rt>shì</rt></ruby> <span class="blank-box" id="slot-job">？</span>，
+            <ruby>他<rt>tā</rt>会<rt>huì</rt></ruby> <span class="blank-box" id="slot-action">？</span>。”
+          </div>
+          <div class="sentence-en en-text" id="slot-en">“He/She is a ______, he/she can ______.”</div>
+          <div class="card-actions">
+            <button class="mini-btn mini-reveal" onclick="revealDialogueAnswer()">
+              👀 <ruby>揭<rt>jiē</rt>晓<rt>xiǎo</rt>答<rt>dá</rt>案<rt>àn</rt></ruby> <span class="en-text">(Show Answer)</span>
+            </button>
+            <button class="mini-btn mini-speak" onclick="speak('他是' + lessonData[currentIndex].jobPlain + '，他会' + lessonData[currentIndex].actionPlain + '。')">
+              🔊 <ruby>听<rt>tīng</rt>答<rt>dá</rt>句<rt>jù</rt></ruby> <span class="en-text">(Listen A)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-controls">
+      <button class="comic-btn" style="background:white;" onclick="prevHero()">
+        <span>⬅️ 上一位英雄</span>
+        <span class="btn-en en-text">Previous Hero</span>
+      </button>
+      <button class="comic-btn" style="background:var(--comic-yellow);" onclick="randomHero()">
+        <span>🎲 随机抽一位</span>
+        <span class="btn-en en-text">Random Hero</span>
+      </button>
+      <button class="comic-btn next-btn" onclick="nextHero()">
+        <span>下一位英雄 ➡️</span>
+        <span class="btn-en en-text">Next Hero</span>
+      </button>
+    </div>
+  `;
+}
+
+function revealDialogueAnswer() {
+  const item = lessonData[currentIndex];
+  const slotJob = document.getElementById('slot-job');
+  const slotAction = document.getElementById('slot-action');
+  const slotEn = document.getElementById('slot-en');
+
+  slotJob.innerHTML = item.jobRuby;
+  slotJob.classList.add('revealed');
+  slotAction.innerHTML = item.actionRuby;
+  slotAction.classList.add('revealed');
+  slotEn.innerText = `“He/She is a ${item.jobEn}, he/she can ${item.actionEn}.”`;
+
+  speak(`他是${item.jobPlain}，他会${item.actionPlain}。`);
+  if (!isRevealed) {
+    launchConfetti();
+    isRevealed = true;
+  }
+}
+
+function prevHero() {
+  currentIndex = (currentIndex - 1 + lessonData.length) % lessonData.length;
+  renderDialogueMode();
+}
+
+function nextHero() {
+  currentIndex = (currentIndex + 1) % lessonData.length;
+  renderDialogueMode();
+}
+
+function randomHero() {
+  let nextIdx = currentIndex;
+  while (nextIdx === currentIndex) {
+    nextIdx = Math.floor(Math.random() * lessonData.length);
+  }
+  currentIndex = nextIdx;
+  renderDialogueMode();
+  speak("他是做什么工作的？");
+}
+
+/* =========================================================
+   模式 2：英雄身份猜猜猜
+   ========================================================= */
+let guessTarget = null;
+
+function renderGuessMode() {
+  guessTarget = lessonData[Math.floor(Math.random() * lessonData.length)];
+  let options = [guessTarget];
+  while (options.length < 4) {
+    let r = lessonData[Math.floor(Math.random() * lessonData.length)];
+    if (!options.includes(r)) options.push(r);
+  }
+  options.sort(() => Math.random() - 0.5);
+
+  const area = document.getElementById('main-area');
+  area.innerHTML = `
+    <div class="comic-stage">
+      <div class="hero-showcase">
+        <div class="hero-illustration-frame" id="guess-avatar" style="background:#fff59d; font-size:4.5rem; font-weight:900; color:#d50000;">❓</div>
+        <div class="hero-clue-tag">
+          🕵️ <ruby>英<rt>yīng</rt>雄<rt>xióng</rt>身<rt>shēn</rt>份<rt>fèn</rt>猜<rt>cāi</rt>猜<rt>cāi</rt>猜<rt>cāi</rt></ruby> <span class="en-text">(Who Am I?)</span>
+        </div>
+      </div>
+
+      <div class="bubble-card" style="max-width:760px; margin:0 auto; text-align:center;">
+        <div class="role-badge role-b">📢 <ruby>英<rt>yīng</rt>雄<rt>xióng</rt>线<rt>xiàn</rt>索<rt>suǒ</rt></ruby> <span class="en-text">(Hero Clue)</span></div>
+        <div class="sentence-cn">“${guessTarget.clueRuby}”</div>
+        <div class="sentence-en en-text">“${guessTarget.clueEn}”</div>
+        <div style="margin-top:10px; font-weight:900; color:#d50000; font-size:1.1rem;">
+          👉 <ruby>请<rt>qǐng</rt>大<rt>dà</rt>声<rt>shēng</rt>说<rt>shuō</rt>出<rt>chū</rt>完整句子</ruby>：“<ruby>他<rt>tā</rt>是<rt>shì</rt>……，他<rt>tā</rt>会<rt>huì</rt>……！</ruby>”
+        </div>
+        <div class="card-actions" style="justify-content:center;">
+          <button class="mini-btn mini-speak" onclick="speak(guessTarget.cluePlain + ' 他是做什么工作的？')">
+            🔊 <ruby>再<rt>zài</rt>听<rt>tīng</rt>一<rt>yī</rt>遍<rt>biàn</rt>线<rt>xiàn</rt>索<rt>suǒ</rt></ruby> <span class="en-text">(Listen Clue)</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="options-grid" id="guess-options"></div>
+      <div id="guess-feedback" style="margin-top:16px; font-size:1.3rem; font-weight:900; line-height:1.9;"></div>
+    </div>
+
+    <div class="bottom-controls">
+      <button class="comic-btn next-btn" onclick="renderGuessMode()">
+        <span>🔄 下一位神秘英雄</span>
+        <span class="btn-en en-text">Next Mystery Hero</span>
+      </button>
+    </div>
+  `;
+
+  speak(guessTarget.cluePlain);
+
+  const grid = document.getElementById('guess-options');
+  options.forEach(opt => {
+    const card = document.createElement('div');
+    card.className = 'option-card';
+    card.innerHTML = `
+      <div class="opt-art">${heroSVGs[opt.id]}</div>
+      <div class="opt-ruby">${opt.jobRuby}</div>
+      <div class="opt-en en-text">${opt.jobEn}</div>
+    `;
+    card.onclick = () => checkGuess(card, opt);
+    grid.appendChild(card);
+  });
+}
+
+function checkGuess(card, opt) {
+  const fb = document.getElementById('guess-feedback');
+  if (opt.id === guessTarget.id) {
+    card.classList.add('correct');
+    const avatar = document.getElementById('guess-avatar');
+    avatar.innerHTML = heroSVGs[opt.id];
+    avatar.style.background = '#b9f6ca';
+    launchConfetti();
+    fb.innerHTML = `
+      🎉 <ruby>答<rt>dá</rt>对<rt>duì</rt>了<rt>le</rt>！全<rt>quán</rt>班<rt>bān</rt>一<rt>yī</rt>起<rt>qǐ</rt>说<rt>shuō</rt></ruby>：
+      “<ruby>他<rt>tā</rt>是<rt>shì</rt></ruby>${opt.jobRuby}，<ruby>他<rt>tā</rt>会<rt>huì</rt></ruby>${opt.actionRuby}！”
+      <div class="en-text" style="font-size:0.95rem; color:#37474f;">Correct! “He/She is a ${opt.jobEn}, he/she can ${opt.actionEn}.”</div>
+    `;
+    speak(`答对了！他是${opt.jobPlain}，他会${opt.actionPlain}！`);
+  } else {
+    card.classList.add('wrong');
+    fb.innerHTML = `
+      🤔 <ruby>再<rt>zài</rt>猜<rt>cāi</rt>一<rt>yī</rt>猜<rt>cāi</rt>！这<rt>zhè</rt>位<rt>wèi</rt>是<rt>shì</rt></ruby>${opt.jobRuby}（<ruby>他<rt>tā</rt>会<rt>huì</rt></ruby>${opt.actionRuby}）。
+    `;
+    speak(`这是${opt.jobPlain}，他会${opt.actionPlain}，再猜一次吧！`);
+  }
+}
+
+/* =========================================================
+   模式 3：纯图片高清 SVG 幸运大转盘（不显示中文词语，仅显示图片）
+   ========================================================= */
+function renderWheelMode() {
+  isSpinning = false;
+  const area = document.getElementById('main-area');
+  const n = lessonData.length;
+  const sliceAngle = 360 / n;
+  const cx = 190, cy = 190, r = 190;
+  const sliceColors = ['#fff9c4', '#bbdefb', '#c8e6c9', '#ffe0b2', '#f8bbd0'];
+
+  let pathsHtml = '';
+  lessonData.forEach((item, i) => {
+    const startDeg = i * sliceAngle - 90;
+    const endDeg = (i + 1) * sliceAngle - 90;
+    const midDeg = startDeg + sliceAngle / 2;
+
+    const startRad = (startDeg * Math.PI) / 180;
+    const endRad = (endDeg * Math.PI) / 180;
+    const x1 = cx + r * Math.cos(startRad);
+    const y1 = cy + r * Math.sin(startRad);
+    const x2 = cx + r * Math.cos(endRad);
+    const y2 = cy + r * Math.sin(endRad);
+
+    const color = sliceColors[i % sliceColors.length];
+    const imgRad = (midDeg * Math.PI) / 180;
+    // 将图片放置在扇区外侧合适的位置
+    const ix = cx + (r * 0.67) * Math.cos(imgRad);
+    const iy = cy + (r * 0.67) * Math.sin(imgRad);
+
+    // 提取 SVG 内部图形内容嵌入转盘扇区
+    const innerSvgContent = heroSVGs[item.id]
+      .replace('<svg viewBox="0 0 120 120">', '')
+      .replace('</svg>', '');
+
+    pathsHtml += `
+      <path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z"
+            fill="${color}" stroke="#1a1a1a" stroke-width="2.5" />
+      <g transform="translate(${ix}, ${iy}) rotate(${midDeg + 90})">
+        <circle cx="0" cy="0" r="28" fill="#ffffff" stroke="#1a1a1a" stroke-width="2" />
+        <g transform="translate(-24, -24) scale(0.4)">
+          ${innerSvgContent}
+        </g>
+      </g>
+    `;
+  });
+
+  area.innerHTML = `
+    <div class="comic-stage">
+      <div class="hero-clue-tag" style="display:inline-block; background:var(--comic-yellow); color:var(--ink);">
+        🎡 <ruby>幸<rt>xìng</rt>运<rt>yùn</rt>大<rt>dà</rt>转<rt>zhuǎn</rt>盘<rt>pán</rt>：点<rt>diǎn</rt>击<rt>jī</rt>转<rt>zhuǎn</rt>盘<rt>pán</rt>，看<rt>kàn</rt>图<rt>tú</rt>说<rt>shuō</rt>出<rt>chū</rt>英<rt>yīng</rt>雄<rt>xióng</rt>身<rt>shēn</rt>份<rt>fèn</rt>！</ruby>
+        <span class="en-text">(Spin & Name the Hero!)</span>
+      </div>
+
+      <div class="wheel-wrapper">
+        <div class="wheel-pointer"></div>
+        <div class="wheel-svg-box" id="wheel-spinner" style="transform: rotate(${wheelRotation}deg);">
+          <svg viewBox="0 0 380 380" width="100%" height="100%">
+            ${pathsHtml}
+          </svg>
+        </div>
+        <button class="wheel-center-btn" onclick="spinWheel()">GO!</button>
+      </div>
+
+      <div id="wheel-result" style="margin-top:16px;"></div>
+    </div>
+  `;
+}
+
+function spinWheel() {
+  if (isSpinning) return;
+  isSpinning = true;
+  document.getElementById('wheel-result').innerHTML = '';
+
+  const n = lessonData.length;
+  const sliceAngle = 360 / n;
+  const chosenIndex = Math.floor(Math.random() * n);
+
+  const targetAngle = 360 - (chosenIndex * sliceAngle + sliceAngle / 2);
+  const currentMod = ((wheelRotation % 360) + 360) % 360;
+  let delta = targetAngle - currentMod;
+  if (delta < 0) delta += 360;
+
+  wheelRotation += 5 * 360 + delta;
+  const spinner = document.getElementById('wheel-spinner');
+  spinner.style.transform = `rotate(${wheelRotation}deg)`;
+
+  setTimeout(() => {
+    isSpinning = false;
+    currentIndex = chosenIndex;
+    const item = lessonData[chosenIndex];
+    launchConfetti();
+    speak("他是做什么工作的？");
+
+    // 抽中后先只显示大图和问题，引导学生自己说出答案后再点“揭晓答案”
+    document.getElementById('wheel-result').innerHTML = `
+      <div class="bubble-card" style="max-width:680px; margin:0 auto; text-align:center; animation:pop 0.4s;">
+        <div style="width:130px; height:130px; margin:0 auto 10px; border:4px solid #1a1a1a; border-radius:22px; background:#fffde7; padding:6px; box-shadow:4px 4px 0 #1a1a1a;">
+          ${heroSVGs[item.id]}
+        </div>
+        <div class="sentence-cn" style="font-size:1.5rem; color:#0d47a1;">
+          🗣️ “<ruby>他<rt>tā</rt>是<rt>shì</rt>做<rt>zuò</rt>什<rt>shén</rt>么<rt>me</rt>工<rt>gōng</rt>作<rt>zuò</rt>的<rt>de</rt>？</ruby>”
+        </div>
+        <div class="sentence-en en-text">“What job does he/she do?”</div>
+
+        <div id="wheel-answer-box" style="margin-top:10px;">
+          <button class="mini-btn mini-reveal" style="font-size:1rem; padding:8px 18px;" onclick="revealWheelAnswer(${chosenIndex})">
+            👀 <ruby>揭<rt>jiē</rt>晓<rt>xiǎo</rt>答<rt>dá</rt>案<rt>àn</rt></ruby> <span class="en-text">(Show Answer)</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }, 4100);
+}
+
+function revealWheelAnswer(idx) {
+  const item = lessonData[idx];
+  speak(`他是${item.jobPlain}，他会${item.actionPlain}。`);
+  document.getElementById('wheel-answer-box').innerHTML = `
+    <div class="sentence-cn" style="color:#d50000; font-size:1.45rem; margin-top:6px;">
+      “<ruby>他<rt>tā</rt>是<rt>shì</rt></ruby>${item.jobRuby}，<ruby>他<rt>tā</rt>会<rt>huì</rt></ruby>${item.actionRuby}。”
+    </div>
+    <div class="sentence-en en-text">“He/She is a ${item.jobEn}, he/she can ${item.actionEn}.”</div>
+    <div class="card-actions" style="justify-content:center; margin-top:10px;">
+      <button class="mini-btn mini-speak" onclick="speak('他是${item.jobPlain}，他会${item.actionPlain}。')">
+        🔊 <ruby>再<rt>zài</rt>听<rt>tīng</rt>一<rt>yī</rt>遍<rt>biàn</rt></ruby> <span class="en-text">(Listen Again)</span>
+      </button>
+    </div>
+  `;
+}
+
+/* =========================================================
+   模式 4：句型总览表
+   ========================================================= */
+function renderListMode() {
+  const area = document.getElementById('main-area');
+  let cardsHtml = lessonData.map(item => `
+    <div class="option-card" style="padding:14px; text-align:center;" onclick="speak('他是${item.jobPlain}，他会${item.actionPlain}。')">
+      <div class="opt-art" style="width:115px; height:115px;">${heroSVGs[item.id]}</div>
+      <div class="opt-ruby" style="font-size:1.25rem;">
+        <ruby>他<rt>tā</rt>是<rt>shì</rt></ruby>${item.jobRuby}，
+      </div>
+      <div class="opt-ruby" style="font-size:1.25rem; color:#d50000;">
+        <ruby>他<rt>tā</rt>会<rt>huì</rt></ruby>${item.actionRuby}。
+      </div>
+      <div class="opt-en en-text" style="margin-top:6px;">${item.jobEn} · ${item.actionEn}</div>
+      <div style="margin-top:8px; font-size:0.8rem; background:#fff9c4; border:2px solid #1a1a1a; border-radius:999px; padding:2px 10px; font-weight:800;">
+        🔊 点击朗读 <span class="en-text">(Tap to Read)</span>
+      </div>
+    </div>
+  `).join('');
+
+  area.innerHTML = `
+    <div class="comic-stage">
+      <div style="font-size:1.35rem; font-weight:900; margin-bottom:14px; line-height:1.9;">
+        📖 <ruby>全<rt>quán</rt>班<rt>bān</rt>带<rt>dài</rt>读<rt>dú</rt>：点<rt>diǎn</rt>击<rt>jī</rt>任<rt>rèn</rt>意<rt>yì</rt>卡<rt>kǎ</rt>片<rt>piàn</rt>听<rt>tīng</rt>完<rt>wán</rt>整<rt>zhěng</rt>句<rt>jù</rt>子<rt>zi</rt></ruby>
+      </div>
+      <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));">
+        ${cardsHtml}
+      </div>
+    </div>
+  `;
+}
+
+// 默认启动“公园情景剧场”对话练习模式
+renderDialogueMode();
+</script>
+</body>
+</html>
