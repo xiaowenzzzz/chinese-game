@@ -58,7 +58,7 @@
       border: 3px solid #ffc107;
     }
 
-    /* 太阳与云朵装饰 */
+    /* 太阳装饰 */
     .sun {
       position: absolute;
       top: 80px;
@@ -71,30 +71,35 @@
       z-index: 1;
     }
 
-    /* 题目提示牌区域 */
+    /* 题目提示牌区域（改为左右双栏，不占纵向空间） */
     .prompt-area {
       position: relative;
-      z-index: 5;
+      z-index: 12;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .question-board {
       background: #ffffff;
       border: 6px solid #ff9f1c;
       border-radius: 28px;
-      padding: 14px 55px;
+      padding: 14px 55px 14px 40px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-      text-align: center;
-      min-width: 540px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
       position: relative;
+    }
+
+    .zh-section {
+      text-align: center;
     }
 
     .pinyin-hint {
       font-family: Arial, sans-serif;
-      font-size: 38px;
+      font-size: 36px;
       font-weight: bold;
       color: #e63946;
       letter-spacing: 3px;
@@ -107,18 +112,18 @@
       color: #1d3557;
     }
 
-    /* 新增：英文释义样式 */
+    /* 英文释义盒子 */
     .english-hint {
       font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 24px;
-      font-weight: 600;
-      color: #457b9d;
-      background: #f1faee;
-      display: inline-block;
-      padding: 4px 18px;
-      border-radius: 16px;
-      margin-top: 8px;
-      border: 2px solid #a8dadc;
+      font-size: 28px;
+      font-weight: bold;
+      color: #1d3557;
+      background: #e0fbfc;
+      padding: 12px 22px;
+      border-radius: 20px;
+      border: 3px solid #3d5a80;
+      max-width: 340px;
+      text-align: center;
     }
 
     .blank-slot {
@@ -134,7 +139,7 @@
 
     .speak-btn {
       position: absolute;
-      right: -25px;
+      right: -28px;
       top: 50%;
       transform: translateY(-50%);
       width: 65px;
@@ -155,7 +160,7 @@
     .road-stage {
       position: relative;
       width: 100%;
-      height: 330px;
+      height: 340px;
       background: #4a5568;
       border-top: 10px solid #cbd5e0;
       border-bottom: 10px solid #cbd5e0;
@@ -272,7 +277,7 @@
       75% { transform: translateX(15px) rotate(5deg); }
     }
 
-    /* 选项按钮区（白板触控大按钮） */
+    /* 选项按钮区 */
     .options-container {
       position: relative;
       z-index: 9;
@@ -387,14 +392,15 @@
 
   <div class="sun"></div>
 
-  <!-- 题目提示区 -->
+  <!-- 题目提示区（左右双栏布局） -->
   <div class="prompt-area">
     <div class="question-board">
-      <div class="pinyin-hint" id="pinyinHint">qí</div>
-      <div class="word-context" id="wordContext">
-        <span class="blank-slot" id="blankSlot">?</span> 自行车
+      <div class="zh-section">
+        <div class="pinyin-hint" id="pinyinHint">qí</div>
+        <div class="word-context" id="wordContext">
+          <span class="blank-slot" id="blankSlot">?</span> 自行车
+        </div>
       </div>
-      <!-- 新增：英文释义显示区 -->
       <div class="english-hint" id="englishHint">ride a bicycle</div>
       <button class="speak-btn" onclick="speakCurrentWord()" title="听读音">🔊</button>
     </div>
@@ -402,7 +408,6 @@
 
   <!-- 马路舞台 -->
   <div class="road-stage">
-    <!-- 斑马线 -->
     <div class="crosswalk">
       <div class="stripe"></div>
       <div class="stripe"></div>
@@ -411,7 +416,6 @@
       <div class="stripe"></div>
     </div>
 
-    <!-- 红绿灯 -->
     <div class="traffic-pole"></div>
     <div class="traffic-light">
       <div class="light red" id="lightRed"></div>
@@ -419,56 +423,41 @@
       <div class="light green" id="lightGreen"></div>
     </div>
 
-    <!-- 终点校车 -->
     <div class="school-bus">🚌</div>
 
-    <!-- 小狮子嘟嘟 SVG 卡通形象 -->
     <div class="dudu-character" id="dudu">
       <svg viewBox="0 0 200 220" width="170" height="190">
-        <!-- 尾巴 -->
         <path d="M 35 155 Q 10 130 20 105" stroke="#f59e0b" stroke-width="10" fill="none" stroke-linecap="round"/>
         <circle cx="20" cy="102" r="10" fill="#b45309"/>
-        <!-- 身体与荧光安全背心 -->
         <rect x="62" y="125" width="76" height="65" rx="25" fill="#fbbf24"/>
         <path d="M 65 130 L 135 130 L 140 185 L 60 185 Z" fill="#3b82f6"/>
-        <!-- 背心反光条 -->
         <rect x="63" y="150" width="74" height="10" fill="#a3e635"/>
         <rect x="61" y="168" width="78" height="10" fill="#a3e635"/>
-        <!-- 脚 -->
         <ellipse cx="78" cy="195" rx="16" ry="11" fill="#d97706"/>
         <ellipse cx="122" cy="195" rx="16" ry="11" fill="#d97706"/>
-        <!-- 鬃毛 -->
         <circle cx="100" cy="80" r="54" fill="#d97706"/>
-        <!-- 脸部 -->
         <circle cx="100" cy="82" r="40" fill="#fde68a"/>
-        <!-- 耳朵 -->
         <circle cx="65" cy="50" r="13" fill="#fbbf24" stroke="#d97706" stroke-width="4"/>
         <circle cx="135" cy="50" r="13" fill="#fbbf24" stroke="#d97706" stroke-width="4"/>
-        <!-- 蓝色小警帽 -->
         <path d="M 68 48 Q 100 22 132 48 Z" fill="#2563eb"/>
         <ellipse cx="100" cy="49" rx="38" ry="8" fill="#1d4ed8"/>
         <circle cx="100" cy="36" r="6" fill="#facc15"/>
-        <!-- 眼睛 -->
         <circle cx="85" cy="78" r="6" fill="#1f2937"/>
         <circle cx="87" cy="76" r="2" fill="#ffffff"/>
         <circle cx="115" cy="78" r="6" fill="#1f2937"/>
         <circle cx="117" cy="76" r="2" fill="#ffffff"/>
-        <!-- 腮红 -->
         <ellipse cx="74" cy="90" rx="7" ry="4" fill="#fca5a5"/>
         <ellipse cx="126" cy="90" rx="7" ry="4" fill="#fca5a5"/>
-        <!-- 鼻子与微笑 -->
         <polygon points="94,88 106,88 100,95" fill="#92400e"/>
         <path d="M 90 100 Q 100 110 110 100" stroke="#92400e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <!-- 挥手 -->
         <ellipse cx="145" cy="145" rx="12" ry="18" transform="rotate(-30 145 145)" fill="#fbbf24"/>
       </svg>
     </div>
 
-    <!-- 三个生字路障选项 -->
     <div class="options-container" id="optionsContainer"></div>
   </div>
 
-  <!-- 通关庆祝弹窗 -->
+  <!-- 通关弹窗 -->
   <div class="modal-overlay" id="winModal">
     <div class="modal-box">
       <div style="font-size: 80px;">🎉🦁🚌🎉</div>
@@ -479,7 +468,6 @@
   </div>
 
   <script>
-    // 15个指定生字题库（含拼音、语境组词、英文意思、干扰项）
     const wordBank = [
       { char: "骑", pinyin: "qí", before: "", after: " 自行车", en: "ride a bicycle", distractors: ["桥", "椅"] },
       { char: "脚", pinyin: "jiǎo", before: "", after: " 踏车", en: "bicycle / pedal bike", distractors: ["却", "肚"] },
@@ -490,7 +478,7 @@
       { char: "桥", pinyin: "qiáo", before: "过天 ", after: "", en: "cross the overpass", distractors: ["骑", "校"] },
       { char: "等", pinyin: "děng", before: "", after: " 红灯", en: "wait for the red light", distractors: ["第", "笔"] },
       { char: "停", pinyin: "tíng", before: "红灯 ", after: "", en: "stop at a red light", distractors: ["亭", "站"] },
-      { char: "才", pinyin: "cái", before: "绿灯亮 ", after: " 能走", en: "only go when the light is green", distractors: ["寸", "木"] },
+      { char: "才", pinyin: "cái", before: "绿灯亮 ", after: " 能走", en: "only go when green", distractors: ["寸", "木"] },
       { char: "灯", pinyin: "dēng", before: "红绿 ", after: "", en: "traffic light", distractors: ["打", "盯"] },
       { char: "亮", pinyin: "liàng", before: "绿灯 ", after: " 了", en: "the green light is on", distractors: ["高", "京"] },
       { char: "坐", pinyin: "zuò", before: "", after: " 校车", en: "take the school bus", distractors: ["座", "土"] },
@@ -503,7 +491,6 @@
     let score = 0;
     let isLocked = false;
 
-    // 简易音效合成器（无需外部音频文件）
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playTone(type) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -514,9 +501,9 @@
 
       if (type === 'correct') {
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
-        osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
         gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
         osc.start();
@@ -532,7 +519,6 @@
       }
     }
 
-    // 语音朗读提示
     function speakCurrentWord() {
       if (!('speechSynthesis' in window)) return;
       const q = questions[currentIndex];
@@ -612,7 +598,6 @@
         score++;
         document.getElementById('scoreText').innerText = score;
 
-        // 嘟嘟开心跳跃并前进
         dudu.classList.remove('dudu-jump');
         void dudu.offsetWidth;
         dudu.classList.add('dudu-jump');
@@ -632,20 +617,3 @@
         btn.classList.add('wrong');
         setTrafficLight('Red');
         playTone('wrong');
-        dudu.classList.remove('dudu-shake');
-        void dudu.offsetWidth;
-        dudu.classList.add('dudu-shake');
-
-        setTimeout(() => {
-          btn.classList.remove('wrong');
-          setTrafficLight('Yellow');
-        }, 700);
-      }
-    }
-
-    // 启动游戏
-    window.onload = startGame;
-    window.onresize = updateDuduPosition;
-  </script>
-</body>
-</html>
