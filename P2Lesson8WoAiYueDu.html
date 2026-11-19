@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超级爸爸出任务 - P2 第八课《感谢我周围的人》</title>
+    <style>
+        :root {
+            --bg-cream: #FFFDF5;
+            --card-bg: #FFFFFF;
+            --fire-red: #FF5A5F;
+            --fire-light: #FFE8E9;
+            --police-blue: #3B82F6;
+            --police-light: #EBF3FF;
+            --build-yellow: #F59E0B;
+            --build-light: #FEF3C7;
+            --success-green: #10B981;
+            --text-dark: #2D3748;
+            --text-gray: #718096;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-cream);
+            background-image: radial-gradient(#FDE68A 1.8px, transparent 1.8px);
+            background-size: 30px 30px;
+            font-family: "KaiTi", "楷体", "STKaiti", "BiauKai", "DFKai-SB", "Microsoft YaHei", sans-serif;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* 左上角：英文显示/隐藏开关 */
+        .en-toggle-btn {
+            position: fixed;
+            top: 14px;
+            left: 18px;
+            background: white;
+            border: 2.5px solid #3B82F6;
+            border-radius: 50px;
+            padding: 6px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+            z-index: 1000;
+            cursor: pointer;
+            font-family: "KaiTi", "Comic Sans MS", sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #1D4ED8;
+            transition: all 0.2s;
+        }
+
+        .en-toggle-btn:hover {
+            transform: scale(1.05);
+            background: #EFF6FF;
+        }
+
+        .en-toggle-btn.off {
+            border-color: #94A3B8;
+            color: #64748B;
+            background: #F8FAFC;
+        }
+
+        body.hide-en .en-text {
+            display: none !important;
+        }
+
+        /* 右上角：个人防伪标志 - Franky Laoshi */
+        .teacher-badge {
+            position: fixed;
+            top: 14px;
+            right: 18px;
+            background: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 100%);
+            border: 2.5px solid #F59E0B;
+            border-radius: 50px;
+            padding: 6px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
+            z-index: 1000;
+            font-family: "Comic Sans MS", "KaiTi", cursive, sans-serif;
+        }
+
+        .teacher-badge .star-icon {
+            background: #F59E0B;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            animation: spinSlow 8s linear infinite;
+        }
+
+        @keyframes spinSlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .teacher-badge .badge-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: #92400E;
+            letter-spacing: 0.5px;
+        }
+
+        .watermark-footer {
+            margin-top: auto;
+            padding: 14px;
+            font-size: 13px;
+            color: #94A3B8;
+            font-family: "Comic Sans MS", "KaiTi", sans-serif;
+        }
+
+        /* 顶部标题栏 */
+        header {
+            text-align: center;
+            padding: 52px 20px 8px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .lesson-tag {
+            display: inline-block;
+            background: #FDE68A;
+            color: #92400E;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+        }
+
+        h1 {
+            margin: 4px 0;
+            font-size: 40px;
+            color: #1E293B;
+            text-shadow: 2px 2px 0px #FDE68A;
+        }
+
+        .sub-en {
+            font-family: "Comic Sans MS", "Arial Rounded MT Bold", sans-serif;
+            font-size: 15px;
+            color: var(--text-gray);
+        }
+
+        /* 状态栏与连击提示 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 92%;
+            max-width: 850px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 22px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+            margin: 12px 0;
+            border: 3px solid #E2E8F0;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stage-dots {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .dot {
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #F1F5F9;
+            color: #94A3B8;
+            transition: all 0.3s;
+        }
+
+        .dot.active-1 { background: var(--fire-red); color: white; transform: scale(1.06); box-shadow: 0 3px 8px rgba(255,90,95,0.3); }
+        .dot.active-2 { background: var(--police-blue); color: white; transform: scale(1.06); box-shadow: 0 3px 8px rgba(59,130,246,0.3); }
+        .dot.active-3 { background: var(--build-yellow); color: white; transform: scale(1.06); box-shadow: 0 3px 8px rgba(245,158,11,0.3); }
+        .dot.done { background: var(--success-green); color: white; }
+
+        .right-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .combo-badge {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            display: none;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .progress-pill {
+            background: #F1F5F9;
+            color: #475569;
+            padding: 5px 12px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .score-box {
+            font-size: 22px;
+            font-weight: bold;
+            color: #D97706;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* 主游戏舞台 */
+        .game-container {
+            width: 92%;
+            max-width: 850px;
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 24px 28px;
+            box-shadow: 0 14px 32px rgba(0,0,0,0.08);
+            border: 4px solid #FDE68A;
+            text-align: center;
+            position: relative;
+            transition: border-color 0.4s;
+        }
+
+        .game-container.theme-fire { border-color: var(--fire-red); }
+        .game-container.theme-police { border-color: var(--police-blue); }
+        .game-container.theme-build { border-color: var(--build-yellow); }
+
+        /* 欢迎封面角色卡片（可点击互动） */
+        .hero-trio {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin: 22px 0;
+            flex-wrap: wrap;
+        }
+
+        .hero-card {
+            width: 220px;
+            padding: 18px 14px;
+            border-radius: 22px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+
+        .hero-card.fire { background: var(--fire-light); border: 3px solid var(--fire-red); }
+        .hero-card.police { background: var(--police-light); border: 3px solid var(--police-blue); }
+        .hero-card.build { background: var(--build-light); border: 3px solid var(--build-yellow); }
+
+        .hero-emoji {
+            font-size: 64px;
+            margin-bottom: 8px;
+            display: inline-block;
+            animation: floatBounce 2.5s ease-in-out infinite;
+        }
+
+        @keyframes floatBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .hero-title { font-size: 24px; font-weight: bold; }
+        .hero-en { font-size: 14px; color: var(--text-gray); font-family: "Comic Sans MS", sans-serif; margin-top: 4px; }
+
+        /* 动态救援任务动画区（核心趣味升级） */
+        .action-stage {
+            width: 100%;
+            height: 92px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            border: 2.5px solid rgba(0,0,0,0.06);
+        }
+
+        .action-stage.fire {
+            background: linear-gradient(180deg, #FFF5F5 0%, #FED7D7 100%);
+        }
+        .action-stage.police {
+            background: linear-gradient(180deg, #EBF8FF 0%, #BEE3F8 100%);
+        }
+        .action-stage.build {
+            background: linear-gradient(180deg, #FFFFF0 0%, #FEFCBF 100%);
+        }
+
+        .stage-actor {
+            font-size: 52px;
+            z-index: 2;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .water-jet {
+            font-size: 34px;
+            opacity: 0;
+            transform: translateX(-20px) scale(0.5);
+            transition: all 0.4s;
+        }
+
+        .water-jet.shoot {
+            opacity: 1;
+            transform: translateX(20px) scale(1.3);
+        }
+
+        .fire-cluster {
+            display: flex;
+            gap: 8px;
+            font-size: 36px;
+        }
+
+        .flame {
+            transition: all 0.4s;
+            animation: flicker 0.8s infinite alternate;
+        }
+
+        .flame.out {
+            opacity: 0.15;
+            transform: scale(0.5);
+            filter: grayscale(100%);
+            animation: none;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(0.95) rotate(-3deg); }
+            100% { transform: scale(1.08) rotate(3deg); }
+        }
+
+        /* 警察追逐赛道 */
+        .chase-track {
+            flex: 1;
+            height: 12px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+            margin: 0 18px;
+            position: relative;
+        }
+
+        .police-car-mover {
+            position: absolute;
+            top: -32px;
+            left: 0%;
+            font-size: 46px;
+            transition: left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: scaleX(-1);
+        }
+
+        /* 建筑师盖楼进度 */
+        .building-blocks {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .b-block {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.6);
+            border: 2px dashed #D97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            transition: all 0.4s;
+        }
+
+        .b-block.built {
+            background: #FBBF24;
+            border-style: solid;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(217, 119, 6, 0.25);
+        }
+
+        /* 按钮样式 */
+        .btn-primary {
+            background: linear-gradient(180deg, #FF7A7E 0%, #FF5A5F 100%);
+            color: white;
+            border: none;
+            padding: 15px 42px;
+            font-size: 26px;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #C53030;
+            transition: transform 0.1s;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.05);
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #C53030;
+        }
+
+        /* 拼音排版 ruby */
+        ruby { ruby-align: center; }
+        rt {
+            font-family: "Arial", "Helvetica", sans-serif;
+            font-size: 0.45em;
+            color: #4A5568;
+            font-weight: normal;
+        }
+
+        /* 生字任务区 */
+        .target-box {
+            background: #F8FAFC;
+            border: 3px dashed #CBD5E1;
+            border-radius: 22px;
+            padding: 20px;
+            margin: 10px auto;
+            max-width: 620px;
+            position: relative;
+        }
+
+        .speak-btn {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #EFF6FF;
+            border: 2px solid #93C5FD;
+            color: #1D4ED8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s;
+        }
+
+        .speak-btn:hover { transform: scale(1.12); background: #DBEAFE; }
+
+        .target-prompt-zh {
+            font-size: 24px;
+            color: #1E293B;
+            font-weight: bold;
+            margin-bottom: 4px;
+            padding-right: 36px;
+        }
+
+        .target-prompt-en {
+            font-size: 15px;
+            color: #64748B;
+            font-family: "Comic Sans MS", sans-serif;
+            margin-bottom: 14px;
+        }
+
+        .target-display {
+            font-size: 46px;
+            font-weight: bold;
+            color: #1E293B;
+            background: white;
+            display: inline-block;
+            padding: 10px 36px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border: 2.5px solid #E2E8F0;
+        }
+
+        .target-meaning {
+            font-size: 18px;
+            color: #0284C7;
+            font-family: "Comic Sans MS", sans-serif;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        /* 选项网格 */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 3px solid #CBD5E1;
+            border-radius: 20px;
+            padding: 16px 14px;
+            font-size: 38px;
+            font-family: inherit;
+            font-weight: bold;
+            color: #1E293B;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #CBD5E1;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-3px);
+            border-color: #64748B;
+            background: #F8FAFC;
+        }
+
+        .option-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #CBD5E1;
+        }
+
+        .option-btn.text-mode {
+            font-size: 24px;
+            padding: 16px 20px;
+            line-height: 1.8;
+        }
+
+        .option-sub {
+            font-size: 15px;
+            font-family: "Comic Sans MS", "KaiTi", sans-serif;
+            color: #64748B;
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        .option-btn.correct {
+            background: #D1FAE5 !important;
+            border-color: #10B981 !important;
+            box-shadow: 0 5px 0 #059669 !important;
+            color: #065F46 !important;
+            animation: popIn 0.3s;
+        }
+
+        .option-btn.wrong {
+            background: #FEE2E2 !important;
+            border-color: #EF4444 !important;
+            box-shadow: 0 5px 0 #DC2626 !important;
+            animation: shake 0.4s;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.92); }
+            60% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        /* 反馈提示条 */
+        .feedback-banner {
+            margin-top: 16px;
+            padding: 12px 20px;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback-banner.show { display: block; animation: popIn 0.25s; }
+        .feedback-banner.good { background: #D1FAE5; color: #065F46; }
+        .feedback-banner.bad { background: #FEE2E2; color: #991B1B; }
+
+        /* 礼花粒子 */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 2000;
+            border-radius: 2px;
+            animation: fallConfetti 1.2s ease-out forwards;
+        }
+
+        @keyframes fallConfetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(180px) rotate(540deg); opacity: 0; }
+        }
+
+        /* 通关奖状页面 */
+        .certificate {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 5px double #F59E0B;
+            border-radius: 24px;
+            padding: 28px;
+            margin: 10px 0 18px;
+        }
+
+        .cert-title {
+            font-size: 34px;
+            color: #B45309;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .cert-text {
+            font-size: 23px;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        .medal-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 14px 0;
+            flex-wrap: wrap;
+        }
+
+        .medal-pill {
+            background: white;
+            border: 2px solid #F59E0B;
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #92400E;
+        }
+
+        @media (max-width: 650px) {
+            .options-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 30px; }
+            .teacher-badge { top: 8px; right: 8px; padding: 4px 10px; }
+            .en-toggle-btn { top: 8px; left: 8px; padding: 4px 10px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 左上角：英文显示/隐藏开关 -->
+    <button class="en-toggle-btn" id="enToggleBtn" onclick="toggleEnglish()" title="点击切换是否显示英文提示">
+        <span id="enIcon">🌐</span>
+        <span id="enLabel">英文：显示</span>
+    </button>
+
+    <!-- 右上角：个人防伪标志 -->
+    <div class="teacher-badge" title="原创教学课件游戏">
+        <div class="star-icon">★</div>
+        <div class="badge-text">Designed by Franky Laoshi</div>
+    </div>
+
+    <header>
+        <div class="lesson-tag">P2 第八课《感谢我周围的人》</div>
+        <h1>🦸‍♂️ 超级爸爸出任务 🦸‍♂️</h1>
+        <div class="sub-en en-text">Super Dads on a Mission · Vocabulary & Reading Adventure</div>
+    </header>
+
+    <!-- 进度与星星得分 -->
+    <div class="status-bar" id="statusBar" style="display: none;">
+        <div class="stage-dots">
+            <div class="dot" id="dot-1">🚒 第一关：消防员</div>
+            <div class="dot" id="dot-2">🚓 第二关：警察</div>
+            <div class="dot" id="dot-3">🏗️ 第三关：建筑师</div>
+        </div>
+        <div class="right-stats">
+            <div class="combo-badge" id="comboBadge">🔥 连对 x2</div>
+            <div class="progress-pill" id="progressDisplay">1 / 15</div>
+            <div class="score-box">
+                ⭐ <span id="scoreDisplay">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主游戏舞台 -->
+    <main class="game-container" id="gameContainer">
+        <!-- 初始开始界面 -->
+        <div id="startScreen">
+            <p style="font-size: 23px; line-height: 1.6; margin: 8px 0;">
+                小朋友，城市里有三位<span style="color:#E53E3E; font-weight:bold;">超级爸爸</span>正在执行任务！<br>
+                点击三位英雄听听他们的口号，然后开始 <b>15 个救援挑战</b>吧！
+            </p>
+            <p class="sub-en en-text">Click each Super Dad to hear their motto, then start the 15 rescue missions!</p>
+
+            <div class="hero-trio">
+                <div class="hero-card fire" onclick="speakText('我是消防员爸爸，消灭火灾，保护大家！')">
+                    <span class="hero-emoji">👨‍🚒</span>
+                    <div class="hero-title"><ruby>消<rt>xiāo</rt></ruby><ruby>防<rt>fáng</rt></ruby><ruby>员<rt>yuán</rt></ruby>爸爸</div>
+                    <div class="hero-en en-text">Firefighter Dad (5 Missions)</div>
+                    <div style="font-size:13px; color:#E53E3E; margin-top:6px;">🔊 点我听声音</div>
+                </div>
+                <div class="hero-card police" onclick="speakText('我是警察爸爸，抓坏人，大家不怕！')">
+                    <span class="hero-emoji">👮‍♂️</span>
+                    <div class="hero-title"><ruby>警<rt>jǐng</rt></ruby><ruby>察<rt>chá</rt></ruby>爸爸</div>
+                    <div class="hero-en en-text">Police Officer Dad (5 Missions)</div>
+                    <div style="font-size:13px; color:#2563EB; margin-top:6px;">🔊 点我听声音</div>
+                </div>
+                <div class="hero-card build" onclick="speakText('我是建筑师爸爸，建造漂亮的房子让大家住！')">
+                    <span class="hero-emoji">👷‍♂️</span>
+                    <div class="hero-title"><ruby>建<rt>jiàn</rt></ruby><ruby>筑<rt>zhù</rt></ruby><ruby>师<rt>shī</rt></ruby>爸爸</div>
+                    <div class="hero-en en-text">Architect Dad (5 Missions)</div>
+                    <div style="font-size:13px; color:#D97706; margin-top:6px;">🔊 点我听声音</div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="startGame()">🚀 开始出任务 <span class="en-text">Start!</span></button>
+        </div>
+
+        <!-- 答题关卡界面 -->
+        <div id="playScreen" style="display: none;">
+            <!-- 实时动态救援舞台 -->
+            <div class="action-stage fire" id="actionStage"></div>
+
+            <div class="target-box">
+                <button class="speak-btn" onclick="speakCurrentQuestion()" title="朗读题目">🔊</button>
+                <div class="target-prompt-zh" id="promptZh">请点击正确的汉字灭火：</div>
+                <div class="target-prompt-en en-text" id="promptEn">Click the correct character to put out the fire:</div>
+                <div class="target-display" id="targetDisplay">xiāo</div>
+                <div class="target-meaning en-text" id="targetMeaning">Extinguish / Eliminate</div>
+            </div>
+
+            <div class="options-grid" id="optionsGrid"></div>
+
+            <div class="feedback-banner" id="feedbackBanner"></div>
+        </div>
+
+        <!-- 通关结算界面 -->
+        <div id="endScreen" style="display: none;">
+            <div class="certificate">
+                <div style="font-size: 60px;">🏆🎉🎖️</div>
+                <div class="cert-title">太厉害了！城市英雄小勋章！</div>
+                <div class="sub-en en-text" style="margin-bottom: 12px;">Awesome! City Hero Junior Badge Unlocked!</div>
+                <div class="medal-row">
+                    <div class="medal-pill">🚒 灭火小英雄</div>
+                    <div class="medal-pill">🚓 勇敢小卫士</div>
+                    <div class="medal-pill">🏗️ 小小建筑师</div>
+                </div>
+                <div class="cert-text">
+                    你一共获得了 <strong style="color:#D97706; font-size:32px;" id="finalScore">0</strong> / 150 颗星星！<br>
+                    让我们一起大声说：<br>
+                    <span style="background:#FDE68A; padding:4px 14px; border-radius:12px; font-weight:bold;">
+                        “<ruby>感<rt>gǎn</rt></ruby><ruby>谢<rt>xiè</rt></ruby><ruby>我<rt>wǒ</rt></ruby><ruby>周<rt>zhōu</rt></ruby><ruby>围<rt>wéi</rt></ruby><ruby>的<rt>de</rt></ruby><ruby>人<rt>rén</rt></ruby>！”
+                    </span>
+                </div>
+                <div class="sub-en en-text" style="margin-top:8px;">"Thank you to the people around me!"</div>
+            </div>
+            <button class="btn-primary" onclick="startGame()">🔄 再玩一次 <span class="en-text">Play Again</span></button>
+        </div>
+    </main>
+
+    <footer class="watermark-footer">
+        © Franky Laoshi 华文互动课堂 · P2 Chinese Reading Game
+    </footer>
+
+    <script>
+        // 英文显示/隐藏切换
+        let showEnglish = true;
+        function toggleEnglish() {
+            showEnglish = !showEnglish;
+            const btn = document.getElementById('enToggleBtn');
+            const icon = document.getElementById('enIcon');
+            const label = document.getElementById('enLabel');
+
+            if (showEnglish) {
+                document.body.classList.remove('hide-en');
+                btn.classList.remove('off');
+                icon.textContent = '🌐';
+                label.textContent = '英文：显示';
+            } else {
+                document.body.classList.add('hide-en');
+                btn.classList.add('off');
+                icon.textContent = '🚫';
+                label.textContent = '英文：隐藏';
+            }
+        }
+
+        // 中文语音朗读（浏览器内置TTS）
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'zh-CN';
+                utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            }
+        }
+
+        function speakCurrentQuestion() {
+            const q = missions[currentIndex];
+            speakText(q.speechText);
+        }
+
+        // 彩色礼花效果
+        function spawnConfetti() {
+            const colors = ['#FF5A5F', '#3B82F6', '#F59E0B', '#10B981', '#8B5CF6'];
+            for (let i = 0; i < 24; i++) {
+                const div = document.createElement('div');
+                div.className = 'confetti';
+                div.style.left = (20 + Math.random() * 60) + 'vw';
+                div.style.top = (25 + Math.random() * 20) + 'vh';
+                div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 1200);
+            }
+        }
+
+        // 网页合成音效
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.09);
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.18);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.38);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.38);
+            } else if (type === 'wrong') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(175, audioCtx.currentTime + 0.14);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.32);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.32);
+            } else if (type === 'win') {
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g);
+                    g.connect(audioCtx.destination);
+                    o.type = 'sine';
+                    o.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.12);
+                    g.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.12);
+                    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.12 + 0.4);
+                    o.start(audioCtx.currentTime + idx * 0.12);
+                    o.stop(audioCtx.currentTime + idx * 0.12 + 0.4);
+                });
+            }
+        }
+
+        // 15道完整题库（加入偏旁拼字、组词填空、看拼音选字、课文大考验）
+        const missions = [
+            // ================= 第一关：消防员爸爸 (1 - 5) =================
+            {
+                stage: 1, stepInStage: 0, theme: 'fire', type: 'char',
+                promptZh: '🔥 警报响了！请点击拼音对应的汉字水枪：',
+                promptEn: 'Click the matching Chinese character to spray water:',
+                speechText: '警报响了！请点击拼音 xiāo 对应的汉字水枪',
+                targetHtml: 'xiāo',
+                meaning: 'Extinguish / Eliminate (消防员)',
+                options: [
+                    { text: '消', sub: '氵 + 肖 <span class="en-text">(water)</span>', correct: true },
+                    { text: '防', sub: '阝 + 方 <span class="en-text">(defence)</span>', correct: false },
+                    { text: '灾', sub: '宀 + 火 <span class="en-text">(disaster)</span>', correct: false },
+                    { text: '灭', sub: '一 + 火 <span class="en-text">(put out)</span>', correct: false }
+                ]
+            },
+            {
+                stage: 1, stepInStage: 1, theme: 'fire', type: 'char',
+                promptZh: '🧩 偏旁拼字魔方：阝 + 方 = ？',
+                promptEn: 'Character Puzzle: Combine the parts to make "fáng":',
+                speechText: '偏旁拼字魔方，左边耳朵旁，右边方，拼成什么字？',
+                targetHtml: '阝 + 方 = <span style="color:#FF5A5F;">？</span>',
+                meaning: 'Prevent / Defend (消防 / 防火)',
+                options: [
+                    { text: '房', sub: 'fáng <span class="en-text">(house)</span>', correct: false },
+                    { text: '防', sub: 'fáng <span class="en-text">(prevent)</span>', correct: true },
+                    { text: '放', sub: 'fàng <span class="en-text">(put)</span>', correct: false },
+                    { text: '保', sub: 'bǎo <span class="en-text">(protect)</span>', correct: false }
+                ]
+            },
+            {
+                stage: 1, stepInStage: 2, theme: 'fire', type: 'char',
+                promptZh: '🏠 房子下面着火了！请找出“火灾”的“灾”字：',
+                promptEn: 'Find the character "zāi" (disaster / fire):',
+                speechText: '房子下面着火了！请找出火灾的灾字',
+                targetHtml: '宀 + 火 = <span style="color:#FF5A5F;">？</span>',
+                meaning: 'Disaster / Calamity (火灾)',
+                options: [
+                    { text: '灭', sub: '一 + 火', correct: false },
+                    { text: '坏', sub: '土 + 不', correct: false },
+                    { text: '灾', sub: 'zāi', correct: true },
+                    { text: '怕', sub: '忄 + 白', correct: false }
+                ]
+            },
+            {
+                stage: 1, stepInStage: 3, theme: 'fire', type: 'char',
+                promptZh: '💦 最后一团火！快找出“消灭火灾”的“灭”字：',
+                promptEn: 'Last flame! Find the character "miè" (put out fire):',
+                speechText: '最后一团火！快找出消灭火灾的灭字',
+                targetHtml: 'miè',
+                meaning: 'Extinguish / Put out (消灭)',
+                options: [
+                    { text: '灾', sub: 'zāi', correct: false },
+                    { text: '灭', sub: '一 + 火', correct: true },
+                    { text: '消', sub: 'xiāo', correct: false },
+                    { text: '发', sub: 'fā', correct: false }
+                ]
+            },
+            {
+                stage: 1, stepInStage: 4, theme: 'fire', type: 'reading',
+                promptZh: '📖 课文大考验：消防员爸爸的工作是什么？',
+                promptEn: 'Reading Check: What is Firefighter Dad’s job?',
+                speechText: '课文大考验：消防员爸爸的工作是什么？',
+                targetHtml: '👨‍🚒 <ruby>消<rt>xiāo</rt></ruby><ruby>防<rt>fáng</rt></ruby><ruby>员<rt>yuán</rt></ruby>爸爸',
+                meaning: 'Choose the best answer based on the text',
+                options: [
+                    { text: '<ruby>消<rt>xiāo</rt></ruby><ruby>灭<rt>miè</rt></ruby><ruby>火<rt>huǒ</rt></ruby><ruby>灾<rt>zāi</rt></ruby>，<ruby>保<rt>bǎo</rt></ruby><ruby>护<rt>hù</rt></ruby>大家', sub: '<span class="en-text">Put out fires and protect everyone</span>', correct: true },
+                    { text: '<ruby>建<rt>jiàn</rt></ruby><ruby>造<rt>zào</rt></ruby>高大的<ruby>房<rt>fáng</rt></ruby>子', sub: '<span class="en-text">Build tall houses</span>', correct: false }
+                ]
+            },
+
+            // ================= 第二关：警察爸爸 (6 - 10) =================
+            {
+                stage: 2, stepInStage: 0, theme: 'police', type: 'char',
+                promptZh: '🛡️ 启动警车！请找出“保护”的“保”字：',
+                promptEn: 'Start the police car! Find "bǎo" (protect):',
+                speechText: '启动警车！请找出保护的保字',
+                targetHtml: 'bǎo',
+                meaning: 'Protect / Defend (保护)',
+                options: [
+                    { text: '住', sub: '亻 + 主', correct: false },
+                    { text: '保', sub: '亻 + 呆', correct: true },
+                    { text: '抓', sub: '扌 + 爪', correct: false },
+                    { text: '怕', sub: '忄 + 白', correct: false }
+                ]
+            },
+            {
+                stage: 2, stepInStage: 1, theme: 'police', type: 'char',
+                promptZh: '🧩 偏旁拼字魔方：扌 + 爪 = ？',
+                promptEn: 'Character Puzzle: Combine the parts to make "zhuā" (catch):',
+                speechText: '偏旁拼字魔方，提手旁加爪，拼成什么字？',
+                targetHtml: '扌 + 爪 = <span style="color:#3B82F6;">？</span>',
+                meaning: 'Catch / Grab (抓坏人)',
+                options: [
+                    { text: '怕', sub: 'pà <span class="en-text">(afraid)</span>', correct: false },
+                    { text: '保', sub: 'bǎo <span class="en-text">(protect)</span>', correct: false },
+                    { text: '抓', sub: 'zhuā <span class="en-text">(catch)</span>', correct: true },
+                    { text: '坏', sub: 'huài <span class="en-text">(bad)</span>', correct: false }
+                ]
+            },
+            {
+                stage: 2, stepInStage: 2, theme: 'police', type: 'char',
+                promptZh: '🚔 追上坏人了！请找出“坏人”的“坏”字：',
+                promptEn: 'Catching up! Find the character "huài" (bad):',
+                speechText: '追上坏人了！请找出坏人的坏字',
+                targetHtml: 'huài',
+                meaning: 'Bad / Broken (坏人)',
+                options: [
+                    { text: '坏', sub: '土 + 不', correct: true },
+                    { text: '抓', sub: '扌 + 爪', correct: false },
+                    { text: '建', sub: 'jiàn', correct: false },
+                    { text: '防', sub: 'fáng', correct: false }
+                ]
+            },
+            {
+                stage: 2, stepInStage: 3, theme: 'police', type: 'char',
+                promptZh: '💪 警察爸爸真勇敢！请找出“害怕”的“怕”字：',
+                promptEn: 'So brave! Find the character "pà" (afraid/scared):',
+                speechText: '警察爸爸真勇敢！请找出害怕的怕字',
+                targetHtml: '忄 + 白 = <span style="color:#3B82F6;">？</span>',
+                meaning: 'Afraid / Scared (不怕)',
+                options: [
+                    { text: '怕', sub: 'pà', correct: true },
+                    { text: '坏', sub: '土 + 不', correct: false },
+                    { text: '住', sub: '亻 + 主', correct: false },
+                    { text: '保', sub: '亻 + 呆', correct: false }
+                ]
+            },
+            {
+                stage: 2, stepInStage: 4, theme: 'police', type: 'reading',
+                promptZh: '📖 课文大考验：有了警察爸爸保护我们，大家会怎么样？',
+                promptEn: 'Reading Check: With Police Dad protecting us, how do we feel?',
+                speechText: '课文大考验：有了警察爸爸保护我们，大家会怎么样？',
+                targetHtml: '👮‍♂️ <ruby>警<rt>jǐng</rt></ruby><ruby>察<rt>chá</rt></ruby>爸爸',
+                meaning: 'Choose the correct sentence from the lesson',
+                options: [
+                    { text: '大家一点儿也不<ruby>害<rt>hài</rt></ruby><ruby>怕<rt>pà</rt></ruby>', sub: '<span class="en-text">Everyone is not afraid at all</span>', correct: true },
+                    { text: '大家都很<ruby>害<rt>hài</rt></ruby><ruby>怕<rt>pà</rt></ruby><ruby>坏<rt>huài</rt></ruby>人', sub: '<span class="en-text">Everyone is scared of bad guys</span>', correct: false }
+                ]
+            },
+
+            // ================= 第三关：建筑师爸爸 (11 - 15) =================
+            {
+                stage: 3, stepInStage: 0, theme: 'build', type: 'char',
+                promptZh: '🏗️ 吊车启动！请找出“建造”的“建”字：',
+                promptEn: 'Start the crane! Find the character "jiàn" (build):',
+                speechText: '吊车启动！请找出建造的建字',
+                targetHtml: 'jiàn',
+                meaning: 'Build / Construct (建筑师)',
+                options: [
+                    { text: '住', sub: 'zhù <span class="en-text">(live)</span>', correct: false },
+                    { text: '房', sub: 'fáng <span class="en-text">(house)</span>', correct: false },
+                    { text: '发', sub: 'fā <span class="en-text">(develop)</span>', correct: false },
+                    { text: '建', sub: '建造 / 建筑', correct: true }
+                ]
+            },
+            {
+                stage: 3, stepInStage: 1, theme: 'build', type: 'char',
+                promptZh: '🧩 偏旁拼字魔方：户 + 方 = ？',
+                promptEn: 'Character Puzzle: Combine the parts to make "fáng" (house):',
+                speechText: '偏旁拼字魔方，户字头加方，拼成什么字？',
+                targetHtml: '户 + 方 = <span style="color:#D97706;">？</span>',
+                meaning: 'House / Room (房子)',
+                options: [
+                    { text: '房', sub: 'fáng <span class="en-text">(house)</span>', correct: true },
+                    { text: '防', sub: 'fáng <span class="en-text">(prevent)</span>', correct: false },
+                    { text: '住', sub: 'zhù <span class="en-text">(live)</span>', correct: false },
+                    { text: '建', sub: 'jiàn <span class="en-text">(build)</span>', correct: false }
+                ]
+            },
+            {
+                stage: 3, stepInStage: 2, theme: 'build', type: 'char',
+                promptZh: '🏡 大家搬进新家啦！请找出“居住”的“住”字：',
+                promptEn: 'Moving in! Find the character "zhù" (live / reside):',
+                speechText: '大家搬进新家啦！请找出居住的住字',
+                targetHtml: '亻 + 主 = <span style="color:#D97706;">？</span>',
+                meaning: 'Live / Reside (居住 / 住房)',
+                options: [
+                    { text: '保', sub: '亻 + 呆', correct: false },
+                    { text: '住', sub: 'zhù', correct: true },
+                    { text: '建', sub: 'jiàn', correct: false },
+                    { text: '消', sub: 'xiāo', correct: false }
+                ]
+            },
+            {
+                stage: 3, stepInStage: 3, theme: 'build', type: 'char',
+                promptZh: '🚀 城市发展越来越好！请找出“出发 / 发现”的“发”字：',
+                promptEn: 'Find the character "fā" (develop / set out):',
+                speechText: '城市发展越来越好！请找出出发、发现的发字',
+                targetHtml: 'fā',
+                meaning: 'Develop / Set out (出发 / 发现)',
+                options: [
+                    { text: '灭', sub: 'miè', correct: false },
+                    { text: '灾', sub: 'zāi', correct: false },
+                    { text: '发', sub: '出发 / 发现', correct: true },
+                    { text: '房', sub: 'fáng', correct: false }
+                ]
+            },
+            {
+                stage: 3, stepInStage: 4, theme: 'build', type: 'reading',
+                promptZh: '📖 课文大考验：建筑师爸爸为什么这么辛苦工作？',
+                promptEn: 'Reading Check: Why does Architect Dad work so hard?',
+                speechText: '课文大考验：建筑师爸爸为什么这么辛苦工作？',
+                targetHtml: '👷‍♂️ <ruby>建<rt>jiàn</rt></ruby><ruby>筑<rt>zhù</rt></ruby><ruby>师<rt>shī</rt></ruby>爸爸',
+                meaning: 'Choose the best answer based on the text',
+                options: [
+                    { text: '为了让人们<ruby>住<rt>zhù</rt></ruby>进漂亮的新<ruby>房<rt>fáng</rt></ruby>子', sub: '<span class="en-text">So people can live in nice new houses</span>', correct: true },
+                    { text: '为了去<ruby>抓<rt>zhuā</rt></ruby>跑掉的<ruby>坏<rt>huài</rt></ruby>人', sub: '<span class="en-text">To catch runaway bad guys</span>', correct: false }
+                ]
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let combo = 0;
+        let isAnswering = false;
+
+        function startGame() {
+            currentIndex = 0;
+            score = 0;
+            combo = 0;
+            updateScore();
+            updateCombo();
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('endScreen').style.display = 'none';
+            document.getElementById('statusBar').style.display = 'flex';
+            document.getElementById('playScreen').style.display = 'block';
+            loadQuestion();
+        }
+
+        function updateScore() {
+            document.getElementById('scoreDisplay').textContent = score;
+        }
+
+        function updateCombo() {
+            const badge = document.getElementById('comboBadge');
+            if (combo >= 2) {
+                badge.style.display = 'inline-block';
+                badge.textContent = `🔥 连对 x${combo}`;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function updateStageDots(currentStage) {
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                dot.className = 'dot';
+                if (i < currentStage) {
+                    dot.classList.add('done');
+                } else if (i === currentStage) {
+                    dot.classList.add(`active-${i}`);
+                }
+            }
+        }
+
+        // 渲染每一关的实时动态救援舞台
+        function renderActionStage(q, justSolved = false) {
+            const stageEl = document.getElementById('actionStage');
+            stageEl.className = `action-stage ${q.theme}`;
+            const solvedCount = q.stepInStage + (justSolved ? 1 : 0);
+
+            if (q.stage === 1) {
+                // 消防员灭火动画：4团火苗逐一熄灭
+                let flamesHtml = '';
+                for (let i = 0; i < 4; i++) {
+                    const isOut = i < solvedCount;
+                    flamesHtml += `<span class="flame ${isOut ? 'out' : ''}">🔥</span>`;
+                }
+                const buildingEmoji = solvedCount >= 4 ? '🏢✨' : '🏢';
+                stageEl.innerHTML = `
+                    <div class="stage-actor">👨‍🚒🚒</div>
+                    <div class="water-jet ${justSolved ? 'shoot' : ''}">💦💦</div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="fire-cluster">${flamesHtml}</div>
+                        <div class="stage-actor">${buildingEmoji}</div>
+                    </div>
+                `;
+            } else if (q.stage === 2) {
+                // 警察追击坏人动画：警车逐步靠近坏人
+                const progressPct = Math.min(solvedCount * 20, 82);
+                const badGuy = solvedCount >= 4 ? '🔗🦹‍♂️' : '🦹‍♂️💨';
+                stageEl.innerHTML = `
+                    <div class="stage-actor">👮‍♂️</div>
+                    <div class="chase-track">
+                        <div class="police-car-mover" style="left: ${progressPct}%;">🚓</div>
+                    </div>
+                    <div class="stage-actor">${badGuy}</div>
+                `;
+            } else if (q.stage === 3) {
+                // 建筑师盖高楼动画：逐块点亮楼层
+                let blocksHtml = '';
+                for (let i = 0; i < 4; i++) {
+                    const isBuilt = i < solvedCount;
+                    blocksHtml += `<div class="b-block ${isBuilt ? 'built' : ''}">${isBuilt ? '🧱' : ''}</div>`;
+                }
+                const finalBuilding = solvedCount >= 4 ? '🏙️✨' : '🏗️';
+                stageEl.innerHTML = `
+                    <div class="stage-actor">👷‍♂️</div>
+                    <div class="building-blocks">${blocksHtml}</div>
+                    <div class="stage-actor">${finalBuilding}</div>
+                `;
+            }
+        }
+
+        function loadQuestion() {
+            isAnswering = true;
+            const q = missions[currentIndex];
+            const container = document.getElementById('gameContainer');
+            const feedback = document.getElementById('feedbackBanner');
+
+            feedback.className = 'feedback-banner';
+            feedback.innerHTML = '';
+
+            container.className = `game-container theme-${q.theme}`;
+            updateStageDots(q.stage);
+            renderActionStage(q, false);
+
+            document.getElementById('progressDisplay').textContent = `${currentIndex + 1} / ${missions.length}`;
+            document.getElementById('promptZh').textContent = q.promptZh;
+            document.getElementById('promptEn').textContent = q.promptEn;
+            document.getElementById('targetDisplay').innerHTML = q.targetHtml;
+            document.getElementById('targetMeaning').textContent = q.meaning;
+
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = q.type === 'reading' ? '1fr' : 'repeat(2, 1fr)';
+
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn ${q.type === 'reading' ? 'text-mode' : ''}`;
+                btn.innerHTML = `
+                    <div>${opt.text}</div>
+                    <div class="option-sub">${opt.sub}</div>
+                `;
+                btn.onclick = () => handleAnswer(btn, opt.correct);
+                grid.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(btn, isCorrect) {
+            if (!isAnswering) return;
+            const feedback = document.getElementById('feedbackBanner');
+            const q = missions[currentIndex];
+
+            if (isCorrect) {
+                isAnswering = false;
+                btn.classList.add('correct');
+                playSound('correct');
+                spawnConfetti();
+                renderActionStage(q, true);
+
+                score += 10;
+                combo += 1;
+                updateScore();
+                updateCombo();
+
+                const praiseList = ['太棒了！', '好厉害！', '真聪明！', '超级英雄！'];
+                const praise = praiseList[Math.floor(Math.random() * praiseList.length)];
+                feedback.innerHTML = `🎉 ${praise} 回答正确！<span class="en-text">Awesome!</span> (+10 ⭐)`;
+                feedback.className = 'feedback-banner show good';
+
+                setTimeout(() => {
+                    currentIndex++;
+                    if (currentIndex < missions.length) {
+                        loadQuestion();
+                    } else {
+                        showEndScreen();
+                    }
+                }, 1300);
+            } else {
+                btn.classList.add('wrong');
+                playSound('wrong');
+                combo = 0;
+                updateCombo();
+                feedback.innerHTML = '💪 差一点点，再想一想哦！<span class="en-text">Try again!</span>';
+                feedback.className = 'feedback-banner show bad';
+                setTimeout(() => {
+                    btn.classList.remove('wrong');
+                }, 500);
+            }
+        }
+
+        function showEndScreen() {
+            playSound('win');
+            spawnConfetti();
+            document.getElementById('playScreen').style.display = 'none';
+            document.getElementById('statusBar').style.display = 'none';
+            document.getElementById('gameContainer').className = 'game-container';
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('endScreen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
