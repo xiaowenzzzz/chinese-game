@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-SG">
+<!--
+  ====================================================================
+  原创教学互动课件 | 《欢乐伙伴》2A 第七课：香香咖啡店（小小点餐员）
+  作者 / Copyright (c) Franky Laoshi. All Rights Reserved.
+  ====================================================================
+-->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>香香咖啡店：小小点餐员 | Xiāngxiāng Kāfēidiàn</title>
+  <meta name="author" content="Franky Laoshi" />
+  <title>香香咖啡店：小小点餐员 | Franky Laoshi</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Noto Sans SC & Fredoka -->
@@ -128,10 +135,14 @@
           ☕
         </div>
         <div>
-          <h1 class="text-lg sm:text-xl font-black tracking-wide flex items-center gap-2 text-amber-200">
-            香香咖啡店：小小点餐员
+          <h1 class="text-lg sm:text-xl font-black tracking-wide flex flex-wrap items-center gap-2 text-amber-200">
+            <span>香香咖啡店：小小点餐员</span>
             <span class="hidden md:inline-block text-xs bg-amber-700 text-amber-100 px-2.5 py-0.5 rounded-full font-medium">
               《欢乐伙伴》2A 第七课 (Dì-qī kè) P74-77
+            </span>
+            <!-- 顶部防伪铭牌 -->
+            <span class="text-xs bg-gradient-to-r from-amber-300 to-yellow-200 text-amber-950 px-2.5 py-0.5 rounded-full font-black border border-amber-500 shadow-sm tracking-normal">
+              ✦ Franky Laoshi
             </span>
           </h1>
           <p class="text-xs text-amber-200/85 eng-hint">Zài kāfēidiàn chī zǎocān · Breakfast Dialogue & Vocabulary Game</p>
@@ -480,6 +491,19 @@
   </main>
 
   <!-- ========================================================= -->
+  <!-- 底部防伪铭牌 / CREATOR WATERMARK FOOTER                    -->
+  <!-- ========================================================= -->
+  <footer id="creator-watermark" class="mt-auto py-3 px-4 text-center">
+    <div class="inline-flex items-center gap-2 bg-amber-900/10 border border-amber-800/20 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold text-amber-900/80 shadow-sm">
+      <span>☕</span>
+      <span>香香咖啡店互动课堂 · Designed &amp; Created by</span>
+      <span class="bg-amber-800 text-amber-100 px-2.5 py-0.5 rounded-full font-black tracking-wide">
+        Franky Laoshi
+      </span>
+    </div>
+  </footer>
+
+  <!-- ========================================================= -->
   <!-- VOCABULARY REFERENCE WALL MODAL (P74-76 课本词卡墙)        -->
   <!-- ========================================================= -->
   <div id="vocab-modal" class="hidden fixed inset-0 bg-stone-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -489,7 +513,7 @@
           <h3 class="text-xl font-black flex items-center gap-2">
             <span>📖</span> 第七课《听说剧场》全套词卡墙 (P74-76 · 点击听标准发音)
           </h3>
-          <p class="eng-hint text-xs text-amber-200">Tap any card to hear the verified Chinese pronunciation!</p>
+          <p class="eng-hint text-xs text-amber-200">Tap any card to hear the verified Chinese pronunciation! · Franky Laoshi</p>
         </div>
         <button onclick="closeVocabModal()" class="bg-amber-950 hover:bg-rose-600 text-white w-9 h-9 rounded-full font-black text-lg transition">
           ✕
@@ -508,7 +532,7 @@
   <script>
     // =========================================================================
     // 1. VERIFIED TEXTBOOK VOCABULARY DATABASE (欢乐伙伴 2A 第七课 P74-76)
-    //    Every single character's Pinyin & tone sandhi strictly verified!
+    //    Author: Franky Laoshi
     // =========================================================================
     const VOCAB_DB = [
       // P74 食物 (吃 chī)
@@ -555,39 +579,23 @@
 
     // =========================================================================
     // 2. TTS PRONUNCIATION FIXER (同音字发音映射表 - 解决浏览器多音字误读)
-    //    Screen ALWAYS renders real textbook characters; TTS receives phonetic
-    //    equivalents so "卜(bo)", "粿(guǒ)", "干(gān)", "少(shǎo)" never mispronounce!
     // =========================================================================
     function fixTextForTTS(rawText) {
       let spoken = rawText;
-
-      // 1. 炒萝卜糕 -> 卜在“萝卜”中读轻声 bo，浏览器常误读为 bǔ（占卜）
       spoken = spoken.replace(/萝卜/g, '罗波');
-
-      // 2. 炒粿条 -> 生僻字“粿”部分TTS引擎读错或跳过，映射为同音字“果 (guǒ)”
       spoken = spoken.replace(/粿条/g, '果条');
-
-      // 3. 干的 -> “干”是多音字（gān / gàn），TTS常误读为第四声 gàn（干活），映射为“甘 (gān)”
       spoken = spoken.replace(/干的/g, '甘的');
-
-      // 4. 半生熟蛋 -> 课本标 shú，确保连读流畅
       spoken = spoken.replace(/半生熟蛋/g, '半生熟，蛋');
-
-      // 5. 少油 / 少糖 -> “少”在单字或短词中偶被误读为 shào（少年），映射为同音第三声“扫”或加微停顿引导第三声
       spoken = spoken.replace(/少油/g, '扫油');
       spoken = spoken.replace(/少糖/g, '扫糖');
-
-      // 6. 酱青 -> 确保清晰断词
       spoken = spoken.replace(/酱青/g, '酱清');
-
       return spoken;
     }
 
     // =========================================================================
-    // 3. STRUCTURED QUEST LEVELS (10关情景对话与词汇选择 - 逐字核对变调与轻声)
+    // 3. STRUCTURED QUEST LEVELS (10关情景对话与词汇选择)
     // =========================================================================
     const QUEST_LEVELS = [
-      // Level 1: P77 你说我说 原文例句
       {
         stage: '第 1 关 · 早餐主食 (P77)',
         asker: '👦🏻',
@@ -607,7 +615,6 @@
         answerSpeech: '我不要吃油条，我要吃烤面包。',
         answerEng: 'I do not want to eat youtiao, I want to eat toast.'
       },
-      // Level 2: 虾面 vs 炒粿条
       {
         stage: '第 1 关 · 早餐主食 (P74)',
         asker: '👨🏻‍🍳',
@@ -627,7 +634,6 @@
         answerSpeech: '我不要吃虾面，我要吃炒粿条。',
         answerEng: 'I do not want to eat prawn noodles, I want to eat char kway teow.'
       },
-      // Level 3: 猪肠粉 vs 炒萝卜糕 (注意“卜”轻声 bo)
       {
         stage: '第 1 关 · 早餐主食 (P74)',
         asker: '👧🏻',
@@ -647,7 +653,6 @@
         answerSpeech: '我不要吃猪肠粉，我要吃炒萝卜糕。',
         answerEng: 'I do not want to eat cheong fun, I want to eat fried carrot cake.'
       },
-      // Level 4: 荷包蛋 vs 半生熟蛋 (注意“熟”标 shú)
       {
         stage: '第 1 关 · 早餐主食 (P74)',
         asker: '👦🏻',
@@ -667,7 +672,6 @@
         answerSpeech: '我不要吃荷包蛋，我要吃半生熟蛋。',
         answerEng: 'I do not want to eat a fried egg, I want to eat soft-boiled eggs.'
       },
-      // Level 5: 炒粿条 vs 猪肉粥
       {
         stage: '第 1 关 · 早餐主食 (P74)',
         asker: '👩🏻',
@@ -687,8 +691,6 @@
         answerSpeech: '我不要吃炒粿条，我要吃猪肉粥。',
         answerEng: 'I do not want to eat char kway teow, I want to eat pork porridge.'
       },
-
-      // Level 6: 牛奶 vs 豆奶
       {
         stage: '第 2 关 · 咖啡店饮料 (P75)',
         asker: '👨🏻‍🍳',
@@ -708,7 +710,6 @@
         answerSpeech: '我不要喝牛奶，我要喝豆奶。',
         answerEng: 'I do not want to drink milk, I want to drink soy milk.'
       },
-      // Level 7: 豆奶 vs 奶茶
       {
         stage: '第 2 关 · 咖啡店饮料 (P75)',
         asker: '👧🏻',
@@ -728,7 +729,6 @@
         answerSpeech: '我不要喝豆奶，我要喝奶茶。',
         answerEng: 'I do not want to drink soy milk, I want to drink milk tea.'
       },
-      // Level 8: P76 儿歌《买咖啡》原句（注意“好不好”的“不”轻声 bu，“不能”的“不”读 bù）
       {
         stage: '第 2 关 · 儿歌小规则 (P76)',
         asker: '👦🏻',
@@ -748,8 +748,6 @@
         answerSpeech: '小孩不能喝咖啡，来杯果汁好不好？',
         answerEng: 'Kids cannot drink coffee, how about a glass of fruit juice?'
       },
-
-      // Level 9: P75 底部 干的 vs 汤的 (注意“干”第一声 gān，“的”轻声 de)
       {
         stage: '第 3 关 · 口味小要求 (P75)',
         asker: '👨🏻‍🍳',
@@ -769,7 +767,6 @@
         answerSpeech: '我不要汤的，我要干的。',
         answerEng: 'I do not want soup noodles, I want dry noodles.'
       },
-      // Level 10: P75 底部 不要辣 & 少油 (注意“不要辣”标 bú yào là，“少油”标 shǎo yóu)
       {
         stage: '第 3 关 · 口味小要求 (P75)',
         asker: '👨🏻‍🍳',
@@ -799,11 +796,11 @@
     let score = 0;
     let pinyinVisible = true;
     let englishVisible = true;
-    let speechRate = 0.85; // 0.85 = clear normal speed for P2 non-native learners, 0.62 = slow
+    let speechRate = 0.85;
     let selectedSlots = [];
     let currentWordBank = [];
     let spinnerFilter = 'all';
-    let currentSpinnerRole = SPINNER_ROLES[2]; // 哥哥
+    let currentSpinnerRole = SPINNER_ROLES[2];
     let currentSpinnerNo = getItem('youtiao');
     let currentSpinnerYes = getItem('kaomianbao');
 
@@ -866,7 +863,6 @@
       }
     }
 
-    // Chinese Text-to-Speech with Phonetic Polyphone Fixer
     function speakChinese(rawText) {
       if (!('speechSynthesis' in window)) {
         showToast('当前浏览器不支持语音朗读');
@@ -887,7 +883,7 @@
     }
 
     // =========================================================================
-    // 5. RUBY HTML GENERATOR (Strict 1-to-1 Character-Pinyin Alignment)
+    // 5. RUBY HTML GENERATOR
     // =========================================================================
     function buildRubyHTML(pairs, highlightType = null) {
       return pairs.map(([char, py]) => {
@@ -1216,14 +1212,12 @@
 
       updateSpinnerDisplay(roleI, noI, yesI);
 
-      // Student A Question: [Role]，你要不要吃/喝 [NoItem]？
       const qRuby = `
         ${itemToRuby(roleI)}<span class="self-end pb-0.5">，</span><ruby>你<rt>nǐ</rt></ruby><ruby>要<rt>yào</rt></ruby><ruby>不<rt>bu</rt></ruby><ruby>要<rt>yào</rt></ruby><ruby>${noI.verb}<rt>${noI.verbPy}</rt></ruby>${itemToRuby(noI)}<span class="self-end pb-0.5">？</span>
       `;
       document.getElementById('spinner-q-ruby').innerHTML = qRuby;
       document.getElementById('spinner-q-eng').textContent = `${roleI.eng}, do you want to ${noI.verbEng} ${noI.eng}?`;
 
-      // Student B Answer: 我不要吃/喝 [NoItem]，我要吃/喝 [YesItem]。
       const aRuby = `
         <ruby>我<rt>wǒ</rt></ruby><ruby class="text-rose-600">不<rt>bú</rt></ruby><ruby class="text-rose-600">要<rt>yào</rt></ruby><ruby>${noI.verb}<rt>${noI.verbPy}</rt></ruby>${itemToRuby(noI)}<span class="self-end pb-0.5">，</span><ruby>我<rt>wǒ</rt></ruby><ruby class="text-emerald-600">要<rt>yào</rt></ruby><ruby>${yesI.verb}<rt>${yesI.verbPy}</rt></ruby>${itemToRuby(yesI)}<span class="self-end pb-0.5">。</span>
       `;
@@ -1336,6 +1330,24 @@
         toast.classList.add('opacity-0');
       }, 2200);
     }
+
+    // =========================================================================
+    // 10. 隐形防伪水印校验 (Franky Laoshi Digital Signature)
+    // =========================================================================
+    (function verifyAuthorStamp() {
+      const authorName = String.fromCharCode(70,114,97,110,107,121,32,76,97,111,115,104,105); // "Franky Laoshi"
+      console.log(`%c☕ 香香咖啡店教学互动课件 | Original Creation by ${authorName}`, 'background:#78350F;color:#FDE68A;padding:6px 12px;border-radius:6px;font-weight:bold;');
+
+      window.addEventListener('DOMContentLoaded', () => {
+        if (!document.getElementById('creator-watermark')) {
+          const footer = document.createElement('footer');
+          footer.id = 'creator-watermark';
+          footer.className = 'mt-auto py-3 px-4 text-center text-xs font-bold text-amber-900/80';
+          footer.textContent = `☕ 香香咖啡店互动课堂 · Created by ${authorName}`;
+          document.body.appendChild(footer);
+        }
+      });
+    })();
 
     window.onload = function () {
       if ('speechSynthesis' in window) {
