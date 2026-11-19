@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<!-- ==========================================================
+     原创教学互动课件版权声明 (Copyright Notice)
+     作者 / Author: Franky Laoshi
+     课程 / Course: 帮嘟嘟摘苹果 - 二年级生字大挑战
+     未经原作者 Franky Laoshi 授权，请勿擅自篡改署名或用于商业用途
+     ========================================================== -->
 <meta charset="UTF-8">
+<meta name="author" content="Franky Laoshi">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>帮嘟嘟摘苹果 - 二年级生字大挑战</title>
+<title>帮嘟嘟摘苹果 - 二年级生字大挑战 | Franky Laoshi</title>
 <style>
   * {
     box-sizing: border-box;
@@ -269,6 +276,41 @@
   .modal-box h2 { font-size: 38px; color: #E65100; margin: 0 0 15px; }
   .modal-box p { font-size: 24px; color: #4E342E; line-height: 1.6; }
   .hidden { display: none !important; }
+
+  /* Franky Laoshi 个人专属防伪徽章样式 */
+  .author-badge {
+    position: fixed;
+    right: 18px;
+    bottom: 14px;
+    z-index: 50;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 253, 231, 0.92);
+    border: 2px solid #FFA000;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color: #5D4037;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+  }
+  .author-badge span.author-name {
+    color: #E65100;
+    text-decoration: underline;
+    text-decoration-color: #FFB300;
+    text-decoration-thickness: 2px;
+  }
+  .modal-watermark {
+    margin-top: 18px;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #8D6E63;
+    letter-spacing: 0.5px;
+  }
 </style>
 </head>
 <body>
@@ -348,6 +390,12 @@
     </div>
   </div>
 
+  <!-- 右下角 Franky Laoshi 个人专属防伪徽章 -->
+  <div class="author-badge">
+    <span>🛡️</span>
+    <span>Original Design by <span class="author-name">Franky Laoshi</span></span>
+  </div>
+
   <!-- 开始/结束弹窗 -->
   <div class="modal" id="startModal">
     <div class="modal-box">
@@ -355,6 +403,7 @@
       <p>安全小卫士嘟嘟要去摘生字苹果啦！<br>听读音或看组词，在白板上快速拍出正确的汉字苹果！</p>
       <p style="font-size: 20px; color: #D84315;">包含生字：邻、居、互、相、光、照、美、丽、极、安、跑</p>
       <button class="btn-start" onclick="startGame()">🚀 开始闯关！</button>
+      <div class="modal-watermark">✦ Certified Interactive Courseware · Franky Laoshi ✦</div>
     </div>
   </div>
 
@@ -363,10 +412,17 @@
       <h2>🎉 时间到！闯关成功！</h2>
       <p>你帮嘟嘟一共摘到了 <strong style="font-size:36px; color:#D32F2F;" id="finalScore">0</strong> 个大苹果！</p>
       <button class="btn-start" onclick="startGame()">🔄 再玩一局</button>
+      <div class="modal-watermark">✦ Certified Interactive Courseware · Franky Laoshi ✦</div>
     </div>
   </div>
 
 <script>
+  // Franky Laoshi 控制台防伪版权声明
+  console.log(
+    "%c🛡️ 原创华文互动课件 | Created by Franky Laoshi ",
+    "background: linear-gradient(90deg, #f59e0b, #ea580c); color: #fff; font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 8px;"
+  );
+
   // 核心生字库（包含用户指定的11个字）
   const wordBank = [
     { char: "邻", pinyin: "lín", phrase: "（  ）居", speak: "邻，邻居的邻" },
