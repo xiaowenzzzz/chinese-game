@@ -112,13 +112,17 @@
     <!-- 顶部：标题与上学路线进度条 -->
     <header class="relative z-10 max-w-6xl w-full mx-auto bg-white/90 backdrop-blur-md rounded-3xl p-3 sm:p-4 shadow-lg border-4 border-sky-300">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                 <span class="bg-amber-400 text-amber-950 font-bold px-3 py-1 rounded-full text-sm sm:text-base shadow-sm">
                     SISB 2A 第六课
                 </span>
                 <h1 class="text-xl sm:text-3xl font-extrabold text-sky-800 tracking-wide">
                     🎒 安全上学大冒险
                 </h1>
+                <!-- 方案一：顶部醒目个人防伪徽章 -->
+                <span class="inline-flex items-center gap-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-sans font-bold px-3 py-1 rounded-full text-xs sm:text-sm shadow-md border border-orange-300 select-none">
+                    🛡️ Franky Laoshi 原创
+                </span>
             </div>
             <div class="flex items-center gap-3">
                 <div class="bg-emerald-100 border-2 border-emerald-400 text-emerald-800 px-4 py-1 rounded-2xl font-bold text-base sm:text-xl">
@@ -231,6 +235,11 @@
                 </svg>
                 <!-- Hanzi Writer 挂载点 -->
                 <div id="character-target-div" class="relative z-10"></div>
+
+                <!-- 方案三：田字格右下角中国风红色印章 -->
+                <div class="absolute bottom-2.5 right-3 z-20 pointer-events-none bg-red-600/90 text-white font-sans font-bold text-[10px] sm:text-xs px-2 py-0.5 rounded border border-red-200 shadow-sm tracking-wider select-none">
+                    Franky Laoshi 制
+                </div>
             </div>
 
             <!-- Smartboard 老师辅助工具栏（超大触控按钮） -->
