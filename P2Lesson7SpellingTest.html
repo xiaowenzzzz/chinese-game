@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>小小早餐店“接单大厨” - 二年级第七课听写大冒险</title>
+    <title>小小早餐店“接单大厨” - 二年级第七课听写大冒险 | Franky Laoshi</title>
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 HanziWriter 汉字笔顺与手写识别引擎 -->
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+    <!-- 引入在线楷体（霞鹜文楷）作为无本地楷体设备（如白板/平板）的兜底 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700;900&family=ZCOOL+KuaiLe&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700;900&display=swap');
 
         :root {
             --bg-cream: #FFFDF5;
@@ -17,6 +19,7 @@
             --macaron-orange: #FFEDD5;
             --choco-dark: #4A2511;
             --choco-stroke: #5C2D16;
+            --font-kaiti: 'KaiTi', '楷体', 'STKaiti', '华文楷体', 'DFKai-SB', 'BiauKai', 'LXGW WenKai', serif;
         }
 
         * {
@@ -24,10 +27,11 @@
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
+            font-family: var(--font-kaiti);
         }
 
         body {
-            font-family: 'ZCOOL KuaiLe', 'Noto Sans SC', 'YouYuan', cursive, sans-serif;
+            font-family: var(--font-kaiti);
             background: linear-gradient(180deg, #E0F2FE 0%, #FFFBEB 45%, #FEF3C7 100%);
             color: var(--choco-dark);
             overflow: hidden;
@@ -36,8 +40,9 @@
             margin: 0;
         }
 
-        .font-clean {
-            font-family: 'Noto Sans SC', sans-serif;
+        /* 拼音与英文辅助字体（保证声调符号清晰不偏移） */
+        .font-pinyin {
+            font-family: 'Noto Sans SC', Arial, sans-serif;
         }
 
         /* 咖啡店条纹遮阳篷 */
@@ -75,7 +80,7 @@
             box-shadow: 0 2px 0 rgba(74, 37, 17, 0.25) !important;
         }
 
-        /* 可爱白瓷餐盘 + 煎锅手柄造型 */
+        /* 可爱白瓷餐盘 */
         .dish-plate {
             position: relative;
             background: #FFFFFF;
@@ -172,6 +177,12 @@
     <!-- 礼花与小星星粒子画布 -->
     <canvas id="fx-canvas"></canvas>
 
+    <!-- 个人专属防伪小徽章 -->
+    <div class="fixed bottom-2.5 right-3 z-40 pointer-events-none select-none bg-white/90 backdrop-blur-sm border-2 border-amber-400 px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5">
+        <span class="text-sm">👨‍🏫</span>
+        <span class="font-pinyin text-xs md:text-sm font-black tracking-wide text-amber-900">Franky Laoshi</span>
+    </div>
+
     <!-- 背景绘本云朵与太阳装饰 -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <!-- 左上角微笑小太阳 -->
@@ -194,7 +205,7 @@
     </div>
 
     <!-- ==================== 顶部咖啡店条纹遮阳篷招牌 ==================== -->
-    <header class="cafe-awning w-full px-4 md:px-8 py-2.5 flex items-center justify-between z-30 shrink-0">
+    <header class="cafe-awning w-full px-4 md:px-8 py-2 flex items-center justify-between z-30 shrink-0">
         <!-- 左侧木牌店名 -->
         <div class="flex items-center gap-3 bg-amber-100 border-4 border-amber-800 px-4 py-1.5 rounded-3xl shadow-md">
             <!-- 可爱厨师帽 SVG -->
@@ -203,86 +214,118 @@
                 <rect x="17" y="43" width="30" height="6" rx="2" fill="#FBBF24"/>
             </svg>
             <div>
-                <h1 class="text-2xl md:text-3xl text-amber-950 tracking-wider leading-none">
-                    小小早餐店 · 接单大厨
-                </h1>
-                <p class="font-clean text-xs md:text-sm font-bold text-amber-800 mt-0.5">
-                    SISB 二年级第七课《在咖啡店吃早餐》听写大冒险
+                <div class="flex flex-wrap items-baseline gap-2">
+                    <h1 class="text-2xl md:text-3xl font-bold text-amber-950 tracking-wider leading-none">
+                        小小早餐店 · 接单大厨
+                    </h1>
+                    <span class="font-pinyin text-xs md:text-sm font-bold text-amber-800">
+                        Little Breakfast Café · Master Chef
+                    </span>
+                </div>
+                <p class="text-xs md:text-sm font-bold text-amber-900 mt-1 flex flex-wrap items-center gap-2">
+                    <span>二年级第七课《在咖啡店吃早餐》</span>
+                    <span class="font-pinyin text-amber-700 font-semibold">(P2 Lesson 7: Having Breakfast at the Coffee Shop)</span>
+                    <span class="font-pinyin bg-amber-800 text-amber-100 px-2 py-0.5 rounded-full text-[11px] md:text-xs font-extrabold tracking-wide">
+                        ✨ Franky Laoshi
+                    </span>
                 </p>
             </div>
         </div>
 
         <!-- 右侧返回与音效糖果按钮 -->
         <div class="flex items-center gap-3">
-            <button id="btn-home" onclick="showMainMenu()" class="hidden candy-btn bg-amber-300 hover:bg-amber-200 text-amber-950 border-4 border-amber-700 px-4 py-2 text-lg md:text-xl flex items-center gap-2 shadow-[0_6px_0_#92400E]">
-                <span>🏠</span> <span>回首页选关</span>
+            <button id="btn-home" onclick="showMainMenu()" class="hidden candy-btn bg-amber-300 hover:bg-amber-200 text-amber-950 border-4 border-amber-700 px-4 py-1.5 text-base md:text-lg font-bold flex items-center gap-2 shadow-[0_6px_0_#92400E]">
+                <span>🏠</span>
+                <div class="text-left leading-tight">
+                    <div>回首页 <span class="font-pinyin text-xs font-normal">huí shǒu yè</span></div>
+                    <div class="font-pinyin text-[11px] text-amber-800">Home Menu</div>
+                </div>
             </button>
 
-            <button id="btn-sound" onclick="toggleSound()" class="candy-btn bg-sky-300 hover:bg-sky-200 text-sky-950 border-4 border-sky-700 px-4 py-2 text-lg md:text-xl flex items-center gap-2 shadow-[0_6px_0_#0369A1]">
+            <button id="btn-sound" onclick="toggleSound()" class="candy-btn bg-sky-300 hover:bg-sky-200 text-sky-950 border-4 border-sky-700 px-4 py-1.5 text-base md:text-lg font-bold flex items-center gap-2 shadow-[0_6px_0_#0369A1]">
                 <span id="sound-icon">🔊</span>
-                <span class="hidden sm:inline" id="sound-label">声音开</span>
+                <div class="hidden sm:block text-left leading-tight">
+                    <div id="sound-label">声音开</div>
+                    <div class="font-pinyin text-[11px] text-sky-800" id="sound-sub">Sound On</div>
+                </div>
             </button>
         </div>
     </header>
 
     <!-- ==================== 1. 绘本风首页大厅 ==================== -->
-    <main id="screen-menu" class="flex-1 flex flex-col items-center justify-center p-4 md:p-6 z-10 overflow-y-auto mt-2">
-        <div class="max-w-5xl w-full bg-white/95 rounded-[32px] p-6 md:p-8 border-4 border-amber-400 shadow-[0_14px_0_#F59E0B,0_20px_35px_rgba(0,0,0,0.12)] text-center">
+    <main id="screen-menu" class="flex-1 flex flex-col items-center justify-center p-3 md:p-5 z-10 overflow-y-auto mt-2">
+        <div class="max-w-5xl w-full bg-white/95 rounded-[32px] p-5 md:p-7 border-4 border-amber-400 shadow-[0_14px_0_#F59E0B,0_20px_35px_rgba(0,0,0,0.12)] text-center">
             
-            <!-- 欢迎标语与小动物迎宾 -->
-            <div class="flex items-center justify-center gap-3 mb-2">
-                <span class="bg-rose-100 text-rose-700 border-2 border-rose-300 px-4 py-1 rounded-full text-base md:text-lg font-bold">
-                    ✨ 欢迎二年级小厨师 ✨
+            <!-- 欢迎标语 -->
+            <div class="flex items-center justify-center gap-3 mb-1.5">
+                <span class="bg-rose-100 text-rose-700 border-2 border-rose-300 px-4 py-1 rounded-full text-sm md:text-base font-bold">
+                    ✨ 欢迎二年级小厨师 · <span class="font-pinyin">Welcome P2 Little Chefs! · Franky Laoshi</span> ✨
                 </span>
             </div>
-            <h2 class="text-4xl md:text-5xl text-amber-900 mb-2 tracking-wide">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-900 mb-1 tracking-wide">
                 今天想怎么练习听写呢？
             </h2>
-            <p class="font-clean text-base md:text-lg text-amber-800/80 font-bold mb-6">
-                小动物们都饿啦！在白瓷餐盘里按正确笔顺写出汉字，就能端出美味早餐哦！
+            <p class="font-pinyin text-sm md:text-base font-bold text-rose-600 mb-1">
+                Jīn tiān xiǎng zěn me liàn xí tīng xiě ne?
+            </p>
+            <p class="text-sm md:text-base text-amber-800 font-bold mb-4">
+                在白瓷餐盘里按正确笔顺写出汉字，就能端出美味早餐哦！
+                <span class="font-pinyin text-xs md:text-sm text-amber-700 font-normal block sm:inline">
+                    (Write the characters in the right stroke order to serve breakfast!)
+                </span>
             </p>
 
             <!-- 两大模式超大糖果选择卡 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                 <!-- 模式一：闯关小大厨 -->
-                <button onclick="startSingleMode(0)" class="candy-btn group bg-gradient-to-b from-amber-300 to-orange-400 hover:from-amber-200 hover:to-orange-300 border-4 border-amber-800 p-6 text-left flex items-center justify-between shadow-[0_10px_0_#92400E]">
+                <button onclick="startSingleMode(0)" class="candy-btn group bg-gradient-to-b from-amber-300 to-orange-400 hover:from-amber-200 hover:to-orange-300 border-4 border-amber-800 p-5 text-left flex items-center justify-between shadow-[0_10px_0_#92400E]">
                     <div>
-                        <span class="inline-block bg-white/90 text-orange-800 text-sm md:text-base font-bold px-3.5 py-1 rounded-full mb-2 border-2 border-orange-400">
-                            🌟 模式一 · 收集星星勋章
+                        <span class="inline-block bg-white/90 text-orange-800 text-xs md:text-sm font-bold px-3 py-0.5 rounded-full mb-1.5 border-2 border-orange-400">
+                            🌟 模式一 · <span class="font-pinyin">Stage Challenge</span>
                         </span>
-                        <h3 class="text-3xl md:text-4xl text-amber-950 mb-1.5">
+                        <h3 class="text-2xl md:text-3xl font-bold text-amber-950">
                             👨‍🍳 闯关小大厨
                         </h3>
-                        <p class="font-clean text-amber-950/90 font-bold text-sm md:text-base">
-                            全班轮流上台！完成 9 道早餐订单，收集香喷喷的美食图鉴！
+                        <div class="font-pinyin text-xs md:text-sm font-bold text-amber-900 mb-1">
+                            chuǎng guān xiǎo dà chú · Solo Chef Mode
+                        </div>
+                        <p class="text-amber-950 font-bold text-sm md:text-base">
+                            完成 9 道早餐订单，收集香喷喷的美食图鉴！
+                            <span class="font-pinyin text-xs block text-amber-900/90 font-normal">Complete 9 breakfast orders & collect food badges!</span>
                         </p>
                     </div>
-                    <div class="w-24 h-24 shrink-0 group-hover:scale-110 transition-transform" id="menu-icon-single"></div>
+                    <div class="w-20 h-20 md:w-24 md:h-24 shrink-0 group-hover:scale-110 transition-transform" id="menu-icon-single"></div>
                 </button>
 
                 <!-- 模式二：双人厨神 PK -->
-                <button onclick="startPkMode()" class="candy-btn group bg-gradient-to-b from-emerald-300 to-teal-400 hover:from-emerald-200 hover:to-teal-300 border-4 border-teal-900 p-6 text-left flex items-center justify-between shadow-[0_10px_0_#115E59]">
+                <button onclick="startPkMode()" class="candy-btn group bg-gradient-to-b from-emerald-300 to-teal-400 hover:from-emerald-200 hover:to-teal-300 border-4 border-teal-900 p-5 text-left flex items-center justify-between shadow-[0_10px_0_#115E59]">
                     <div>
-                        <span class="inline-block bg-white/90 text-teal-800 text-sm md:text-base font-bold px-3.5 py-1 rounded-full mb-2 border-2 border-teal-400">
-                            ⚡ 模式二 · 同屏速度对决
+                        <span class="inline-block bg-white/90 text-teal-800 text-xs md:text-sm font-bold px-3 py-0.5 rounded-full mb-1.5 border-2 border-teal-400">
+                            ⚡ 模式二 · <span class="font-pinyin">2-Player Speed Battle</span>
                         </span>
-                        <h3 class="text-3xl md:text-4xl text-teal-950 mb-1.5">
+                        <h3 class="text-2xl md:text-3xl font-bold text-teal-950">
                             🏆 双人厨神 PK
                         </h3>
-                        <p class="font-clean text-teal-950/90 font-bold text-sm md:text-base">
-                            红蓝两队同时上台！接同一份订单，看谁先写出汉字端出早餐！
+                        <div class="font-pinyin text-xs md:text-sm font-bold text-teal-900 mb-1">
+                            shuāng rén chú shén PK · Team Battle
+                        </div>
+                        <p class="text-teal-950 font-bold text-sm md:text-base">
+                            红蓝两队同时上台！看谁先写出汉字端出早餐！
+                            <span class="font-pinyin text-xs block text-teal-900/90 font-normal">Red vs Blue! Race to write the characters first!</span>
                         </p>
                     </div>
-                    <div class="w-24 h-24 shrink-0 group-hover:scale-110 transition-transform" id="menu-icon-pk"></div>
+                    <div class="w-20 h-20 md:w-24 md:h-24 shrink-0 group-hover:scale-110 transition-transform" id="menu-icon-pk"></div>
                 </button>
             </div>
 
             <!-- 9 个听写关卡直通车 -->
-            <div class="bg-amber-50 rounded-3xl p-4 border-4 border-amber-200">
-                <div class="text-base md:text-lg text-amber-900 mb-3 flex items-center justify-center gap-2">
-                    <span>📋</span> <span>点击菜单直接练习任意一关（第 7 课全部 9 题）：</span>
+            <div class="bg-amber-50 rounded-3xl p-3.5 border-4 border-amber-200">
+                <div class="text-base md:text-lg font-bold text-amber-900 mb-2.5 flex flex-wrap items-center justify-center gap-2">
+                    <span>📋</span>
+                    <span>点击菜单选择关卡（第 7 课全部 9 题）</span>
+                    <span class="font-pinyin text-xs md:text-sm text-amber-700 font-normal">· Select Any Level (All 9 Items)</span>
                 </div>
-                <div id="level-grid" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2.5">
+                <div id="level-grid" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
                     <!-- JS 自动填充 9 个关卡卡片 -->
                 </div>
             </div>
@@ -290,12 +333,15 @@
     </main>
 
     <!-- ==================== 2. 模式一：【闯关小大厨】单人接单界面 ==================== -->
-    <main id="screen-single" class="hidden flex-1 flex flex-col justify-between p-3 md:p-5 z-10 overflow-hidden mt-2">
+    <main id="screen-single" class="hidden flex-1 flex flex-col justify-between p-3 md:p-4 z-10 overflow-hidden mt-2">
         <!-- 顶部星星收集栏 -->
-        <div class="max-w-6xl w-full mx-auto flex flex-wrap items-center justify-between gap-2 bg-white/95 px-5 py-2.5 rounded-3xl border-4 border-amber-300 shadow-md">
+        <div class="max-w-6xl w-full mx-auto flex flex-wrap items-center justify-between gap-2 bg-white/95 px-5 py-2 rounded-3xl border-4 border-amber-300 shadow-md">
             <div class="flex items-center gap-2.5">
-                <span class="bg-rose-500 text-white px-4 py-1 rounded-2xl text-lg md:text-xl shadow-sm" id="single-level-badge">第 1 / 9 单</span>
-                <span class="text-amber-900 text-lg md:text-xl" id="single-level-type">必考划线生字</span>
+                <span class="bg-rose-500 text-white px-4 py-1 rounded-2xl text-lg md:text-xl font-bold shadow-sm" id="single-level-badge">第 1 / 9 单</span>
+                <div>
+                    <div class="text-amber-950 text-base md:text-lg font-bold leading-tight" id="single-level-type">必考划线生字</div>
+                    <div class="font-pinyin text-xs text-amber-700" id="single-level-type-en">Key Tested Character</div>
+                </div>
             </div>
 
             <!-- 9 关小圆点进度 -->
@@ -304,25 +350,31 @@
             <!-- 星星勋章计数器 -->
             <div class="flex items-center gap-2 bg-yellow-100 px-4 py-1 rounded-2xl border-2 border-yellow-400">
                 <span class="text-2xl">⭐</span>
-                <span class="text-xl md:text-2xl text-amber-900" id="single-stars">0 / 9</span>
+                <div class="leading-tight">
+                    <div class="text-lg md:text-xl font-bold text-amber-900" id="single-stars">0 / 9</div>
+                    <div class="font-pinyin text-[11px] text-amber-700">Stars</div>
+                </div>
             </div>
         </div>
 
         <!-- 主舞台：左侧小动物顾客点单 + 右侧大白瓷餐盘手写台 -->
-        <div class="max-w-6xl w-full mx-auto flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 my-3 items-stretch min-h-0">
+        <div class="max-w-6xl w-full mx-auto flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 my-2.5 items-stretch min-h-0">
             
             <!-- 左侧：小动物顾客与超大对话气泡 (占 5 列) -->
             <div class="lg:col-span-5 bg-white/95 rounded-[32px] p-4 md:p-5 border-4 border-orange-300 shadow-[0_10px_0_#FDBA74] flex flex-col justify-between relative">
                 
                 <!-- 顾客名牌与听报读大按钮 -->
                 <div class="flex items-center justify-between gap-2">
-                    <span id="single-customer-name" class="bg-amber-100 text-amber-900 border-2 border-amber-300 px-3.5 py-1 rounded-2xl text-base md:text-lg">
+                    <div id="single-customer-name" class="bg-amber-100 text-amber-900 border-2 border-amber-300 px-3.5 py-1 rounded-2xl text-base md:text-lg font-bold leading-tight">
                         🐼 小熊猫点单
-                    </span>
+                    </div>
 
                     <!-- 🔊 听报读（带跳动声波动画） -->
-                    <button id="btn-speak-single" onclick="speakCurrentSingle()" class="candy-btn bg-sky-400 hover:bg-sky-300 text-sky-950 border-4 border-sky-700 px-4 py-2 text-lg md:text-xl flex items-center gap-2 shadow-[0_5px_0_#0369A1]">
-                        <span>🔊 听报读</span>
+                    <button id="btn-speak-single" onclick="speakCurrentSingle()" class="candy-btn bg-sky-400 hover:bg-sky-300 text-sky-950 border-4 border-sky-700 px-4 py-1.5 text-base md:text-lg font-bold flex items-center gap-2 shadow-[0_5px_0_#0369A1]">
+                        <div class="text-left leading-tight">
+                            <div>🔊 听报读 <span class="font-pinyin text-xs font-normal">tīng bào dú</span></div>
+                            <div class="font-pinyin text-[11px] text-sky-900">Listen to Audio</div>
+                        </div>
                         <span class="flex items-end gap-1 h-4">
                             <i class="wave-bar w-1.5 h-2 bg-sky-900 rounded-full block"></i>
                             <i class="wave-bar w-1.5 h-4 bg-sky-900 rounded-full block"></i>
@@ -339,30 +391,37 @@
                         
                         <!-- 拼音与英文意思气泡 -->
                         <div class="bg-amber-50 border-4 border-amber-300 rounded-3xl p-3.5 text-left flex-1 relative shadow-inner">
-                            <div id="single-pinyin" class="font-clean text-2xl md:text-3xl font-black text-rose-600 tracking-wide">
+                            <div class="font-pinyin text-xs font-bold text-amber-600 uppercase tracking-wider">Pinyin & Meaning</div>
+                            <div id="single-pinyin" class="font-pinyin text-2xl md:text-3xl font-black text-rose-600 tracking-wide mt-0.5">
                                 chǎo fàn
                             </div>
-                            <div id="single-meaning" class="font-clean text-base md:text-lg font-bold text-amber-800/80 mt-0.5">
+                            <div id="single-meaning" class="font-pinyin text-base md:text-lg font-bold text-amber-900 mt-0.5">
                                 Fried rice
                             </div>
                         </div>
                     </div>
 
                     <!-- 词语/句子填空大卡片 -->
-                    <div id="single-context-display" class="w-full mt-3 bg-orange-50 border-4 border-dashed border-orange-400 rounded-3xl py-3 px-4 text-center text-3xl md:text-4xl text-amber-950 tracking-wider">
+                    <div id="single-context-display" class="w-full mt-3 bg-orange-50 border-4 border-dashed border-orange-400 rounded-3xl py-3 px-4 text-center text-3xl md:text-4xl font-bold text-amber-950 tracking-wider">
                         炒 [ ? ]
                     </div>
                 </div>
 
                 <!-- 二年级专用超大辅助功能按钮 -->
                 <div class="grid grid-cols-2 gap-3 pt-2">
-                    <button onclick="animateSingleHint()" class="candy-btn bg-purple-300 hover:bg-purple-200 text-purple-950 border-4 border-purple-700 py-3 px-3 text-lg md:text-xl flex items-center justify-center gap-2 shadow-[0_6px_0_#6B21A8]">
+                    <button onclick="animateSingleHint()" class="candy-btn bg-purple-300 hover:bg-purple-200 text-purple-950 border-4 border-purple-700 py-2 px-3 text-base md:text-lg font-bold flex items-center justify-center gap-2 shadow-[0_6px_0_#6B21A8]">
                         <span class="text-2xl">👀</span>
-                        <span>看笔顺</span>
+                        <div class="text-left leading-tight">
+                            <div>看笔顺 <span class="font-pinyin text-xs font-normal">bǐ shùn</span></div>
+                            <div class="font-pinyin text-[11px] text-purple-900">Stroke Order</div>
+                        </div>
                     </button>
-                    <button onclick="resetSingleLevel()" class="candy-btn bg-rose-300 hover:bg-rose-200 text-rose-950 border-4 border-rose-700 py-3 px-3 text-lg md:text-xl flex items-center justify-center gap-2 shadow-[0_6px_0_#9F1239]">
+                    <button onclick="resetSingleLevel()" class="candy-btn bg-rose-300 hover:bg-rose-200 text-rose-950 border-4 border-rose-700 py-2 px-3 text-base md:text-lg font-bold flex items-center justify-center gap-2 shadow-[0_6px_0_#9F1239]">
                         <span class="text-2xl">🧹</span>
-                        <span>擦掉重写</span>
+                        <div class="text-left leading-tight">
+                            <div>擦掉重写 <span class="font-pinyin text-xs font-normal">chóng xiě</span></div>
+                            <div class="font-pinyin text-[11px] text-rose-900">Clear & Rewrite</div>
+                        </div>
                     </button>
                 </div>
             </div>
@@ -371,24 +430,34 @@
             <div class="lg:col-span-7 bg-amber-100/90 rounded-[32px] p-4 md:p-5 border-4 border-amber-400 shadow-[0_10px_0_#D97706] flex flex-col justify-between relative">
                 
                 <!-- 顶部提示语 -->
-                <div class="flex flex-wrap items-center justify-between gap-2 bg-white/80 px-4 py-2 rounded-2xl border-2 border-amber-300">
-                    <span class="text-lg md:text-xl text-amber-950" id="single-instruction">
-                        🍳 请在白瓷餐盘里写出汉字：
-                    </span>
-                    <span id="single-stroke-status" class="font-clean text-sm md:text-base font-bold bg-amber-200 text-amber-950 px-3.5 py-1 rounded-full">
+                <div class="flex flex-wrap items-center justify-between gap-2 bg-white/85 px-4 py-2 rounded-2xl border-2 border-amber-300">
+                    <div class="leading-tight">
+                        <div class="text-base md:text-lg font-bold text-amber-950" id="single-instruction">
+                            🍳 请在白瓷餐盘里写出汉字：
+                        </div>
+                        <div class="font-pinyin text-xs text-amber-700" id="single-instruction-en">
+                            Write the missing Chinese character in the plate:
+                        </div>
+                    </div>
+                    <span id="single-stroke-status" class="text-sm md:text-base font-bold bg-amber-200 text-amber-950 px-3.5 py-1 rounded-full">
                         用手指或白板笔写一写吧！
                     </span>
                 </div>
 
                 <!-- 第 9 关专属：句序排列小卡片区（仅第 9 关显示） -->
-                <div id="sentence-builder-box" class="hidden flex-col items-center justify-center gap-3 my-2 bg-white/95 p-4 rounded-3xl border-4 border-rose-300">
-                    <div class="text-lg md:text-xl text-rose-700">
-                        🧩 第一步：请按顺序点击下方词语卡片，拼出客人点的餐！
+                <div id="sentence-builder-box" class="hidden flex-col items-center justify-center gap-2.5 my-2 bg-white/95 p-3.5 rounded-3xl border-4 border-rose-300">
+                    <div class="text-center leading-tight">
+                        <div class="text-base md:text-lg font-bold text-rose-700">
+                            🧩 第一步：请按顺序点击下方词语卡片，拼出客人点的餐！
+                        </div>
+                        <div class="font-pinyin text-xs text-rose-600">
+                            Step 1: Tap the word cards in order to build the sentence!
+                        </div>
                     </div>
                     <!-- 已选句子槽 -->
-                    <div id="sentence-slots" class="min-h-[56px] w-full bg-amber-50 border-3 border-dashed border-amber-400 rounded-2xl p-2 flex flex-wrap items-center justify-center gap-2"></div>
+                    <div id="sentence-slots" class="min-h-[52px] w-full bg-amber-50 border-3 border-dashed border-amber-400 rounded-2xl p-2 flex flex-wrap items-center justify-center gap-2"></div>
                     <!-- 打乱的词卡池 -->
-                    <div id="sentence-word-pool" class="flex flex-wrap items-center justify-center gap-2.5 pt-1"></div>
+                    <div id="sentence-word-pool" class="flex flex-wrap items-center justify-center gap-2 pt-1"></div>
                 </div>
 
                 <!-- 动态米字格白瓷餐盘区域 -->
@@ -398,11 +467,11 @@
 
                 <!-- 底部上下关切换大按钮 -->
                 <div class="flex items-center justify-between pt-2">
-                    <button onclick="prevSingleLevel()" class="candy-btn bg-stone-300 hover:bg-stone-200 text-stone-800 border-4 border-stone-600 px-5 py-2.5 text-lg md:text-xl shadow-[0_5px_0_#57534E]">
-                        ⬅️ 上一单
+                    <button onclick="prevSingleLevel()" class="candy-btn bg-stone-300 hover:bg-stone-200 text-stone-800 border-4 border-stone-600 px-5 py-2 text-base md:text-lg font-bold shadow-[0_5px_0_#57534E]">
+                        ⬅️ 上一单 <span class="font-pinyin text-xs font-normal block sm:inline">(Prev)</span>
                     </button>
-                    <button onclick="nextSingleLevel()" class="candy-btn bg-emerald-400 hover:bg-emerald-300 text-emerald-950 border-4 border-emerald-800 px-6 py-2.5 text-lg md:text-xl shadow-[0_5px_0_#065F46]">
-                        下一单 ➡️
+                    <button onclick="nextSingleLevel()" class="candy-btn bg-emerald-400 hover:bg-emerald-300 text-emerald-950 border-4 border-emerald-800 px-6 py-2 text-base md:text-lg font-bold shadow-[0_5px_0_#065F46]">
+                        下一单 ➡️ <span class="font-pinyin text-xs font-normal block sm:inline">(Next)</span>
                     </button>
                 </div>
             </div>
@@ -412,25 +481,29 @@
     <!-- ==================== 3. 模式二：【双人厨神 PK】左右分屏对决界面 ==================== -->
     <main id="screen-pk" class="hidden flex-1 flex flex-col p-3 md:p-4 z-10 overflow-hidden mt-2">
         
-        <!-- 顶部共用订单提示条（红蓝两队接同一份订单！） -->
-        <div class="max-w-6xl w-full mx-auto bg-white/95 rounded-3xl px-5 py-2.5 mb-3 border-4 border-amber-400 shadow-md flex flex-wrap items-center justify-between gap-3">
+        <!-- 顶部共用订单提示条 -->
+        <div class="max-w-6xl w-full mx-auto bg-white/95 rounded-3xl px-5 py-2 mb-3 border-4 border-amber-400 shadow-md flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-                <span class="bg-amber-400 text-amber-950 px-3.5 py-1 rounded-2xl text-lg md:text-xl border-2 border-amber-700">
-                    📣 本轮共同订单
-                </span>
+                <div class="bg-amber-400 text-amber-950 px-3.5 py-1 rounded-2xl border-2 border-amber-700 leading-tight">
+                    <div class="text-base md:text-lg font-bold">📣 共同订单</div>
+                    <div class="font-pinyin text-[11px] font-bold">Shared Order</div>
+                </div>
                 <div id="pk-shared-dish" class="w-12 h-12"></div>
                 <div>
-                    <span id="pk-shared-pinyin" class="font-clean text-xl md:text-2xl font-black text-rose-600 mr-2">chǎo fàn</span>
-                    <span id="pk-shared-context" class="text-2xl md:text-3xl text-amber-950">炒 [ ? ]</span>
+                    <div>
+                        <span id="pk-shared-pinyin" class="font-pinyin text-xl md:text-2xl font-black text-rose-600 mr-2">chǎo fàn</span>
+                        <span id="pk-shared-context" class="text-2xl md:text-3xl font-bold text-amber-950">炒 [ ? ]</span>
+                    </div>
+                    <div id="pk-shared-meaning" class="font-pinyin text-xs md:text-sm font-bold text-amber-700">Fried rice</div>
                 </div>
             </div>
 
             <div class="flex items-center gap-2.5">
-                <button onclick="speakPkOrder()" class="candy-btn bg-sky-400 hover:bg-sky-300 text-sky-950 border-3 border-sky-700 px-4 py-2 text-base md:text-lg shadow-[0_4px_0_#0369A1]">
-                    🔊 听报读
+                <button onclick="speakPkOrder()" class="candy-btn bg-sky-400 hover:bg-sky-300 text-sky-950 border-3 border-sky-700 px-4 py-1.5 text-base font-bold shadow-[0_4px_0_#0369A1]">
+                    🔊 听报读 <span class="font-pinyin text-xs font-normal">(Listen)</span>
                 </button>
-                <button onclick="startPkMode()" class="candy-btn bg-amber-300 hover:bg-amber-200 text-amber-950 border-3 border-amber-700 px-4 py-2 text-base md:text-lg shadow-[0_4px_0_#92400E]">
-                    🔄 重新开始 PK
+                <button onclick="startPkMode()" class="candy-btn bg-amber-300 hover:bg-amber-200 text-amber-950 border-3 border-amber-700 px-4 py-1.5 text-base font-bold shadow-[0_4px_0_#92400E]">
+                    🔄 重新开始 <span class="font-pinyin text-xs font-normal">(Restart)</span>
                 </button>
             </div>
         </div>
@@ -442,10 +515,9 @@
             <div class="bg-rose-50/95 rounded-[32px] p-4 border-4 border-rose-400 shadow-[0_10px_0_#E11D48] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between bg-rose-500 text-white px-4 py-2 rounded-2xl mb-2">
-                        <span class="text-xl md:text-2xl">🍎 红队小厨师</span>
-                        <span class="text-lg md:text-xl" id="pk-score-text-0">0 / 3 盘</span>
+                        <span class="text-lg md:text-xl font-bold">🍎 红队小厨师 <span class="font-pinyin text-xs font-normal">(Red Team)</span></span>
+                        <span class="text-lg md:text-xl font-bold" id="pk-score-text-0">0 / 3 盘</span>
                     </div>
-                    <!-- 进度条 -->
                     <div class="w-full h-4 bg-rose-200 rounded-full overflow-hidden border-2 border-rose-400">
                         <div id="pk-bar-0" class="h-full bg-rose-500 transition-all duration-300" style="width: 0%;"></div>
                     </div>
@@ -456,12 +528,12 @@
 
                 <!-- 红队辅助按钮 -->
                 <div class="flex items-center justify-between gap-2">
-                    <button onclick="hintPk(0)" class="candy-btn bg-purple-300 text-purple-950 border-3 border-purple-700 px-4 py-2 text-base md:text-lg shadow-[0_4px_0_#6B21A8]">
-                        👀 看笔顺
+                    <button onclick="hintPk(0)" class="candy-btn bg-purple-300 text-purple-950 border-3 border-purple-700 px-3.5 py-1.5 text-sm md:text-base font-bold shadow-[0_4px_0_#6B21A8]">
+                        👀 看笔顺 <span class="font-pinyin text-xs font-normal">(Hint)</span>
                     </button>
-                    <span id="pk-status-0" class="text-base md:text-lg text-rose-700">加油！写出汉字！</span>
-                    <button onclick="resetPkPlayer(0)" class="candy-btn bg-white text-rose-800 border-3 border-rose-400 px-4 py-2 text-base md:text-lg shadow-[0_4px_0_#FDA4AF]">
-                        🧹 重写
+                    <span id="pk-status-0" class="text-sm md:text-base font-bold text-rose-700">加油！写出汉字！</span>
+                    <button onclick="resetPkPlayer(0)" class="candy-btn bg-white text-rose-800 border-3 border-rose-400 px-3.5 py-1.5 text-sm md:text-base font-bold shadow-[0_4px_0_#FDA4AF]">
+                        🧹 重写 <span class="font-pinyin text-xs font-normal">(Clear)</span>
                     </button>
                 </div>
             </div>
@@ -470,10 +542,9 @@
             <div class="bg-sky-50/95 rounded-[32px] p-4 border-4 border-sky-400 shadow-[0_10px_0_#0284C7] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between bg-sky-500 text-white px-4 py-2 rounded-2xl mb-2">
-                        <span class="text-xl md:text-2xl">🫐 蓝队小厨师</span>
-                        <span class="text-lg md:text-xl" id="pk-score-text-1">0 / 3 盘</span>
+                        <span class="text-lg md:text-xl font-bold">🫐 蓝队小厨师 <span class="font-pinyin text-xs font-normal">(Blue Team)</span></span>
+                        <span class="text-lg md:text-xl font-bold" id="pk-score-text-1">0 / 3 盘</span>
                     </div>
-                    <!-- 进度条 -->
                     <div class="w-full h-4 bg-sky-200 rounded-full overflow-hidden border-2 border-sky-400">
                         <div id="pk-bar-1" class="h-full bg-sky-500 transition-all duration-300" style="width: 0%;"></div>
                     </div>
@@ -484,12 +555,12 @@
 
                 <!-- 蓝队辅助按钮 -->
                 <div class="flex items-center justify-between gap-2">
-                    <button onclick="hintPk(1)" class="candy-btn bg-purple-300 text-purple-950 border-3 border-purple-700 px-4 py-2 text-base md:text-lg shadow-[0_4px_0_#6B21A8]">
-                        👀 看笔顺
+                    <button onclick="hintPk(1)" class="candy-btn bg-purple-300 text-purple-950 border-3 border-purple-700 px-3.5 py-1.5 text-sm md:text-base font-bold shadow-[0_4px_0_#6B21A8]">
+                        👀 看笔顺 <span class="font-pinyin text-xs font-normal">(Hint)</span>
                     </button>
-                    <span id="pk-status-1" class="text-base md:text-lg text-sky-700">加油！写出汉字！</span>
-                    <button onclick="resetPkPlayer(1)" class="candy-btn bg-white text-sky-800 border-3 border-sky-400 px-4 py-2 text-base md:text-lg shadow-[0_4px_0_#7DD3FC]">
-                        🧹 重写
+                    <span id="pk-status-1" class="text-sm md:text-base font-bold text-sky-700">加油！写出汉字！</span>
+                    <button onclick="resetPkPlayer(1)" class="candy-btn bg-white text-sky-800 border-3 border-sky-400 px-3.5 py-1.5 text-sm md:text-base font-bold shadow-[0_4px_0_#7DD3FC]">
+                        🧹 重写 <span class="font-pinyin text-xs font-normal">(Clear)</span>
                     </button>
                 </div>
             </div>
@@ -500,15 +571,18 @@
     <div id="modal-celebration" class="hidden fixed inset-0 bg-amber-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-[36px] max-w-lg w-full p-7 text-center border-6 border-amber-400 shadow-[0_16px_0_#D97706] animate-dish-pop">
             <div id="modal-illustration" class="w-36 h-36 mx-auto mb-3 flex items-center justify-center"></div>
-            <h3 id="modal-title" class="text-3xl md:text-4xl text-amber-900 mb-2">太棒啦！</h3>
-            <p id="modal-desc" class="font-clean text-lg md:text-xl font-bold text-amber-800 mb-6">
+            <h3 id="modal-title" class="text-3xl md:text-4xl font-bold text-amber-900 mb-2">太棒啦！</h3>
+            <p id="modal-desc" class="text-lg md:text-xl font-bold text-amber-800 mb-1">
                 美味早餐端上桌啦！
             </p>
+            <p id="modal-desc-en" class="font-pinyin text-sm md:text-base font-bold text-amber-600 mb-6">
+                Delicious breakfast is served!
+            </p>
             <div class="flex justify-center gap-4">
-                <button onclick="closeCelebrationModal()" class="candy-btn bg-stone-200 hover:bg-stone-100 text-stone-800 border-4 border-stone-500 px-6 py-3 text-xl shadow-[0_6px_0_#57534E]">
-                    留在这一关
+                <button onclick="closeCelebrationModal()" class="candy-btn bg-stone-200 hover:bg-stone-100 text-stone-800 border-4 border-stone-500 px-5 py-2.5 text-lg font-bold shadow-[0_6px_0_#57534E]">
+                    留在这一关 <span class="font-pinyin text-xs font-normal block">(Stay Here)</span>
                 </button>
-                <button id="modal-btn-primary" onclick="handleModalPrimaryAction()" class="candy-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border-4 border-amber-800 px-7 py-3 text-xl shadow-[0_6px_0_#92400E]">
+                <button id="modal-btn-primary" onclick="handleModalPrimaryAction()" class="candy-btn bg-amber-400 hover:bg-amber-300 text-amber-950 border-4 border-amber-800 px-6 py-2.5 text-lg font-bold shadow-[0_6px_0_#92400E]">
                     继续下一单 ➡️
                 </button>
             </div>
@@ -517,10 +591,9 @@
 
     <script>
         /**
-         * ==================== 1. 纯手绘可爱 SVG 插画库 (小动物顾客 + 早餐美食 + 奖杯) ====================
+         * ==================== 1. 纯手绘可爱 SVG 插画库 ====================
          */
         const CUTE_SVGS = {
-            // 6 位呆萌小动物顾客
             panda: `
                 <svg viewBox="0 0 120 120" class="w-full h-full">
                     <circle cx="28" cy="28" r="16" fill="#292524"/>
@@ -596,7 +669,6 @@
                     <path d="M48,78 Q60,90 72,78" fill="none" stroke="#7C2D12" stroke-width="4" stroke-linecap="round"/>
                 </svg>`,
 
-            // 早餐美食与奖励图标 SVG
             friedRice: `
                 <svg viewBox="0 0 120 120" class="w-full h-full">
                     <path d="M22,64 A38,34 0 0,1 98,64 Z" fill="#FEF08A" stroke="#B45309" stroke-width="4"/>
@@ -670,138 +742,152 @@
          * ==================== 2. SISB 二年级第七课《在咖啡店吃早餐》完整 9 关题库 ====================
          */
         const CUSTOMER_LIST = [
-            { key: 'panda', name: '🐼 小熊猫点单' },
-            { key: 'rabbit', name: '🐰 小兔子点单' },
-            { key: 'dino', name: '🦕 小恐龙点单' },
-            { key: 'cat', name: '🐱 小猫咪点单' },
-            { key: 'bear', name: '🐻 小熊点单' },
-            { key: 'monkey', name: '🐵 小猴子点单' }
+            { key: 'panda', name: '🐼 小熊猫点单', sub: 'xiǎo xióng māo · Little Panda' },
+            { key: 'rabbit', name: '🐰 小兔子点单', sub: 'xiǎo tù zi · Little Rabbit' },
+            { key: 'dino', name: '🦕 小恐龙点单', sub: 'xiǎo kǒng lóng · Little Dino' },
+            { key: 'cat', name: '🐱 小猫咪点单', sub: 'xiǎo māo mī · Little Kitty' },
+            { key: 'bear', name: '🐻 小熊点单', sub: 'xiǎo xióng · Little Bear' },
+            { key: 'monkey', name: '🐵 小猴子点单', sub: 'xiǎo hóu zi · Little Monkey' }
         ];
 
         const LESSON_DATA = [
             {
                 id: 1,
                 type: "必考划线字 · 第 1 题",
+                typeEn: "Key Character · Question 1",
                 fullWord: "炒饭",
                 speakText: "炒饭",
                 pinyin: "chǎo fàn",
                 meaning: "Fried rice",
                 dishKey: "friedRice",
                 segments: [
-                    { text: "炒" },
-                    { target: "饭" }
+                    { text: "炒", py: "chǎo" },
+                    { target: "饭", py: "fàn" }
                 ]
             },
             {
                 id: 2,
                 type: "必考划线字 · 第 2 题",
+                typeEn: "Key Character · Question 2",
                 fullWord: "青菜",
                 speakText: "青菜",
                 pinyin: "qīng cài",
                 meaning: "Vegetable",
                 dishKey: "veggie",
                 segments: [
-                    { target: "青" },
-                    { text: "菜" }
+                    { target: "青", py: "qīng" },
+                    { text: "菜", py: "cài" }
                 ]
             },
             {
                 id: 3,
                 type: "必考划线词 · 第 3 题",
+                typeEn: "Key Word · Question 3",
                 fullWord: "星期六",
                 speakText: "星期六",
                 pinyin: "xīng qī liù",
                 meaning: "Saturday",
                 dishKey: "calendar",
                 segments: [
-                    { target: "星" },
-                    { target: "期" },
-                    { text: "六" }
+                    { target: "星", py: "xīng" },
+                    { target: "期", py: "qī" },
+                    { text: "六", py: "liù" }
                 ]
             },
             {
                 id: 4,
                 type: "必考划线字 · 第 4 题",
+                typeEn: "Key Character · Question 4",
                 fullWord: "香",
                 speakText: "香",
                 pinyin: "xiāng",
                 meaning: "Fragrant; smell good",
                 dishKey: "coffee",
                 segments: [
-                    { target: "香" }
+                    { target: "香", py: "xiāng" }
                 ]
             },
             {
                 id: 5,
                 type: "必考划线字 · 第 5 题",
+                typeEn: "Key Character · Question 5",
                 fullWord: "走进",
                 speakText: "走进",
                 pinyin: "zǒu jìn",
                 meaning: "Walk in",
                 dishKey: "door",
                 segments: [
-                    { text: "走" },
-                    { target: "进" }
+                    { text: "走", py: "zǒu" },
+                    { target: "进", py: "jìn" }
                 ]
             },
             {
                 id: 6,
                 type: "必考划线字 · 第 6 题",
+                typeEn: "Key Character · Question 6",
                 fullWord: "食物",
                 speakText: "食物",
                 pinyin: "shí wù",
                 meaning: "Food",
                 dishKey: "bento",
                 segments: [
-                    { text: "食" },
-                    { target: "物" }
+                    { text: "食", py: "shí" },
+                    { target: "物", py: "wù" }
                 ]
             },
             {
                 id: 7,
                 type: "彩蛋热身关 · 第 7 题",
+                typeEn: "Bonus Tracing Warm-up · Question 7",
                 fullWord: "分工合作",
                 speakText: "分工合作",
                 pinyin: "fēn gōng hé zuò",
                 meaning: "Work together and share the work",
                 dishKey: "teamwork",
-                isBonusOutline: true, // 自动开启淡色描红，作为认读巩固热身
+                isBonusOutline: true,
                 segments: [
-                    { text: "分" },
-                    { text: "工" },
-                    { target: "合" },
-                    { target: "作" }
+                    { text: "分", py: "fēn" },
+                    { text: "工", py: "gōng" },
+                    { target: "合", py: "hé" },
+                    { target: "作", py: "zuò" }
                 ]
             },
             {
                 id: 8,
                 type: "必考划线字 · 第 8 题",
+                typeEn: "Key Character · Question 8",
                 fullWord: "吃完",
                 speakText: "吃完",
                 pinyin: "chī wán",
                 meaning: "Finish eating",
                 dishKey: "cleanPlate",
                 segments: [
-                    { text: "吃" },
-                    { target: "完" }
+                    { text: "吃", py: "chī" },
+                    { target: "完", py: "wán" }
                 ]
             },
             {
                 id: 9,
                 type: "终极厨神 BOSS 关 · 整句挑战",
+                typeEn: "Master Chef BOSS · Full Sentence Challenge",
                 fullWord: "我要吃炒面，不要吃炒饭。",
                 speakText: "我要吃炒面，不要吃炒饭。",
                 pinyin: "wǒ yào chī chǎo miàn, bú yào chī chǎo fàn.",
                 meaning: "I want fried noodles, not fried rice.",
                 dishKey: "friedNoodles",
                 isBossSentence: true,
-                // 第一步：点击词卡排句子
-                sentenceChunks: ["我要", "吃", "炒面，", "不要", "吃", "炒饭。"],
-                // 第二步：手写三大招牌关键字（大格子更适合二年级白板书写）
+                sentenceChunks: [
+                    { text: "我要", py: "wǒ yào" },
+                    { text: "吃", py: "chī" },
+                    { text: "炒面，", py: "chǎo miàn" },
+                    { text: "不要", py: "bú yào" },
+                    { text: "吃", py: "chī" },
+                    { text: "炒饭。", py: "chǎo fàn" }
+                ],
                 segments: [
-                    { target: "炒" },
-                    { target: "面" },
-                    { target: "饭" }
+                    { target: "炒", py: "chǎo" },
+                    { target: "面", py: "miàn" },
+                    { target: "饭", py: "fàn" }
                 ]
             }
         ];
@@ -825,6 +911,7 @@
             soundEnabled = !soundEnabled;
             document.getElementById('sound-icon').textContent = soundEnabled ? '🔊' : '🔇';
             document.getElementById('sound-label').textContent = soundEnabled ? '声音开' : '静音中';
+            document.getElementById('sound-sub').textContent = soundEnabled ? 'Sound On' : 'Muted';
         }
 
         function playTone(type) {
@@ -838,7 +925,6 @@
                 gain.connect(audioCtx.destination);
 
                 if (type === 'stroke') {
-                    // 清脆“叮！”声
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(660, now);
                     osc.frequency.exponentialRampToValueAtTime(1046.5, now + 0.09);
@@ -847,7 +933,6 @@
                     osc.start(now);
                     osc.stop(now + 0.12);
                 } else if (type === 'wrong') {
-                    // 温和可爱的“啵~”声
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(280, now);
                     osc.frequency.exponentialRampToValueAtTime(190, now + 0.18);
@@ -856,7 +941,6 @@
                     osc.start(now);
                     osc.stop(now + 0.2);
                 } else if (type === 'charDone') {
-                    // 写完一个字：三连音悦耳铃声
                     [587.33, 739.99, 880].forEach((freq, i) => {
                         const o = audioCtx.createOscillator();
                         const g = audioCtx.createGain();
@@ -870,7 +954,6 @@
                         o.stop(now + i * 0.07 + 0.25);
                     });
                 } else if (type === 'win') {
-                    // 胜利庆祝号角
                     [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((freq, i) => {
                         const o = audioCtx.createOscillator();
                         const g = audioCtx.createGain();
@@ -968,7 +1051,7 @@
                 const p = particles[i];
                 p.x += p.vx;
                 p.y += p.vy;
-                p.vy += 0.22; // 重力
+                p.vy += 0.22;
                 p.rotation += p.vRot;
                 p.alpha -= 0.018;
 
@@ -1008,9 +1091,10 @@
                 btn.className = 'candy-btn bg-white hover:bg-amber-100 border-3 border-amber-400 p-2 flex flex-col items-center justify-center shadow-[0_4px_0_#F59E0B]';
                 btn.onclick = () => startSingleMode(idx);
                 btn.innerHTML = `
-                    <span class="font-clean text-xs font-bold text-rose-600">第 ${item.id} 单</span>
-                    <span class="text-xl md:text-2xl text-amber-950 my-0.5">${item.isBossSentence ? '整句BOSS' : targetChars}</span>
-                    <span class="font-clean text-xs text-amber-700 font-bold truncate w-full">${item.fullWord}</span>
+                    <span class="font-pinyin text-[11px] font-bold text-rose-600">第 ${item.id} 单 · Order ${item.id}</span>
+                    <span class="text-xl md:text-2xl font-bold text-amber-950 my-0.5">${item.isBossSentence ? '整句BOSS' : targetChars}</span>
+                    <span class="font-pinyin text-[11px] text-rose-500 font-bold truncate w-full">${item.pinyin}</span>
+                    <span class="text-xs text-amber-900 font-bold truncate w-full">${item.fullWord}</span>
                 `;
                 grid.appendChild(btn);
             });
@@ -1054,7 +1138,7 @@
                     currentSingleIdx = idx;
                     renderSingleLevel();
                 };
-                btn.className = `w-8 h-8 md:w-9 md:h-9 rounded-full font-clean font-black text-sm md:text-base transition flex items-center justify-center border-2 ${
+                btn.className = `w-8 h-8 md:w-9 md:h-9 rounded-full font-pinyin font-black text-sm md:text-base transition flex items-center justify-center border-2 ${
                     isCur
                         ? 'bg-rose-500 text-white border-rose-800 scale-110 shadow'
                         : isDone
@@ -1072,16 +1156,19 @@
             singleWriters = [];
             bossSentenceSolved = !data.isBossSentence;
 
-            // 随机挑选一位呆萌小动物顾客
             const customer = CUSTOMER_LIST[currentSingleIdx % CUSTOMER_LIST.length];
-            document.getElementById('single-customer-name').textContent = customer.name;
+            document.getElementById('single-customer-name').innerHTML = `
+                <div>${customer.name}</div>
+                <div class="font-pinyin text-[11px] text-amber-700 font-normal">${customer.sub}</div>
+            `;
             document.getElementById('single-customer-svg').innerHTML = CUTE_SVGS[customer.key];
 
             document.getElementById('single-level-badge').textContent = `第 ${data.id} / ${LESSON_DATA.length} 单`;
             document.getElementById('single-level-type').textContent = data.type;
+            document.getElementById('single-level-type-en').textContent = data.typeEn;
             document.getElementById('single-pinyin').textContent = data.pinyin;
             document.getElementById('single-meaning').textContent = data.meaning;
-            document.getElementById('single-stroke-status').textContent = '用手指或白板笔写一写吧！';
+            document.getElementById('single-stroke-status').innerHTML = `写一写吧！<span class="font-pinyin text-xs font-normal">(Write now!)</span>`;
 
             renderSingleDots();
             updateSingleContextBox();
@@ -1091,11 +1178,11 @@
             platesArea.innerHTML = '';
 
             if (data.isBossSentence) {
-                // 第 9 关 BOSS 关：先排句序 + 再写关键字
                 sentenceBox.classList.remove('hidden');
                 sentenceBox.classList.add('flex');
                 platesArea.classList.add('opacity-40', 'pointer-events-none');
                 document.getElementById('single-instruction').textContent = '👑 终极挑战：先排句子，再写招牌字！';
+                document.getElementById('single-instruction-en').textContent = 'Boss Level: Arrange the sentence first, then write the key characters!';
                 setupBossSentenceBuilder(data);
             } else {
                 sentenceBox.classList.add('hidden');
@@ -1104,26 +1191,40 @@
                 document.getElementById('single-instruction').textContent = data.isBonusOutline
                     ? '🎁 彩蛋热身：跟着虚线描红写出“合作”！'
                     : '🍳 请在白瓷餐盘里写出汉字：';
+                document.getElementById('single-instruction-en').textContent = data.isBonusOutline
+                    ? 'Bonus Warm-up: Trace along the dashed lines to write "合作"!'
+                    : 'Write the Chinese character(s) in the white plate:';
             }
 
-            // 渲染白瓷餐盘与已知字卡片
             const targetCount = data.segments.filter(s => s.target).length;
-            const plateSize = targetCount === 1 ? 245 : targetCount === 2 ? 205 : 175;
+            const plateSize = targetCount === 1 ? 240 : targetCount === 2 ? 200 : 170;
             let tCounter = 0;
 
             data.segments.forEach(seg => {
                 if (!seg.target) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'flex flex-col items-center gap-1.5';
+
                     const givenCard = document.createElement('div');
-                    givenCard.className = 'flex items-center justify-center bg-white rounded-3xl border-4 border-amber-300 text-amber-950 shadow-inner';
+                    givenCard.className = 'flex flex-col items-center justify-center bg-white rounded-3xl border-4 border-amber-300 text-amber-950 shadow-inner';
                     givenCard.style.width = `${Math.round(plateSize * 0.72)}px`;
                     givenCard.style.height = `${Math.round(plateSize * 0.72)}px`;
-                    givenCard.style.fontSize = `${Math.round(plateSize * 0.45)}px`;
-                    givenCard.textContent = seg.text;
-                    platesArea.appendChild(givenCard);
+                    givenCard.innerHTML = `
+                        <span class="font-pinyin text-xs md:text-sm font-bold text-amber-600 -mb-1">${seg.py}</span>
+                        <span class="font-bold" style="font-size: ${Math.round(plateSize * 0.42)}px; line-height: 1.1;">${seg.text}</span>
+                    `;
+
+                    const tag = document.createElement('span');
+                    tag.className = 'font-pinyin text-xs font-bold px-2.5 py-0.5 rounded-full bg-stone-200 text-stone-700';
+                    tag.textContent = 'Given · 已知字';
+
+                    wrapper.appendChild(givenCard);
+                    wrapper.appendChild(tag);
+                    platesArea.appendChild(wrapper);
                 } else {
                     const idx = tCounter++;
                     const wrapper = document.createElement('div');
-                    wrapper.className = 'flex flex-col items-center gap-2';
+                    wrapper.className = 'flex flex-col items-center gap-1.5';
 
                     const plate = document.createElement('div');
                     plate.className = `dish-plate mizige-cute flex items-center justify-center ${idx === 0 ? 'active-plate' : ''}`;
@@ -1136,8 +1237,8 @@
                     plate.appendChild(writerDiv);
 
                     const tag = document.createElement('span');
-                    tag.className = 'font-clean text-sm font-bold px-3 py-0.5 rounded-full bg-amber-200 text-amber-950';
-                    tag.textContent = `第 ${idx + 1} 个字`;
+                    tag.className = 'font-pinyin text-xs md:text-sm font-bold px-3 py-0.5 rounded-full bg-amber-200 text-amber-950';
+                    tag.textContent = `${seg.py} · 第 ${idx + 1} 字`;
 
                     wrapper.appendChild(plate);
                     wrapper.appendChild(tag);
@@ -1149,17 +1250,17 @@
                         padding: 10,
                         showOutline: Boolean(data.isBonusOutline),
                         showCharacter: false,
-                        strokeColor: '#5C2D16',      // 写对后变成漂亮的巧克力色
+                        strokeColor: '#5C2D16',
                         outlineColor: '#CBD5E1',
-                        highlightColor: '#FB7185',   // 写错一笔时柔和红色虚线/高亮提示这一笔
+                        highlightColor: '#FB7185',
                         drawingColor: '#D97706',
-                        drawingWidth: 24,            // 超粗笔触，适配二年级白板触控
+                        drawingWidth: 24,
                         strokeAnimationSpeed: 1.1,
                         delayBetweenStrokes: 200,
-                        leniency: 1.4                // 友好容错率，保护小朋友自信心
+                        leniency: 1.4
                     });
 
-                    const wObj = { idx, char: seg.target, writer, completed: false, plateEl: plate, tagEl: tag };
+                    const wObj = { idx, char: seg.target, py: seg.py, writer, completed: false, plateEl: plate, tagEl: tag };
                     singleWriters.push(wObj);
                     attachSingleQuiz(wObj);
                 }
@@ -1172,20 +1273,17 @@
             wObj.writer.quiz({
                 onMistake: function (strokeData) {
                     playTone('wrong');
-                    // 小动物顾客可爱地摇摇头
                     const custEl = document.getElementById('single-customer-svg');
                     custEl.classList.remove('animate-head-shake');
                     void custEl.offsetWidth;
                     custEl.classList.add('animate-head-shake');
 
-                    // 温和提示并自动用红色动画提示这一笔该怎么写
-                    document.getElementById('single-stroke-status').textContent =
-                        `🐰 差一点点！看红色提示写第 ${strokeData.strokeNum + 1} 笔哦~`;
+                    document.getElementById('single-stroke-status').innerHTML =
+                        `🐰 看红色提示写第 ${strokeData.strokeNum + 1} 笔 <span class="font-pinyin text-xs">(Stroke ${strokeData.strokeNum + 1})</span>`;
                     wObj.writer.highlightStroke(strokeData.strokeNum);
                 },
                 onCorrectStroke: function (strokeData) {
                     playTone('stroke');
-                    // 冒出小星星特效
                     const rect = wObj.plateEl.getBoundingClientRect();
                     spawnStarBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 8);
 
@@ -1193,16 +1291,16 @@
                         if (!w.completed) w.plateEl.classList.remove('active-plate');
                     });
                     wObj.plateEl.classList.add('active-plate');
-                    document.getElementById('single-stroke-status').textContent =
-                        `⭐ 真棒！还剩 ${strokeData.strokesRemaining} 笔`;
+                    document.getElementById('single-stroke-status').innerHTML =
+                        `⭐ 真棒！还剩 ${strokeData.strokesRemaining} 笔 <span class="font-pinyin text-xs">(${strokeData.strokesRemaining} left)</span>`;
                 },
                 onComplete: function () {
                     playTone('charDone');
                     wObj.completed = true;
                     wObj.plateEl.classList.remove('active-plate');
                     wObj.plateEl.classList.add('completed-plate');
-                    wObj.tagEl.className = 'font-clean text-sm font-bold px-3 py-0.5 rounded-full bg-emerald-500 text-white';
-                    wObj.tagEl.textContent = `✅ ${wObj.char}`;
+                    wObj.tagEl.className = 'font-pinyin text-xs md:text-sm font-bold px-3 py-0.5 rounded-full bg-emerald-500 text-white';
+                    wObj.tagEl.textContent = `✅ ${wObj.py} (${wObj.char})`;
 
                     const rect = wObj.plateEl.getBoundingClientRect();
                     spawnStarBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 18);
@@ -1216,7 +1314,6 @@
             });
         }
 
-        // 第 9 关 BOSS 关：句序排列逻辑
         function setupBossSentenceBuilder(data) {
             const slotsEl = document.getElementById('sentence-slots');
             const poolEl = document.getElementById('sentence-word-pool');
@@ -1228,30 +1325,34 @@
 
             function renderBuilder() {
                 slotsEl.innerHTML = '';
-                selectedOrder.forEach((word, sIdx) => {
+                selectedOrder.forEach((chunk, sIdx) => {
                     const chip = document.createElement('button');
-                    chip.className = 'candy-btn bg-amber-300 border-3 border-amber-700 px-3.5 py-1.5 text-xl md:text-2xl text-amber-950 shadow-[0_3px_0_#92400E]';
-                    chip.textContent = word;
+                    chip.className = 'candy-btn bg-amber-300 border-3 border-amber-700 px-3 py-1 text-lg md:text-xl font-bold text-amber-950 shadow-[0_3px_0_#92400E] flex flex-col items-center leading-tight';
+                    chip.innerHTML = `
+                        <span class="font-pinyin text-[10px] text-amber-800 font-bold">${chunk.py}</span>
+                        <span>${chunk.text}</span>
+                    `;
                     chip.onclick = () => {
-                        // 点击已选词卡可退回词池
                         selectedOrder.splice(sIdx, 1);
                         renderBuilder();
                     };
                     slotsEl.appendChild(chip);
                 });
 
-                // 检查是否排对整句话
                 if (selectedOrder.length === data.sentenceChunks.length) {
-                    if (selectedOrder.join('') === data.sentenceChunks.join('')) {
+                    const userStr = selectedOrder.map(c => c.text).join('');
+                    const targetStr = data.sentenceChunks.map(c => c.text).join('');
+                    if (userStr === targetStr) {
                         playTone('charDone');
                         bossSentenceSolved = true;
                         document.getElementById('sentence-builder-box').innerHTML = `
-                            <div class="text-xl md:text-2xl text-emerald-700 flex items-center gap-2">
+                            <div class="text-lg md:text-xl font-bold text-emerald-700 flex items-center gap-2">
                                 <span>🎉 句子排对啦：</span>
                                 <span class="underline decoration-4 decoration-emerald-400">我要吃炒面，不要吃炒饭。</span>
                             </div>
-                            <div class="font-clean text-sm md:text-base font-bold text-amber-800">
-                                👇 第二步：请在下方餐盘写出三大招牌字【炒】【面】【饭】！
+                            <div class="text-sm md:text-base font-bold text-amber-800">
+                                👇 第二步：请在下方餐盘写出【炒】【面】【饭】！
+                                <span class="font-pinyin text-xs font-normal text-amber-700">(Step 2: Write the 3 key characters below!)</span>
                             </div>
                         `;
                         const platesArea = document.getElementById('single-plates-area');
@@ -1269,15 +1370,18 @@
                 }
             }
 
-            shuffledChunks.forEach((word, idx) => {
+            shuffledChunks.forEach((chunk, idx) => {
                 const btn = document.createElement('button');
                 btn.id = `word-chip-${idx}`;
-                btn.className = 'candy-btn bg-rose-200 hover:bg-rose-100 border-3 border-rose-600 px-4 py-2 text-xl md:text-2xl text-rose-950 shadow-[0_4px_0_#9F1239]';
-                btn.textContent = word;
+                btn.className = 'candy-btn bg-rose-200 hover:bg-rose-100 border-3 border-rose-600 px-3.5 py-1.5 text-lg md:text-xl font-bold text-rose-950 shadow-[0_4px_0_#9F1239] flex flex-col items-center leading-tight';
+                btn.innerHTML = `
+                    <span class="font-pinyin text-[10px] text-rose-700 font-bold">${chunk.py}</span>
+                    <span>${chunk.text}</span>
+                `;
                 btn.onclick = () => {
                     if (selectedOrder.length < data.sentenceChunks.length) {
                         playTone('stroke');
-                        selectedOrder.push(word);
+                        selectedOrder.push(chunk);
                         renderBuilder();
                     }
                 };
@@ -1320,8 +1424,11 @@
                 showCelebrationModal({
                     svgHtml: CUTE_SVGS[data.dishKey],
                     title: isLast ? '🎊 恭喜毕业！金牌小厨神！' : '🍽️ 美味早餐出锅啦！',
-                    desc: `你写出了“${data.fullWord}”，小动物顾客开心得跳起来啦！`,
-                    primaryText: isLast ? '从第 1 单重新玩 🔄' : '接下一份订单 ➡️',
+                    desc: `你写出了“${data.fullWord}”（${data.pinyin}）！`,
+                    descEn: isLast
+                        ? 'Congratulations! You are a Master Breakfast Chef!'
+                        : `You wrote "${data.fullWord}" (${data.meaning})! Breakfast is served!`,
+                    primaryText: isLast ? '重新挑战 🔄 (Play Again)' : '接下一份订单 ➡️ (Next Order)',
                     onPrimary: () => {
                         closeCelebrationModal();
                         currentSingleIdx = isLast ? 0 : currentSingleIdx + 1;
@@ -1339,12 +1446,12 @@
         function animateSingleHint() {
             const target = singleWriters.find(w => !w.completed) || singleWriters[0];
             if (!target) return;
-            document.getElementById('single-stroke-status').textContent = `👀 仔细看“${target.char}”的笔顺哦~`;
+            document.getElementById('single-stroke-status').innerHTML = `👀 看“${target.char}”的笔顺 <span class="font-pinyin text-xs">(Watch stroke order)</span>`;
             target.writer.animateCharacter({
                 onComplete: () => {
                     if (!target.completed) {
                         attachSingleQuiz(target);
-                        document.getElementById('single-stroke-status').textContent = `轮到你写“${target.char}”啦！`;
+                        document.getElementById('single-stroke-status').innerHTML = `轮到你写“${target.char}”啦！<span class="font-pinyin text-xs">(Your turn!)</span>`;
                     }
                 }
             });
@@ -1367,7 +1474,7 @@
         /**
          * ==================== 7. 模式二：【双人厨神 PK】左右分屏同订单对决 ====================
          */
-        const PK_ROUNDS = 3; // 先完成 3 份共同订单获胜
+        const PK_ROUNDS = 3;
         let pkRoundIndex = 0;
         let pkQueue = [];
         let pkScores = [0, 0];
@@ -1376,7 +1483,6 @@
 
         function startPkMode() {
             switchScreen('screen-pk');
-            // 选取适合快速双人对决的前 6 关及第 8 关组成随机题库
             const pool = [LESSON_DATA[0], LESSON_DATA[1], LESSON_DATA[2], LESSON_DATA[3], LESSON_DATA[4], LESSON_DATA[5], LESSON_DATA[7]];
             pkQueue = [...pool].sort(() => Math.random() - 0.5).slice(0, PK_ROUNDS);
             pkRoundIndex = 0;
@@ -1397,6 +1503,7 @@
             const item = pkQueue[pkRoundIndex];
             document.getElementById('pk-shared-dish').innerHTML = CUTE_SVGS[item.dishKey];
             document.getElementById('pk-shared-pinyin').textContent = item.pinyin;
+            document.getElementById('pk-shared-meaning').textContent = item.meaning;
             document.getElementById('pk-shared-context').innerHTML = item.segments.map(s =>
                 s.target ? `<span class="text-rose-600 underline mx-1">?</span>` : `<span>${s.text}</span>`
             ).join('');
@@ -1410,20 +1517,22 @@
             const container = document.getElementById(`pk-plates-${playerIdx}`);
             container.innerHTML = '';
             pkPlayerWriters[playerIdx] = [];
-            document.getElementById(`pk-status-${playerIdx}`).textContent = '快写出缺少的汉字！';
+            document.getElementById(`pk-status-${playerIdx}`).innerHTML = `快写出汉字！<span class="font-pinyin text-xs font-normal">(Write fast!)</span>`;
 
             const targetCount = item.segments.filter(s => s.target).length;
-            const boxSize = targetCount === 1 ? 215 : 165;
+            const boxSize = targetCount === 1 ? 210 : 160;
             let tIdx = 0;
 
             item.segments.forEach(seg => {
                 if (!seg.target) {
                     const staticBox = document.createElement('div');
-                    staticBox.className = 'flex items-center justify-center bg-white rounded-3xl border-3 border-amber-300 text-amber-950';
+                    staticBox.className = 'flex flex-col items-center justify-center bg-white rounded-3xl border-3 border-amber-300 text-amber-950';
                     staticBox.style.width = `${Math.round(boxSize * 0.68)}px`;
                     staticBox.style.height = `${Math.round(boxSize * 0.68)}px`;
-                    staticBox.style.fontSize = `${Math.round(boxSize * 0.42)}px`;
-                    staticBox.textContent = seg.text;
+                    staticBox.innerHTML = `
+                        <span class="font-pinyin text-[11px] font-bold text-amber-600 -mb-1">${seg.py}</span>
+                        <span class="font-bold" style="font-size: ${Math.round(boxSize * 0.4)}px; line-height: 1.1;">${seg.text}</span>
+                    `;
                     container.appendChild(staticBox);
                 } else {
                     const curIdx = tIdx++;
@@ -1483,32 +1592,35 @@
             if (pkRoundLocked) return;
             if (!pkPlayerWriters[playerIdx].every(w => w.completed)) return;
 
-            // 该玩家率先写完本轮订单！
             pkRoundLocked = true;
             pkScores[playerIdx] += 1;
             updatePkBars();
 
-            const teamName = playerIdx === 0 ? '🍎 红队小厨师' : '🫐 蓝队小厨师';
-            document.getElementById(`pk-status-${playerIdx}`).textContent = '🎉 率先出餐！加 1 分！';
-            document.getElementById(`pk-status-${1 - playerIdx}`).textContent = '加油，准备下一道菜！';
+            document.getElementById(`pk-status-${playerIdx}`).innerHTML = `🎉 率先出餐！+1 分 <span class="font-pinyin text-xs">(First!)</span>`;
+            document.getElementById(`pk-status-${1 - playerIdx}`).innerHTML = `加油！准备下一道 <span class="font-pinyin text-xs">(Next dish!)</span>`;
 
             if (pkRoundIndex >= PK_ROUNDS - 1) {
-                // 3 轮全部结束，宣布总冠军！
                 playTone('win');
                 spawnConfettiScreen();
                 const champion = pkScores[0] > pkScores[1]
                     ? '🍎 红队小厨师获得总冠军！'
                     : pkScores[1] > pkScores[0]
                     ? '🫐 蓝队小厨师获得总冠军！'
-                    : '🤝 红蓝两队平分秋色，都是小厨神！';
+                    : '🤝 红蓝两队平分秋色！';
+                const championEn = pkScores[0] > pkScores[1]
+                    ? 'Red Team is the Master Chef Champion!'
+                    : pkScores[1] > pkScores[0]
+                    ? 'Blue Team is the Master Chef Champion!'
+                    : 'It is a Tie! Both Teams are Master Chefs!';
 
                 speakChinese(champion);
                 setTimeout(() => {
                     showCelebrationModal({
                         svgHtml: CUTE_SVGS.trophy,
                         title: champion,
-                        desc: `最终比分：红队 ${pkScores[0]} 盘 VS 蓝队 ${pkScores[1]} 盘！`,
-                        primaryText: '再来一局 PK 🔄',
+                        desc: `最终比分：红队 ${pkScores[0]} 盘 VS 蓝队 ${pkScores[1]} 盘`,
+                        descEn: `${championEn} (Red ${pkScores[0]} : Blue ${pkScores[1]})`,
+                        primaryText: '再来一局 PK 🔄 (Play Again)',
                         onPrimary: () => {
                             closeCelebrationModal();
                             startPkMode();
@@ -1550,10 +1662,11 @@
          */
         let modalCallback = null;
 
-        function showCelebrationModal({ svgHtml, title, desc, primaryText, onPrimary }) {
+        function showCelebrationModal({ svgHtml, title, desc, descEn, primaryText, onPrimary }) {
             document.getElementById('modal-illustration').innerHTML = svgHtml;
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('modal-desc-en').textContent = descEn || '';
             document.getElementById('modal-btn-primary').textContent = primaryText;
             modalCallback = onPrimary;
             document.getElementById('modal-celebration').classList.remove('hidden');
