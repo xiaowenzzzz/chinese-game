@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>暴躁大厨的疯狂烤箱 - 触屏流畅版</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap');
+
+  * {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'KaiTi', 'STKaiti', '楷体', '楷体_GB2312', 'BiauKai', serif;
+    background: radial-gradient(circle at center, #FFE5B4 0%, #FFAD60 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  .en-text {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+  }
+
+  /* 屏幕震动特效 */
+  .screen-shake {
+    animation: bigShake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+  }
+
+  /* 顶部仪表盘 */
+  .top-bar {
+    width: 94%;
+    max-width: 1020px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFF9EB;
+    border: 5px solid #8C3B00;
+    border-radius: 30px;
+    padding: 8px 25px;
+    box-shadow: 0 6px 0 #5E2600;
+    margin-bottom: 12px;
+    z-index: 20;
+  }
+
+  .game-logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #D9381E;
+    line-height: 1.2;
+  }
+
+  .hud-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  .hud-pill {
+    background: #FFE099;
+    border: 3px solid #D97724;
+    padding: 5px 14px;
+    border-radius: 20px;
+    color: #4A1C00;
+  }
+
+  .timer-pill {
+    background: #FF595E;
+    color: #FFF;
+    border-color: #9E191E;
+    min-width: 105px;
+    text-align: center;
+  }
+
+  /* 主厨房舞台 */
+  .kitchen-stage {
+    width: 94%;
+    max-width: 1020px;
+    height: 575px;
+    background: #FFFDF7;
+    border: 7px solid #6E3211;
+    border-radius: 38px;
+    box-shadow: 0 14px 0 #421B06, 0 25px 40px rgba(0,0,0,0.25);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 24px;
+    overflow: hidden;
+  }
+
+  /* 大厨与订单提示区 */
+  .chef-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 15;
+  }
+
+  .chef-box {
+    width: 112px;
+    height: 112px;
+    background: #FFD166;
+    border: 5px solid #8C3B00;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    box-shadow: 0 6px 0 #8C3B00;
+    position: relative;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .chef-mood-tag {
+    position: absolute;
+    bottom: -12px;
+    background: #EF476F;
+    color: white;
+    font-size: 14px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 2px solid #FFF;
+    white-space: nowrap;
+  }
+
+  .order-card {
+    flex-grow: 1;
+    background: #FFF;
+    border: 4px solid #FF8C42;
+    border-radius: 25px;
+    padding: 10px 22px;
+    box-shadow: 0 6px 0 #D96B27;
+    position: relative;
+  }
+
+  .action-badge {
+    display: inline-block;
+    background: #06D6A0;
+    color: #003B2B;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 4px 14px;
+    border-radius: 14px;
+    margin-bottom: 5px;
+    border: 2px solid #003B2B;
+    line-height: 1.3;
+  }
+
+  .sentence-zh {
+    font-size: 33px;
+    font-weight: bold;
+    color: #2B1100;
+    line-height: 1.25;
+  }
+
+  .target-slot {
+    display: inline-block;
+    min-width: 54px;
+    height: 44px;
+    line-height: 40px;
+    text-align: center;
+    background: #FFF3B0;
+    border: 3px dashed #FF5400;
+    border-radius: 12px;
+    color: #FF5400;
+    margin: 0 5px;
+  }
+
+  .sentence-en {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: #B85D14;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .audio-btn {
+    background: #118AB2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #073B4C;
+    flex-shrink: 0;
+  }
+
+  /* 疯狂烤箱核心玩法舞台 */
+  .oven-arena {
+    width: 100%;
+    height: 335px;
+    background: linear-gradient(180deg, #3D2C2E 0%, #1F1516 100%);
+    border: 6px solid #8C4A27;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 40px rgba(255, 100, 0, 0.4);
+    touch-action: none;
+  }
+
+  .oven-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,140,0,0.25) 0%, transparent 75%);
+    pointer-events: none;
+  }
+
+  /* 玩法1：打地鼠/抓偷吃小怪兽 */
+  .monster-hole-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0 30px;
+    z-index: 5;
+  }
+
+  .monster-card {
+    width: 170px;
+    height: 220px;
+    background: linear-gradient(180deg, #FFD166 0%, #F77F00 100%);
+    border: 5px solid #FFF;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 0 #9E2A2B;
+    transition: transform 0.12s;
+    position: relative;
+    animation: popUpDown 1.6s infinite ease-in-out;
+  }
+  .monster-card:nth-child(2) { animation-delay: 0.35s; }
+  .monster-card:nth-child(3) { animation-delay: 0.7s; }
+
+  .monster-card:hover { transform: scale(1.08); }
+  .monster-card:active { transform: scale(0.9); }
+
+  .monster-emoji { font-size: 56px; margin-bottom: -5px; }
+  .char-big { font-size: 68px; font-weight: bold; color: #2B0900; line-height: 1.1; }
+  .py-pill {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    background: #FFF;
+    color: #D62828;
+    padding: 2px 14px;
+    border-radius: 15px;
+  }
+
+  /* 玩法2：真·水果忍者切面包 */
+  .slice-bread-wrapper {
+    width: 195px;
+    height: 195px;
+    position: relative;
+    cursor: crosshair;
+    animation: floatBounce 1.8s infinite ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+  }
+  .slice-bread-wrapper:nth-child(2) { animation-delay: 0.4s; }
+  .slice-bread-wrapper:nth-child(3) { animation-delay: 0.8s; }
+
+  .slice-bread-item {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, #FFF3B0, #E09F3E);
+    border: 6px solid #FFF;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+    position: relative;
+    transition: transform 0.15s;
+  }
+
+  .slice-guide-line {
+    position: absolute;
+    width: 115%;
+    height: 4px;
+    border-top: 4px dashed rgba(255, 255, 255, 0.75);
+    transform: rotate(-28deg);
+    pointer-events: none;
+  }
+
+  .wobble-warn {
+    animation: wobbleAlert 0.4s ease !important;
+  }
+
+  .bread-half-left {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, #FFF3B0, #E09F3E);
+    border: 6px solid #FFF;
+    border-radius: 50%;
+    clip-path: polygon(0 0, 52% 0, 48% 100%, 0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: splitLeft 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .bread-half-right {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, #FFF3B0, #E09F3E);
+    border: 6px solid #FFF;
+    border-radius: 50%;
+    clip-path: polygon(52% 0, 100% 0, 100% 100%, 48% 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: splitRight 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes splitLeft {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(-55px, 25px) rotate(-22deg); opacity: 0.2; }
+  }
+
+  @keyframes splitRight {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(55px, 25px) rotate(22deg); opacity: 0.2; }
+  }
+
+  @keyframes wobbleAlert {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-12deg) scale(1.08); }
+    50% { transform: rotate(12deg) scale(1.08); }
+    75% { transform: rotate(-8deg) scale(1.04); }
+  }
+
+  #slash-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 30;
+  }
+
+  /* 玩法3：擦除浓烟黑雾 */
+  .smoke-fog-layer {
+    position: absolute;
+    inset: 0;
+    background: rgba(85, 90, 100, 0.96);
+    z-index: 12;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: opacity 0.18s;
+    text-align: center;
+    padding: 0 20px;
+    touch-action: none;
+  }
+  .fog-instruction {
+    font-size: 32px;
+    font-weight: bold;
+    color: #FFD166;
+    text-shadow: 0 3px 0 #000;
+    animation: pulseText 1s infinite;
+    pointer-events: none;
+    line-height: 1.4;
+  }
+  .wipe-bar-bg {
+    width: 340px;
+    height: 26px;
+    background: #222;
+    border: 3px solid #FFF;
+    border-radius: 15px;
+    margin-top: 15px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .wipe-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #06D6A0, #FFD166);
+    transition: width 0.08s;
+  }
+
+  /* 爆笑黑暗料理惩罚特效 */
+  .disaster-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(45, 70, 20, 0.94);
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #D8F3DC;
+    animation: popIn 0.3s ease;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  /* 飘浮加分与连击 */
+  .combo-toast {
+    position: absolute;
+    top: 18px;
+    font-size: 36px;
+    font-weight: bold;
+    color: #FFD166;
+    text-shadow: 0 4px 0 #D62828, 0 0 20px #FFF;
+    z-index: 35;
+    animation: flyUp 1.3s ease forwards;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* 开始与胜利弹窗 */
+  .modal-mask {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 12, 0, 0.82);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(6px);
+  }
+  .modal-box {
+    background: #FFF9EB;
+    border: 7px solid #FF7B00;
+    border-radius: 38px;
+    padding: 28px 40px;
+    max-width: 680px;
+    width: 94%;
+    text-align: center;
+    box-shadow: 0 14px 0 #9E3B00;
+    animation: popIn 0.4s ease;
+  }
+  .how-to-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 15px 0;
+  }
+  .how-card {
+    background: #FFF;
+    border: 3px solid #FFAD60;
+    border-radius: 20px;
+    padding: 10px 8px;
+    font-size: 18px;
+    color: #4A1C00;
+  }
+  .big-btn {
+    background: linear-gradient(180deg, #FF595E 0%, #D62828 100%);
+    color: #FFF;
+    border: 4px solid #FFF;
+    box-shadow: 0 8px 0 #780000;
+    font-family: 'KaiTi', 'STKaiti', '楷体', '楷体_GB2312', 'BiauKai', serif;
+    font-size: 32px;
+    font-weight: bold;
+    padding: 12px 45px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .big-btn:active {
+    transform: translateY(5px);
+    box-shadow: 0 3px 0 #780000;
+  }
+
+  @keyframes popUpDown {
+    0%, 100% { transform: translateY(8px); }
+    50% { transform: translateY(-14px); }
+  }
+  @keyframes floatBounce {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-18px) rotate(3deg); }
+  }
+  @keyframes pulseText {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+  @keyframes bigShake {
+    10%, 90% { transform: translate3d(-4px, 0, 0); }
+    20%, 80% { transform: translate3d(8px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-12px, 0, 0); }
+    40%, 60% { transform: translate3d(12px, 0, 0); }
+  }
+  @keyframes popIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes flyUp {
+    0% { transform: translateY(20px) scale(0.8); opacity: 1; }
+    100% { transform: translateY(-50px) scale(1.15); opacity: 0; }
+  }
+</style>
+</head>
+<body id="main-body">
+
+  <!-- 顶部状态栏 -->
+  <div class="top-bar">
+    <div class="game-logo">
+      🔥 暴躁大厨的疯狂烤箱
+      <div class="en-text" style="font-size:15px; color:#8C3B00;">Grumpy Chef's Crazy Oven</div>
+    </div>
+    <div class="hud-group">
+      <div class="hud-pill">Level 关卡: <span id="hud-level">1</span>/14</div>
+      <div class="hud-pill">🔥 Combo: <span id="hud-combo">0</span></div>
+      <div class="hud-pill">⭐ <span id="hud-score">0</span></div>
+      <div class="hud-pill timer-pill">⏱️ <span id="hud-timer">30</span>s</div>
+    </div>
+  </div>
+
+  <!-- 主舞台 -->
+  <div class="kitchen-stage" id="stage-box">
+    <!-- 大厨与题目 -->
+    <div class="chef-header">
+      <div class="chef-box" id="chef-avatar">
+        <span id="chef-emoji">😤</span>
+        <div class="chef-mood-tag" id="chef-mood">快点! Hurry!</div>
+      </div>
+      <div class="order-card">
+        <div class="action-badge" id="action-hint">🔨 玩法提示 How to Play</div>
+        <div class="sentence-zh" id="sentence-zh">准备好了吗？</div>
+        <div class="sentence-en">
+          <button class="audio-btn" onclick="speakSentence()" title="朗读 Read Aloud">🔊</button>
+          <span id="sentence-en">Let's bake!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 疯狂烤箱动作互动区 -->
+    <div class="oven-arena" id="oven-arena">
+      <div class="oven-glow"></div>
+      <canvas id="slash-canvas"></canvas>
+      <div id="arena-content" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;"></div>
+    </div>
+  </div>
+
+  <!-- 开始弹窗（双语玩法说明） -->
+  <div class="modal-mask" id="start-modal">
+    <div class="modal-box">
+      <div style="font-size: 72px;">👨‍🍳🔥🥐</div>
+      <h1 style="font-size: 38px; color: #D62828; margin: 5px 0;">
+        暴躁大厨的疯狂烤箱<br>
+        <span class="en-text" style="font-size: 24px; color: #FF7B00;">Grumpy Chef's Crazy Oven</span>
+      </h1>
+      <p style="font-size: 20px; color: #4A1C00; margin: 8px 0;">
+        每关有 <b>30 秒</b>！根据提示完成 3 种动作，千万别烤出黑暗料理！💩🧦<br>
+        <span class="en-text" style="font-size: 16px; color: #7F4F24;">You have 30s per round! Do the right action to find the target word!</span>
+      </p>
+
+      <div class="how-to-grid">
+        <div class="how-card">
+          <div style="font-size:36px;">💨</div>
+          <b>1. 擦除黑烟</b><br>
+          <span class="en-text" style="font-size:14px; color:#D96B27;">Wipe the Smoke</span><br>
+          <span style="font-size:15px;">左右擦拭屏幕吹散黑烟<br><span class="en-text" style="font-size:13px;">Rub screen to clear fog</span></span>
+        </div>
+        <div class="how-card">
+          <div style="font-size:36px;">🔪</div>
+          <b>2. 划切面包</b><br>
+          <span class="en-text" style="font-size:14px; color:#D96B27;">Slice the Bread</span><br>
+          <span style="font-size:15px;">按住手指划过面包劈开它<br><span class="en-text" style="font-size:13px;">Drag/Swipe across bread</span></span>
+        </div>
+        <div class="how-card">
+          <div style="font-size:36px;">🔨</div>
+          <b>3. 敲打怪兽</b><br>
+          <span class="en-text" style="font-size:14px; color:#D96B27;">Whack Monsters</span><br>
+          <span style="font-size:15px;">快速点击正确的生字<br><span class="en-text" style="font-size:13px;">Tap the right monster</span></span>
+        </div>
+      </div>
+
+      <button class="big-btn" onclick="startGame()">开始大乱斗 START!</button>
+    </div>
+  </div>
+
+  <!-- 结束弹窗 -->
+  <div class="modal-mask" id="end-modal" style="display: none;">
+    <div class="modal-box">
+      <div style="font-size: 80px;">🏆👑🥖</div>
+      <h1 style="font-size: 40px; color: #D62828; margin: 10px 0;">
+        超级神厨诞生！<br>
+        <span class="en-text" style="font-size: 24px; color: #FF7B00;">Super Master Chef!</span>
+      </h1>
+      <p id="end-summary" style="font-size: 22px; color: #4A1C00; line-height: 1.6;"></p>
+      <button class="big-btn" onclick="startGame()">再挑战一次 Play Again!</button>
+    </div>
+  </div>
+
+<script>
+  const levels = [
+    {
+      target: "特", py: "tè", mechanic: "wipe",
+      hint: "💨 【擦黑烟 Wipe Smoke】左右擦拭屏幕吹散黑烟！Swipe left & right to clear the smoke!",
+      zh1: "咖啡店烤出了", zh2: "别的面包！",
+      en: "Special (tè bié) — The café baked special bread!",
+      choices: [
+        { c: "特", p: "tè", icon: "🥐" },
+        { c: "持", p: "chí", icon: "🥖" },
+        { c: "待", p: "dài", icon: "🍞" }
+      ]
+    },
+    {
+      target: "别", py: "bié", mechanic: "slice",
+      hint: "🔪 【切面包 Slice Bread】按住并划过面包劈开它！Drag & swipe across the right bread!",
+      zh1: "这块面包很特", zh2: "，和大家的不一样。",
+      en: "Special / Different (tè bié) — This bread is very special.",
+      choices: [
+        { c: "别", p: "bié", icon: "🍞" },
+        { c: "到", p: "dào", icon: "🥯" },
+        { c: "力", p: "lì", icon: "🥨" }
+      ]
+    },
+    {
+      target: "星", py: "xīng", mechanic: "whack",
+      hint: "🔨 【打怪兽 Whack Monster】点击敲打偷吃小怪兽！Tap the monster with the right word!",
+      zh1: "今天是", zh2: "期天，全家人去吃早餐。",
+      en: "Sunday / Week (xīng qī) — Today is Sunday.",
+      choices: [
+        { c: "星", p: "xīng", icon: "👾" },
+        { c: "早", p: "zǎo", icon: "👹" },
+        { c: "晴", p: "qíng", icon: "👻" }
+      ]
+    },
+    {
+      target: "期", py: "qī", mechanic: "slice",
+      hint: "🔪 【切面包 Slice Bread】按住并划过飞天面包！Drag & swipe across the right bread!",
+      zh1: "每个星", zh2: "我们最喜欢吃爱心早餐。",
+      en: "Week (xīng qī) — Every week we love eating breakfast.",
+      choices: [
+        { c: "期", p: "qī", icon: "🥞" },
+        { c: "欺", p: "qī", icon: "🧇" },
+        { c: "旗", p: "qí", icon: "🍩" }
+      ]
+    },
+    {
+      target: "进", py: "jìn", mechanic: "whack",
+      hint: "🔨 【打怪兽 Whack Monster】敲打守门怪兽打开店门！Tap the right monster to enter!",
+      zh1: "我们走", zh2: "热闹的咖啡店里。",
+      en: "Enter / Walk into (zǒu jìn) — We walk into the café.",
+      choices: [
+        { c: "进", p: "jìn", icon: "🦖" },
+        { c: "近", p: "jìn", icon: "🐉" },
+        { c: "井", p: "jǐng", icon: "🐊" }
+      ]
+    },
+    {
+      target: "餐", py: "cān", mechanic: "wipe",
+      hint: "💨 【擦黑烟 Wipe Smoke】来回擦拭屏幕看清订单！Rub the screen to clear the smoke!",
+      zh1: "爸爸点了一份美味的早", zh2: "。",
+      en: "Breakfast / Meal (zǎo cān) — Dad ordered a delicious breakfast.",
+      choices: [
+        { c: "餐", p: "cān", icon: "🍳" },
+        { c: "食", p: "shí", icon: "🥓" },
+        { c: "饮", p: "yǐn", icon: "🥪" }
+      ]
+    },
+    {
+      target: "闻", py: "wén", mechanic: "whack",
+      hint: "🔨 【打怪兽 Whack Monster】敲打偷闻香味的小老鼠！Tap the right mouse!",
+      zh1: "吸吸鼻子，我", zh2: "到了烤面包的香味！",
+      en: "Smell (wén dào) — I smelled the aroma of baked bread!",
+      choices: [
+        { c: "闻", p: "wén", icon: "🐭" },
+        { c: "问", p: "wèn", icon: "🐹" },
+        { c: "间", p: "jiān", icon: "🐰" }
+      ]
+    },
+    {
+      target: "香", py: "xiāng", mechanic: "slice",
+      hint: "🔪 【切面包 Slice Bread】按住划一刀切开香甜面包！Drag & swipe across the sweet bread!",
+      zh1: "刚出炉的面包真是", zh2: "喷喷的！",
+      en: "Fragrant / Sweet-smelling (xiāng pēn pēn) — Freshly baked bread smells so good!",
+      choices: [
+        { c: "香", p: "xiāng", icon: "🥐" },
+        { c: "禾", p: "hé", icon: "🥖" },
+        { c: "甜", p: "tián", icon: "🧁" }
+      ]
+    },
+    {
+      target: "味", py: "wèi", mechanic: "wipe",
+      hint: "💨 【擦蒸汽 Wipe Steam】擦干烤箱玻璃选出正确生字！Rub the glass to see clearly!",
+      zh1: "咬一口，这面包的", zh2: "道好极了！",
+      en: "Taste / Flavor (wèi dào) — The taste of this bread is wonderful!",
+      choices: [
+        { c: "味", p: "wèi", icon: "🍔" },
+        { c: "妹", p: "mèi", icon: "🌭" },
+        { c: "未", p: "wèi", icon: "🍕" }
+      ]
+    },
+    {
+      target: "食", py: "shí", mechanic: "whack",
+      hint: "🔨 【打怪兽 Whack Monster】赶跑抢食物的外星吃货！Tap the right alien!",
+      zh1: "桌上摆满了好吃的", zh2: "物。",
+      en: "Food (shí wù) — The table is full of delicious food.",
+      choices: [
+        { c: "食", p: "shí", icon: "👽" },
+        { c: "良", p: "liáng", icon: "🤖" },
+        { c: "饭", p: "fàn", icon: "🎃" }
+      ]
+    },
+    {
+      target: "物", py: "wù", mechanic: "slice",
+      hint: "🔪 【切食物 Slice Food】按住划过正确的美味食物！Drag & swipe across the right food!",
+      zh1: "我们要珍惜每一份食", zh2: "。",
+      en: "Food / Things (shí wù) — We should cherish every piece of food.",
+      choices: [
+        { c: "物", p: "wù", icon: "🍱" },
+        { c: "牛", p: "niú", icon: "🍙" },
+        { c: "场", p: "chǎng", icon: "🥟" }
+      ]
+    },
+    {
+      target: "分", py: "fēn", mechanic: "slice",
+      hint: "🔪 【切面包 Slice Bread】按住划一刀，大家一起分工合作！Swipe to work together!",
+      zh1: "大家一起", zh2: "工合作，烤出了最特别的面包！",
+      en: "Division of labor & cooperation (fēn gōng hé zuò) — Working together makes the most special bread!",
+      choices: [
+        { c: "分", p: "fēn", icon: "🥖" },
+        { c: "公", p: "gōng", icon: "🍞" },
+        { c: "半", p: "bàn", icon: "🥐" }
+      ]
+    },
+    {
+      target: "完", py: "wán", mechanic: "whack",
+      hint: "🔨 【光盘行动 Tap to Finish】点击正确生字吃光面包！Tap the right word to finish!",
+      zh1: "大家一起把美味的面包吃", zh2: "啦！",
+      en: "Finish (chī wán) — Everyone finished eating the delicious bread!",
+      choices: [
+        { c: "完", p: "wán", icon: "😋" },
+        { c: "玩", p: "wán", icon: "😜" },
+        { c: "元", p: "yuán", icon: "😛" }
+      ]
+    },
+    {
+      target: "懂", py: "dǒng", mechanic: "wipe",
+      hint: "💨 【擦爱心玻璃 Wipe Heart Glass】擦亮玻璃解锁终极秘密！Rub to unlock the secret!",
+      zh1: "我终于", zh2: "得了：合作与分享让面包更特别！",
+      en: "Understand (dǒng de) — I understand: cooperation & sharing make bread special!",
+      choices: [
+        { c: "懂", p: "dǒng", icon: "💝" },
+        { c: "动", p: "dòng", icon: "💔" },
+        { c: "重", p: "zhòng", icon: "💣" }
+      ]
+    }
+  ];
+
+  let idx = 0;
+  let score = 0;
+  let combo = 0;
+  let timeLeft = 30;
+  let timerInterval = null;
+  let locked = false;
+
+  let isPointerDown = false;
+  let lastPointerPos = null;
+  let activeSliceTargets = [];
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function sfx(type) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === 'slash') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(1200, now);
+      osc.frequency.exponentialRampToValueAtTime(160, now + 0.18);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+      osc.start(now); osc.stop(now + 0.2);
+    } else if (type === 'good') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.setValueAtTime(659.25, now + 0.08);
+      osc.frequency.setValueAtTime(1046.5, now + 0.16);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+      osc.start(now); osc.stop(now + 0.45);
+    } else if (type === 'boom') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(140, now);
+      osc.frequency.exponentialRampToValueAtTime(45, now + 0.5);
+      gain.gain.setValueAtTime(0.4, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
+      osc.start(now); osc.stop(now + 0.55);
+    } else if (type === 'wipe') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400 + Math.random()*200, now);
+      gain.gain.setValueAtTime(0.06, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+      osc.start(now); osc.stop(now + 0.06);
+    }
+  }
+
+  function speakSentence(onCompleteCallback) {
+    if (!('speechSynthesis' in window)) {
+      if (onCompleteCallback) setTimeout(onCompleteCallback, 1200);
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const q = levels[idx];
+    const fullText = q.zh1 + q.target + q.zh2;
+    const u = new SpeechSynthesisUtterance(fullText);
+    u.lang = 'zh-CN';
+    u.rate = 0.92;
+
+    let finished = false;
+    const finishOnce = () => {
+      if (finished) return;
+      finished = true;
+      if (onCompleteCallback) {
+        setTimeout(onCompleteCallback, 600);
+      }
+    };
+
+    u.onend = finishOnce;
+    u.onerror = finishOnce;
+
+    if (onCompleteCallback) {
+      const estimatedMs = Math.max(2500, fullText.length * 380 + 1200);
+      setTimeout(finishOnce, estimatedMs);
+    }
+
+    window.speechSynthesis.speak(u);
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function startGame() {
+    document.getElementById('start-modal').style.display = 'none';
+    document.getElementById('end-modal').style.display = 'none';
+    idx = 0;
+    score = 0;
+    combo = 0;
+    loadLevel();
+  }
+
+  function updateHUD() {
+    document.getElementById('hud-level').innerText = idx + 1;
+    document.getElementById('hud-combo').innerText = combo;
+    document.getElementById('hud-score').innerText = score;
+    document.getElementById('hud-timer').innerText = timeLeft;
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    timeLeft = 30;
+    updateHUD();
+    timerInterval = setInterval(() => {
+      if (locked) return;
+      timeLeft--;
+      updateHUD();
+      if (timeLeft <= 8) {
+        document.getElementById('chef-emoji').innerText = '😱';
+        document.getElementById('chef-mood').innerText = '要烧焦啦! Burning!';
+      }
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        triggerDisaster("⏰ 时间到 Time's Up! 烤箱炸出黑暗料理啦！");
+      }
+    }, 1000);
+  }
+
+  function loadLevel() {
+    locked = false;
+    activeSliceTargets = [];
+    const q = levels[idx];
+    document.getElementById('chef-emoji').innerText = '😤';
+    document.getElementById('chef-mood').innerText = '快点! Hurry!';
+    document.getElementById('action-hint').innerText = q.hint;
+    document.getElementById('sentence-zh').innerHTML = `${q.zh1}<span class="target-slot" id="slot-box">?</span>${q.zh2}`;
+    document.getElementById('sentence-en').innerText = q.en;
+
+    const arena = document.getElementById('arena-content');
+    arena.innerHTML = '';
+
+    const shuffled = shuffle(q.choices);
+
+    if (q.mechanic === 'whack') {
+      const row = document.createElement('div');
+      row.className = 'monster-hole-row';
+      shuffled.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'monster-card';
+        card.innerHTML = `
+          <div class="monster-emoji">${item.icon}</div>
+          <div class="py-pill">${item.p}</div>
+          <div class="char-big">${item.c}</div>
+        `;
+        card.onclick = () => checkAnswer(item.c);
+        row.appendChild(card);
+      });
+      arena.appendChild(row);
+
+    } else if (q.mechanic === 'slice') {
+      const row = document.createElement('div');
+      row.className = 'monster-hole-row';
+      shuffled.forEach(item => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'slice-bread-wrapper';
+
+        const bread = document.createElement('div');
+        bread.className = 'slice-bread-item';
+        bread.innerHTML = `
+          <div class="slice-guide-line"></div>
+          <div style="font-size:48px; margin-bottom:-5px;">${item.icon}</div>
+          <div class="py-pill">${item.p}</div>
+          <div class="char-big">${item.c}</div>
+        `;
+        wrapper.appendChild(bread);
+
+        wrapper.addEventListener('click', () => {
+          if (locked) return;
+          bread.classList.remove('wobble-warn');
+          void bread.offsetWidth;
+          bread.classList.add('wobble-warn');
+          showToast("🔪 别点啦！要用手指【划过去】Swipe Across!");
+        });
+
+        row.appendChild(wrapper);
+        activeSliceTargets.push({
+          el: wrapper,
+          char: item.c,
+          py: item.p,
+          icon: item.icon,
+          sliced: false
+        });
+      });
+      arena.appendChild(row);
+
+    } else if (q.mechanic === 'wipe') {
+      const row = document.createElement('div');
+      row.className = 'monster-hole-row';
+      shuffled.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'monster-card';
+        card.style.background = 'linear-gradient(180deg, #A8E6CF 0%, #3BCEAC 100%)';
+        card.innerHTML = `
+          <div class="monster-emoji">${item.icon}</div>
+          <div class="py-pill">${item.p}</div>
+          <div class="char-big">${item.c}</div>
+        `;
+        card.onclick = () => checkAnswer(item.c);
+        row.appendChild(card);
+      });
+      arena.appendChild(row);
+
+      const fog = document.createElement('div');
+      fog.className = 'smoke-fog-layer';
+      fog.innerHTML = `
+        <div class="fog-instruction">
+          💨 快【左右擦一擦】吹散黑烟！💨<br>
+          <span class="en-text" style="font-size: 22px; color: #FFF;">Rub left & right to wipe away the smoke!</span>
+        </div>
+        <div class="wipe-bar-bg"><div class="wipe-bar-fill" id="wipe-fill"></div></div>
+      `;
+
+      let wipeProgress = 0;
+      let lastWipeX = null;
+      let lastWipeY = null;
+
+      const handleWipeMove = (clientX, clientY) => {
+        if (wipeProgress >= 100) return;
+        if (lastWipeX !== null && lastWipeY !== null) {
+          const dist = Math.hypot(clientX - lastWipeX, clientY - lastWipeY);
+          if (dist > 4) {
+            wipeProgress += Math.min(10, dist * 0.22);
+            sfx('wipe');
+            const fillEl = document.getElementById('wipe-fill');
+            if (fillEl) fillEl.style.width = Math.min(100, wipeProgress) + '%';
+            fog.style.opacity = Math.max(0, 1 - wipeProgress / 100);
+            if (wipeProgress >= 100) {
+              fog.remove();
+            }
+          }
+        }
+        lastWipeX = clientX;
+        lastWipeY = clientY;
+      };
+
+      fog.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        lastWipeX = e.clientX;
+        lastWipeY = e.clientY;
+      });
+      fog.addEventListener('pointermove', (e) => {
+        e.preventDefault();
+        if (e.pointerType === 'touch' || e.pointerType === 'pen' || e.buttons === 1 || e.pointerType === 'mouse') {
+          handleWipeMove(e.clientX, e.clientY);
+        }
+      });
+      fog.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (e.touches[0]) {
+          lastWipeX = e.touches[0].clientX;
+          lastWipeY = e.touches[0].clientY;
+        }
+      }, { passive: false });
+      fog.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (e.touches[0]) {
+          handleWipeMove(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: false });
+
+      arena.appendChild(fog);
+    }
+
+    startTimer();
+  }
+
+  function checkSliceCollision(x1, y1, x2, y2) {
+    if (locked || levels[idx].mechanic !== 'slice') return;
+    const dist = Math.hypot(x2 - x1, y2 - y1);
+    if (dist < 10) return;
+
+    const canvasRect = canvas.getBoundingClientRect();
+    const screenX = canvasRect.left + x2;
+    const screenY = canvasRect.top + y2;
+
+    for (let target of activeSliceTargets) {
+      if (target.sliced) continue;
+      const rect = target.el.getBoundingClientRect();
+      if (
+        screenX > rect.left + 15 &&
+        screenX < rect.right - 15 &&
+        screenY > rect.top + 15 &&
+        screenY < rect.bottom - 15
+      ) {
+        target.sliced = true;
+        performBreadSplitAnimation(target);
+        sfx('slash');
+        setTimeout(() => {
+          checkAnswer(target.char);
+        }, 320);
+        break;
+      }
+    }
+  }
+
+  function performBreadSplitAnimation(target) {
+    target.el.innerHTML = `
+      <div class="bread-half-left">
+        <div style="font-size:48px; margin-bottom:-5px;">${target.icon}</div>
+        <div class="py-pill">${target.py}</div>
+        <div class="char-big">${target.char}</div>
+      </div>
+      <div class="bread-half-right">
+        <div style="font-size:48px; margin-bottom:-5px;">${target.icon}</div>
+        <div class="py-pill">${target.py}</div>
+        <div class="char-big">${target.char}</div>
+      </div>
+      <div style="font-size:65px; z-index:20; animation: popIn 0.25s ease;">✨💥✨</div>
+    `;
+  }
+
+  function checkAnswer(chosenChar) {
+    if (locked) return;
+    const q = levels[idx];
+    if (chosenChar === q.target) {
+      locked = true;
+      clearInterval(timerInterval);
+      sfx('good');
+      combo++;
+      const bonus = 10 + combo * 2;
+      score += bonus;
+      updateHUD();
+
+      const slot = document.getElementById('slot-box');
+      slot.innerText = q.target;
+      slot.style.background = '#06D6A0';
+      slot.style.color = '#FFF';
+      slot.style.borderStyle = 'solid';
+
+      document.getElementById('chef-emoji').innerText = '🤩';
+      document.getElementById('chef-mood').innerText = `太香啦 Yummy! +${bonus}`;
+
+      showToast(`🔥 ${combo} 连击 Combo! +${bonus}⭐`);
+
+      speakSentence(() => {
+        idx++;
+        if (idx < levels.length) {
+          loadLevel();
+        } else {
+          endGame();
+        }
+      });
+
+    } else {
+      clearInterval(timerInterval);
+      triggerDisaster(`💥 放错字啦 Wrong Word! 烤出了“${chosenChar}”牌臭袜子面包！`);
+    }
+  }
+
+  function triggerDisaster(msg) {
+    locked = true;
+    combo = 0;
+    updateHUD();
+    sfx('boom');
+
+    const body = document.getElementById('main-body');
+    body.classList.remove('screen-shake');
+    void body.offsetWidth;
+    body.classList.add('screen-shake');
+
+    document.getElementById('chef-emoji').innerText = '🤬';
+    document.getElementById('chef-mood').innerText = '气死啦 So Mad!!';
+
+    const disasters = [
+      "🧦 烤臭袜子 Stinky Socks",
+      "💩 冒烟黑炭 Burnt Charcoal",
+      "🐸 蟑螂汉堡 Bug Burger",
+      "🤢 绿油油糊糊 Green Slime"
+    ];
+    const badFood = disasters[Math.floor(Math.random() * disasters.length)];
+
+    const overlay = document.createElement('div');
+    overlay.className = 'disaster-overlay';
+    overlay.innerHTML = `
+      <div style="font-size: 72px;">💥${badFood}💥</div>
+      <div style="font-size: 28px; font-weight: bold; margin: 10px 0;">${msg}</div>
+      <div class="en-text" style="font-size: 20px; color: #FFD166;">Try again in 2 seconds... (2秒后重新烤制)</div>
+    `;
+    document.getElementById('oven-arena').appendChild(overlay);
+
+    setTimeout(() => {
+      loadLevel();
+    }, 2200);
+  }
+
+  function showToast(text) {
+    document.querySelectorAll('.combo-toast').forEach(el => el.remove());
+    const t = document.createElement('div');
+    t.className = 'combo-toast';
+    t.innerText = text;
+    document.getElementById('oven-arena').appendChild(t);
+    setTimeout(() => t.remove(), 1300);
+  }
+
+  function endGame() {
+    sfx('good');
+    document.getElementById('end-summary').innerHTML = `
+      恭喜你征服了暴躁大厨的疯狂烤箱！<br>
+      最终得分 Total Score：<b style="color:#D62828; font-size:32px;">${score}</b> ⭐<br>
+      你已经全部掌握了第7课的 <b>14个生字</b>，懂得了<b>“分工合作”</b>的快乐！<br>
+      <span class="en-text" style="font-size: 17px; color: #2A9D8F;">You mastered all 14 words and learned the joy of teamwork!</span>
+    `;
+    document.getElementById('end-modal').style.display = 'flex';
+  }
+
+  const canvas = document.getElementById('slash-canvas');
+  const ctx = canvas.getContext('2d');
+  let points = [];
+
+  function resizeCanvas() {
+    const arena = document.getElementById('oven-arena');
+    canvas.width = arena.clientWidth;
+    canvas.height = arena.clientHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  setTimeout(resizeCanvas, 200);
+
+  const arenaEl = document.getElementById('oven-arena');
+
+  arenaEl.addEventListener('pointerdown', (e) => {
+    isPointerDown = true;
+    const rect = canvas.getBoundingClientRect();
+    lastPointerPos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  });
+
+  window.addEventListener('pointerup', () => {
+    isPointerDown = false;
+    lastPointerPos = null;
+  });
+
+  window.addEventListener('pointercancel', () => {
+    isPointerDown = false;
+    lastPointerPos = null;
+  });
+
+  arenaEl.addEventListener('pointermove', (e) => {
+    if (!isPointerDown && e.pointerType === 'mouse') return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    points.push({ x, y, life: 14 });
+    if (lastPointerPos) {
+      checkSliceCollision(lastPointerPos.x, lastPointerPos.y, x, y);
+    }
+    lastPointerPos = { x, y };
+  });
+
+  function renderSlash() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (points.length > 1) {
+      for (let i = 1; i < points.length; i++) {
+        const ratio = points[i].life / 14;
+        ctx.beginPath();
+        ctx.moveTo(points[i-1].x, points[i-1].y);
+        ctx.lineTo(points[i].x, points[i].y);
+        ctx.strokeStyle = `rgba(255, 200, 0, ${ratio * 0.7})`;
+        ctx.lineWidth = ratio * 16;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(points[i-1].x, points[i-1].y);
+        ctx.lineTo(points[i].x, points[i].y);
+        ctx.strokeStyle = `rgba(255, 255, 255, ${ratio})`;
+        ctx.lineWidth = ratio * 6;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+    }
+    points.forEach(p => p.life--);
+    points = points.filter(p => p.life > 0);
+    requestAnimationFrame(renderSlash);
+  }
+  renderSlash();
+</script>
+</body>
+</html>
