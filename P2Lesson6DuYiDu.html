@@ -1,3 +1,9 @@
+<!-- 
+  ==================================================
+  作品名称：嘟嘟过马路 - 交通主题识字大闯关（双语版）
+  原创作者：Franky Laoshi
+  ================================================== 
+-->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -72,7 +78,7 @@
       z-index: 1;
     }
 
-    /* 题目提示牌区域（横向紧凑排版，留出充足下方空间） */
+    /* 题目提示牌区域 */
     .prompt-area {
       position: relative;
       z-index: 12;
@@ -158,7 +164,7 @@
       transform: translateY(-50%) scale(0.92);
     }
 
-    /* 马路与斑马线主舞台（弹性占据剩余空间） */
+    /* 马路与斑马线主舞台 */
     .road-stage {
       position: relative;
       width: 100%;
@@ -171,6 +177,42 @@
       display: flex;
       align-items: center;
       margin-bottom: 12px;
+    }
+
+    /* 🌟 Franky Laoshi 专属交通路牌防伪标志 🌟 */
+    .teacher-sign {
+      position: absolute;
+      left: 35px;
+      top: -66px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .sign-board {
+      background: linear-gradient(135deg, #2a9d8f, #21867a);
+      color: #ffffff;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 15px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      padding: 6px 14px;
+      border-radius: 10px;
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.22);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .sign-pole {
+      width: 7px;
+      height: 28px;
+      background: linear-gradient(90deg, #94a3b8, #64748b);
+      border-radius: 0 0 3px 3px;
     }
 
     /* 斑马线条纹 */
@@ -412,6 +454,12 @@
 
   <!-- 马路舞台 -->
   <div class="road-stage">
+    <!-- Franky Laoshi 专属交通指示牌 -->
+    <div class="teacher-sign">
+      <div class="sign-board">🏫 Franky Laoshi</div>
+      <div class="sign-pole"></div>
+    </div>
+
     <div class="crosswalk">
       <div class="stripe"></div>
       <div class="stripe"></div>
