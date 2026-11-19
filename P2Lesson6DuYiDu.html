@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>嘟嘟过马路 - 交通主题识字大闯关</title>
+  <title>嘟嘟过马路 - 交通主题识字大闯关（双语版）</title>
   <style>
     * {
       box-sizing: border-box;
@@ -28,14 +28,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 30px;
+      padding: 12px 30px;
       background: rgba(255, 255, 255, 0.85);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       z-index: 10;
     }
 
     .title-badge {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: bold;
       color: #ff6b00;
       display: flex;
@@ -46,14 +46,14 @@
     .stats {
       display: flex;
       gap: 25px;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: bold;
       color: #2c3e50;
     }
 
     .stat-box {
       background: #fff3cd;
-      padding: 8px 20px;
+      padding: 6px 18px;
       border-radius: 30px;
       border: 3px solid #ffc107;
     }
@@ -61,10 +61,10 @@
     /* 太阳与云朵装饰 */
     .sun {
       position: absolute;
-      top: 85px;
+      top: 80px;
       right: 60px;
-      width: 90px;
-      height: 90px;
+      width: 85px;
+      height: 85px;
       background: #ffd93d;
       border-radius: 50%;
       box-shadow: 0 0 30px #ffeb3b;
@@ -78,40 +78,54 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 10px;
+      margin-top: 6px;
     }
 
     .question-board {
       background: #ffffff;
       border: 6px solid #ff9f1c;
       border-radius: 28px;
-      padding: 18px 50px;
+      padding: 14px 55px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       text-align: center;
-      min-width: 520px;
+      min-width: 540px;
       position: relative;
     }
 
     .pinyin-hint {
       font-family: Arial, sans-serif;
-      font-size: 42px;
+      font-size: 38px;
       font-weight: bold;
       color: #e63946;
       letter-spacing: 3px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .word-context {
-      font-size: 46px;
+      font-size: 44px;
       font-weight: bold;
       color: #1d3557;
     }
 
+    /* 新增：英文释义样式 */
+    .english-hint {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #457b9d;
+      background: #f1faee;
+      display: inline-block;
+      padding: 4px 18px;
+      border-radius: 16px;
+      margin-top: 8px;
+      border: 2px solid #a8dadc;
+    }
+
     .blank-slot {
       display: inline-block;
-      width: 64px;
-      height: 64px;
-      line-height: 60px;
+      width: 60px;
+      height: 60px;
+      line-height: 56px;
       border-bottom: 5px solid #ff9f1c;
       color: #2a9d8f;
       margin: 0 6px;
@@ -141,13 +155,13 @@
     .road-stage {
       position: relative;
       width: 100%;
-      height: 360px;
+      height: 330px;
       background: #4a5568;
       border-top: 10px solid #cbd5e0;
       border-bottom: 10px solid #cbd5e0;
       display: flex;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     /* 斑马线条纹 */
@@ -164,7 +178,7 @@
     }
 
     .stripe {
-      height: 28px;
+      height: 26px;
       background: #ffffff;
       border-radius: 6px;
     }
@@ -222,8 +236,8 @@
     .school-bus {
       position: absolute;
       right: 20px;
-      bottom: 25px;
-      font-size: 95px;
+      bottom: 20px;
+      font-size: 90px;
       z-index: 4;
       filter: drop-shadow(0 6px 8px rgba(0,0,0,0.3));
     }
@@ -232,7 +246,7 @@
     .dudu-character {
       position: absolute;
       left: 30px;
-      bottom: 35px;
+      bottom: 25px;
       width: 170px;
       height: 190px;
       z-index: 8;
@@ -270,12 +284,12 @@
     }
 
     .option-card {
-      width: 175px;
-      height: 175px;
+      width: 165px;
+      height: 165px;
       background: linear-gradient(145deg, #ffffff, #f0f4f8);
       border: 7px solid #3a86ff;
       border-radius: 32px;
-      font-size: 96px;
+      font-size: 92px;
       font-weight: bold;
       color: #1d3557;
       display: flex;
@@ -380,6 +394,8 @@
       <div class="word-context" id="wordContext">
         <span class="blank-slot" id="blankSlot">?</span> 自行车
       </div>
+      <!-- 新增：英文释义显示区 -->
+      <div class="english-hint" id="englishHint">ride a bicycle</div>
       <button class="speak-btn" onclick="speakCurrentWord()" title="听读音">🔊</button>
     </div>
   </div>
@@ -463,23 +479,23 @@
   </div>
 
   <script>
-    // 15个指定生字题库（含拼音、语境组词、干扰项）
+    // 15个指定生字题库（含拼音、语境组词、英文意思、干扰项）
     const wordBank = [
-      { char: "骑", pinyin: "qí", before: "", after: " 自行车", distractors: ["桥", "椅"] },
-      { char: "脚", pinyin: "jiǎo", before: "", after: " 踏车", distractors: ["却", "肚"] },
-      { char: "踏", pinyin: "tà", before: "脚 ", after: " 车", distractors: ["跳", "路"] },
-      { char: "应", pinyin: "yīng", before: "", after: " 该", distractors: ["因", "座"] },
-      { char: "该", pinyin: "gāi", before: "应 ", after: "", distractors: ["孩", "刻"] },
-      { char: "行", pinyin: "xíng", before: "人 ", after: " 道", distractors: ["街", "往"] },
-      { char: "桥", pinyin: "qiáo", before: "过天 ", after: "", distractors: ["骑", "校"] },
-      { char: "等", pinyin: "děng", before: "", after: " 红灯", distractors: ["第", "笔"] },
-      { char: "停", pinyin: "tíng", before: "红灯 ", after: "", distractors: ["亭", "站"] },
-      { char: "才", pinyin: "cái", before: "绿灯亮 ", after: " 能走", distractors: ["寸", "木"] },
-      { char: "灯", pinyin: "dēng", before: "红绿 ", after: "", distractors: ["打", "盯"] },
-      { char: "亮", pinyin: "liàng", before: "绿灯 ", after: " 了", distractors: ["高", "京"] },
-      { char: "坐", pinyin: "zuò", before: "", after: " 校车", distractors: ["座", "土"] },
-      { char: "校", pinyin: "xiào", before: "学 ", after: "", distractors: ["桥", "交"] },
-      { char: "走", pinyin: "zǒu", before: "", after: " 斑马线", distractors: ["足", "去"] }
+      { char: "骑", pinyin: "qí", before: "", after: " 自行车", en: "ride a bicycle", distractors: ["桥", "椅"] },
+      { char: "脚", pinyin: "jiǎo", before: "", after: " 踏车", en: "bicycle / pedal bike", distractors: ["却", "肚"] },
+      { char: "踏", pinyin: "tà", before: "脚 ", after: " 车", en: "bicycle (step / pedal)", distractors: ["跳", "路"] },
+      { char: "应", pinyin: "yīng", before: "", after: " 该", en: "should / ought to", distractors: ["因", "座"] },
+      { char: "该", pinyin: "gāi", before: "应 ", after: "", en: "should / ought to", distractors: ["孩", "刻"] },
+      { char: "行", pinyin: "xíng", before: "人 ", after: " 道", en: "sidewalk / pavement", distractors: ["街", "往"] },
+      { char: "桥", pinyin: "qiáo", before: "过天 ", after: "", en: "cross the overpass", distractors: ["骑", "校"] },
+      { char: "等", pinyin: "děng", before: "", after: " 红灯", en: "wait for the red light", distractors: ["第", "笔"] },
+      { char: "停", pinyin: "tíng", before: "红灯 ", after: "", en: "stop at a red light", distractors: ["亭", "站"] },
+      { char: "才", pinyin: "cái", before: "绿灯亮 ", after: " 能走", en: "only go when the light is green", distractors: ["寸", "木"] },
+      { char: "灯", pinyin: "dēng", before: "红绿 ", after: "", en: "traffic light", distractors: ["打", "盯"] },
+      { char: "亮", pinyin: "liàng", before: "绿灯 ", after: " 了", en: "the green light is on", distractors: ["高", "京"] },
+      { char: "坐", pinyin: "zuò", before: "", after: " 校车", en: "take the school bus", distractors: ["座", "土"] },
+      { char: "校", pinyin: "xiào", before: "学 ", after: "", en: "school", distractors: ["桥", "交"] },
+      { char: "走", pinyin: "zǒu", before: "", after: " 斑马线", en: "walk on the crosswalk", distractors: ["足", "去"] }
     ];
 
     let questions = [];
@@ -566,6 +582,7 @@
       document.getElementById('pinyinHint').innerText = q.pinyin;
       document.getElementById('wordContext').innerHTML =
         `${q.before}<span class="blank-slot" id="blankSlot">?</span>${q.after}`;
+      document.getElementById('englishHint').innerText = q.en;
 
       const options = shuffle([q.char, ...q.distractors]);
       const container = document.getElementById('optionsContainer');
