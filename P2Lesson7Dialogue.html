@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="zh-SG">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>香香咖啡店：小小点餐员 | Xiāngxiāng Kāfēidiàn</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Noto Sans SC & Fredoka -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans SC', 'Fredoka', sans-serif;
+      background-color: #FEF7E7;
+      background-image: radial-gradient(#F3DFB9 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Strict 1-to-1 Ruby Pinyin Alignment & Toggle */
+    ruby {
+      ruby-align: center;
+      margin: 0 2px;
+      display: inline-flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      vertical-align: bottom;
+      line-height: 1.15;
+    }
+    rt {
+      font-family: 'Fredoka', 'Noto Sans SC', sans-serif;
+      font-size: 0.48em;
+      font-weight: 600;
+      color: #57534E;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+      margin-bottom: 2px;
+      text-align: center;
+    }
+    body.hide-pinyin rt {
+      visibility: hidden;
+    }
+    body.hide-english .eng-hint {
+      display: none !important;
+    }
+
+    /* Kopitiam Awning Stripes */
+    .kopitiam-awning {
+      background: repeating-linear-gradient(
+        90deg,
+        #D9381E 0px,
+        #D9381E 36px,
+        #FFFDF7 36px,
+        #FFFDF7 72px
+      );
+      box-shadow: 0 6px 0 rgba(154, 34, 15, 0.25);
+    }
+
+    /* Tactile 3D Classroom Buttons */
+    .btn-3d {
+      transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);
+    }
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+    }
+    .btn-3d:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Animations */
+    @keyframes popIn {
+      0% { transform: scale(0.82); opacity: 0; }
+      70% { transform: scale(1.04); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+      75% { transform: translateX(-6px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-float {
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FDE68A;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D97706;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col text-stone-800">
+
+  <!-- Top Kopitiam Awning Decoration -->
+  <div class="kopitiam-awning h-5 w-full shrink-0"></div>
+
+  <!-- Top Teacher & Student Control Bar -->
+  <header class="bg-amber-900 text-amber-50 px-4 py-3 shadow-lg sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand / Lesson Title -->
+      <div class="flex items-center gap-3">
+        <div class="bg-amber-100 text-amber-900 w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shadow-inner font-bold border-2 border-amber-400">
+          ☕
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-black tracking-wide flex items-center gap-2 text-amber-200">
+            香香咖啡店：小小点餐员
+            <span class="hidden md:inline-block text-xs bg-amber-700 text-amber-100 px-2.5 py-0.5 rounded-full font-medium">
+              《欢乐伙伴》2A 第七课 (Dì-qī kè) P74-77
+            </span>
+          </h1>
+          <p class="text-xs text-amber-200/85 eng-hint">Zài kāfēidiàn chī zǎocān · Breakfast Dialogue & Vocabulary Game</p>
+        </div>
+      </div>
+
+      <!-- Mode Switcher Tabs -->
+      <div class="flex bg-amber-950/60 p-1 rounded-2xl border border-amber-700/60">
+        <button id="tab-quest" onclick="switchMode('quest')" class="px-3.5 py-2 rounded-xl text-sm sm:text-base font-bold transition flex items-center gap-1.5 bg-amber-400 text-amber-950 shadow">
+          <span>🎯</span>
+          <span>对话大闯关</span>
+        </button>
+        <button id="tab-spinner" onclick="switchMode('spinner')" class="px-3.5 py-2 rounded-xl text-sm sm:text-base font-bold transition flex items-center gap-1.5 text-amber-200 hover:text-white">
+          <span>🎰</span>
+          <span>课堂双人转盘</span>
+        </button>
+        <button id="tab-vocab" onclick="openVocabModal()" class="px-3.5 py-2 rounded-xl text-sm sm:text-base font-bold transition flex items-center gap-1.5 text-amber-200 hover:text-white">
+          <span>📖</span>
+          <span class="hidden sm:inline">课本词卡墙</span>
+        </button>
+      </div>
+
+      <!-- Accessibility & Teacher Scaffolds -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <!-- Pinyin Toggle -->
+        <button id="btn-pinyin" onclick="togglePinyin()" class="btn-3d bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5">
+          <span>🔤</span>
+          <span id="label-pinyin">拼音: 开</span>
+        </button>
+
+        <!-- English Toggle -->
+        <button id="btn-english" onclick="toggleEnglish()" class="btn-3d bg-sky-600 hover:bg-sky-500 text-white px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5">
+          <span>🌐</span>
+          <span id="label-english">英文: 开</span>
+        </button>
+
+        <!-- Speech Rate Toggle -->
+        <button id="btn-speed" onclick="toggleSpeechRate()" class="btn-3d bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5" title="切换朗读语速">
+          <span>🐢</span>
+          <span id="label-speed">语速: 正常</span>
+        </button>
+
+        <!-- Score Badge -->
+        <div class="bg-amber-950 border-2 border-amber-400 px-3 py-1 rounded-xl flex items-center gap-1.5 text-amber-300 font-black text-base">
+          <span>⭐</span>
+          <span id="score-display">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
+
+    <!-- ========================================================= -->
+    <!-- MODE 1: DIALOGUE QUEST (对话大闯关)                        -->
+    <!-- ========================================================= -->
+    <section id="mode-quest" class="space-y-5">
+      <!-- Progress & Stage Bar -->
+      <div class="bg-white/90 backdrop-blur rounded-3xl p-4 shadow-md border-2 border-amber-200 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span id="stage-badge" class="bg-rose-500 text-white text-xs sm:text-sm font-black px-3 py-1 rounded-full tracking-wider">
+            第 1 关 · 早餐主食
+          </span>
+          <span id="question-counter" class="font-bold text-stone-600 text-sm sm:text-base">
+            题目 1 / 10
+          </span>
+        </div>
+
+        <!-- Step Indicators -->
+        <div class="flex items-center gap-2 text-xs sm:text-sm font-bold">
+          <div id="step1-pill" class="px-3 py-1 rounded-full bg-amber-500 text-white shadow-sm">
+            ① 看图选词 (Vocab)
+          </div>
+          <span class="text-stone-400">➔</span>
+          <div id="step2-pill" class="px-3 py-1 rounded-full bg-stone-200 text-stone-500">
+            ② 组装对话 (Sentence)
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full sm:w-48 bg-amber-100 h-3.5 rounded-full overflow-hidden border border-amber-300">
+          <div id="progress-bar" class="bg-gradient-to-r from-amber-400 to-emerald-500 h-full transition-all duration-500" style="width: 10%;"></div>
+        </div>
+      </div>
+
+      <!-- Stage Scene: Kopitiam Counter Dialogue -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+        
+        <!-- Left Column: Questioner (Boy / Hawker Uncle) -->
+        <div class="lg:col-span-5 bg-gradient-to-b from-amber-50 to-orange-100/80 rounded-3xl p-5 border-4 border-amber-300 shadow-lg flex flex-col justify-between relative">
+          <div class="flex items-center justify-between">
+            <span class="bg-amber-800 text-amber-100 text-xs font-bold px-3 py-1 rounded-full">
+              提问者 · Questioner
+            </span>
+            <button onclick="speakQuestion()" class="btn-3d bg-amber-500 hover:bg-amber-400 text-white px-3.5 py-1.5 rounded-2xl font-bold text-sm flex items-center gap-1.5">
+              <span>🔊</span> 听问句
+            </button>
+          </div>
+
+          <!-- Question Speech Bubble -->
+          <div class="my-4 bg-white rounded-3xl p-5 shadow-md border-2 border-amber-200 relative">
+            <div id="question-ruby" class="text-2xl sm:text-3xl font-bold text-stone-800 leading-relaxed tracking-wide flex flex-wrap items-end">
+              <!-- Populated by JS -->
+            </div>
+            <p id="question-eng" class="eng-hint text-sm sm:text-base text-amber-700 font-semibold mt-3 pt-2 border-t border-dashed border-amber-200">
+              <!-- English Translation -->
+            </p>
+            <!-- Speech Bubble Tail -->
+            <div class="hidden lg:block w-5 h-5 bg-white border-b-2 border-r-2 border-amber-200 transform rotate-45 absolute -bottom-2.5 left-12"></div>
+          </div>
+
+          <!-- Character Avatar & Visual Clue Card -->
+          <div class="flex items-center gap-4 mt-auto pt-2">
+            <div id="asker-avatar" class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-white border-4 border-amber-400 flex items-center justify-center text-5xl sm:text-6xl shadow-md shrink-0 animate-float">
+              👦🏻
+            </div>
+            <!-- Target Visual Hint Box -->
+            <div id="visual-cue-box" class="flex-1 bg-white/95 rounded-2xl p-3 border-2 border-stone-200 shadow-inner">
+              <div class="text-xs font-bold text-stone-500 mb-1.5 flex items-center justify-between">
+                <span>你的选择 (Your Choice):</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-center" id="cue-items">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Student Interactive Area -->
+        <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-6 border-4 border-emerald-300 shadow-lg flex flex-col justify-between">
+          
+          <!-- STEP 1: VOCABULARY SELECTION -->
+          <div id="step1-container" class="space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <h2 class="text-lg sm:text-xl font-black text-emerald-800 flex items-center gap-2">
+                  <span class="bg-emerald-600 text-white w-7 h-7 rounded-full inline-flex items-center justify-center text-sm">1</span>
+                  <span id="step1-instruction">看图选词：你想要哪一个 (✅)？</span>
+                </h2>
+                <p id="step1-sub" class="eng-hint text-xs sm:text-sm text-stone-500 ml-9">
+                  Look at the ✅ picture and pick the matching Chinese word!
+                </p>
+              </div>
+            </div>
+
+            <!-- 4 Vocabulary Cards Grid -->
+            <div id="vocab-options-grid" class="grid grid-cols-2 gap-3 sm:gap-4 pt-2">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- STEP 2: SENTENCE BUILDER -->
+          <div id="step2-container" class="hidden space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <h2 class="text-lg sm:text-xl font-black text-sky-800 flex items-center gap-2">
+                  <span class="bg-sky-600 text-white w-7 h-7 rounded-full inline-flex items-center justify-center text-sm">2</span>
+                  <span>点击词块，完成回答！</span>
+                </h2>
+                <p class="eng-hint text-xs sm:text-sm text-stone-500 ml-9">
+                  Tap the word blocks in order to complete your reply!
+                </p>
+              </div>
+              <button onclick="resetSentenceSlots()" class="text-xs font-bold bg-stone-200 hover:bg-stone-300 text-stone-700 px-3 py-1.5 rounded-xl">
+                ↺ 清空重选
+              </button>
+            </div>
+
+            <!-- Answer Sentence Display Box -->
+            <div class="bg-sky-50 border-3 border-dashed border-sky-300 rounded-2xl p-4 min-h-[120px] flex flex-col justify-center">
+              <div id="sentence-slots" class="flex flex-wrap items-center gap-2 text-xl sm:text-2xl font-bold">
+                <!-- Populated by JS -->
+              </div>
+              <p id="answer-eng-hint" class="eng-hint text-xs sm:text-sm text-sky-700 font-semibold mt-3 pt-2 border-t border-sky-200">
+                <!-- English Answer Hint -->
+              </p>
+            </div>
+
+            <!-- Word Bank Chips -->
+            <div class="pt-1">
+              <div class="text-xs font-bold text-stone-400 mb-2 uppercase tracking-wider">可选词块 (Word Bank):</div>
+              <div id="word-bank" class="flex flex-wrap gap-2.5 sm:gap-3">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <!-- Check Answer Action Button -->
+            <div class="pt-2 flex justify-end">
+              <button id="btn-check-sentence" onclick="checkSentenceAnswer()" disabled class="btn-3d bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-base sm:text-lg flex items-center gap-2">
+                <span>✅</span> 确认回答 (Check)
+              </button>
+            </div>
+          </div>
+
+          <!-- Feedback Banner -->
+          <div id="feedback-banner" class="hidden mt-4 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 animate-pop">
+            <div class="flex items-center gap-3">
+              <span id="feedback-icon" class="text-3xl sm:text-4xl">🌟</span>
+              <div>
+                <div id="feedback-title" class="font-black text-base sm:text-lg"></div>
+                <div id="feedback-desc" class="text-xs sm:text-sm opacity-90"></div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="speakFullDialogue()" class="btn-3d bg-white/90 text-stone-800 px-3 py-2 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1">
+                <span>🔊</span> 跟读整句
+              </button>
+              <button id="btn-next-question" onclick="nextQuestion()" class="btn-3d bg-amber-500 hover:bg-amber-400 text-white px-4 py-2 rounded-xl font-black text-sm sm:text-base">
+                下一题 ➔
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- MODE 2: CLASSROOM PAIR-WORK SPINNER (课堂双人转盘)         -->
+    <!-- ========================================================= -->
+    <section id="mode-spinner" class="hidden space-y-5">
+      <div class="bg-white rounded-3xl p-5 sm:p-7 border-4 border-amber-300 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b-2 border-amber-100">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-black text-amber-900 flex items-center gap-2">
+              <span>🎰</span> 你说我说 · 课堂双人对话转盘
+            </h2>
+            <p class="text-xs sm:text-sm text-stone-600 mt-1">
+              点击“开始抽签”随机生成顾客角色、食物/饮料与口味，请 A 组同学提问，B 组同学回答！
+              <span class="eng-hint text-amber-700 font-medium">(Spin to generate a dialogue prompt for Pair Work!)</span>
+            </p>
+          </div>
+
+          <!-- Category Filter for Teacher -->
+          <div class="flex items-center gap-2 bg-amber-50 p-1.5 rounded-2xl border border-amber-200">
+            <span class="text-xs font-bold text-amber-800 px-2">题库范围:</span>
+            <button onclick="setSpinnerFilter('all')" id="filter-all" class="px-3 py-1 rounded-xl text-xs font-bold bg-amber-500 text-white">全部食物</button>
+            <button onclick="setSpinnerFilter('food')" id="filter-food" class="px-3 py-1 rounded-xl text-xs font-bold text-amber-900 hover:bg-amber-200">只练主食(吃)</button>
+            <button onclick="setSpinnerFilter('drink')" id="filter-drink" class="px-3 py-1 rounded-xl text-xs font-bold text-amber-900 hover:bg-amber-200">只练饮料(喝)</button>
+          </div>
+        </div>
+
+        <!-- Three Slot Reels: Customer Role + NO Item + YES Item -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 my-6">
+          <!-- Reel 1: Customer Role -->
+          <div class="bg-amber-50 border-4 border-amber-300 rounded-3xl p-4 text-center relative overflow-hidden">
+            <div class="inline-block bg-amber-700 text-white font-black px-4 py-1 rounded-full text-sm mb-3 shadow-sm">
+              🧑🏻 对话角色 (Role)
+            </div>
+            <div class="bg-white rounded-2xl p-5 shadow-inner border-2 border-amber-200 min-h-[185px] flex flex-col items-center justify-center">
+              <div id="slot-role-emoji" class="text-6xl mb-2">👦🏻</div>
+              <div id="slot-role-ruby" class="text-2xl font-black text-stone-800"></div>
+              <div id="slot-role-eng" class="eng-hint text-xs font-bold text-amber-700 mt-1"></div>
+            </div>
+          </div>
+
+          <!-- Reel 2: NO (不要) -->
+          <div class="bg-rose-50 border-4 border-rose-300 rounded-3xl p-4 text-center relative overflow-hidden">
+            <div class="inline-block bg-rose-600 text-white font-black px-4 py-1 rounded-full text-sm mb-3 shadow-sm">
+              ❌ 不要 (Don't Want)
+            </div>
+            <div class="bg-white rounded-2xl p-5 shadow-inner border-2 border-rose-200 min-h-[185px] flex flex-col items-center justify-center">
+              <div id="slot-no-emoji" class="text-6xl mb-2">🥖</div>
+              <div id="slot-no-ruby" class="text-2xl font-black text-stone-800"></div>
+              <div id="slot-no-eng" class="eng-hint text-xs font-bold text-rose-600 mt-1"></div>
+            </div>
+          </div>
+
+          <!-- Reel 3: YES (要) -->
+          <div class="bg-emerald-50 border-4 border-emerald-300 rounded-3xl p-4 text-center relative overflow-hidden">
+            <div class="inline-block bg-emerald-600 text-white font-black px-4 py-1 rounded-full text-sm mb-3 shadow-sm">
+              ✅ 要 (Want)
+            </div>
+            <div class="bg-white rounded-2xl p-5 shadow-inner border-2 border-emerald-200 min-h-[185px] flex flex-col items-center justify-center">
+              <div id="slot-yes-emoji" class="text-6xl mb-2">🍞</div>
+              <div id="slot-yes-ruby" class="text-2xl font-black text-stone-800"></div>
+              <div id="slot-yes-eng" class="eng-hint text-xs font-bold text-emerald-600 mt-1"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spin Button -->
+        <div class="text-center mb-6">
+          <button id="btn-spin" onclick="spinReels()" class="btn-3d bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-xl sm:text-2xl font-black px-10 py-4 rounded-3xl shadow-lg inline-flex items-center gap-3">
+            <span>🎲</span> 开始抽签 (Spin!)
+          </button>
+        </div>
+
+        <!-- Generated Dialogue Script for Classroom Choral Reading -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-amber-50/90 p-5 rounded-3xl border-2 border-amber-200">
+          <!-- Student A Prompt -->
+          <div class="bg-white p-4 rounded-2xl border-l-8 border-amber-500 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full">🗣️ 同学 A 问 (Ask)</span>
+                <button onclick="speakSpinnerPart('A')" class="text-xs bg-amber-500 text-white px-2.5 py-1 rounded-lg font-bold hover:bg-amber-600">🔊 朗读</button>
+              </div>
+              <div id="spinner-q-ruby" class="text-xl sm:text-2xl font-bold text-stone-800 leading-relaxed flex flex-wrap items-end"></div>
+            </div>
+            <div id="spinner-q-eng" class="eng-hint text-xs sm:text-sm text-stone-500 font-semibold mt-2"></div>
+          </div>
+
+          <!-- Student B Prompt -->
+          <div class="bg-white p-4 rounded-2xl border-l-8 border-emerald-500 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-black bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full">💬 同学 B 答 (Answer)</span>
+                <button onclick="speakSpinnerPart('B')" class="text-xs bg-emerald-600 text-white px-2.5 py-1 rounded-lg font-bold hover:bg-emerald-700">🔊 朗读</button>
+              </div>
+              <div id="spinner-a-ruby" class="text-xl sm:text-2xl font-bold text-stone-800 leading-relaxed flex flex-wrap items-end"></div>
+            </div>
+            <div id="spinner-a-eng" class="eng-hint text-xs sm:text-sm text-stone-500 font-semibold mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- COMPLETION CELEBRATION SCREEN                             -->
+    <!-- ========================================================= -->
+    <section id="mode-complete" class="hidden">
+      <div class="bg-white rounded-3xl p-8 border-4 border-amber-400 shadow-2xl text-center max-w-2xl mx-auto space-y-5 animate-pop">
+        <div class="text-7xl">🏆</div>
+        <h2 class="text-3xl font-black text-amber-900">
+          太棒了！你真是懂事又能干的小点餐员！
+        </h2>
+        <p class="eng-hint text-base font-bold text-amber-700">
+          Awesome! You completed all the Kopitiam breakfast dialogues!
+        </p>
+        <div class="bg-amber-50 rounded-2xl p-5 border-2 border-amber-200 inline-block px-10">
+          <div class="text-sm font-bold text-stone-500">最终得分 (Final Score)</div>
+          <div class="text-5xl font-black text-amber-600 mt-1">⭐ <span id="final-score">0</span></div>
+        </div>
+        <div class="pt-4 flex flex-wrap justify-center gap-4">
+          <button onclick="restartQuest()" class="btn-3d bg-emerald-600 hover:bg-emerald-500 text-white font-black px-6 py-3.5 rounded-2xl text-lg">
+            🔄 再玩一次 (Play Again)
+          </button>
+          <button onclick="switchMode('spinner')" class="btn-3d bg-amber-500 hover:bg-amber-400 text-white font-black px-6 py-3.5 rounded-2xl text-lg">
+            🎰 进入双人转盘 (Pair Work)
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- VOCABULARY REFERENCE WALL MODAL (P74-76 课本词卡墙)        -->
+  <!-- ========================================================= -->
+  <div id="vocab-modal" class="hidden fixed inset-0 bg-stone-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-amber-50 rounded-3xl max-w-5xl w-full max-h-[88vh] flex flex-col border-4 border-amber-400 shadow-2xl overflow-hidden animate-pop">
+      <div class="bg-amber-800 text-white px-6 py-4 flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-black flex items-center gap-2">
+            <span>📖</span> 第七课《听说剧场》全套词卡墙 (P74-76 · 点击听标准发音)
+          </h3>
+          <p class="eng-hint text-xs text-amber-200">Tap any card to hear the verified Chinese pronunciation!</p>
+        </div>
+        <button onclick="closeVocabModal()" class="bg-amber-950 hover:bg-rose-600 text-white w-9 h-9 rounded-full font-black text-lg transition">
+          ✕
+        </button>
+      </div>
+      <div id="vocab-wall-grid" class="p-5 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-stone-900 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50">
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. VERIFIED TEXTBOOK VOCABULARY DATABASE (欢乐伙伴 2A 第七课 P74-76)
+    //    Every single character's Pinyin & tone sandhi strictly verified!
+    // =========================================================================
+    const VOCAB_DB = [
+      // P74 食物 (吃 chī)
+      { id: 'xiamian', hanzi: '虾面', pinyin: ['xiā', 'miàn'], eng: 'prawn noodles', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🍜', cat: 'food' },
+      { id: 'zhuchangfen', hanzi: '猪肠粉', pinyin: ['zhū', 'cháng', 'fěn'], eng: 'cheong fun (rice rolls)', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🥟', cat: 'food' },
+      { id: 'luobogao', hanzi: '炒萝卜糕', pinyin: ['chǎo', 'luó', 'bo', 'gāo'], eng: 'fried carrot cake', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🥘', cat: 'food' },
+      { id: 'chaoguotiao', hanzi: '炒粿条', pinyin: ['chǎo', 'guǒ', 'tiáo'], eng: 'char kway teow', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🍝', cat: 'food' },
+      { id: 'zhurouzhou', hanzi: '猪肉粥', pinyin: ['zhū', 'ròu', 'zhōu'], eng: 'pork porridge', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🥣', cat: 'food' },
+      { id: 'youtiao', hanzi: '油条', pinyin: ['yóu', 'tiáo'], eng: 'youtiao (fried dough)', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🥖', cat: 'food' },
+      { id: 'kaomianbao', hanzi: '烤面包', pinyin: ['kǎo', 'miàn', 'bāo'], eng: 'toast', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🍞', cat: 'food' },
+      { id: 'kaye', hanzi: '咖椰', pinyin: ['kā', 'yē'], eng: 'kaya (coconut jam)', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🥥', cat: 'condiment' },
+      { id: 'niuyou', hanzi: '牛油', pinyin: ['niú', 'yóu'], eng: 'butter', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🧈', cat: 'condiment' },
+      { id: 'hebaodan', hanzi: '荷包蛋', pinyin: ['hé', 'bāo', 'dàn'], eng: 'fried egg', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🍳', cat: 'food' },
+      { id: 'banshengshudan', hanzi: '半生熟蛋', pinyin: ['bàn', 'shēng', 'shú', 'dàn'], eng: 'soft-boiled eggs', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🥚', cat: 'food' },
+
+      // P75 & P76 饮料 (喝 hē)
+      { id: 'niunai', hanzi: '牛奶', pinyin: ['niú', 'nǎi'], eng: 'milk', verb: '喝', verbPy: 'hē', verbEng: 'drink', emoji: '🥛', cat: 'drink' },
+      { id: 'dounai', hanzi: '豆奶', pinyin: ['dòu', 'nǎi'], eng: 'soy milk', verb: '喝', verbPy: 'hē', verbEng: 'drink', emoji: '🧃', cat: 'drink' },
+      { id: 'kafei', hanzi: '咖啡', pinyin: ['kā', 'fēi'], eng: 'coffee (kopi)', verb: '喝', verbPy: 'hē', verbEng: 'drink', emoji: '☕', cat: 'drink' },
+      { id: 'naicha', hanzi: '奶茶', pinyin: ['nǎi', 'chá'], eng: 'milk tea (teh)', verb: '喝', verbPy: 'hē', verbEng: 'drink', emoji: '🧋', cat: 'drink' },
+      { id: 'guozhi', hanzi: '果汁', pinyin: ['guǒ', 'zhī'], eng: 'fruit juice', verb: '喝', verbPy: 'hē', verbEng: 'drink', emoji: '🍹', cat: 'drink' },
+      { id: 'kafeiwu', hanzi: '咖啡乌', pinyin: ['kā', 'fēi', 'wū'], eng: 'kopi-O (black coffee)', verb: '喝', verbPy: 'hē', verbEng: 'drink', emoji: '🖤', cat: 'drink_adv' },
+      { id: 'kafeishaotang', hanzi: '咖啡少糖', pinyin: ['kā', 'fēi', 'shǎo', 'táng'], eng: 'kopi siew dai (less sugar)', verb: '喝', verbPy: 'hē', verbEng: 'drink', emoji: '🤎', cat: 'drink_adv' },
+      { id: 'kafeijiadannai', hanzi: '咖啡加淡奶', pinyin: ['kā', 'fēi', 'jiā', 'dàn', 'nǎi'], eng: 'kopi-C (evaporated milk)', verb: '喝', verbPy: 'hē', verbEng: 'drink', emoji: '🥛', cat: 'drink_adv' },
+
+      // P75 调料与口味要求
+      { id: 'jiangyou', hanzi: '酱油', pinyin: ['jiàng', 'yóu'], eng: 'dark soy sauce', verb: '加', verbPy: 'jiā', verbEng: 'add', emoji: '🍶', cat: 'condiment' },
+      { id: 'jiangqing', hanzi: '酱青', pinyin: ['jiàng', 'qīng'], eng: 'light soy sauce', verb: '加', verbPy: 'jiā', verbEng: 'add', emoji: '🫙', cat: 'condiment' },
+      { id: 'hujiaofen', hanzi: '胡椒粉', pinyin: ['hú', 'jiāo', 'fěn'], eng: 'pepper powder', verb: '加', verbPy: 'jiā', verbEng: 'add', emoji: '🧂', cat: 'condiment' },
+      { id: 'gande', hanzi: '干的', pinyin: ['gān', 'de'], eng: 'dry (noodles)', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🍝', cat: 'style' },
+      { id: 'tangde', hanzi: '汤的', pinyin: ['tāng', 'de'], eng: 'soup (noodles)', verb: '吃', verbPy: 'chī', verbEng: 'eat', emoji: '🍜', cat: 'style' },
+      { id: 'shaoyou', hanzi: '少油', pinyin: ['shǎo', 'yóu'], eng: 'less oil', verb: '要', verbPy: 'yào', verbEng: 'want', emoji: '🥄', cat: 'style' },
+      { id: 'buyaola', hanzi: '不要辣', pinyin: ['bú', 'yào', 'là'], eng: 'no spicy / no chilli', verb: '要', verbPy: 'yào', verbEng: 'want', emoji: '🌶️', cat: 'style' }
+    ];
+
+    const SPINNER_ROLES = [
+      { hanzi: '爸爸', pinyin: ['bà', 'ba'], eng: 'Dad', emoji: '👨🏻' },
+      { hanzi: '妈妈', pinyin: ['mā', 'ma'], eng: 'Mom', emoji: '👩🏻' },
+      { hanzi: '哥哥', pinyin: ['gē', 'ge'], eng: 'Older Brother', emoji: '👦🏻' },
+      { hanzi: '妹妹', pinyin: ['mèi', 'mei'], eng: 'Younger Sister', emoji: '👧🏻' }
+    ];
+
+    const getItem = (id) => VOCAB_DB.find(item => item.id === id);
+
+    // =========================================================================
+    // 2. TTS PRONUNCIATION FIXER (同音字发音映射表 - 解决浏览器多音字误读)
+    //    Screen ALWAYS renders real textbook characters; TTS receives phonetic
+    //    equivalents so "卜(bo)", "粿(guǒ)", "干(gān)", "少(shǎo)" never mispronounce!
+    // =========================================================================
+    function fixTextForTTS(rawText) {
+      let spoken = rawText;
+
+      // 1. 炒萝卜糕 -> 卜在“萝卜”中读轻声 bo，浏览器常误读为 bǔ（占卜）
+      spoken = spoken.replace(/萝卜/g, '罗波');
+
+      // 2. 炒粿条 -> 生僻字“粿”部分TTS引擎读错或跳过，映射为同音字“果 (guǒ)”
+      spoken = spoken.replace(/粿条/g, '果条');
+
+      // 3. 干的 -> “干”是多音字（gān / gàn），TTS常误读为第四声 gàn（干活），映射为“甘 (gān)”
+      spoken = spoken.replace(/干的/g, '甘的');
+
+      // 4. 半生熟蛋 -> 课本标 shú，确保连读流畅
+      spoken = spoken.replace(/半生熟蛋/g, '半生熟，蛋');
+
+      // 5. 少油 / 少糖 -> “少”在单字或短词中偶被误读为 shào（少年），映射为同音第三声“扫”或加微停顿引导第三声
+      spoken = spoken.replace(/少油/g, '扫油');
+      spoken = spoken.replace(/少糖/g, '扫糖');
+
+      // 6. 酱青 -> 确保清晰断词
+      spoken = spoken.replace(/酱青/g, '酱清');
+
+      return spoken;
+    }
+
+    // =========================================================================
+    // 3. STRUCTURED QUEST LEVELS (10关情景对话与词汇选择 - 逐字核对变调与轻声)
+    // =========================================================================
+    const QUEST_LEVELS = [
+      // Level 1: P77 你说我说 原文例句
+      {
+        stage: '第 1 关 · 早餐主食 (P77)',
+        asker: '👦🏻',
+        noId: 'youtiao',
+        yesId: 'kaomianbao',
+        customQ: {
+          text: '你要不要吃油条？',
+          ruby: [['你','nǐ'],['要','yào'],['不','bu'],['要','yào'],['吃','chī'],['油','yóu'],['条','tiáo'],['？','']],
+          eng: 'Do you want to eat youtiao?'
+        },
+        answerBlocks: [
+          { text: '我不要吃', ruby: [['我','wǒ'],['不','bú'],['要','yào'],['吃','chī']], type: 'no' },
+          { text: '油条，', ruby: [['油','yóu'],['条','tiáo'],['，','']], type: 'neutral' },
+          { text: '我要吃', ruby: [['我','wǒ'],['要','yào'],['吃','chī']], type: 'yes' },
+          { text: '烤面包。', ruby: [['烤','kǎo'],['面','miàn'],['包','bāo'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '我不要吃油条，我要吃烤面包。',
+        answerEng: 'I do not want to eat youtiao, I want to eat toast.'
+      },
+      // Level 2: 虾面 vs 炒粿条
+      {
+        stage: '第 1 关 · 早餐主食 (P74)',
+        asker: '👨🏻‍🍳',
+        noId: 'xiamian',
+        yesId: 'chaoguotiao',
+        customQ: {
+          text: '你要不要吃虾面？',
+          ruby: [['你','nǐ'],['要','yào'],['不','bu'],['要','yào'],['吃','chī'],['虾','xiā'],['面','miàn'],['？','']],
+          eng: 'Do you want to eat prawn noodles?'
+        },
+        answerBlocks: [
+          { text: '我不要吃', ruby: [['我','wǒ'],['不','bú'],['要','yào'],['吃','chī']], type: 'no' },
+          { text: '虾面，', ruby: [['虾','xiā'],['面','miàn'],['，','']], type: 'neutral' },
+          { text: '我要吃', ruby: [['我','wǒ'],['要','yào'],['吃','chī']], type: 'yes' },
+          { text: '炒粿条。', ruby: [['炒','chǎo'],['粿','guǒ'],['条','tiáo'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '我不要吃虾面，我要吃炒粿条。',
+        answerEng: 'I do not want to eat prawn noodles, I want to eat char kway teow.'
+      },
+      // Level 3: 猪肠粉 vs 炒萝卜糕 (注意“卜”轻声 bo)
+      {
+        stage: '第 1 关 · 早餐主食 (P74)',
+        asker: '👧🏻',
+        noId: 'zhuchangfen',
+        yesId: 'luobogao',
+        customQ: {
+          text: '你要不要吃猪肠粉？',
+          ruby: [['你','nǐ'],['要','yào'],['不','bu'],['要','yào'],['吃','chī'],['猪','zhū'],['肠','cháng'],['粉','fěn'],['？','']],
+          eng: 'Do you want to eat cheong fun?'
+        },
+        answerBlocks: [
+          { text: '我不要吃', ruby: [['我','wǒ'],['不','bú'],['要','yào'],['吃','chī']], type: 'no' },
+          { text: '猪肠粉，', ruby: [['猪','zhū'],['肠','cháng'],['粉','fěn'],['，','']], type: 'neutral' },
+          { text: '我要吃', ruby: [['我','wǒ'],['要','yào'],['吃','chī']], type: 'yes' },
+          { text: '炒萝卜糕。', ruby: [['炒','chǎo'],['萝','luó'],['卜','bo'],['糕','gāo'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '我不要吃猪肠粉，我要吃炒萝卜糕。',
+        answerEng: 'I do not want to eat cheong fun, I want to eat fried carrot cake.'
+      },
+      // Level 4: 荷包蛋 vs 半生熟蛋 (注意“熟”标 shú)
+      {
+        stage: '第 1 关 · 早餐主食 (P74)',
+        asker: '👦🏻',
+        noId: 'hebaodan',
+        yesId: 'banshengshudan',
+        customQ: {
+          text: '你要不要吃荷包蛋？',
+          ruby: [['你','nǐ'],['要','yào'],['不','bu'],['要','yào'],['吃','chī'],['荷','hé'],['包','bāo'],['蛋','dàn'],['？','']],
+          eng: 'Do you want to eat a fried egg?'
+        },
+        answerBlocks: [
+          { text: '我不要吃', ruby: [['我','wǒ'],['不','bú'],['要','yào'],['吃','chī']], type: 'no' },
+          { text: '荷包蛋，', ruby: [['荷','hé'],['包','bāo'],['蛋','dàn'],['，','']], type: 'neutral' },
+          { text: '我要吃', ruby: [['我','wǒ'],['要','yào'],['吃','chī']], type: 'yes' },
+          { text: '半生熟蛋。', ruby: [['半','bàn'],['生','shēng'],['熟','shú'],['蛋','dàn'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '我不要吃荷包蛋，我要吃半生熟蛋。',
+        answerEng: 'I do not want to eat a fried egg, I want to eat soft-boiled eggs.'
+      },
+      // Level 5: 炒粿条 vs 猪肉粥
+      {
+        stage: '第 1 关 · 早餐主食 (P74)',
+        asker: '👩🏻',
+        noId: 'chaoguotiao',
+        yesId: 'zhurouzhou',
+        customQ: {
+          text: '你要不要吃炒粿条？',
+          ruby: [['你','nǐ'],['要','yào'],['不','bu'],['要','yào'],['吃','chī'],['炒','chǎo'],['粿','guǒ'],['条','tiáo'],['？','']],
+          eng: 'Do you want to eat char kway teow?'
+        },
+        answerBlocks: [
+          { text: '我不要吃', ruby: [['我','wǒ'],['不','bú'],['要','yào'],['吃','chī']], type: 'no' },
+          { text: '炒粿条，', ruby: [['炒','chǎo'],['粿','guǒ'],['条','tiáo'],['，','']], type: 'neutral' },
+          { text: '我要吃', ruby: [['我','wǒ'],['要','yào'],['吃','chī']], type: 'yes' },
+          { text: '猪肉粥。', ruby: [['猪','zhū'],['肉','ròu'],['粥','zhōu'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '我不要吃炒粿条，我要吃猪肉粥。',
+        answerEng: 'I do not want to eat char kway teow, I want to eat pork porridge.'
+      },
+
+      // Level 6: 牛奶 vs 豆奶
+      {
+        stage: '第 2 关 · 咖啡店饮料 (P75)',
+        asker: '👨🏻‍🍳',
+        noId: 'niunai',
+        yesId: 'dounai',
+        customQ: {
+          text: '你要不要喝牛奶？',
+          ruby: [['你','nǐ'],['要','yào'],['不','bu'],['要','yào'],['喝','hē'],['牛','niú'],['奶','nǎi'],['？','']],
+          eng: 'Do you want to drink milk?'
+        },
+        answerBlocks: [
+          { text: '我不要喝', ruby: [['我','wǒ'],['不','bú'],['要','yào'],['喝','hē']], type: 'no' },
+          { text: '牛奶，', ruby: [['牛','niú'],['奶','nǎi'],['，','']], type: 'neutral' },
+          { text: '我要喝', ruby: [['我','wǒ'],['要','yào'],['喝','hē']], type: 'yes' },
+          { text: '豆奶。', ruby: [['豆','dòu'],['奶','nǎi'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '我不要喝牛奶，我要喝豆奶。',
+        answerEng: 'I do not want to drink milk, I want to drink soy milk.'
+      },
+      // Level 7: 豆奶 vs 奶茶
+      {
+        stage: '第 2 关 · 咖啡店饮料 (P75)',
+        asker: '👧🏻',
+        noId: 'dounai',
+        yesId: 'naicha',
+        customQ: {
+          text: '你要不要喝豆奶？',
+          ruby: [['你','nǐ'],['要','yào'],['不','bu'],['要','yào'],['喝','hē'],['豆','dòu'],['奶','nǎi'],['？','']],
+          eng: 'Do you want to drink soy milk?'
+        },
+        answerBlocks: [
+          { text: '我不要喝', ruby: [['我','wǒ'],['不','bú'],['要','yào'],['喝','hē']], type: 'no' },
+          { text: '豆奶，', ruby: [['豆','dòu'],['奶','nǎi'],['，','']], type: 'neutral' },
+          { text: '我要喝', ruby: [['我','wǒ'],['要','yào'],['喝','hē']], type: 'yes' },
+          { text: '奶茶。', ruby: [['奶','nǎi'],['茶','chá'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '我不要喝豆奶，我要喝奶茶。',
+        answerEng: 'I do not want to drink soy milk, I want to drink milk tea.'
+      },
+      // Level 8: P76 儿歌《买咖啡》原句（注意“好不好”的“不”轻声 bu，“不能”的“不”读 bù）
+      {
+        stage: '第 2 关 · 儿歌小规则 (P76)',
+        asker: '👦🏻',
+        noId: 'kafei',
+        yesId: 'guozhi',
+        customQ: {
+          text: '我要喝咖啡，好不好？',
+          ruby: [['我','wǒ'],['要','yào'],['喝','hē'],['咖','kā'],['啡','fēi'],['，',''],['好','hǎo'],['不','bu'],['好','hǎo'],['？','']],
+          eng: 'I want to drink coffee, is that okay?'
+        },
+        answerBlocks: [
+          { text: '小孩不能喝咖啡，', ruby: [['小','xiǎo'],['孩','hái'],['不','bù'],['能','néng'],['喝','hē'],['咖','kā'],['啡','fēi'],['，','']], type: 'no' },
+          { text: '来杯', ruby: [['来','lái'],['杯','bēi']], type: 'yes' },
+          { text: '果汁', ruby: [['果','guǒ'],['汁','zhī']], type: 'yes' },
+          { text: '好不好？', ruby: [['好','hǎo'],['不','bu'],['好','hǎo'],['？','']], type: 'neutral' }
+        ],
+        answerSpeech: '小孩不能喝咖啡，来杯果汁好不好？',
+        answerEng: 'Kids cannot drink coffee, how about a glass of fruit juice?'
+      },
+
+      // Level 9: P75 底部 干的 vs 汤的 (注意“干”第一声 gān，“的”轻声 de)
+      {
+        stage: '第 3 关 · 口味小要求 (P75)',
+        asker: '👨🏻‍🍳',
+        noId: 'tangde',
+        yesId: 'gande',
+        customQ: {
+          text: '你的虾面要干的还是汤的？',
+          ruby: [['你','nǐ'],['的','de'],['虾','xiā'],['面','miàn'],['要','yào'],['干','gān'],['的','de'],['还','hái'],['是','shì'],['汤','tāng'],['的','de'],['？','']],
+          eng: 'Do you want your prawn noodles dry or with soup?'
+        },
+        answerBlocks: [
+          { text: '我不要', ruby: [['我','wǒ'],['不','bú'],['要','yào']], type: 'no' },
+          { text: '汤的，', ruby: [['汤','tāng'],['的','de'],['，','']], type: 'neutral' },
+          { text: '我要', ruby: [['我','wǒ'],['要','yào']], type: 'yes' },
+          { text: '干的。', ruby: [['干','gān'],['的','de'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '我不要汤的，我要干的。',
+        answerEng: 'I do not want soup noodles, I want dry noodles.'
+      },
+      // Level 10: P75 底部 不要辣 & 少油 (注意“不要辣”标 bú yào là，“少油”标 shǎo yóu)
+      {
+        stage: '第 3 关 · 口味小要求 (P75)',
+        asker: '👨🏻‍🍳',
+        noId: 'buyaola',
+        yesId: 'shaoyou',
+        customQ: {
+          text: '炒萝卜糕要放辣椒吗？',
+          ruby: [['炒','chǎo'],['萝','luó'],['卜','bo'],['糕','gāo'],['要','yào'],['放','fàng'],['辣','là'],['椒','jiāo'],['吗','ma'],['？','']],
+          eng: 'Do you want chilli in your fried carrot cake?'
+        },
+        answerBlocks: [
+          { text: '叔叔，', ruby: [['叔','shū'],['叔','shu'],['，','']], type: 'neutral' },
+          { text: '不要辣，', ruby: [['不','bú'],['要','yào'],['辣','là'],['，','']], type: 'no' },
+          { text: '要', ruby: [['要','yào']], type: 'yes' },
+          { text: '少油。', ruby: [['少','shǎo'],['油','yóu'],['。','']], type: 'yes' }
+        ],
+        answerSpeech: '叔叔，不要辣，要少油。',
+        answerEng: 'Uncle, no chilli, and less oil please.'
+      }
+    ];
+
+    // =========================================================================
+    // 4. APP STATE & AUDIO SYNTHESIS
+    // =========================================================================
+    let currentMode = 'quest';
+    let currentQIndex = 0;
+    let score = 0;
+    let pinyinVisible = true;
+    let englishVisible = true;
+    let speechRate = 0.85; // 0.85 = clear normal speed for P2 non-native learners, 0.62 = slow
+    let selectedSlots = [];
+    let currentWordBank = [];
+    let spinnerFilter = 'all';
+    let currentSpinnerRole = SPINNER_ROLES[2]; // 哥哥
+    let currentSpinnerNo = getItem('youtiao');
+    let currentSpinnerYes = getItem('kaomianbao');
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const now = audioCtx.currentTime;
+
+      if (type === 'click') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(780, now + 0.08);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      } else if (type === 'correct') {
+        [987.77, 1318.51].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.11);
+          gain.gain.setValueAtTime(0.22, now + idx * 0.11);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.11 + 0.35);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.11);
+          osc.stop(now + idx * 0.11 + 0.35);
+        });
+      } else if (type === 'wrong') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.linearRampToValueAtTime(165, now + 0.25);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      } else if (type === 'fanfare') {
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.22, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.45);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.12);
+          osc.stop(now + idx * 0.12 + 0.45);
+        });
+      }
+    }
+
+    // Chinese Text-to-Speech with Phonetic Polyphone Fixer
+    function speakChinese(rawText) {
+      if (!('speechSynthesis' in window)) {
+        showToast('当前浏览器不支持语音朗读');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const fixedSpeechText = fixTextForTTS(rawText);
+      const utterance = new SpeechSynthesisUtterance(fixedSpeechText);
+      utterance.lang = 'zh-CN';
+      utterance.rate = speechRate;
+      utterance.pitch = 1.06;
+
+      const voices = window.speechSynthesis.getVoices();
+      const zhVoice = voices.find(v => v.lang.includes('zh-SG') || v.lang.includes('zh-CN') || v.lang.includes('zh'));
+      if (zhVoice) utterance.voice = zhVoice;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // =========================================================================
+    // 5. RUBY HTML GENERATOR (Strict 1-to-1 Character-Pinyin Alignment)
+    // =========================================================================
+    function buildRubyHTML(pairs, highlightType = null) {
+      return pairs.map(([char, py]) => {
+        let colorClass = '';
+        if (highlightType === 'no' && (char === '不' || char === '要')) {
+          colorClass = 'text-rose-600';
+        } else if (highlightType === 'yes' && char === '要') {
+          colorClass = 'text-emerald-600';
+        }
+        if (!py) return `<span class="${colorClass} self-end pb-0.5">${char}</span>`;
+        return `<ruby class="${colorClass}">${char}<rt>${py}</rt></ruby>`;
+      }).join('');
+    }
+
+    function itemToRuby(item) {
+      const chars = item.hanzi.split('');
+      return chars.map((ch, i) => `<ruby>${ch}<rt>${item.pinyin[i] || ''}</rt></ruby>`).join('');
+    }
+
+    // =========================================================================
+    // 6. QUEST MODE LOGIC (模式一：对话大闯关)
+    // =========================================================================
+    function loadQuestion(index) {
+      const q = QUEST_LEVELS[index];
+      const noItem = getItem(q.noId);
+      const yesItem = getItem(q.yesId);
+
+      document.getElementById('stage-badge').textContent = q.stage;
+      document.getElementById('question-counter').textContent = `题目 ${index + 1} / ${QUEST_LEVELS.length}`;
+      document.getElementById('progress-bar').style.width = `${((index + 1) / QUEST_LEVELS.length) * 100}%`;
+
+      document.getElementById('step1-pill').className = 'px-3 py-1 rounded-full bg-amber-500 text-white shadow-sm';
+      document.getElementById('step2-pill').className = 'px-3 py-1 rounded-full bg-stone-200 text-stone-500';
+
+      document.getElementById('asker-avatar').textContent = q.asker;
+      document.getElementById('question-ruby').innerHTML = buildRubyHTML(q.customQ.ruby);
+      document.getElementById('question-eng').textContent = q.customQ.eng;
+
+      document.getElementById('cue-items').innerHTML = `
+        <div class="bg-rose-50 border-2 border-rose-300 rounded-xl p-2 relative">
+          <span class="absolute -top-2 -right-2 bg-rose-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">✕</span>
+          <div class="text-2xl sm:text-3xl">${noItem.emoji}</div>
+          <div class="text-[11px] font-bold text-rose-700 mt-0.5">不要</div>
+        </div>
+        <div class="bg-emerald-50 border-2 border-emerald-400 rounded-xl p-2 relative">
+          <span class="absolute -top-2 -right-2 bg-emerald-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">✓</span>
+          <div class="text-2xl sm:text-3xl">${yesItem.emoji}</div>
+          <div class="text-[11px] font-bold text-emerald-700 mt-0.5">要</div>
+        </div>
+      `;
+
+      document.getElementById('step1-container').classList.remove('hidden');
+      document.getElementById('step2-container').classList.add('hidden');
+      document.getElementById('feedback-banner').classList.add('hidden');
+
+      renderStep1Options(yesItem, noItem);
+      setTimeout(() => speakChinese(q.customQ.text), 300);
+    }
+
+    function renderStep1Options(yesItem, noItem) {
+      let pool = VOCAB_DB.filter(i => i.id !== yesItem.id && i.cat === yesItem.cat);
+      if (pool.length < 3) {
+        pool = VOCAB_DB.filter(i => i.id !== yesItem.id && (i.cat === 'food' || i.cat === 'drink' || i.cat === 'style'));
+      }
+      const others = pool.filter(i => i.id !== noItem.id).sort(() => Math.random() - 0.5).slice(0, 2);
+      const options = [yesItem, noItem, ...others].sort(() => Math.random() - 0.5);
+
+      const grid = document.getElementById('vocab-options-grid');
+      grid.innerHTML = '';
+
+      options.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-3d bg-amber-50 hover:bg-amber-100 border-3 border-amber-300 rounded-2xl p-4 flex flex-col items-center justify-center text-center group transition';
+        btn.innerHTML = `
+          <div class="text-4xl sm:text-5xl mb-2 group-hover:scale-110 transition-transform">${item.emoji}</div>
+          <div class="text-xl sm:text-2xl font-black text-stone-800">${itemToRuby(item)}</div>
+          <div class="eng-hint text-xs font-semibold text-stone-500 mt-1">${item.eng}</div>
+        `;
+        btn.onclick = () => handleVocabPick(item, yesItem, btn);
+        grid.appendChild(btn);
+      });
+    }
+
+    function handleVocabPick(picked, target, btnEl) {
+      speakChinese(picked.hanzi);
+      if (picked.id === target.id) {
+        playSound('correct');
+        btnEl.classList.remove('bg-amber-50', 'border-amber-300');
+        btnEl.classList.add('bg-emerald-100', 'border-emerald-500');
+        updateScore(10);
+        showToast(`✅ 答对了！${target.hanzi}`);
+
+        setTimeout(() => {
+          setupStep2();
+        }, 650);
+      } else {
+        playSound('wrong');
+        btnEl.classList.add('animate-shake', 'bg-rose-100', 'border-rose-400');
+        setTimeout(() => {
+          btnEl.classList.remove('animate-shake', 'bg-rose-100', 'border-rose-400');
+        }, 500);
+        showToast('❌ 再看一看打勾 (✅) 的图片哦！');
+      }
+    }
+
+    function setupStep2() {
+      const q = QUEST_LEVELS[currentQIndex];
+      document.getElementById('step1-container').classList.add('hidden');
+      document.getElementById('step2-container').classList.remove('hidden');
+
+      document.getElementById('step1-pill').className = 'px-3 py-1 rounded-full bg-emerald-100 text-emerald-800';
+      document.getElementById('step2-pill').className = 'px-3 py-1 rounded-full bg-sky-600 text-white shadow-sm';
+
+      document.getElementById('answer-eng-hint').textContent = `Target meaning: "${q.answerEng}"`;
+
+      selectedSlots = [];
+      currentWordBank = q.answerBlocks.map((block, idx) => ({ ...block, uid: idx, used: false }))
+                                      .sort(() => Math.random() - 0.5);
+      renderSentenceBuilder();
+    }
+
+    function renderSentenceBuilder() {
+      const q = QUEST_LEVELS[currentQIndex];
+      const slotsEl = document.getElementById('sentence-slots');
+      const bankEl = document.getElementById('word-bank');
+
+      slotsEl.innerHTML = '';
+      for (let i = 0; i < q.answerBlocks.length; i++) {
+        const slotItem = selectedSlots[i];
+        if (slotItem) {
+          const chip = document.createElement('button');
+          let bgStyle = 'bg-white border-sky-400 text-stone-800';
+          if (slotItem.type === 'no') bgStyle = 'bg-rose-50 border-rose-400 text-rose-700';
+          if (slotItem.type === 'yes') bgStyle = 'bg-emerald-50 border-emerald-400 text-emerald-700';
+
+          chip.className = `${bgStyle} border-2 px-3.5 py-2 rounded-2xl shadow-sm hover:opacity-80 transition animate-pop inline-flex items-end`;
+          chip.innerHTML = buildRubyHTML(slotItem.ruby, slotItem.type);
+          chip.title = '点击移除';
+          chip.onclick = () => removeSlotItem(i);
+          slotsEl.appendChild(chip);
+        } else {
+          const empty = document.createElement('div');
+          empty.className = 'w-24 sm:w-28 h-14 border-2 border-dashed border-sky-300 rounded-2xl bg-white/50 flex items-center justify-center text-xs text-sky-400 font-bold';
+          empty.textContent = `词块 ${i + 1}`;
+          slotsEl.appendChild(empty);
+        }
+      }
+
+      bankEl.innerHTML = '';
+      currentWordBank.forEach((item) => {
+        const btn = document.createElement('button');
+        let style = 'bg-amber-50 hover:bg-amber-100 border-amber-300 text-stone-800';
+        if (item.type === 'no') style = 'bg-rose-50 hover:bg-rose-100 border-rose-300 text-rose-800';
+        if (item.type === 'yes') style = 'bg-emerald-50 hover:bg-emerald-100 border-emerald-300 text-emerald-800';
+
+        btn.className = `btn-3d ${style} border-2 px-4 py-2.5 rounded-2xl text-lg sm:text-xl font-bold transition inline-flex items-end ${item.used ? 'opacity-30 pointer-events-none scale-95' : ''}`;
+        btn.innerHTML = buildRubyHTML(item.ruby, item.type);
+        btn.onclick = () => selectWordBlock(item.uid);
+        bankEl.appendChild(btn);
+      });
+
+      const checkBtn = document.getElementById('btn-check-sentence');
+      checkBtn.disabled = selectedSlots.length !== q.answerBlocks.length;
+    }
+
+    function selectWordBlock(uid) {
+      const q = QUEST_LEVELS[currentQIndex];
+      if (selectedSlots.length >= q.answerBlocks.length) return;
+      const block = currentWordBank.find(b => b.uid === uid);
+      if (!block || block.used) return;
+
+      playSound('click');
+      speakChinese(block.text.replace(/[，。？]/g, ''));
+      block.used = true;
+      selectedSlots.push(block);
+      renderSentenceBuilder();
+    }
+
+    function removeSlotItem(slotIndex) {
+      playSound('click');
+      const removed = selectedSlots.splice(slotIndex, 1)[0];
+      if (removed) {
+        const bankItem = currentWordBank.find(b => b.uid === removed.uid);
+        if (bankItem) bankItem.used = false;
+      }
+      renderSentenceBuilder();
+    }
+
+    function resetSentenceSlots() {
+      playSound('click');
+      selectedSlots = [];
+      currentWordBank.forEach(b => b.used = false);
+      renderSentenceBuilder();
+    }
+
+    function checkSentenceAnswer() {
+      const q = QUEST_LEVELS[currentQIndex];
+      const userSentence = selectedSlots.map(s => s.text).join('');
+      const targetSentence = q.answerBlocks.map(s => s.text).join('');
+
+      const banner = document.getElementById('feedback-banner');
+      banner.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'border-emerald-400', 'bg-rose-100', 'text-rose-900', 'border-rose-400');
+
+      if (userSentence === targetSentence) {
+        playSound('correct');
+        updateScore(20);
+        banner.classList.add('bg-emerald-100', 'text-emerald-900', 'border-2', 'border-emerald-400');
+        document.getElementById('feedback-icon').textContent = '🎉';
+        document.getElementById('feedback-title').textContent = '真棒！懂事又能干！(+20分)';
+        document.getElementById('feedback-desc').textContent = q.answerSpeech;
+        document.getElementById('btn-next-question').classList.remove('hidden');
+        document.getElementById('btn-check-sentence').disabled = true;
+        speakChinese(q.answerSpeech);
+      } else {
+        playSound('wrong');
+        banner.classList.add('bg-rose-100', 'text-rose-900', 'border-2', 'border-rose-400');
+        document.getElementById('feedback-icon').textContent = '🤔';
+        document.getElementById('feedback-title').textContent = '顺序有点小问题，再试一次！';
+        document.getElementById('feedback-desc').textContent = '提示：先说“我不要……”，再说“我要……”。';
+        document.getElementById('btn-next-question').classList.add('hidden');
+      }
+    }
+
+    function nextQuestion() {
+      playSound('click');
+      if (currentQIndex < QUEST_LEVELS.length - 1) {
+        currentQIndex++;
+        loadQuestion(currentQIndex);
+      } else {
+        playSound('fanfare');
+        document.getElementById('mode-quest').classList.add('hidden');
+        document.getElementById('mode-complete').classList.remove('hidden');
+        document.getElementById('final-score').textContent = score;
+      }
+    }
+
+    function restartQuest() {
+      playSound('click');
+      currentQIndex = 0;
+      score = 0;
+      updateScore(0);
+      document.getElementById('mode-complete').classList.add('hidden');
+      document.getElementById('mode-quest').classList.remove('hidden');
+      loadQuestion(0);
+    }
+
+    function speakQuestion() {
+      const q = QUEST_LEVELS[currentQIndex];
+      speakChinese(q.customQ.text);
+    }
+
+    function speakFullDialogue() {
+      const q = QUEST_LEVELS[currentQIndex];
+      speakChinese(`${q.customQ.text} ${q.answerSpeech}`);
+    }
+
+    // =========================================================================
+    // 7. CLASSROOM PAIR-WORK SPINNER LOGIC (模式二：课堂双人转盘)
+    // =========================================================================
+    function setSpinnerFilter(filter) {
+      playSound('click');
+      spinnerFilter = filter;
+      ['all', 'food', 'drink'].forEach(f => {
+        const el = document.getElementById(`filter-${f}`);
+        if (f === filter) {
+          el.className = 'px-3 py-1 rounded-xl text-xs font-bold bg-amber-500 text-white';
+        } else {
+          el.className = 'px-3 py-1 rounded-xl text-xs font-bold text-amber-900 hover:bg-amber-200';
+        }
+      });
+      spinReels();
+    }
+
+    function spinReels() {
+      playSound('click');
+      const btn = document.getElementById('btn-spin');
+      btn.disabled = true;
+
+      let pool = VOCAB_DB.filter(i => i.cat === 'food' || i.cat === 'drink');
+      if (spinnerFilter === 'food') pool = VOCAB_DB.filter(i => i.cat === 'food');
+      if (spinnerFilter === 'drink') pool = VOCAB_DB.filter(i => i.cat === 'drink');
+
+      let ticks = 0;
+      const maxTicks = 12;
+      const interval = setInterval(() => {
+        const randRole = SPINNER_ROLES[Math.floor(Math.random() * SPINNER_ROLES.length)];
+        const randA = pool[Math.floor(Math.random() * pool.length)];
+        let randB = pool[Math.floor(Math.random() * pool.length)];
+        while (randB.id === randA.id && pool.length > 1) {
+          randB = pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        updateSpinnerDisplay(randRole, randA, randB);
+        ticks++;
+
+        if (ticks >= maxTicks) {
+          clearInterval(interval);
+          currentSpinnerRole = randRole;
+          currentSpinnerNo = randA;
+          currentSpinnerYes = randB;
+          btn.disabled = false;
+          playSound('correct');
+          renderSpinnerDialogue();
+        }
+      }, 75);
+    }
+
+    function updateSpinnerDisplay(roleItem, noItem, yesItem) {
+      document.getElementById('slot-role-emoji').textContent = roleItem.emoji;
+      document.getElementById('slot-role-ruby').innerHTML = itemToRuby(roleItem);
+      document.getElementById('slot-role-eng').textContent = roleItem.eng;
+
+      document.getElementById('slot-no-emoji').textContent = noItem.emoji;
+      document.getElementById('slot-no-ruby').innerHTML = itemToRuby(noItem);
+      document.getElementById('slot-no-eng').textContent = noItem.eng;
+
+      document.getElementById('slot-yes-emoji').textContent = yesItem.emoji;
+      document.getElementById('slot-yes-ruby').innerHTML = itemToRuby(yesItem);
+      document.getElementById('slot-yes-eng').textContent = yesItem.eng;
+    }
+
+    function renderSpinnerDialogue() {
+      const roleI = currentSpinnerRole;
+      const noI = currentSpinnerNo;
+      const yesI = currentSpinnerYes;
+
+      updateSpinnerDisplay(roleI, noI, yesI);
+
+      // Student A Question: [Role]，你要不要吃/喝 [NoItem]？
+      const qRuby = `
+        ${itemToRuby(roleI)}<span class="self-end pb-0.5">，</span><ruby>你<rt>nǐ</rt></ruby><ruby>要<rt>yào</rt></ruby><ruby>不<rt>bu</rt></ruby><ruby>要<rt>yào</rt></ruby><ruby>${noI.verb}<rt>${noI.verbPy}</rt></ruby>${itemToRuby(noI)}<span class="self-end pb-0.5">？</span>
+      `;
+      document.getElementById('spinner-q-ruby').innerHTML = qRuby;
+      document.getElementById('spinner-q-eng').textContent = `${roleI.eng}, do you want to ${noI.verbEng} ${noI.eng}?`;
+
+      // Student B Answer: 我不要吃/喝 [NoItem]，我要吃/喝 [YesItem]。
+      const aRuby = `
+        <ruby>我<rt>wǒ</rt></ruby><ruby class="text-rose-600">不<rt>bú</rt></ruby><ruby class="text-rose-600">要<rt>yào</rt></ruby><ruby>${noI.verb}<rt>${noI.verbPy}</rt></ruby>${itemToRuby(noI)}<span class="self-end pb-0.5">，</span><ruby>我<rt>wǒ</rt></ruby><ruby class="text-emerald-600">要<rt>yào</rt></ruby><ruby>${yesI.verb}<rt>${yesI.verbPy}</rt></ruby>${itemToRuby(yesI)}<span class="self-end pb-0.5">。</span>
+      `;
+      document.getElementById('spinner-a-ruby').innerHTML = aRuby;
+      document.getElementById('spinner-a-eng').textContent = `I don't want to ${noI.verbEng} ${noI.eng}, I want to ${yesI.verbEng} ${yesI.eng}.`;
+    }
+
+    function speakSpinnerPart(part) {
+      const roleI = currentSpinnerRole;
+      const noI = currentSpinnerNo;
+      const yesI = currentSpinnerYes;
+      if (part === 'A') {
+        speakChinese(`${roleI.hanzi}，你要不要${noI.verb}${noI.hanzi}？`);
+      } else {
+        speakChinese(`我不要${noI.verb}${noI.hanzi}，我要${yesI.verb}${yesI.hanzi}。`);
+      }
+    }
+
+    // =========================================================================
+    // 8. VOCABULARY REFERENCE MODAL (P74-76 全套课本词卡墙)
+    // =========================================================================
+    function openVocabModal() {
+      playSound('click');
+      const grid = document.getElementById('vocab-wall-grid');
+      grid.innerHTML = VOCAB_DB.map(item => `
+        <button onclick="speakChinese('${item.hanzi}')" class="btn-3d bg-white hover:bg-amber-100 border-2 border-amber-300 rounded-2xl p-3.5 flex flex-col items-center text-center transition">
+          <div class="text-4xl mb-1.5">${item.emoji}</div>
+          <div class="text-xl font-black text-stone-800">${itemToRuby(item)}</div>
+          <div class="eng-hint text-xs font-semibold text-amber-700 mt-1">${item.eng}</div>
+          <span class="mt-2 text-[11px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">🔊 点击发音</span>
+        </button>
+      `).join('');
+      document.getElementById('vocab-modal').classList.remove('hidden');
+    }
+
+    function closeVocabModal() {
+      playSound('click');
+      document.getElementById('vocab-modal').classList.add('hidden');
+    }
+
+    // =========================================================================
+    // 9. NAVIGATION & SCAFFOLD TOGGLES
+    // =========================================================================
+    function switchMode(mode) {
+      playSound('click');
+      currentMode = mode;
+
+      document.getElementById('mode-quest').classList.add('hidden');
+      document.getElementById('mode-spinner').classList.add('hidden');
+      document.getElementById('mode-complete').classList.add('hidden');
+
+      const tabQuest = document.getElementById('tab-quest');
+      const tabSpinner = document.getElementById('tab-spinner');
+
+      if (mode === 'quest') {
+        document.getElementById('mode-quest').classList.remove('hidden');
+        tabQuest.className = 'px-3.5 py-2 rounded-xl text-sm sm:text-base font-bold transition flex items-center gap-1.5 bg-amber-400 text-amber-950 shadow';
+        tabSpinner.className = 'px-3.5 py-2 rounded-xl text-sm sm:text-base font-bold transition flex items-center gap-1.5 text-amber-200 hover:text-white';
+      } else if (mode === 'spinner') {
+        document.getElementById('mode-spinner').classList.remove('hidden');
+        tabSpinner.className = 'px-3.5 py-2 rounded-xl text-sm sm:text-base font-bold transition flex items-center gap-1.5 bg-amber-400 text-amber-950 shadow';
+        tabQuest.className = 'px-3.5 py-2 rounded-xl text-sm sm:text-base font-bold transition flex items-center gap-1.5 text-amber-200 hover:text-white';
+        renderSpinnerDialogue();
+      }
+    }
+
+    function togglePinyin() {
+      playSound('click');
+      pinyinVisible = !pinyinVisible;
+      document.body.classList.toggle('hide-pinyin', !pinyinVisible);
+      document.getElementById('label-pinyin').textContent = pinyinVisible ? '拼音: 开' : '拼音: 关';
+      const btn = document.getElementById('btn-pinyin');
+      btn.classList.toggle('bg-emerald-600', pinyinVisible);
+      btn.classList.toggle('bg-stone-600', !pinyinVisible);
+    }
+
+    function toggleEnglish() {
+      playSound('click');
+      englishVisible = !englishVisible;
+      document.body.classList.toggle('hide-english', !englishVisible);
+      document.getElementById('label-english').textContent = englishVisible ? '英文: 开' : '英文: 关';
+      const btn = document.getElementById('btn-english');
+      btn.classList.toggle('bg-sky-600', englishVisible);
+      btn.classList.toggle('bg-stone-600', !englishVisible);
+    }
+
+    function toggleSpeechRate() {
+      playSound('click');
+      if (speechRate === 0.85) {
+        speechRate = 0.62;
+        document.getElementById('label-speed').textContent = '语速: 慢速';
+        showToast('🐢 已切换为慢速跟读模式 (0.62x)');
+      } else {
+        speechRate = 0.85;
+        document.getElementById('label-speed').textContent = '语速: 正常';
+        showToast('🐇 已切换为正常语速 (0.85x)');
+      }
+    }
+
+    function updateScore(points) {
+      score += points;
+      document.getElementById('score-display').textContent = score;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.remove('opacity-0');
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+      }, 2200);
+    }
+
+    window.onload = function () {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+      }
+      loadQuestion(0);
+      renderSpinnerDialogue();
+    };
+  </script>
+</body>
+</html>
