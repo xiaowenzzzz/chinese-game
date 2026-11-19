@@ -21,9 +21,12 @@
             font-family: "PingFang SC", "Microsoft YaHei", "Comic Sans MS", sans-serif;
         }
 
-        body {
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* 锁定单屏，绝不上下滑动 */
             background-color: var(--bg-cream);
             background-image: radial-gradient(#E6D5B8 1.5px, transparent 1.5px);
             background-size: 24px 24px;
@@ -31,7 +34,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
 
         /* 顶部招牌 */
@@ -39,35 +41,34 @@
             width: 100%;
             background: linear-gradient(135deg, #388E3C, #1B5E20);
             color: white;
-            padding: 12px 24px;
+            padding: 8px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border-bottom: 5px solid #FFD54F;
-            flex-wrap: wrap;
-            gap: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            border-bottom: 4px solid #FFD54F;
+            flex-shrink: 0;
         }
 
         .shop-title {
-            font-size: 24px;
+            font-size: 21px;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .stats-bar {
             display: flex;
             gap: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             align-items: center;
         }
 
         .stat-badge {
             background: rgba(255,255,255,0.2);
-            padding: 6px 14px;
+            padding: 5px 14px;
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -79,41 +80,43 @@
             color: var(--coffee-brown);
             border: 2px solid #FFD54F;
             border-radius: 15px;
-            padding: 5px 10px;
-            font-size: 14px;
+            padding: 4px 10px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
-            max-width: 180px;
+            max-width: 165px;
         }
 
-        /* 主游戏区域 */
+        /* 主游戏区域：严格三层通栏结构 */
         .game-container {
-            width: 95%;
-            max-width: 1000px;
-            margin-top: 16px;
+            width: 94%;
+            max-width: 1120px;
+            flex: 1;
+            margin: 10px 0 12px 0;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 10px;
+            min-height: 0;
         }
 
-        /* 顾客点单区 */
+        /* 第一层：顾客点单区（通栏） */
         .customer-zone {
             background: var(--card-white);
-            border: 4px solid var(--kopitiam-green);
-            border-radius: 24px;
-            padding: 16px 24px;
+            border: 3px solid var(--kopitiam-green);
+            border-radius: 20px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            box-shadow: 0 6px 0 #C8E6C9;
-            position: relative;
+            gap: 16px;
+            box-shadow: 0 4px 0 #C8E6C9;
+            flex-shrink: 0;
         }
 
         .customer-avatar {
-            font-size: 72px;
+            font-size: 54px;
             background: #FFF3E0;
-            width: 100px;
-            height: 100px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -125,22 +128,25 @@
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-5px); }
         }
 
         .speech-bubble {
             background: #FFFDE7;
-            border: 3px solid #FBC02D;
-            border-radius: 20px;
-            padding: 14px 20px;
+            border: 2.5px solid #FBC02D;
+            border-radius: 16px;
+            padding: 8px 16px;
             flex-grow: 1;
-            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
 
         .order-text {
-            font-size: 22px;
+            font-size: 19px;
             font-weight: bold;
-            line-height: 1.5;
+            line-height: 1.4;
             margin: 0;
         }
 
@@ -157,59 +163,58 @@
             border: none;
             border-radius: 50px;
             padding: 8px 16px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 8px;
             box-shadow: 0 3px 0 #E65100;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .speak-btn:active {
-            transform: translateY(3px);
+            transform: translateY(2px);
             box-shadow: none;
         }
 
-        /* 餐盘备餐区 */
+        /* 第二层：餐盘备餐区（通栏） */
         .tray-zone {
             background: #D7CCC8;
-            border: 4px solid #8D6E63;
-            border-radius: 24px;
-            padding: 14px 20px;
+            border: 3px solid #8D6E63;
+            border-radius: 20px;
+            padding: 8px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         .tray-slots {
             display: flex;
             gap: 12px;
             align-items: center;
-            flex-wrap: wrap;
         }
 
         .slot {
             background: white;
-            border: 3px dashed #A1887F;
-            border-radius: 16px;
-            padding: 8px 16px;
-            min-width: 130px;
-            min-height: 60px;
+            border: 2.5px dashed #A1887F;
+            border-radius: 14px;
+            padding: 6px 14px;
+            min-width: 145px;
+            height: 52px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: bold;
             color: #8D6E63;
+            text-align: center;
+            line-height: 1.2;
         }
 
         .slot.filled {
-            border: 3px solid var(--kopitiam-green);
+            border: 2.5px solid var(--kopitiam-green);
             background: var(--kopitiam-light-green);
             color: var(--coffee-brown);
         }
@@ -223,80 +228,115 @@
             background: #EF5350;
             color: white;
             border: none;
-            border-radius: 16px;
-            padding: 12px 18px;
-            font-size: 18px;
+            border-radius: 14px;
+            padding: 10px 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 0 #C62828;
+            box-shadow: 0 3px 0 #C62828;
         }
 
         .btn-serve {
             background: #43A047;
             color: white;
             border: none;
-            border-radius: 16px;
-            padding: 12px 26px;
-            font-size: 20px;
+            border-radius: 14px;
+            padding: 10px 26px;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 0 #1B5E20;
+            box-shadow: 0 3px 0 #1B5E20;
         }
 
         .btn-clear:active, .btn-serve:active {
-            transform: translateY(4px);
+            transform: translateY(3px);
             box-shadow: none;
         }
 
-        /* 菜单与调料选择区 */
+        /* 第三层：左右两栏厨房操作台（自适应填满剩余高度） */
         .kitchen-board {
+            flex: 1;
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .kitchen-board { grid-template-columns: 1fr; }
+            grid-template-columns: 2.15fr 1fr;
+            gap: 12px;
+            min-height: 0;
         }
 
         .panel {
             background: white;
-            border-radius: 20px;
-            padding: 14px;
+            border-radius: 18px;
+            padding: 10px 14px;
             border: 3px solid #E0E0E0;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 2px dashed #EEEEEE;
+            flex-shrink: 0;
         }
 
         .panel-title {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: bold;
-            margin: 0 0 10px 0;
-            padding-bottom: 6px;
-            border-bottom: 2px dashed #EEEEEE;
+            margin: 0;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
+        .tag-pill {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .tag-food { background: #FFF8E1; color: #E65100; border: 1px solid #FFE082; }
+        .tag-drink { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; }
+        .tag-taste { background: #E3F2FD; color: #1565C0; border: 1px solid #90CAF9; }
+        .tag-condiment { background: #FFF3E0; color: #EF6C00; border: 1px solid #FFCC80; }
+
+        /* 左侧 5列 x 3行 网格（9个主食 + 4个饮料 = 13个卡片） */
         .items-grid {
+            flex: 1;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            min-height: 0;
         }
 
         .food-card {
             background: #FFFDF7;
             border: 2px solid #FFE082;
-            border-radius: 14px;
-            padding: 8px 4px;
+            border-radius: 12px;
+            padding: 4px;
             text-align: center;
             cursor: pointer;
             transition: transform 0.1s, background 0.2s;
-            box-shadow: 0 3px 0 #FFE082;
+            box-shadow: 0 2px 0 #FFE082;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .food-card.drink-card {
+            background: #F1F8E9;
+            border-color: #AED581;
+            box-shadow: 0 2px 0 #AED581;
         }
 
         .food-card:hover {
-            background: #FFF8E1;
             transform: translateY(-2px);
+            filter: brightness(0.98);
         }
 
         .food-card:active {
@@ -305,46 +345,94 @@
         }
 
         .food-emoji {
-            font-size: 32px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .food-name {
-            font-size: 15px;
-            font-weight: bold;
-            display: block;
+            font-size: 24px;
+            line-height: 1.1;
         }
 
         .food-pinyin {
-            font-size: 11px;
+            font-size: 10px;
             color: #8D6E63;
-            display: block;
+            line-height: 1.1;
         }
 
-        /* 口味微调按钮 */
+        .food-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #3E2723;
+            line-height: 1.2;
+        }
+
+        .food-en {
+            font-size: 10px;
+            color: #5D4037;
+            background: rgba(0,0,0,0.04);
+            padding: 1px 5px;
+            border-radius: 5px;
+            line-height: 1.1;
+            max-width: 96%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 右侧 2列 x 4行 网格（4个口味 + 3个调料） */
         .mods-grid {
+            flex: 1;
             display: grid;
             grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(4, 1fr);
             gap: 8px;
+            min-height: 0;
         }
 
         .mod-btn {
             background: #E3F2FD;
             border: 2px solid #90CAF9;
             border-radius: 12px;
-            padding: 8px 6px;
-            font-size: 15px;
-            font-weight: bold;
+            padding: 4px 6px;
             color: #1565C0;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+        }
+
+        .mod-btn.condiment-btn {
+            background: #FFF3E0;
+            border-color: #FFCC80;
+            color: #E65100;
+        }
+
+        .mod-pinyin {
+            font-size: 10px;
+            line-height: 1.1;
+            opacity: 0.85;
+        }
+
+        .mod-zh {
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .mod-en {
+            font-size: 10px;
+            line-height: 1.1;
+            opacity: 0.9;
         }
 
         .mod-btn.selected {
             background: #1E88E5;
             color: white;
             border-color: #0D47A1;
+        }
+
+        .mod-btn.condiment-btn.selected {
+            background: #F57C00;
+            color: white;
+            border-color: #E65100;
         }
 
         /* 反馈弹窗 */
@@ -360,13 +448,13 @@
 
         .feedback-box {
             background: white;
-            border-radius: 28px;
-            padding: 30px;
+            border-radius: 26px;
+            padding: 26px;
             text-align: center;
-            max-width: 400px;
+            max-width: 390px;
             width: 90%;
-            border: 6px solid var(--warm-orange);
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 5px solid var(--warm-orange);
+            animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes popIn {
@@ -374,20 +462,20 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        .feedback-emoji { font-size: 70px; margin-bottom: 10px; }
-        .feedback-title { font-size: 26px; font-weight: bold; margin: 0 0 10px 0; }
-        .feedback-desc { font-size: 18px; color: #555; margin-bottom: 20px; }
+        .feedback-emoji { font-size: 64px; margin-bottom: 8px; }
+        .feedback-title { font-size: 24px; font-weight: bold; margin: 0 0 8px 0; }
+        .feedback-desc { font-size: 16px; color: #555; margin-bottom: 18px; }
 
         .btn-next {
             background: var(--warm-orange);
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 12px 32px;
-            font-size: 20px;
+            padding: 10px 30px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 0 #E65100;
+            box-shadow: 0 3px 0 #E65100;
         }
     </style>
 </head>
@@ -403,7 +491,7 @@
 </header>
 
 <div class="game-container">
-    <!-- 顾客点单区 -->
+    <!-- 第一层：顾客点单区 -->
     <div class="customer-zone">
         <div class="customer-avatar" id="customer-avatar">👦</div>
         <div class="speech-bubble">
@@ -412,12 +500,12 @@
         </div>
     </div>
 
-    <!-- 餐盘备餐区 -->
+    <!-- 第二层：餐盘备餐区 -->
     <div class="tray-zone">
         <div class="tray-slots">
-            <div class="slot" id="slot-food">🍽️ 选主食</div>
-            <div class="slot" id="slot-drink">🥤 选饮料</div>
-            <div class="slot" id="slot-mods">✨ 口味与调料<br><small>(没有可不选)</small></div>
+            <div class="slot" id="slot-food">🍽️ 主食<br><small style="font-weight:normal;font-size:10px;">Main Food</small></div>
+            <div class="slot" id="slot-drink">🥤 饮料<br><small style="font-weight:normal;font-size:10px;">Drinks</small></div>
+            <div class="slot" id="slot-mods">✨ 口味和调料<br><small style="font-weight:normal;font-size:10px;">Taste & Condiments</small></div>
         </div>
         <div class="tray-actions">
             <button class="btn-clear" onclick="clearTray()">🔄 重做</button>
@@ -425,17 +513,30 @@
         </div>
     </div>
 
-    <!-- 厨房操作台 -->
+    <!-- 第三层：左右两栏厨房操作台 -->
     <div class="kitchen-board">
-        <!-- 左侧：食物和饮料 -->
+        <!-- 左侧：主食和饮料 -->
         <div class="panel">
-            <h3 class="panel-title">🍜 美味主食 & 🥤 香浓饮料 <small style="font-weight:normal;color:#888;">(点击可听读音)</small></h3>
+            <div class="panel-header">
+                <h3 class="panel-title">
+                    <span class="tag-pill tag-food">🍜 主食 Main Food</span>
+                    <span>&</span>
+                    <span class="tag-pill tag-drink">🥤 饮料 Drinks</span>
+                </h3>
+                <small style="color:#888;">点击可听读音</small>
+            </div>
             <div class="items-grid" id="menu-grid"></div>
         </div>
 
-        <!-- 右侧：口味微调与调料 -->
+        <!-- 右侧：口味和调料 -->
         <div class="panel">
-            <h3 class="panel-title">🧂 调料与口味微调</h3>
+            <div class="panel-header">
+                <h3 class="panel-title">
+                    <span class="tag-pill tag-taste">👅 口味 Taste</span>
+                    <span>&</span>
+                    <span class="tag-pill tag-condiment">🧂 调料 Condiments</span>
+                </h3>
+            </div>
             <div class="mods-grid" id="mods-grid"></div>
         </div>
     </div>
@@ -452,33 +553,35 @@
 </div>
 
 <script>
-    // 1. 课件核心词汇库（已将“咖啡”还原为原生标准读音）
+    // 1. 课件核心词汇库（含拼音、中文、地道英文、标准语音）
     const MENU_ITEMS = [
-        // 主食 (food)
-        { id: 'xiamian', name: '虾面', tts: '虾面', pinyin: 'xiā miàn', emoji: '🦐🍜', type: 'food' },
-        { id: 'zhuchangfen', name: '猪肠粉', tts: '猪肠粉', pinyin: 'zhū cháng fěn', emoji: '🍥', type: 'food' },
-        { id: 'luobogao', name: '炒萝卜糕', tts: '炒罗拨糕', pinyin: 'chǎo luó bo gāo', emoji: '🥘', type: 'food' },
-        { id: 'chaoguotiao', name: '炒粿条', tts: '炒果条', pinyin: 'chǎo guǒ tiáo', emoji: '🍝', type: 'food' },
-        { id: 'zhurouzhou', name: '猪肉粥', tts: '猪肉周', pinyin: 'zhū ròu zhōu', emoji: '🥣', type: 'food' },
-        { id: 'youtiao', name: '油条', tts: '油条', pinyin: 'yóu tiáo', emoji: '🥖', type: 'food' },
-        { id: 'kaya', name: '咖椰牛油烤面包', tts: '咖椰，牛油烤面包', pinyin: 'kā yē kǎo miàn bāo', emoji: '🥪', type: 'food' },
-        { id: 'hebaodan', name: '荷包蛋', tts: '河包蛋', pinyin: 'hé bāo dàn', emoji: '🍳', type: 'food' },
-        { id: 'banshengshudan', name: '半生熟蛋', tts: '半生书蛋', pinyin: 'bàn shēng shú dàn', emoji: '🥚', type: 'food' },
-        // 饮料 (drink)
-        { id: 'niunai', name: '牛奶', tts: '牛奶', pinyin: 'niú nǎi', emoji: '🥛', type: 'drink' },
-        { id: 'dounai', name: '豆奶', tts: '豆奶', pinyin: 'dòu nǎi', emoji: '🧋', type: 'drink' },
-        { id: 'kafei', name: '咖啡', tts: '咖啡', pinyin: 'kā fēi', emoji: '☕', type: 'drink' },
-        { id: 'naicha', name: '奶茶', tts: '奶茶', pinyin: 'nǎi chá', emoji: '🫖', type: 'drink' }
+        // 主食 (food - 9个)
+        { id: 'xiamian', name: '虾面', en: 'Prawn Noodles', tts: '虾面', pinyin: 'xiā miàn', emoji: '🦐🍜', type: 'food' },
+        { id: 'zhuchangfen', name: '猪肠粉', en: 'Rice Noodle Roll', tts: '猪肠粉', pinyin: 'zhū cháng fěn', emoji: '🍥', type: 'food' },
+        { id: 'luobogao', name: '炒萝卜糕', en: 'Fried Carrot Cake', tts: '炒罗拨糕', pinyin: 'chǎo luó bo gāo', emoji: '🥘', type: 'food' },
+        { id: 'chaoguotiao', name: '炒粿条', en: 'Char Kway Teow', tts: '炒果条', pinyin: 'chǎo guǒ tiáo', emoji: '🍝', type: 'food' },
+        { id: 'zhurouzhou', name: '猪肉粥', en: 'Pork Porridge', tts: '猪肉周', pinyin: 'zhū ròu zhōu', emoji: '🥣', type: 'food' },
+        { id: 'youtiao', name: '油条', en: 'Fried Dough Stick', tts: '油条', pinyin: 'yóu tiáo', emoji: '🥖', type: 'food' },
+        { id: 'kaya', name: '咖椰牛油烤面包', en: 'Kaya Butter Toast', tts: '咖椰，牛油烤面包', pinyin: 'kā yē kǎo miàn bāo', emoji: '🥪', type: 'food' },
+        { id: 'hebaodan', name: '荷包蛋', en: 'Fried Egg', tts: '河包蛋', pinyin: 'hé bāo dàn', emoji: '🍳', type: 'food' },
+        { id: 'banshengshudan', name: '半生熟蛋', en: 'Soft-boiled Eggs', tts: '半生书蛋', pinyin: 'bàn shēng shú dàn', emoji: '🥚', type: 'food' },
+        // 饮料 (drink - 4个)
+        { id: 'niunai', name: '牛奶', en: 'Milk', tts: '牛奶', pinyin: 'niú nǎi', emoji: '🥛', type: 'drink' },
+        { id: 'dounai', name: '豆奶', en: 'Soy Milk', tts: '豆奶', pinyin: 'dòu nǎi', emoji: '🧋', type: 'drink' },
+        { id: 'kafei', name: '咖啡', en: 'Coffee', tts: '咖啡', pinyin: 'kā fēi', emoji: '☕', type: 'drink' },
+        { id: 'naicha', name: '奶茶', en: 'Milk Tea', tts: '奶茶', pinyin: 'nǎi chá', emoji: '🫖', type: 'drink' }
     ];
 
     const MODIFIERS = [
-        { id: 'gande', name: '干的', tts: '甘的', pinyin: 'gān de' },
-        { id: 'tangde', name: '汤的', tts: '汤的', pinyin: 'tāng de' },
-        { id: 'shaoyou', name: '少油', tts: '少油', pinyin: 'shǎo yóu' },
-        { id: 'buyaola', name: '不要辣', tts: '布要辣', pinyin: 'bú yào là' },
-        { id: 'jiangyou', name: '加酱油', tts: '加酱油', pinyin: 'jiàng yóu' },
-        { id: 'jiangqing', name: '加酱青', tts: '加酱清', pinyin: 'jiàng qīng' },
-        { id: 'hujiaofen', name: '加胡椒粉', tts: '加胡交粉', pinyin: 'hú jiāo fěn' }
+        // 口味 (taste - 4个)
+        { id: 'gande', name: '干的', en: 'Dry', tts: '甘的', pinyin: 'gān de', category: 'taste' },
+        { id: 'tangde', name: '汤的', en: 'With Soup', tts: '汤的', pinyin: 'tāng de', category: 'taste' },
+        { id: 'shaoyou', name: '少油', en: 'Less Oil', tts: '少油', pinyin: 'shǎo yóu', category: 'taste' },
+        { id: 'buyaola', name: '不要辣', en: 'No Spicy', tts: '布要辣', pinyin: 'bú yào là', category: 'taste' },
+        // 调料 (condiment - 3个)
+        { id: 'jiangyou', name: '加酱油', en: 'Dark Soy Sauce', tts: '加酱油', pinyin: 'jiàng yóu', category: 'condiment' },
+        { id: 'jiangqing', name: '加酱青', en: 'Light Soy Sauce', tts: '加酱清', pinyin: 'jiàng qīng', category: 'condiment' },
+        { id: 'hujiaofen', name: '加胡椒粉', en: 'White Pepper', tts: '加胡交粉', pinyin: 'hú jiāo fěn', category: 'condiment' }
     ];
 
     // 2. 阶梯式关卡订单
@@ -643,11 +746,12 @@
         const menuGrid = document.getElementById('menu-grid');
         MENU_ITEMS.forEach(item => {
             const card = document.createElement('div');
-            card.className = 'food-card';
+            card.className = item.type === 'drink' ? 'food-card drink-card' : 'food-card';
             card.innerHTML = `
                 <span class="food-emoji">${item.emoji}</span>
-                <span class="food-name">${item.name}</span>
                 <span class="food-pinyin">${item.pinyin}</span>
+                <span class="food-name">${item.name}</span>
+                <span class="food-en">${item.en}</span>
             `;
             card.onclick = () => selectMenuItem(item);
             menuGrid.appendChild(card);
@@ -656,9 +760,13 @@
         const modsGrid = document.getElementById('mods-grid');
         MODIFIERS.forEach(mod => {
             const btn = document.createElement('div');
-            btn.className = 'mod-btn';
+            btn.className = mod.category === 'condiment' ? 'mod-btn condiment-btn' : 'mod-btn';
             btn.id = 'mod-' + mod.id;
-            btn.innerHTML = `${mod.name}<br><small style="font-weight:normal;font-size:11px;">${mod.pinyin}</small>`;
+            btn.innerHTML = `
+                <span class="mod-pinyin">${mod.pinyin}</span>
+                <span class="mod-zh">${mod.name}</span>
+                <span class="mod-en">${mod.en}</span>
+            `;
             btn.onclick = () => toggleModifier(mod.id);
             modsGrid.appendChild(btn);
         });
@@ -703,19 +811,19 @@
         const slotFood = document.getElementById('slot-food');
         if (selectedFood) {
             slotFood.className = 'slot filled';
-            slotFood.innerHTML = `<span style="font-size:24px">${selectedFood.emoji}</span>${selectedFood.name}`;
+            slotFood.innerHTML = `<span style="font-size:18px">${selectedFood.emoji}</span>${selectedFood.name}<small style="font-weight:normal;font-size:10px;">${selectedFood.en}</small>`;
         } else {
             slotFood.className = 'slot';
-            slotFood.innerHTML = `🍽️ 选主食`;
+            slotFood.innerHTML = `🍽️ 主食<small style="font-weight:normal;font-size:10px;">Main Food</small>`;
         }
 
         const slotDrink = document.getElementById('slot-drink');
         if (selectedDrink) {
             slotDrink.className = 'slot filled';
-            slotDrink.innerHTML = `<span style="font-size:24px">${selectedDrink.emoji}</span>${selectedDrink.name}`;
+            slotDrink.innerHTML = `<span style="font-size:18px">${selectedDrink.emoji}</span>${selectedDrink.name}<small style="font-weight:normal;font-size:10px;">${selectedDrink.en}</small>`;
         } else {
             slotDrink.className = 'slot';
-            slotDrink.innerHTML = `🥤 选饮料`;
+            slotDrink.innerHTML = `🥤 饮料<small style="font-weight:normal;font-size:10px;">Drinks</small>`;
         }
 
         MODIFIERS.forEach(m => {
@@ -734,7 +842,7 @@
             slotMods.innerHTML = `✨ ${names.join(' + ')}`;
         } else {
             slotMods.className = 'slot';
-            slotMods.innerHTML = `✨ 口味与调料<br><small>(没有可不选)</small>`;
+            slotMods.innerHTML = `✨ 口味和调料<small style="font-weight:normal;font-size:10px;">Taste & Condiments</small>`;
         }
     }
 
