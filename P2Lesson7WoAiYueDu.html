@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>暴躁大厨的疯狂烤箱 - 触屏流畅版</title>
+<title>暴躁大厨的疯狂烤箱 - 触屏流畅版 (Franky Laoshi)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap');
 
@@ -55,34 +55,89 @@
     z-index: 20;
   }
 
+  .logo-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
   .game-logo {
-    font-size: 26px;
+    font-size: 25px;
     font-weight: bold;
     color: #D9381E;
-    line-height: 1.2;
+    line-height: 1.15;
+  }
+
+  /* ✨ 专属防伪设计 1：顶部首席大厨勋章 */
+  .chef-signature-badge {
+    background: linear-gradient(180deg, #FFD166 0%, #F77F00 100%);
+    color: #3D1300;
+    font-family: 'Nunito', 'KaiTi', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 5px 12px;
+    border-radius: 18px;
+    border: 3px solid #8C3B00;
+    box-shadow: 0 3px 0 #5E2600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transform: rotate(-2deg);
+    white-space: nowrap;
+  }
+
+  /* ✨ 专属防伪设计 2：右下角烤箱防伪印章（全穿透不挡触屏手势） */
+  .oven-watermark {
+    position: fixed;
+    bottom: 10px;
+    right: 16px;
+    background: rgba(255, 249, 235, 0.92);
+    border: 3px dashed #D9381E;
+    border-radius: 16px;
+    padding: 4px 12px;
+    color: #5E2600;
+    font-family: 'Nunito', 'KaiTi', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 3px 0 rgba(94, 38, 0, 0.25);
+    transform: rotate(-1.5deg);
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  .oven-watermark .wm-tag {
+    background: #D9381E;
+    color: #FFF;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 8px;
   }
 
   .hud-group {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
   }
 
   .hud-pill {
     background: #FFE099;
     border: 3px solid #D97724;
-    padding: 5px 14px;
+    padding: 5px 12px;
     border-radius: 20px;
     color: #4A1C00;
+    white-space: nowrap;
   }
 
   .timer-pill {
     background: #FF595E;
     color: #FFF;
     border-color: #9E191E;
-    min-width: 105px;
+    min-width: 98px;
     text-align: center;
   }
 
@@ -526,9 +581,13 @@
 
   <!-- 顶部状态栏 -->
   <div class="top-bar">
-    <div class="game-logo">
-      🔥 暴躁大厨的疯狂烤箱
-      <div class="en-text" style="font-size:15px; color:#8C3B00;">Grumpy Chef's Crazy Oven</div>
+    <div class="logo-group">
+      <div class="game-logo">
+        🔥 暴躁大厨的疯狂烤箱
+        <div class="en-text" style="font-size:14px; color:#8C3B00;">Grumpy Chef's Crazy Oven</div>
+      </div>
+      <!-- 防伪标志 1：顶部首席大厨勋章 -->
+      <div class="chef-signature-badge">👨‍🍳 Franky Laoshi</div>
     </div>
     <div class="hud-group">
       <div class="hud-pill">Level 关卡: <span id="hud-level">1</span>/14</div>
@@ -536,6 +595,13 @@
       <div class="hud-pill">⭐ <span id="hud-score">0</span></div>
       <div class="hud-pill timer-pill">⏱️ <span id="hud-timer">30</span>s</div>
     </div>
+  </div>
+
+  <!-- 防伪标志 2：右下角烤箱防伪印章 -->
+  <div class="oven-watermark">
+    <span>🔥</span>
+    <span>Designed by <strong>Franky Laoshi</strong></span>
+    <span class="wm-tag">正版课件</span>
   </div>
 
   <!-- 主舞台 -->
