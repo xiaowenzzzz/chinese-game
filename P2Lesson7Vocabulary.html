@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISB小小咖啡店长 - P2 第7课</title>
+    <style>
+        :root {
+            --bg-cream: #FFF8E7;
+            --kopitiam-green: #2E7D32;
+            --kopitiam-light-green: #E8F5E9;
+            --coffee-brown: #5D4037;
+            --warm-orange: #FF8F00;
+            --soft-yellow: #FFE082;
+            --card-white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            font-family: "PingFang SC", "Microsoft YaHei", "Comic Sans MS", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-cream);
+            background-image: radial-gradient(#E6D5B8 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--coffee-brown);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 顶部招牌 */
+        header {
+            width: 100%;
+            background: linear-gradient(135deg, #388E3C, #1B5E20);
+            color: white;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-bottom: 5px solid #FFD54F;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .shop-title {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            align-items: center;
+        }
+
+        .stat-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .voice-select {
+            background: #FFF8E7;
+            color: var(--coffee-brown);
+            border: 2px solid #FFD54F;
+            border-radius: 15px;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            max-width: 180px;
+        }
+
+        /* 主游戏区域 */
+        .game-container {
+            width: 95%;
+            max-width: 1000px;
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* 顾客点单区 */
+        .customer-zone {
+            background: var(--card-white);
+            border: 4px solid var(--kopitiam-green);
+            border-radius: 24px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 6px 0 #C8E6C9;
+            position: relative;
+        }
+
+        .customer-avatar {
+            font-size: 72px;
+            background: #FFF3E0;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid var(--warm-orange);
+            flex-shrink: 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .speech-bubble {
+            background: #FFFDE7;
+            border: 3px solid #FBC02D;
+            border-radius: 20px;
+            padding: 14px 20px;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .order-text {
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .highlight {
+            color: #D84315;
+            background: #FFE0B2;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+
+        .speak-btn {
+            background: var(--warm-orange);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 3px 0 #E65100;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .speak-btn:active {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
+
+        /* 餐盘备餐区 */
+        .tray-zone {
+            background: #D7CCC8;
+            border: 4px solid #8D6E63;
+            border-radius: 24px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tray-slots {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .slot {
+            background: white;
+            border: 3px dashed #A1887F;
+            border-radius: 16px;
+            padding: 8px 16px;
+            min-width: 130px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #8D6E63;
+        }
+
+        .slot.filled {
+            border: 3px solid var(--kopitiam-green);
+            background: var(--kopitiam-light-green);
+            color: var(--coffee-brown);
+        }
+
+        .tray-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-clear {
+            background: #EF5350;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 12px 18px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #C62828;
+        }
+
+        .btn-serve {
+            background: #43A047;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 12px 26px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #1B5E20;
+        }
+
+        .btn-clear:active, .btn-serve:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* 菜单与调料选择区 */
+        .kitchen-board {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .kitchen-board { grid-template-columns: 1fr; }
+        }
+
+        .panel {
+            background: white;
+            border-radius: 20px;
+            padding: 14px;
+            border: 3px solid #E0E0E0;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            padding-bottom: 6px;
+            border-bottom: 2px dashed #EEEEEE;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+            gap: 10px;
+        }
+
+        .food-card {
+            background: #FFFDF7;
+            border: 2px solid #FFE082;
+            border-radius: 14px;
+            padding: 8px 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            box-shadow: 0 3px 0 #FFE082;
+        }
+
+        .food-card:hover {
+            background: #FFF8E1;
+            transform: translateY(-2px);
+        }
+
+        .food-card:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .food-emoji {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .food-name {
+            font-size: 15px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .food-pinyin {
+            font-size: 11px;
+            color: #8D6E63;
+            display: block;
+        }
+
+        /* 口味微调按钮 */
+        .mods-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .mod-btn {
+            background: #E3F2FD;
+            border: 2px solid #90CAF9;
+            border-radius: 12px;
+            padding: 8px 6px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #1565C0;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .mod-btn.selected {
+            background: #1E88E5;
+            color: white;
+            border-color: #0D47A1;
+        }
+
+        /* 反馈弹窗 */
+        .feedback-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .feedback-box {
+            background: white;
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 6px solid var(--warm-orange);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .feedback-emoji { font-size: 70px; margin-bottom: 10px; }
+        .feedback-title { font-size: 26px; font-weight: bold; margin: 0 0 10px 0; }
+        .feedback-desc { font-size: 18px; color: #555; margin-bottom: 20px; }
+
+        .btn-next {
+            background: var(--warm-orange);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 32px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #E65100;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="shop-title">🏪 SISB 小小咖啡店长</div>
+    <div class="stats-bar">
+        <select id="voice-select" class="voice-select" title="切换朗读声音" onchange="changeVoice()"></select>
+        <div class="stat-badge">⭐ 关卡: <span id="level-num">1</span></div>
+        <div class="stat-badge">🪙 SISB币: <span id="score-num">0</span></div>
+    </div>
+</header>
+
+<div class="game-container">
+    <!-- 顾客点单区 -->
+    <div class="customer-zone">
+        <div class="customer-avatar" id="customer-avatar">👦</div>
+        <div class="speech-bubble">
+            <p class="order-text" id="order-text">正在准备开店...</p>
+            <button class="speak-btn" onclick="speakOrder()">🔊 再听一遍点单</button>
+        </div>
+    </div>
+
+    <!-- 餐盘备餐区 -->
+    <div class="tray-zone">
+        <div class="tray-slots">
+            <div class="slot" id="slot-food">🍽️ 选主食</div>
+            <div class="slot" id="slot-drink">🥤 选饮料</div>
+            <div class="slot" id="slot-mods">✨ 口味与调料<br><small>(没有可不选)</small></div>
+        </div>
+        <div class="tray-actions">
+            <button class="btn-clear" onclick="clearTray()">🔄 重做</button>
+            <button class="btn-serve" onclick="checkOrder()">🛎️ 上菜！</button>
+        </div>
+    </div>
+
+    <!-- 厨房操作台 -->
+    <div class="kitchen-board">
+        <!-- 左侧：食物和饮料 -->
+        <div class="panel">
+            <h3 class="panel-title">🍜 美味主食 & 🥤 香浓饮料 <small style="font-weight:normal;color:#888;">(点击可听读音)</small></h3>
+            <div class="items-grid" id="menu-grid"></div>
+        </div>
+
+        <!-- 右侧：口味微调与调料 -->
+        <div class="panel">
+            <h3 class="panel-title">🧂 调料与口味微调</h3>
+            <div class="mods-grid" id="mods-grid"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 结果弹窗 -->
+<div class="feedback-overlay" id="feedback-overlay">
+    <div class="feedback-box">
+        <div class="feedback-emoji" id="fb-emoji">🌟</div>
+        <h2 class="feedback-title" id="fb-title">太棒啦！</h2>
+        <p class="feedback-desc" id="fb-desc">小老板真厉害！</p>
+        <button class="btn-next" onclick="nextOrder()">下一位顾客 ➡️</button>
+    </div>
+</div>
+
+<script>
+    // 1. 课件核心词汇库（已将“咖啡”还原为原生标准读音）
+    const MENU_ITEMS = [
+        // 主食 (food)
+        { id: 'xiamian', name: '虾面', tts: '虾面', pinyin: 'xiā miàn', emoji: '🦐🍜', type: 'food' },
+        { id: 'zhuchangfen', name: '猪肠粉', tts: '猪肠粉', pinyin: 'zhū cháng fěn', emoji: '🍥', type: 'food' },
+        { id: 'luobogao', name: '炒萝卜糕', tts: '炒罗拨糕', pinyin: 'chǎo luó bo gāo', emoji: '🥘', type: 'food' },
+        { id: 'chaoguotiao', name: '炒粿条', tts: '炒果条', pinyin: 'chǎo guǒ tiáo', emoji: '🍝', type: 'food' },
+        { id: 'zhurouzhou', name: '猪肉粥', tts: '猪肉周', pinyin: 'zhū ròu zhōu', emoji: '🥣', type: 'food' },
+        { id: 'youtiao', name: '油条', tts: '油条', pinyin: 'yóu tiáo', emoji: '🥖', type: 'food' },
+        { id: 'kaya', name: '咖椰牛油烤面包', tts: '咖椰，牛油烤面包', pinyin: 'kā yē kǎo miàn bāo', emoji: '🥪', type: 'food' },
+        { id: 'hebaodan', name: '荷包蛋', tts: '河包蛋', pinyin: 'hé bāo dàn', emoji: '🍳', type: 'food' },
+        { id: 'banshengshudan', name: '半生熟蛋', tts: '半生书蛋', pinyin: 'bàn shēng shú dàn', emoji: '🥚', type: 'food' },
+        // 饮料 (drink)
+        { id: 'niunai', name: '牛奶', tts: '牛奶', pinyin: 'niú nǎi', emoji: '🥛', type: 'drink' },
+        { id: 'dounai', name: '豆奶', tts: '豆奶', pinyin: 'dòu nǎi', emoji: '🧋', type: 'drink' },
+        { id: 'kafei', name: '咖啡', tts: '咖啡', pinyin: 'kā fēi', emoji: '☕', type: 'drink' },
+        { id: 'naicha', name: '奶茶', tts: '奶茶', pinyin: 'nǎi chá', emoji: '🫖', type: 'drink' }
+    ];
+
+    const MODIFIERS = [
+        { id: 'gande', name: '干的', tts: '甘的', pinyin: 'gān de' },
+        { id: 'tangde', name: '汤的', tts: '汤的', pinyin: 'tāng de' },
+        { id: 'shaoyou', name: '少油', tts: '少油', pinyin: 'shǎo yóu' },
+        { id: 'buyaola', name: '不要辣', tts: '布要辣', pinyin: 'bú yào là' },
+        { id: 'jiangyou', name: '加酱油', tts: '加酱油', pinyin: 'jiàng yóu' },
+        { id: 'jiangqing', name: '加酱青', tts: '加酱清', pinyin: 'jiàng qīng' },
+        { id: 'hujiaofen', name: '加胡椒粉', tts: '加胡交粉', pinyin: 'hú jiāo fěn' }
+    ];
+
+    // 2. 阶梯式关卡订单
+    const ORDERS = [
+        {
+            avatar: '👧',
+            speech: '小老板你好！我要一份，咖椰牛油烤面包，和一杯，牛奶。',
+            html: '小老板你好！我要一份 <span class="highlight">咖椰牛油烤面包</span> 和一杯 <span class="highlight">牛奶</span>。',
+            food: 'kaya', drink: 'niunai', mods: []
+        },
+        {
+            avatar: '👦',
+            speech: '你好！我要，油条，和一杯，豆奶，谢谢！',
+            html: '你好！我要 <span class="highlight">油条</span> 和一杯 <span class="highlight">豆奶</span>，谢谢！',
+            food: 'youtiao', drink: 'dounai', mods: []
+        },
+        {
+            avatar: '👩‍🏫',
+            speech: '早上好！我要一碗，虾面，我要，汤的，还要一杯，咖啡。',
+            html: '早上好！我要一碗 <span class="highlight">虾面</span>（<span class="highlight">汤的</span>），还要一杯 <span class="highlight">咖啡</span>。',
+            food: 'xiamian', drink: 'kafei', mods: ['tangde']
+        },
+        {
+            avatar: '👴',
+            speech: '小老板，我要一盘，炒果条，记得，少油，布要辣，再来一杯，奶茶。',
+            html: '小老板，我要一盘 <span class="highlight">炒粿条</span>，记得 <span class="highlight">少油</span>、<span class="highlight">不要辣</span>，再来一杯 <span class="highlight">奶茶</span>。',
+            food: 'chaoguotiao', drink: 'naicha', mods: ['shaoyou', 'buyaola']
+        },
+        {
+            avatar: '🐼',
+            speech: '我饿啦！我要一碗，猪肉周，请帮我，加酱清，和，加胡交粉，饮料要，豆奶！',
+            html: '我饿啦！我要一碗 <span class="highlight">猪肉粥</span>，请帮我 <span class="highlight">加酱青</span> 和 <span class="highlight">加胡椒粉</span>，饮料要 <span class="highlight">豆奶</span>！',
+            food: 'zhurouzhou', drink: 'dounai', mods: ['jiangqing', 'hujiaofen']
+        },
+        {
+            avatar: '🧑',
+            speech: '我要，半生书蛋，帮我，加酱油，和，加胡交粉，再配一杯，咖啡！',
+            html: '我要 <span class="highlight">半生熟蛋</span>，帮我 <span class="highlight">加酱油</span> 和 <span class="highlight">加胡椒粉</span>，再配一杯 <span class="highlight">咖啡</span>！',
+            food: 'banshengshudan', drink: 'kafei', mods: ['jiangyou', 'hujiaofen']
+        },
+        {
+            avatar: '👵',
+            speech: '健康最重要！我要一盘，炒罗拨糕，要，少油，布要辣，喝一杯，牛奶。',
+            html: '健康最重要！我要一盘 <span class="highlight">炒萝卜糕</span>，要 <span class="highlight">少油</span>、<span class="highlight">不要辣</span>，喝一杯 <span class="highlight">牛奶</span>。',
+            food: 'luobogao', drink: 'niunai', mods: ['shaoyou', 'buyaola']
+        },
+        {
+            avatar: '🦁',
+            speech: '你好！我要一份，猪肠粉，我要，甘的，还要一杯，奶茶！',
+            html: '你好！我要一份 <span class="highlight">猪肠粉</span>，我要 <span class="highlight">干的</span>，还要一杯 <span class="highlight">奶茶</span>！',
+            food: 'zhuchangfen', drink: 'naicha', mods: ['gande']
+        },
+        {
+            avatar: '🐰',
+            speech: '小老板早上好！我要一个，河包蛋，帮我，加酱油，还要一杯，豆奶！',
+            html: '小老板早上好！我要一个 <span class="highlight">荷包蛋</span>，帮我 <span class="highlight">加酱油</span>，还要一杯 <span class="highlight">豆奶</span>！',
+            food: 'hebaodan', drink: 'dounai', mods: ['jiangyou']
+        }
+    ];
+
+    // 游戏状态
+    let currentOrderIndex = 0;
+    let score = 0;
+    let selectedFood = null;
+    let selectedDrink = null;
+    let selectedMods = [];
+    let chineseVoices = [];
+    let selectedVoice = null;
+
+    // 加载并筛选普通话语音包
+    function loadVoices() {
+        const allVoices = window.speechSynthesis.getVoices();
+        chineseVoices = allVoices.filter(v => v.lang === 'zh-CN' || v.lang === 'zh_CN' || v.lang.includes('Hans'));
+        if (chineseVoices.length === 0) {
+            chineseVoices = allVoices.filter(v => v.lang.includes('zh'));
+        }
+
+        const voiceSelect = document.getElementById('voice-select');
+        voiceSelect.innerHTML = '';
+
+        chineseVoices.sort((a, b) => {
+            const scoreVoice = (name) => {
+                if (name.includes('Xiaoxiao') || name.includes('Yunxi')) return 10;
+                if (name.includes('Google')) return 8;
+                if (name.includes('Tingting') || name.includes('Ting-Ting')) return 7;
+                return 1;
+            };
+            return scoreVoice(b.name) - scoreVoice(a.name);
+        });
+
+        chineseVoices.forEach((v, idx) => {
+            const opt = document.createElement('option');
+            opt.value = idx;
+            let cleanName = v.name.replace('Microsoft ', '').replace('Online (Natural) - Chinese (Mainland)', '').replace('Google ', '');
+            opt.textContent = '🗣️ ' + cleanName;
+            voiceSelect.appendChild(opt);
+        });
+
+        if (chineseVoices.length > 0) {
+            selectedVoice = chineseVoices[0];
+        }
+    }
+
+    function changeVoice() {
+        const idx = document.getElementById('voice-select').value;
+        selectedVoice = chineseVoices[idx];
+        speakText('你好，欢迎来到咖啡店！');
+    }
+
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+    }
+
+    // 简易音效合成器
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone(freq, type, duration) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playSuccessSound() {
+        playTone(523.25, 'sine', 0.15);
+        setTimeout(() => playTone(659.25, 'sine', 0.15), 120);
+        setTimeout(() => playTone(783.99, 'sine', 0.3), 240);
+    }
+
+    function playErrorSound() {
+        playTone(250, 'triangle', 0.25);
+        setTimeout(() => playTone(200, 'triangle', 0.3), 200);
+    }
+
+    // 语音播报（TTS）
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            if (selectedVoice) msg.voice = selectedVoice;
+            msg.lang = 'zh-CN';
+            msg.rate = 0.85; 
+            msg.pitch = 1.0;
+            window.speechSynthesis.speak(msg);
+        }
+    }
+
+    function speakOrder() {
+        const order = ORDERS[currentOrderIndex % ORDERS.length];
+        speakText(order.speech);
+    }
+
+    // 初始化菜单界面
+    function initBoard() {
+        const menuGrid = document.getElementById('menu-grid');
+        MENU_ITEMS.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'food-card';
+            card.innerHTML = `
+                <span class="food-emoji">${item.emoji}</span>
+                <span class="food-name">${item.name}</span>
+                <span class="food-pinyin">${item.pinyin}</span>
+            `;
+            card.onclick = () => selectMenuItem(item);
+            menuGrid.appendChild(card);
+        });
+
+        const modsGrid = document.getElementById('mods-grid');
+        MODIFIERS.forEach(mod => {
+            const btn = document.createElement('div');
+            btn.className = 'mod-btn';
+            btn.id = 'mod-' + mod.id;
+            btn.innerHTML = `${mod.name}<br><small style="font-weight:normal;font-size:11px;">${mod.pinyin}</small>`;
+            btn.onclick = () => toggleModifier(mod.id);
+            modsGrid.appendChild(btn);
+        });
+
+        loadOrder();
+    }
+
+    function loadOrder() {
+        const order = ORDERS[currentOrderIndex % ORDERS.length];
+        document.getElementById('level-num').innerText = currentOrderIndex + 1;
+        document.getElementById('customer-avatar').innerText = order.avatar;
+        document.getElementById('order-text').innerHTML = order.html;
+        clearTray(false);
+        setTimeout(speakOrder, 400);
+    }
+
+    function selectMenuItem(item) {
+        playTone(440, 'sine', 0.08);
+        speakText(item.tts);
+        if (item.type === 'food') {
+            selectedFood = item;
+        } else {
+            selectedDrink = item;
+        }
+        updateTrayUI();
+    }
+
+    function toggleModifier(modId) {
+        playTone(550, 'sine', 0.08);
+        const modObj = MODIFIERS.find(m => m.id === modId);
+        const idx = selectedMods.indexOf(modId);
+        if (idx > -1) {
+            selectedMods.splice(idx, 1);
+        } else {
+            selectedMods.push(modId);
+            speakText(modObj.tts);
+        }
+        updateTrayUI();
+    }
+
+    function updateTrayUI() {
+        const slotFood = document.getElementById('slot-food');
+        if (selectedFood) {
+            slotFood.className = 'slot filled';
+            slotFood.innerHTML = `<span style="font-size:24px">${selectedFood.emoji}</span>${selectedFood.name}`;
+        } else {
+            slotFood.className = 'slot';
+            slotFood.innerHTML = `🍽️ 选主食`;
+        }
+
+        const slotDrink = document.getElementById('slot-drink');
+        if (selectedDrink) {
+            slotDrink.className = 'slot filled';
+            slotDrink.innerHTML = `<span style="font-size:24px">${selectedDrink.emoji}</span>${selectedDrink.name}`;
+        } else {
+            slotDrink.className = 'slot';
+            slotDrink.innerHTML = `🥤 选饮料`;
+        }
+
+        MODIFIERS.forEach(m => {
+            const btn = document.getElementById('mod-' + m.id);
+            if (selectedMods.includes(m.id)) {
+                btn.classList.add('selected');
+            } else {
+                btn.classList.remove('selected');
+            }
+        });
+
+        const slotMods = document.getElementById('slot-mods');
+        if (selectedMods.length > 0) {
+            slotMods.className = 'slot filled';
+            const names = selectedMods.map(id => MODIFIERS.find(m => m.id === id).name);
+            slotMods.innerHTML = `✨ ${names.join(' + ')}`;
+        } else {
+            slotMods.className = 'slot';
+            slotMods.innerHTML = `✨ 口味与调料<br><small>(没有可不选)</small>`;
+        }
+    }
+
+    function clearTray(playSound = true) {
+        if (playSound) playTone(300, 'sine', 0.08);
+        selectedFood = null;
+        selectedDrink = null;
+        selectedMods = [];
+        updateTrayUI();
+    }
+
+    function checkOrder() {
+        const order = ORDERS[currentOrderIndex % ORDERS.length];
+        
+        const foodOk = selectedFood && selectedFood.id === order.food;
+        const drinkOk = selectedDrink && selectedDrink.id === order.drink;
+        const modsOk = selectedMods.length === order.mods.length &&
+                       order.mods.every(m => selectedMods.includes(m));
+
+        const overlay = document.getElementById('feedback-overlay');
+        const fbEmoji = document.getElementById('fb-emoji');
+        const fbTitle = document.getElementById('fb-title');
+        const fbDesc = document.getElementById('fb-desc');
+        const nextBtn = document.querySelector('.btn-next');
+
+        if (foodOk && drinkOk && modsOk) {
+            playSuccessSound();
+            score += 10;
+            document.getElementById('score-num').innerText = score;
+            fbEmoji.innerText = '🌟🎉';
+            fbTitle.innerText = '五星好评！赚到 10 个 SISB币！';
+            fbTitle.style.color = '#2E7D32';
+            fbDesc.innerText = '小老板太棒了，完全符合顾客的健康口味要求！';
+            nextBtn.innerText = '下一位顾客 ➡️';
+            nextBtn.onclick = nextOrder;
+            speakText('谢谢小老板，真好吃！');
+        } else {
+            playErrorSound();
+            fbEmoji.innerText = '🤔💦';
+            fbTitle.innerText = '哎呀，好像拿错了一点点哦！';
+            fbTitle.style.color = '#D84315';
+            fbDesc.innerText = '再仔细听听顾客要什么食物、饮料和口味吧！';
+            nextBtn.innerText = '回去再改改 🔄';
+            nextBtn.onclick = () => { overlay.style.display = 'none'; };
+            speakText('哎呀，好像不对哦，再听一遍吧！');
+        }
+        overlay.style.display = 'flex';
+    }
+
+    function nextOrder() {
+        document.getElementById('feedback-overlay').style.display = 'none';
+        currentOrderIndex++;
+        loadOrder();
+    }
+
+    window.onload = initBoard;
+</script>
+</body>
+</html>
