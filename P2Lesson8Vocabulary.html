@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第八课《感谢我周围的人》- Superhero Community Adventure</title>
+<style>
+  :root {
+    --comic-blue: #1976d2;
+    --comic-sky: #4fc3f7;
+    --comic-yellow: #ffd600;
+    --comic-red: #ff1744;
+    --comic-green: #00c853;
+    --comic-cream: #fffde7;
+    --ink: #1a1a1a;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Comic Sans MS", sans-serif;
+    user-select: none;
+  }
+
+  /* 美漫波点背景 */
+  body {
+    margin: 0;
+    padding: 0 0 40px 0;
+    background-color: #29b6f6;
+    background-image:
+      radial-gradient(#0288d1 2px, transparent 2px),
+      radial-gradient(#81d4fa 2px, #29b6f6 2px);
+    background-size: 32px 32px;
+    background-position: 0 0, 16px 16px;
+    min-height: 100vh;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 拼音注音排版 */
+  ruby { ruby-align: center; }
+  rt { font-size: 0.56em; color: #37474f; font-weight: 600; letter-spacing: 0; }
+
+  /* 顶部漫画横幅 */
+  header {
+    width: 100%;
+    background: linear-gradient(135deg, #d50000 0%, #ff1744 50%, #ff5252 100%);
+    color: white;
+    padding: 16px 20px;
+    text-align: center;
+    border-bottom: 5px solid var(--ink);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.25);
+    position: relative;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    line-height: 1.9;
+    text-shadow: 2px 2px 0 var(--ink), -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink);
+  }
+  header rt {
+    color: #fff59d;
+    text-shadow: 1px 1px 0 var(--ink);
+  }
+  .subtitle-badge {
+    display: inline-block;
+    background: var(--comic-yellow);
+    color: var(--ink);
+    font-weight: 900;
+    font-size: 0.9rem;
+    padding: 4px 16px;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
+    margin-top: 6px;
+    transform: rotate(-1deg);
+  }
+
+  /* 主漫画画板容器 */
+  .container {
+    width: 95%;
+    max-width: 1020px;
+    background: var(--comic-cream);
+    border: 5px solid var(--ink);
+    border-radius: 24px;
+    margin: 22px auto;
+    padding: 24px;
+    box-shadow: 10px 10px 0 var(--ink);
+    text-align: center;
+    position: relative;
+  }
+
+  /* 导航与按钮 */
+  .nav-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 3px dashed #bdbdbd;
+  }
+
+  .comic-btn {
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.25;
+  }
+  .comic-btn span.btn-en {
+    font-size: 0.76rem;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-top: 2px;
+  }
+  .comic-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .comic-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+
+  .btn-mode { background: #ffffff; color: var(--ink); }
+  .btn-mode.active { background: var(--comic-blue); color: white; }
+
+  .btn-game { background: var(--comic-yellow); color: var(--ink); }
+  .btn-game.active { background: var(--comic-red); color: white; }
+
+  /* 课堂计分板 */
+  .scoreboard {
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #e1f5fe;
+    border: 4px solid var(--ink);
+    border-radius: 18px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+  .team-box {
+    font-size: 1.15rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 3px solid var(--ink);
+  }
+  .score-num {
+    font-size: 1.8rem;
+    color: var(--comic-red);
+    min-width: 32px;
+  }
+  .score-btn {
+    background: var(--comic-green);
+    color: white;
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 900;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .score-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+
+  /* 漫画对话框提示区 */
+  .speech-bubble {
+    position: relative;
+    background: #ffffff;
+    border: 4px solid var(--ink);
+    border-radius: 22px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 18px 16px 0;
+    border-style: solid;
+    border-color: var(--ink) transparent transparent;
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 14px 12px 0;
+    border-style: solid;
+    border-color: #ffffff transparent transparent;
+    z-index: 1;
+  }
+
+  .prompt-text {
+    font-size: 1.55rem;
+    font-weight: 900;
+    color: #0d47a1;
+    margin: 4px 0 8px;
+    line-height: 2.1;
+  }
+  .prompt-sub {
+    font-size: 1.05rem;
+    color: #455a64;
+    font-weight: 700;
+  }
+
+  .audio-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .speak-btn {
+    background: #ff6d00;
+    color: white;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 9px 22px;
+    font-size: 1.02rem;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .speak-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+  .speed-btn {
+    background: #f5f5f5;
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 0.92rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .speed-btn.active {
+    background: var(--comic-green);
+    color: white;
+  }
+
+  /* 英雄卡片网格 */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+  }
+
+  .card {
+    background: #ffffff;
+    border: 4px solid var(--ink);
+    border-radius: 18px;
+    padding: 16px 10px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* 卡片顶部英雄徽章色带 */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 10px;
+    background: linear-gradient(90deg, var(--comic-red), var(--comic-yellow), var(--comic-blue));
+    border-bottom: 2px solid var(--ink);
+  }
+  .card:hover {
+    transform: translate(-3px, -4px) rotate(-1deg);
+    box-shadow: 8px 8px 0 var(--ink);
+    background: #e3f2fd;
+  }
+  .card .emoji-badge {
+    width: 74px;
+    height: 74px;
+    background: #fff9c4;
+    border: 3px solid var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.7rem;
+    margin: 6px 0 10px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .card .hanzi-ruby {
+    font-size: 1.48rem;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.9;
+  }
+  .card .en {
+    font-size: 0.85rem;
+    color: #546e7a;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  .card.correct {
+    background: #b9f6ca !important;
+    animation: heroPop 0.5s;
+  }
+  .card.wrong {
+    background: #ff8a80 !important;
+    animation: heroShake 0.4s;
+  }
+
+  /* 翻翻乐专属卡片 */
+  .memory-card {
+    height: 145px;
+    background: repeating-linear-gradient(
+      45deg,
+      #1976d2,
+      #1976d2 12px,
+      #1e88e5 12px,
+      #1e88e5 24px
+    );
+    color: white;
+  }
+  .memory-card::before { display: none; }
+  .memory-card .cover {
+    width: 60px; height: 60px;
+    background: var(--comic-yellow);
+    border: 3px solid var(--ink);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .memory-card .content { display: none; }
+  .memory-card.flipped {
+    background: #ffffff;
+    color: var(--ink);
+  }
+  .memory-card.flipped .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .memory-card.matched {
+    background: #b9f6ca;
+    opacity: 0.9;
+    cursor: default;
+  }
+
+  /* 情景剧场专属样式 */
+  .theater-stage {
+    background: linear-gradient(180deg, #b3e5fc 0%, #c8e6c9 100%);
+    border: 4px solid var(--ink);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+  .dialogue-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .dialogue-box {
+    flex: 1;
+    min-width: 260px;
+    background: white;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 14px 18px;
+    box-shadow: 4px 4px 0 var(--ink);
+    text-align: left;
+  }
+  .dialogue-role {
+    display: inline-block;
+    background: var(--comic-yellow);
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 0.85rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .dialogue-text {
+    font-size: 1.35rem;
+    font-weight: 900;
+    line-height: 2;
+  }
+  .blank-slot {
+    display: inline-block;
+    min-width: 95px;
+    border-bottom: 4px dashed var(--comic-red);
+    color: var(--comic-red);
+    text-align: center;
+    padding: 0 6px;
+  }
+
+  /* 底部反馈栏 */
+  .feedback {
+    font-size: 1.3rem;
+    font-weight: 900;
+    min-height: 60px;
+    margin-top: 20px;
+    line-height: 1.7;
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 10px 16px;
+    box-shadow: 4px 4px 0 var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .feedback:empty { display: none; }
+  .feedback-en {
+    display: block;
+    font-size: 0.95rem;
+    color: #455a64;
+    font-weight: 700;
+  }
+
+  /* 彩带动画 */
+  .confetti {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--ink);
+    top: -20px;
+    z-index: 9999;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(105vh) rotate(720deg); }
+  }
+
+  @keyframes heroPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.12) rotate(2deg); }
+    100% { transform: scale(1); }
+  }
+  @keyframes heroShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px) rotate(-2deg); }
+    75% { transform: translateX(8px) rotate(2deg); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>
+    🦸‍♂️ <ruby>第<rt>dì</rt>八<rt>bā</rt>课<rt>kè</rt></ruby>《<ruby>感<rt>gǎn</rt>谢<rt>xiè</rt>我<rt>wǒ</rt>周<rt>zhōu</rt>围<rt>wéi</rt>的<rt>de</rt>人<rt>rén</rt></ruby>》<ruby>听<rt>tīng</rt>说<rt>shuō</rt>剧<rt>jù</rt>场<rt>chǎng</rt></ruby>
+  </h1>
+  <div class="subtitle-badge">⚡ SUPERHERO COMMUNITY ADVENTURE · 二年级华文互动游戏 ⚡</div>
+</header>
+
+<div class="container">
+  <!-- 模式切换 -->
+  <div class="nav-bar">
+    <button class="comic-btn btn-mode active" id="mode-home" onclick="setMode('home')">
+      <span>🏠 家庭练习模式</span>
+      <span class="btn-en">Home Practice Mode</span>
+    </button>
+    <button class="comic-btn btn-mode" id="mode-class" onclick="setMode('class')">
+      <span>🏫 课堂小组竞赛</span>
+      <span class="btn-en">Classroom Team Challenge</span>
+    </button>
+  </div>
+
+  <!-- 课堂记分板 -->
+  <div class="scoreboard" id="scoreboard">
+    <div class="team-box">
+      <span>🔴 <ruby>红<rt>hóng</rt>队<rt>duì</rt></ruby> (Red):</span>
+      <span class="score-num" id="score-red">0</span>
+      <button class="score-btn" onclick="addScore('red', 1)">+1 ⭐</button>
+    </div>
+    <div class="team-box">
+      <span>🔵 <ruby>蓝<rt>lán</rt>队<rt>duì</rt></ruby> (Blue):</span>
+      <span class="score-num" id="score-blue">0</span>
+      <button class="score-btn" onclick="addScore('blue', 1)">+1 ⭐</button>
+    </div>
+  </div>
+
+  <!-- 游戏关卡切换 -->
+  <div class="nav-bar">
+    <button class="comic-btn btn-game active" id="tab-learn" onclick="switchGame('learn')">
+      <span>📖 1. 英雄图鉴</span>
+      <span class="btn-en">Hero Cards</span>
+    </button>
+    <button class="comic-btn btn-game" id="tab-listen" onclick="switchGame('listen')">
+      <span>👂 2. 听音找英雄</span>
+      <span class="btn-en">Listening</span>
+    </button>
+    <button class="comic-btn btn-game" id="tab-task" onclick="switchGame('task')">
+      <span>🚨 3. 紧急任务</span>
+      <span class="btn-en">Missions</span>
+    </button>
+    <button class="comic-btn btn-game" id="tab-theater" onclick="switchGame('theater')">
+      <span>💬 4. 情景剧场</span>
+      <span class="btn-en">Role-Play</span>
+    </button>
+    <button class="comic-btn btn-game" id="tab-memory" onclick="switchGame('memory')">
+      <span>🃏 5. 徽章翻翻乐</span>
+      <span class="btn-en">Memory Match</span>
+    </button>
+  </div>
+
+  <!-- 漫画对话框提示区 -->
+  <div class="speech-bubble" id="prompt-box">
+    <div class="prompt-text" id="prompt-main"></div>
+    <div class="prompt-sub" id="prompt-sub"></div>
+    <div class="audio-controls">
+      <button class="speak-btn" id="speak-btn" style="display:none;" onclick="replayAudio()">
+        🔊 再听一遍 (Listen Again)
+      </button>
+      <button class="speed-btn active" id="speed-slow" onclick="setSpeed(0.62)">
+        🐢 慢速朗读 (Slow)
+      </button>
+      <button class="speed-btn" id="speed-normal" onclick="setSpeed(0.85)">
+        🐇 正常语速 (Normal)
+      </button>
+    </div>
+  </div>
+
+  <!-- 情景剧场舞台（仅第4关显示） -->
+  <div id="theater-container" style="display:none;"></div>
+
+  <!-- 游戏主卡片区 -->
+  <div class="grid" id="game-grid"></div>
+
+  <!-- 反馈栏 -->
+  <div class="feedback" id="feedback"></div>
+</div>
+
+<script>
+const vocab = [
+  {
+    id: 1,
+    hanzi: "建筑工人",
+    ruby: "<ruby>建<rt>jiàn</rt>筑<rt>zhù</rt>工<rt>gōng</rt>人<rt>rén</rt></ruby>",
+    en: "Construction Worker",
+    emoji: "👷‍♂️",
+    actionPlain: "盖房子",
+    actionRuby: "<ruby>盖<rt>gài</rt>房<rt>fáng</rt>子<rt>zi</rt></ruby>",
+    actionEn: "build houses",
+    taskRuby: "<ruby>我<rt>wǒ</rt>们<rt>men</rt>需<rt>xū</rt>要<rt>yào</rt>盖<rt>gài</rt>一<rt>yī</rt>座<rt>zuò</rt>新<rt>xīn</rt>大<rt>dà</rt>楼<rt>lóu</rt>，请<rt>qǐng</rt>谁<rt>shuí</rt>来<rt>lái</rt>帮<rt>bāng</rt>忙<rt>máng</rt>？</ruby>",
+    taskPlain: "我们需要盖一座新大楼，请谁来帮忙？",
+    taskEn: "We need to build a new building. Who can help us?"
+  },
+  {
+    id: 2,
+    hanzi: "清洁工人",
+    ruby: "<ruby>清<rt>qīng</rt>洁<rt>jié</rt>工<rt>gōng</rt>人<rt>rén</rt></ruby>",
+    en: "Cleaner",
+    emoji: "🧹",
+    actionPlain: "打扫卫生",
+    actionRuby: "<ruby>打<rt>dǎ</rt>扫<rt>sǎo</rt>卫<rt>wèi</rt>生<rt>shēng</rt></ruby>",
+    actionEn: "clean the streets",
+    taskRuby: "<ruby>公<rt>gōng</rt>园<rt>yuán</rt>里<rt>lǐ</rt>有<rt>yǒu</rt>很<rt>hěn</rt>多<rt>duō</rt>垃<rt>lā</rt>圾<rt>jī</rt>，谁<rt>shuí</rt>把<rt>bǎ</rt>街<rt>jiē</rt>道<rt>dào</rt>打<rt>dǎ</rt>扫<rt>sǎo</rt>干<rt>gān</rt>净<rt>jìng</rt>？</ruby>",
+    taskPlain: "公园里有很多垃圾，谁把街道打扫干净？",
+    taskEn: "The park is messy. Who sweeps and keeps our streets clean?"
+  },
+  {
+    id: 3,
+    hanzi: "消防员",
+    ruby: "<ruby>消<rt>xiāo</rt>防<rt>fáng</rt>员<rt>yuán</rt></ruby>",
+    en: "Firefighter",
+    emoji: "🧑‍🚒",
+    actionPlain: "灭火",
+    actionRuby: "<ruby>灭<rt>miè</rt>火<rt>huǒ</rt></ruby>",
+    actionEn: "put out fires",
+    taskRuby: "<ruby>大<rt>dà</rt>楼<rt>lóu</rt>着<rt>zháo</rt>火<rt>huǒ</rt>了<rt>le</rt>！快<rt>kuài</rt>请<rt>qǐng</rt>谁<rt>shuí</rt>来<rt>lái</rt>灭<rt>miè</rt>火<rt>huǒ</rt>？</ruby>",
+    taskPlain: "大楼着火了！快请谁来灭火？",
+    taskEn: "Fire! Who comes quickly to put out the fire?"
+  },
+  {
+    id: 4,
+    hanzi: "演员",
+    ruby: "<ruby>演<rt>yǎn</rt>员<rt>yuán</rt></ruby>",
+    en: "Actor / Actress",
+    emoji: "🎭",
+    actionPlain: "演戏",
+    actionRuby: "<ruby>演<rt>yǎn</rt>戏<rt>xì</rt></ruby>",
+    actionEn: "act on stage",
+    taskRuby: "<ruby>我<rt>wǒ</rt>们<rt>men</rt>在<rt>zài</rt>剧<rt>jù</rt>场<rt>chǎng</rt>看<rt>kàn</rt>表<rt>biǎo</rt>演<rt>yǎn</rt>，是<rt>shì</rt>谁<rt>shuí</rt>在<rt>zài</rt>台<rt>tái</rt>上<rt>shàng</rt>演<rt>yǎn</rt>出<rt>chū</rt>？</ruby>",
+    taskPlain: "我们在剧场看表演，是谁在台上演出？",
+    taskEn: "We are watching a show at the theater. Who performs on stage?"
+  },
+  {
+    id: 5,
+    hanzi: "园丁",
+    ruby: "<ruby>园<rt>yuán</rt>丁<rt>dīng</rt></ruby>",
+    en: "Gardener",
+    emoji: "🧑‍🌾",
+    actionPlain: "种花",
+    actionRuby: "<ruby>种<rt>zhòng</rt>花<rt>huā</rt></ruby>",
+    actionEn: "plant flowers",
+    taskRuby: "<ruby>在<rt>zài</rt>花<rt>huā</rt>园<rt>yuán</rt>里<rt>lǐ</rt>，是<rt>shì</rt>谁<rt>shuí</rt>在<rt>zài</rt>给<rt>gěi</rt>花<rt>huā</rt>草<rt>cǎo</rt>树<rt>shù</rt>木<rt>mù</rt>浇<rt>jiāo</rt>水<rt>shuǐ</rt>？</ruby>",
+    taskPlain: "在花园里，是谁在给花草树木浇水？",
+    taskEn: "Who waters the flowers and trees in the garden?"
+  },
+  {
+    id: 6,
+    hanzi: "司机",
+    ruby: "<ruby>司<rt>sī</rt>机<rt>jī</rt></ruby>",
+    en: "Driver",
+    emoji: "🚌",
+    actionPlain: "开车",
+    actionRuby: "<ruby>开<rt>kāi</rt>车<rt>chē</rt></ruby>",
+    actionEn: "drive vehicles",
+    taskRuby: "<ruby>每<rt>měi</rt>天<rt>tiān</rt>早<rt>zǎo</rt>上<rt>shàng</rt>，是<rt>shì</rt>谁<rt>shuí</rt>开<rt>kāi</rt>着<rt>zhe</rt>校<rt>xiào</rt>车<rt>chē</rt>送<rt>sòng</rt>我<rt>wǒ</rt>们<rt>men</rt>上<rt>shàng</rt>学<rt>xué</rt>？</ruby>",
+    taskPlain: "每天早上，是谁开着校车送我们上学？",
+    taskEn: "Every morning, who drives the school bus safely to school?"
+  },
+  {
+    id: 7,
+    hanzi: "医生",
+    ruby: "<ruby>医<rt>yī</rt>生<rt>shēng</rt></ruby>",
+    en: "Doctor",
+    emoji: "🧑‍⚕️",
+    actionPlain: "看病",
+    actionRuby: "<ruby>看<rt>kàn</rt>病<rt>bìng</rt></ruby>",
+    actionEn: "treat patients",
+    taskRuby: "<ruby>我<rt>wǒ</rt>发<rt>fā</rt>烧<rt>shāo</rt>生<rt>shēng</rt>病<rt>bìng</rt>了<rt>le</rt>，去<rt>qù</rt>医<rt>yī</rt>院<rt>yuàn</rt>找<rt>zhǎo</rt>谁<rt>shuí</rt>看<rt>kàn</rt>病<rt>bìng</rt>？</ruby>",
+    taskPlain: "我发烧生病了，去医院找谁看病？",
+    taskEn: "I have a fever. Who checks my health at the hospital?"
+  },
+  {
+    id: 8,
+    hanzi: "护士",
+    ruby: "<ruby>护<rt>hù</rt>士<rt>shi</rt></ruby>",
+    en: "Nurse",
+    emoji: "👩‍⚕️",
+    actionPlain: "照顾病人",
+    actionRuby: "<ruby>照<rt>zhào</rt>顾<rt>gù</rt>病<rt>bìng</rt>人<rt>rén</rt></ruby>",
+    actionEn: "care for patients",
+    taskRuby: "<ruby>在<rt>zài</rt>医<rt>yī</rt>院<rt>yuàn</rt>里<rt>lǐ</rt>，是<rt>shì</rt>谁<rt>shuí</rt>照<rt>zhào</rt>顾<rt>gù</rt>病<rt>bìng</rt>人<rt>rén</rt>、帮<rt>bāng</rt>医<rt>yī</rt>生<rt>shēng</rt>打<rt>dǎ</rt>针<rt>zhēn</rt>？</ruby>",
+    taskPlain: "在医院里，是谁照顾病人、帮医生打针？",
+    taskEn: "Who takes care of patients and helps the doctor at the hospital?"
+  },
+  {
+    id: 9,
+    hanzi: "小贩",
+    ruby: "<ruby>小<rt>xiǎo</rt>贩<rt>fàn</rt></ruby>",
+    en: "Hawker / Vendor",
+    emoji: "🍜",
+    actionPlain: "卖东西",
+    actionRuby: "<ruby>卖<rt>mài</rt>东<rt>dōng</rt>西<rt>xi</rt></ruby>",
+    actionEn: "sell food",
+    taskRuby: "<ruby>肚<rt>dù</rt>子<rt>zi</rt>饿<rt>è</rt>了<rt>le</rt>！在<rt>zài</rt>熟<rt>shú</rt>食<rt>shí</rt>中<rt>zhōng</rt>心<rt>xīn</rt>是<rt>shì</rt>谁<rt>shuí</rt>煮<rt>zhǔ</rt>面<rt>miàn</rt>给<rt>gěi</rt>我<rt>wǒ</rt>们<rt>men</rt>？</ruby>",
+    taskPlain: "肚子饿了！在熟食中心是谁煮面给我们？",
+    taskEn: "I am hungry! Who cooks delicious noodles at the hawker center?"
+  },
+  {
+    id: 10,
+    hanzi: "警察",
+    ruby: "<ruby>警<rt>jǐng</rt>察<rt>chá</rt></ruby>",
+    en: "Police Officer",
+    emoji: "👮",
+    actionPlain: "抓坏人",
+    actionRuby: "<ruby>抓<rt>zhuā</rt>坏<rt>huài</rt>人<rt>rén</rt></ruby>",
+    actionEn: "catch bad guys",
+    taskRuby: "<ruby>有<rt>yǒu</rt>人<rt>rén</rt>迷<rt>mí</rt>路<rt>lù</rt>了<rt>le</rt>，我<rt>wǒ</rt>们<rt>men</rt>找<rt>zhǎo</rt>谁<rt>shuí</rt>来<rt>lái</rt>保<rt>bǎo</rt>护<rt>hù</rt>大<rt>dà</rt>家<rt>jiā</rt>？</ruby>",
+    taskPlain: "有人迷路了，我们找谁来保护大家？",
+    taskEn: "Someone is lost. Who keeps our neighborhood safe and helps us?"
+  }
+];
+
+let currentMode = 'home';
+let currentGame = 'learn';
+let targetItem = null;
+let scores = { red: 0, blue: 0 };
+let currentSpeakText = "";
+let speechRate = 0.62;
+
+function setSpeed(rate) {
+  speechRate = rate;
+  document.getElementById('speed-slow').classList.toggle('active', rate === 0.62);
+  document.getElementById('speed-normal').classList.toggle('active', rate === 0.85);
+  if (currentSpeakText) speak(currentSpeakText);
+}
+
+function speak(text) {
+  currentSpeakText = text;
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'zh-CN';
+    utter.rate = speechRate;
+    window.speechSynthesis.speak(utter);
+  }
+}
+
+function replayAudio() {
+  if (currentSpeakText) speak(currentSpeakText);
+}
+
+// 彩带庆祝动画
+function launchConfetti() {
+  const colors = ['#ff1744', '#ffd600', '#00c853', '#29b6f6', '#aa00ff'];
+  for (let i = 0; i < 28; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDuration = (Math.random() * 1.2 + 1) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2200);
+  }
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('mode-home').classList.toggle('active', mode === 'home');
+  document.getElementById('mode-class').classList.toggle('active', mode === 'class');
+  document.getElementById('scoreboard').style.display = (mode === 'class') ? 'flex' : 'none';
+}
+
+function addScore(team, pts) {
+  scores[team] += pts;
+  document.getElementById(`score-${team}`).innerText = scores[team];
+  launchConfetti();
+}
+
+function switchGame(game) {
+  currentGame = game;
+  document.querySelectorAll('.btn-game').forEach(b => b.classList.remove('active'));
+  document.getElementById(`tab-${game}`).classList.add('active');
+  document.getElementById('feedback').innerHTML = "";
+  document.getElementById('speak-btn').style.display = 'none';
+  document.getElementById('theater-container').style.display = 'none';
+
+  if (game === 'learn') initLearn();
+  else if (game === 'listen') initListen();
+  else if (game === 'task') initTask();
+  else if (game === 'theater') initTheater();
+  else if (game === 'memory') initMemory();
+}
+
+// 1. 英雄图鉴
+function initLearn() {
+  document.getElementById('prompt-main').innerHTML =
+    `📖 <ruby>点<rt>diǎn</rt>击<rt>jī</rt>英<rt>yīng</rt>雄<rt>xióng</rt>卡<rt>kǎ</rt>片<rt>piàn</rt>，听<rt>tīng</rt>一<rt>yī</rt>听<rt>tīng</rt>他<rt>tā</rt>们<rt>men</rt>的<rt>de</rt>名<rt>míng</rt>字<rt>zì</rt>！</ruby>`;
+  document.getElementById('prompt-sub').innerText = "Tap any hero card to listen and repeat!";
+
+  const grid = document.getElementById('game-grid');
+  grid.innerHTML = '';
+  vocab.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="emoji-badge">${item.emoji}</div>
+      <div class="hanzi-ruby">${item.ruby}</div>
+      <div class="en">${item.en}</div>
+    `;
+    card.onclick = () => {
+      speak(`${item.hanzi}，他会${item.actionPlain}`);
+      card.classList.remove('correct');
+      void card.offsetWidth;
+      card.classList.add('correct');
+      document.getElementById('feedback').innerHTML =
+        `🔊 ${item.ruby} —— <ruby>他<rt>tā</rt>会<rt>huì</rt></ruby>${item.actionRuby}
+         <span class="feedback-en">${item.en} — He/She can ${item.actionEn}.</span>`;
+    };
+    grid.appendChild(card);
+  });
+}
+
+// 2. 听音找英雄
+function initListen() {
+  document.getElementById('speak-btn').style.display = 'inline-block';
+  nextListenQuestion();
+}
+
+function nextListenQuestion() {
+  document.getElementById('feedback').innerHTML = "";
+  targetItem = vocab[Math.floor(Math.random() * vocab.length)];
+  let options = [targetItem];
+  while (options.length < 6) {
+    let r = vocab[Math.floor(Math.random() * vocab.length)];
+    if (!options.includes(r)) options.push(r);
+  }
+  options.sort(() => Math.random() - 0.5);
+
+  document.getElementById('prompt-main').innerHTML =
+    `👂 <ruby>仔<rt>zǎi</rt>细<rt>xì</rt>听<rt>tīng</rt>，请<rt>qǐng</rt>找<rt>zhǎo</rt>出<rt>chū</rt>这<rt>zhè</rt>位<rt>wèi</rt>超<rt>chāo</rt>级<rt>jí</rt>英<rt>yīng</rt>雄<rt>xióng</rt>！</ruby>`;
+  document.getElementById('prompt-sub').innerText = "Listen carefully and choose the right hero!";
+  speak(`请找出…… ${targetItem.hanzi}`);
+
+  const grid = document.getElementById('game-grid');
+  grid.innerHTML = '';
+  options.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="emoji-badge">${item.emoji}</div>
+      <div class="hanzi-ruby">${item.ruby}</div>
+    `;
+    card.onclick = () => checkAnswer(card, item);
+    grid.appendChild(card);
+  });
+}
+
+// 3. 紧急任务
+function initTask() {
+  document.getElementById('speak-btn').style.display = 'inline-block';
+  nextTaskQuestion();
+}
+
+function nextTaskQuestion() {
+  document.getElementById('feedback').innerHTML = "";
+  targetItem = vocab[Math.floor(Math.random() * vocab.length)];
+  let options = [targetItem];
+  while (options.length < 6) {
+    let r = vocab[Math.floor(Math.random() * vocab.length)];
+    if (!options.includes(r)) options.push(r);
+  }
+  options.sort(() => Math.random() - 0.5);
+
+  document.getElementById('prompt-main').innerHTML = `🚨 ${targetItem.taskRuby}`;
+  document.getElementById('prompt-sub').innerText = targetItem.taskEn;
+  speak(targetItem.taskPlain);
+
+  const grid = document.getElementById('game-grid');
+  grid.innerHTML = '';
+  options.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="emoji-badge">${item.emoji}</div>
+      <div class="hanzi-ruby">${item.ruby}</div>
+    `;
+    card.onclick = () => checkAnswer(card, item);
+    grid.appendChild(card);
+  });
+}
+
+// 4. 情景剧场（对应课件第13页对话）
+function initTheater() {
+  document.getElementById('speak-btn').style.display = 'inline-block';
+  document.getElementById('theater-container').style.display = 'block';
+  nextTheaterQuestion();
+}
+
+function nextTheaterQuestion() {
+  document.getElementById('feedback').innerHTML = "";
+  targetItem = vocab[Math.floor(Math.random() * vocab.length)];
+  let options = [targetItem];
+  while (options.length < 4) {
+    let r = vocab[Math.floor(Math.random() * vocab.length)];
+    if (!options.includes(r)) options.push(r);
+  }
+  options.sort(() => Math.random() - 0.5);
+
+  document.getElementById('prompt-main').innerHTML =
+    `💬 <ruby>情<rt>qíng</rt>景<rt>jǐng</rt>剧<rt>jù</rt>场<rt>chǎng</rt>：看<rt>kàn</rt>图<rt>tú</rt>完<rt>wán</rt>成<rt>chéng</rt>超<rt>chāo</rt>级<rt>jí</rt>英<rt>yīng</rt>雄<rt>xióng</rt>对<rt>duì</rt>话<rt>huà</rt>！</ruby>`;
+  document.getElementById('prompt-sub').innerText = "Complete the comic dialogue based on the hero's job!";
+  speak(`他是做什么工作的？他是……，他会${targetItem.actionPlain}`);
+
+  document.getElementById('theater-container').innerHTML = `
+    <div class="theater-stage">
+      <div style="font-size:3.8rem; margin-bottom:10px;">${targetItem.emoji}</div>
+      <div class="dialogue-row">
+        <div class="dialogue-box">
+          <div class="dialogue-role">👦 <ruby>小<rt>xiǎo</rt>朋<rt>péng</rt>友<rt>you</rt></ruby> (Student)</div>
+          <div class="dialogue-text">
+            <ruby>他<rt>tā</rt>是<rt>shì</rt>做<rt>zuò</rt>什<rt>shén</rt>么<rt>me</rt>工<rt>gōng</rt>作<rt>zuò</rt>的<rt>de</rt>？</ruby>
+          </div>
+          <div style="font-size:0.85rem; color:#607d8b; margin-top:4px;">What job does he/she do?</div>
+        </div>
+        <div class="dialogue-box">
+          <div class="dialogue-role">👧 <ruby>小<rt>xiǎo</rt>伙<rt>huǒ</rt>伴<rt>bàn</rt></ruby> (Partner)</div>
+          <div class="dialogue-text">
+            <ruby>他<rt>tā</rt>是<rt>shì</rt></ruby> <span class="blank-slot" id="theater-blank">？</span>，
+            <ruby>他<rt>tā</rt>会<rt>huì</rt></ruby> ${targetItem.actionRuby}。
+          </div>
+          <div style="font-size:0.85rem; color:#607d8b; margin-top:4px;">He/She is a ______, he/she can ${targetItem.actionEn}.</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const grid = document.getElementById('game-grid');
+  grid.innerHTML = '';
+  options.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="hanzi-ruby" style="font-size:1.6rem; margin-top:8px;">${item.ruby}</div>
+      <div class="en">${item.en}</div>
+    `;
+    card.onclick = () => {
+      if (item.id === targetItem.id) {
+        document.getElementById('theater-blank').innerHTML = item.ruby;
+        document.getElementById('theater-blank').style.color = '#00c853';
+        document.getElementById('theater-blank').style.borderBottomColor = '#00c853';
+      }
+      checkAnswer(card, item);
+    };
+    grid.appendChild(card);
+  });
+}
+
+function checkAnswer(card, item) {
+  if (item.id === targetItem.id) {
+    card.classList.add('correct');
+    launchConfetti();
+    document.getElementById('feedback').innerHTML =
+      `🎉 <ruby>太<rt>tài</rt>棒<rt>bàng</rt>了<rt>le</rt>！他<rt>tā</rt>是<rt>shì</rt></ruby> ${item.ruby}！
+       <span class="feedback-en">Awesome! That is the ${item.en}! Next question coming up...</span>`;
+    speak(`太棒了！他是${item.hanzi}，他会${item.actionPlain}！`);
+    setTimeout(() => {
+      if (currentGame === 'listen') nextListenQuestion();
+      else if (currentGame === 'task') nextTaskQuestion();
+      else if (currentGame === 'theater') nextTheaterQuestion();
+    }, 2600);
+  } else {
+    card.classList.add('wrong');
+    document.getElementById('feedback').innerHTML =
+      `🤔 <ruby>再<rt>zài</rt>想<rt>xiǎng</rt>一<rt>yī</rt>想<rt>xiǎng</rt>哦<rt>o</rt>，这<rt>zhè</rt>是<rt>shì</rt></ruby> ${item.ruby}。
+       <span class="feedback-en">Try again! That one is the ${item.en}.</span>`;
+    speak(`这是${item.hanzi}，再试一次吧`);
+  }
+}
+
+// 5. 徽章翻翻乐
+let flippedCards = [];
+let matchedCount = 0;
+
+function initMemory() {
+  document.getElementById('prompt-main').innerHTML =
+    `🃏 <ruby>翻<rt>fān</rt>开<rt>kāi</rt>两<rt>liǎng</rt>张<rt>zhāng</rt>卡<rt>kǎ</rt>片<rt>piàn</rt>，把<rt>bǎ</rt>图<rt>tú</rt>标<rt>biāo</rt>和<rt>hé</rt>汉<rt>hàn</rt>字<rt>zì</rt>配<rt>pèi</rt>对<rt>duì</rt>！</ruby>`;
+  document.getElementById('prompt-sub').innerText = "Flip two cards to match the hero badge with the Chinese word!";
+  flippedCards = [];
+  matchedCount = 0;
+
+  let selected = [...vocab].sort(() => Math.random() - 0.5).slice(0, 6);
+  let deck = [];
+  selected.forEach(item => {
+    deck.push({ pairId: item.id, type: 'emoji', content: `<div class="emoji-badge" style="width:62px;height:62px;font-size:2.2rem;margin:0 0 4px;">${item.emoji}</div><div class="en">${item.en}</div>`, item: item });
+    deck.push({ pairId: item.id, type: 'text', content: `<div class="hanzi-ruby">${item.ruby}</div>`, item: item });
+  });
+  deck.sort(() => Math.random() - 0.5);
+
+  const grid = document.getElementById('game-grid');
+  grid.innerHTML = '';
+  deck.forEach(cardData => {
+    const card = document.createElement('div');
+    card.className = 'card memory-card';
+    card.innerHTML = `<div class="cover">⚡</div><div class="content">${cardData.content}</div>`;
+    card.onclick = () => flipCard(card, cardData);
+    grid.appendChild(card);
+  });
+}
+
+function flipCard(card, data) {
+  if (flippedCards.length >= 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+  card.querySelector('.cover').style.display = 'none';
+  card.classList.add('flipped');
+  speak(data.item.hanzi);
+  flippedCards.push({ card, data });
+
+  if (flippedCards.length === 2) {
+    const [first, second] = flippedCards;
+    if (first.data.pairId === second.data.pairId) {
+      first.card.classList.add('matched');
+      second.card.classList.add('matched');
+      flippedCards = [];
+      matchedCount++;
+      document.getElementById('feedback').innerHTML =
+        `✨ <ruby>配<rt>pèi</rt>对<rt>duì</rt>成<rt>chéng</rt>功<rt>gōng</rt></ruby>：${data.item.ruby}！
+         <span class="feedback-en">Matched: ${data.item.en}!</span>`;
+      if (matchedCount === 6) {
+        launchConfetti();
+        document.getElementById('feedback').innerHTML =
+          `🏆 <ruby>恭<rt>gōng</rt>喜<rt>xǐ</rt>通<rt>tōng</rt>关<rt>guān</rt>！你<rt>nǐ</rt>太<rt>tài</rt>棒<rt>bàng</rt>了<rt>le</rt>！</ruby>
+           <span class="feedback-en">Congratulations! All superheroes assembled!</span>
+           <button class="comic-btn btn-game" style="margin-top:10px;" onclick="initMemory()"><span>🔄 再玩一次</span><span class="btn-en">Play Again</span></button>`;
+        speak("恭喜通关，你太棒了！");
+      }
+    } else {
+      setTimeout(() => {
+        first.card.classList.remove('flipped');
+        first.card.querySelector('.cover').style.display = 'flex';
+        second.card.classList.remove('flipped');
+        second.card.querySelector('.cover').style.display = 'flex';
+        flippedCards = [];
+      }, 1000);
+    }
+  }
+}
+
+initLearn();
+</script>
+</body>
+</html>
