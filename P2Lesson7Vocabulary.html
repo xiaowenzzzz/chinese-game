@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISB小小咖啡店长 - P2 第7课</title>
+    <title>SISB小小咖啡店长 - P2 第7课 (Franky Laoshi)</title>
     <style>
         :root {
             --bg-cream: #FFF8E7;
@@ -55,7 +55,60 @@
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+        }
+
+        /* ✨ 专属防伪设计 1：顶部主厨黄铜荣誉铭牌 */
+        .author-plaque {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%);
+            color: #4E342E;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 2px solid #FFB300;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.8);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            letter-spacing: 0.5px;
+            transform: rotate(-1.5deg);
+            transition: transform 0.2s ease;
+        }
+
+        .author-plaque:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        /* ✨ 专属防伪设计 2：右下角咖啡店专属复古印章 */
+        .kopitiam-stamp {
+            position: fixed;
+            bottom: 12px;
+            right: 16px;
+            background: rgba(255, 248, 231, 0.92);
+            border: 2px dashed #8D6E63;
+            outline: 2px solid rgba(141, 110, 99, 0.3);
+            outline-offset: 2px;
+            border-radius: 12px;
+            padding: 4px 12px;
+            color: #5D4037;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(93, 64, 55, 0.15);
+            transform: rotate(-2deg);
+            z-index: 50;
+            pointer-events: none; /* 穿透点击，绝不干扰操作 */
+        }
+
+        .kopitiam-stamp .stamp-sub {
+            font-size: 10px;
+            color: #E65100;
+            background: #FFE0B2;
+            padding: 1px 5px;
+            border-radius: 4px;
         }
 
         .stats-bar {
@@ -482,13 +535,24 @@
 <body>
 
 <header>
-    <div class="shop-title">🏪 SISB 小小咖啡店长</div>
+    <div class="shop-title">
+        <span>🏪 SISB 小小咖啡店长</span>
+        <!-- 防伪标志 1：顶部主厨铭牌 -->
+        <span class="author-plaque">👨‍🍳 主厨: Franky Laoshi</span>
+    </div>
     <div class="stats-bar">
         <select id="voice-select" class="voice-select" title="切换朗读声音" onchange="changeVoice()"></select>
         <div class="stat-badge">⭐ 关卡: <span id="level-num">1</span></div>
         <div class="stat-badge">🪙 SISB币: <span id="score-num">0</span></div>
     </div>
 </header>
+
+<!-- 防伪标志 2：右下角咖啡店复古印章 -->
+<div class="kopitiam-stamp">
+    <span>☕</span>
+    <span>Created by <strong>Franky Laoshi</strong></span>
+    <span class="stamp-sub">正版课件</span>
+</div>
 
 <div class="game-container">
     <!-- 第一层：顾客点单区 -->
