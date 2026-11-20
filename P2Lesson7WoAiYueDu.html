@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="author" content="Franky Laoshi">
 <title>暴躁大厨的疯狂烤箱 - 触屏流畅版 (Franky Laoshi)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap');
@@ -12,21 +13,23 @@
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   html, body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     font-family: 'KaiTi', 'STKaiti', '楷体', '楷体_GB2312', 'BiauKai', serif;
     background: radial-gradient(circle at center, #FFE5B4 0%, #FFAD60 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    touch-action: none;
+    overflow-x: hidden;
+    padding: 8px 0 calc(28px + env(safe-area-inset-bottom));
   }
 
   .en-text {
@@ -41,28 +44,32 @@
 
   /* 顶部仪表盘 */
   .top-bar {
-    width: 94%;
+    width: 95%;
     max-width: 1020px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     background: #FFF9EB;
-    border: 5px solid #8C3B00;
-    border-radius: 30px;
-    padding: 8px 25px;
-    box-shadow: 0 6px 0 #5E2600;
-    margin-bottom: 12px;
+    border: 4px solid #8C3B00;
+    border-radius: 26px;
+    padding: 8px 18px;
+    box-shadow: 0 5px 0 #5E2600;
+    margin-bottom: 10px;
     z-index: 20;
+    flex-shrink: 0;
   }
 
   .logo-group {
     display: flex;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .game-logo {
-    font-size: 25px;
+    font-size: clamp(18px, 2.4vw, 25px);
     font-weight: bold;
     color: #D9381E;
     line-height: 1.15;
@@ -73,15 +80,15 @@
     background: linear-gradient(180deg, #FFD166 0%, #F77F00 100%);
     color: #3D1300;
     font-family: 'Nunito', 'KaiTi', sans-serif;
-    font-size: 14px;
+    font-size: clamp(11px, 1.4vw, 14px);
     font-weight: 900;
-    padding: 5px 12px;
-    border-radius: 18px;
-    border: 3px solid #8C3B00;
-    box-shadow: 0 3px 0 #5E2600;
+    padding: 4px 10px;
+    border-radius: 16px;
+    border: 2.5px solid #8C3B00;
+    box-shadow: 0 2px 0 #5E2600;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     transform: rotate(-2deg);
     white-space: nowrap;
   }
@@ -89,20 +96,20 @@
   /* ✨ 专属防伪设计 2：右下角烤箱防伪印章（全穿透不挡触屏手势） */
   .oven-watermark {
     position: fixed;
-    bottom: 10px;
-    right: 16px;
-    background: rgba(255, 249, 235, 0.92);
-    border: 3px dashed #D9381E;
-    border-radius: 16px;
-    padding: 4px 12px;
+    bottom: calc(6px + env(safe-area-inset-bottom));
+    right: 12px;
+    background: rgba(255, 249, 235, 0.94);
+    border: 2.5px dashed #D9381E;
+    border-radius: 14px;
+    padding: 3px 10px;
     color: #5E2600;
     font-family: 'Nunito', 'KaiTi', sans-serif;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 900;
     display: flex;
     align-items: center;
-    gap: 6px;
-    box-shadow: 0 3px 0 rgba(94, 38, 0, 0.25);
+    gap: 5px;
+    box-shadow: 0 2px 0 rgba(94, 38, 0, 0.25);
     transform: rotate(-1.5deg);
     z-index: 60;
     pointer-events: none;
@@ -111,24 +118,25 @@
   .oven-watermark .wm-tag {
     background: #D9381E;
     color: #FFF;
-    font-size: 11px;
-    padding: 1px 6px;
-    border-radius: 8px;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 7px;
   }
 
   .hud-group {
     display: flex;
-    gap: 10px;
+    gap: 6px;
     align-items: center;
-    font-size: 20px;
+    flex-wrap: wrap;
+    font-size: clamp(14px, 1.8vw, 20px);
     font-weight: bold;
   }
 
   .hud-pill {
     background: #FFE099;
-    border: 3px solid #D97724;
-    padding: 5px 12px;
-    border-radius: 20px;
+    border: 2.5px solid #D97724;
+    padding: 4px 10px;
+    border-radius: 16px;
     color: #4A1C00;
     white-space: nowrap;
   }
@@ -137,24 +145,27 @@
     background: #FF595E;
     color: #FFF;
     border-color: #9E191E;
-    min-width: 98px;
+    min-width: 74px;
     text-align: center;
   }
 
   /* 主厨房舞台 */
   .kitchen-stage {
-    width: 94%;
+    width: 95%;
     max-width: 1020px;
-    height: 575px;
+    flex: 1;
+    max-height: 600px;
+    min-height: 460px;
     background: #FFFDF7;
-    border: 7px solid #6E3211;
-    border-radius: 38px;
-    box-shadow: 0 14px 0 #421B06, 0 25px 40px rgba(0,0,0,0.25);
+    border: 6px solid #6E3211;
+    border-radius: 32px;
+    box-shadow: 0 12px 0 #421B06, 0 20px 35px rgba(0,0,0,0.22);
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 16px 24px;
+    gap: 12px;
+    padding: clamp(12px, 2vw, 18px) clamp(12px, 2.5vw, 24px);
     overflow: hidden;
   }
 
@@ -162,22 +173,23 @@
   .chef-header {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: clamp(10px, 2vw, 18px);
     z-index: 15;
+    flex-shrink: 0;
   }
 
   .chef-box {
-    width: 112px;
-    height: 112px;
+    width: clamp(72px, 11vw, 112px);
+    height: clamp(72px, 11vw, 112px);
     background: #FFD166;
-    border: 5px solid #8C3B00;
+    border: 4px solid #8C3B00;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 70px;
-    box-shadow: 0 6px 0 #8C3B00;
+    font-size: clamp(42px, 6.5vw, 70px);
+    box-shadow: 0 5px 0 #8C3B00;
     position: relative;
     flex-shrink: 0;
     transition: transform 0.2s;
@@ -185,12 +197,12 @@
 
   .chef-mood-tag {
     position: absolute;
-    bottom: -12px;
+    bottom: -10px;
     background: #EF476F;
     color: white;
-    font-size: 14px;
-    padding: 2px 10px;
-    border-radius: 12px;
+    font-size: clamp(11px, 1.4vw, 14px);
+    padding: 1px 8px;
+    border-radius: 10px;
     border: 2px solid #FFF;
     white-space: nowrap;
   }
@@ -198,49 +210,50 @@
   .order-card {
     flex-grow: 1;
     background: #FFF;
-    border: 4px solid #FF8C42;
-    border-radius: 25px;
-    padding: 10px 22px;
-    box-shadow: 0 6px 0 #D96B27;
+    border: 3.5px solid #FF8C42;
+    border-radius: 22px;
+    padding: 8px 14px;
+    box-shadow: 0 5px 0 #D96B27;
     position: relative;
+    min-width: 0;
   }
 
   .action-badge {
     display: inline-block;
     background: #06D6A0;
     color: #003B2B;
-    font-size: 18px;
+    font-size: clamp(12px, 1.7vw, 18px);
     font-weight: bold;
-    padding: 4px 14px;
-    border-radius: 14px;
-    margin-bottom: 5px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 4px;
     border: 2px solid #003B2B;
     line-height: 1.3;
   }
 
   .sentence-zh {
-    font-size: 33px;
+    font-size: clamp(20px, 3vw, 33px);
     font-weight: bold;
     color: #2B1100;
-    line-height: 1.25;
+    line-height: 1.28;
   }
 
   .target-slot {
     display: inline-block;
-    min-width: 54px;
-    height: 44px;
-    line-height: 40px;
+    min-width: clamp(36px, 5vw, 54px);
+    height: clamp(32px, 4.2vw, 44px);
+    line-height: clamp(28px, 3.8vw, 40px);
     text-align: center;
     background: #FFF3B0;
-    border: 3px dashed #FF5400;
-    border-radius: 12px;
+    border: 2.5px dashed #FF5400;
+    border-radius: 10px;
     color: #FF5400;
-    margin: 0 5px;
+    margin: 0 4px;
   }
 
   .sentence-en {
     font-family: 'Nunito', sans-serif;
-    font-size: 18px;
+    font-size: clamp(13px, 1.8vw, 18px);
     font-weight: 900;
     color: #B85D14;
     margin-top: 4px;
@@ -254,27 +267,29 @@
     color: white;
     border: none;
     border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
     cursor: pointer;
     box-shadow: 0 3px 0 #073B4C;
     flex-shrink: 0;
+    touch-action: manipulation;
   }
 
   /* 疯狂烤箱核心玩法舞台 */
   .oven-arena {
     width: 100%;
-    height: 335px;
+    flex: 1;
+    min-height: 240px;
     background: linear-gradient(180deg, #3D2C2E 0%, #1F1516 100%);
-    border: 6px solid #8C4A27;
-    border-radius: 30px;
+    border: 5px solid #8C4A27;
+    border-radius: 26px;
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: inset 0 0 40px rgba(255, 100, 0, 0.4);
+    box-shadow: inset 0 0 35px rgba(255, 100, 0, 0.4);
     touch-action: none;
   }
 
@@ -289,49 +304,53 @@
   .monster-hole-row {
     display: flex;
     justify-content: space-around;
+    align-items: center;
+    gap: clamp(8px, 2vw, 20px);
     width: 100%;
-    padding: 0 30px;
+    padding: 0 clamp(10px, 3vw, 30px);
     z-index: 5;
   }
 
   .monster-card {
-    width: 170px;
-    height: 220px;
+    width: clamp(94px, 26vw, 170px);
+    height: clamp(148px, 26vh, 220px);
     background: linear-gradient(180deg, #FFD166 0%, #F77F00 100%);
-    border: 5px solid #FFF;
-    border-radius: 30px;
+    border: 4px solid #FFF;
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 10px 0 #9E2A2B;
+    box-shadow: 0 8px 0 #9E2A2B;
     transition: transform 0.12s;
     position: relative;
     animation: popUpDown 1.6s infinite ease-in-out;
+    padding: 6px;
   }
   .monster-card:nth-child(2) { animation-delay: 0.35s; }
   .monster-card:nth-child(3) { animation-delay: 0.7s; }
 
-  .monster-card:hover { transform: scale(1.08); }
-  .monster-card:active { transform: scale(0.9); }
+  .monster-card:hover { transform: scale(1.06); }
+  .monster-card:active { transform: scale(0.92); }
 
-  .monster-emoji { font-size: 56px; margin-bottom: -5px; }
-  .char-big { font-size: 68px; font-weight: bold; color: #2B0900; line-height: 1.1; }
+  .monster-emoji { font-size: clamp(34px, 6vw, 56px); margin-bottom: -4px; line-height: 1.1; }
+  .char-big { font-size: clamp(42px, 7.5vw, 68px); font-weight: bold; color: #2B0900; line-height: 1.1; }
   .py-pill {
     font-family: 'Nunito', sans-serif;
-    font-size: 20px;
+    font-size: clamp(13px, 2.2vw, 20px);
     font-weight: 900;
     background: #FFF;
     color: #D62828;
-    padding: 2px 14px;
-    border-radius: 15px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin: 2px 0;
   }
 
   /* 玩法2：真·水果忍者切面包 */
   .slice-bread-wrapper {
-    width: 195px;
-    height: 195px;
+    width: clamp(96px, 27vw, 195px);
+    height: clamp(96px, 27vw, 195px);
     position: relative;
     cursor: crosshair;
     animation: floatBounce 1.8s infinite ease-in-out;
@@ -339,6 +358,7 @@
     align-items: center;
     justify-content: center;
     touch-action: none;
+    flex-shrink: 0;
   }
   .slice-bread-wrapper:nth-child(2) { animation-delay: 0.4s; }
   .slice-bread-wrapper:nth-child(3) { animation-delay: 0.8s; }
@@ -347,22 +367,37 @@
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at 30% 30%, #FFF3B0, #E09F3E);
-    border: 6px solid #FFF;
+    border: 4px solid #FFF;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.45);
     position: relative;
     transition: transform 0.15s;
   }
 
+  .slice-bread-icon {
+    font-size: clamp(24px, 5vw, 48px);
+    margin-bottom: -4px;
+    line-height: 1;
+  }
+
+  .slice-bread-wrapper .char-big {
+    font-size: clamp(32px, 6.5vw, 64px);
+  }
+
+  .slice-bread-wrapper .py-pill {
+    font-size: clamp(11px, 2vw, 18px);
+    padding: 1px 8px;
+  }
+
   .slice-guide-line {
     position: absolute;
-    width: 115%;
-    height: 4px;
-    border-top: 4px dashed rgba(255, 255, 255, 0.75);
+    width: 112%;
+    height: 3px;
+    border-top: 3px dashed rgba(255, 255, 255, 0.75);
     transform: rotate(-28deg);
     pointer-events: none;
   }
@@ -375,7 +410,7 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(circle at 30% 30%, #FFF3B0, #E09F3E);
-    border: 6px solid #FFF;
+    border: 4px solid #FFF;
     border-radius: 50%;
     clip-path: polygon(0 0, 52% 0, 48% 100%, 0 100%);
     display: flex;
@@ -389,7 +424,7 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(circle at 30% 30%, #FFF3B0, #E09F3E);
-    border: 6px solid #FFF;
+    border: 4px solid #FFF;
     border-radius: 50%;
     clip-path: polygon(52% 0, 100% 0, 100% 100%, 48% 100%);
     display: flex;
@@ -401,12 +436,12 @@
 
   @keyframes splitLeft {
     0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-    100% { transform: translate(-55px, 25px) rotate(-22deg); opacity: 0.2; }
+    100% { transform: translate(-45px, 20px) rotate(-22deg); opacity: 0.2; }
   }
 
   @keyframes splitRight {
     0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-    100% { transform: translate(55px, 25px) rotate(22deg); opacity: 0.2; }
+    100% { transform: translate(45px, 20px) rotate(22deg); opacity: 0.2; }
   }
 
   @keyframes wobbleAlert {
@@ -419,6 +454,8 @@
   #slash-canvas {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 30;
   }
@@ -436,11 +473,11 @@
     cursor: grab;
     transition: opacity 0.18s;
     text-align: center;
-    padding: 0 20px;
+    padding: 0 16px;
     touch-action: none;
   }
   .fog-instruction {
-    font-size: 32px;
+    font-size: clamp(20px, 3.5vw, 32px);
     font-weight: bold;
     color: #FFD166;
     text-shadow: 0 3px 0 #000;
@@ -449,12 +486,12 @@
     line-height: 1.4;
   }
   .wipe-bar-bg {
-    width: 340px;
-    height: 26px;
+    width: min(340px, 80%);
+    height: 22px;
     background: #222;
     border: 3px solid #FFF;
     border-radius: 15px;
-    margin-top: 15px;
+    margin-top: 14px;
     overflow: hidden;
     pointer-events: none;
   }
@@ -478,17 +515,17 @@
     color: #D8F3DC;
     animation: popIn 0.3s ease;
     text-align: center;
-    padding: 0 20px;
+    padding: 0 16px;
   }
 
   /* 飘浮加分与连击 */
   .combo-toast {
     position: absolute;
-    top: 18px;
-    font-size: 36px;
+    top: 14px;
+    font-size: clamp(20px, 3.8vw, 36px);
     font-weight: bold;
     color: #FFD166;
-    text-shadow: 0 4px 0 #D62828, 0 0 20px #FFF;
+    text-shadow: 0 3px 0 #D62828, 0 0 15px #FFF;
     z-index: 35;
     animation: flyUp 1.3s ease forwards;
     pointer-events: none;
@@ -505,61 +542,94 @@
     justify-content: center;
     z-index: 100;
     backdrop-filter: blur(6px);
+    padding: 14px;
+    overflow-y: auto;
   }
   .modal-box {
     background: #FFF9EB;
-    border: 7px solid #FF7B00;
-    border-radius: 38px;
-    padding: 28px 40px;
+    border: 6px solid #FF7B00;
+    border-radius: 30px;
+    padding: clamp(18px, 3.5vw, 28px) clamp(16px, 4vw, 40px);
     max-width: 680px;
-    width: 94%;
+    width: 100%;
     text-align: center;
-    box-shadow: 0 14px 0 #9E3B00;
+    box-shadow: 0 12px 0 #9E3B00;
     animation: popIn 0.4s ease;
+    margin: auto;
   }
   .how-to-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 15px 0;
+    gap: 10px;
+    margin: 14px 0;
   }
   .how-card {
     background: #FFF;
-    border: 3px solid #FFAD60;
-    border-radius: 20px;
-    padding: 10px 8px;
-    font-size: 18px;
+    border: 2.5px solid #FFAD60;
+    border-radius: 18px;
+    padding: 8px 6px;
+    font-size: clamp(14px, 2vw, 18px);
     color: #4A1C00;
   }
   .big-btn {
     background: linear-gradient(180deg, #FF595E 0%, #D62828 100%);
     color: #FFF;
     border: 4px solid #FFF;
-    box-shadow: 0 8px 0 #780000;
+    box-shadow: 0 7px 0 #780000;
     font-family: 'KaiTi', 'STKaiti', '楷体', '楷体_GB2312', 'BiauKai', serif;
-    font-size: 32px;
+    font-size: clamp(22px, 3.5vw, 32px);
     font-weight: bold;
-    padding: 12px 45px;
+    padding: 10px 36px;
     border-radius: 50px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 8px;
+    touch-action: manipulation;
   }
   .big-btn:active {
-    transform: translateY(5px);
+    transform: translateY(4px);
     box-shadow: 0 3px 0 #780000;
   }
 
+  /* 手机竖屏微调 */
+  @media (max-width: 600px) {
+    .top-bar {
+      padding: 6px 12px;
+      border-radius: 20px;
+      justify-content: center;
+    }
+    .logo-group {
+      width: 100%;
+      justify-content: center;
+    }
+    .kitchen-stage {
+      border-width: 4px;
+      border-radius: 24px;
+      min-height: 430px;
+    }
+    .how-to-grid {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .how-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      text-align: left;
+      padding: 8px 12px;
+    }
+  }
+
   @keyframes popUpDown {
-    0%, 100% { transform: translateY(8px); }
-    50% { transform: translateY(-14px); }
+    0%, 100% { transform: translateY(6px); }
+    50% { transform: translateY(-10px); }
   }
   @keyframes floatBounce {
     0%, 100% { transform: translateY(0) rotate(-3deg); }
-    50% { transform: translateY(-18px) rotate(3deg); }
+    50% { transform: translateY(-12px) rotate(3deg); }
   }
   @keyframes pulseText {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.06); }
+    50% { transform: scale(1.05); }
   }
   @keyframes bigShake {
     10%, 90% { transform: translate3d(-4px, 0, 0); }
@@ -573,7 +643,7 @@
   }
   @keyframes flyUp {
     0% { transform: translateY(20px) scale(0.8); opacity: 1; }
-    100% { transform: translateY(-50px) scale(1.15); opacity: 0; }
+    100% { transform: translateY(-40px) scale(1.12); opacity: 0; }
   }
 </style>
 </head>
@@ -584,14 +654,14 @@
     <div class="logo-group">
       <div class="game-logo">
         🔥 暴躁大厨的疯狂烤箱
-        <div class="en-text" style="font-size:14px; color:#8C3B00;">Grumpy Chef's Crazy Oven</div>
+        <div class="en-text" style="font-size:12px; color:#8C3B00;">Grumpy Chef's Crazy Oven</div>
       </div>
       <!-- 防伪标志 1：顶部首席大厨勋章 -->
       <div class="chef-signature-badge">👨‍🍳 Franky Laoshi</div>
     </div>
     <div class="hud-group">
-      <div class="hud-pill">Level 关卡: <span id="hud-level">1</span>/14</div>
-      <div class="hud-pill">🔥 Combo: <span id="hud-combo">0</span></div>
+      <div class="hud-pill">Level: <span id="hud-level">1</span>/14</div>
+      <div class="hud-pill">🔥 <span id="hud-combo">0</span></div>
       <div class="hud-pill">⭐ <span id="hud-score">0</span></div>
       <div class="hud-pill timer-pill">⏱️ <span id="hud-timer">30</span>s</div>
     </div>
@@ -633,34 +703,37 @@
   <!-- 开始弹窗（双语玩法说明） -->
   <div class="modal-mask" id="start-modal">
     <div class="modal-box">
-      <div style="font-size: 72px;">👨‍🍳🔥🥐</div>
-      <h1 style="font-size: 38px; color: #D62828; margin: 5px 0;">
+      <div style="font-size: clamp(48px, 8vw, 72px);">👨‍🍳🔥🥐</div>
+      <h1 style="font-size: clamp(24px, 4.5vw, 38px); color: #D62828; margin: 5px 0;">
         暴躁大厨的疯狂烤箱<br>
-        <span class="en-text" style="font-size: 24px; color: #FF7B00;">Grumpy Chef's Crazy Oven</span>
+        <span class="en-text" style="font-size: clamp(16px, 2.8vw, 24px); color: #FF7B00;">Grumpy Chef's Crazy Oven</span>
       </h1>
-      <p style="font-size: 20px; color: #4A1C00; margin: 8px 0;">
+      <p style="font-size: clamp(15px, 2.2vw, 20px); color: #4A1C00; margin: 8px 0;">
         每关有 <b>30 秒</b>！根据提示完成 3 种动作，千万别烤出黑暗料理！💩🧦<br>
-        <span class="en-text" style="font-size: 16px; color: #7F4F24;">You have 30s per round! Do the right action to find the target word!</span>
+        <span class="en-text" style="font-size: clamp(13px, 1.8vw, 16px); color: #7F4F24;">You have 30s per round! Do the right action to find the target word!</span>
       </p>
 
       <div class="how-to-grid">
         <div class="how-card">
-          <div style="font-size:36px;">💨</div>
-          <b>1. 擦除黑烟</b><br>
-          <span class="en-text" style="font-size:14px; color:#D96B27;">Wipe the Smoke</span><br>
-          <span style="font-size:15px;">左右擦拭屏幕吹散黑烟<br><span class="en-text" style="font-size:13px;">Rub screen to clear fog</span></span>
+          <div style="font-size:32px;">💨</div>
+          <div>
+            <b>1. 擦除黑烟</b> <span class="en-text" style="font-size:13px; color:#D96B27;">Wipe Smoke</span><br>
+            <span style="font-size:14px;">左右擦拭屏幕吹散黑烟</span>
+          </div>
         </div>
         <div class="how-card">
-          <div style="font-size:36px;">🔪</div>
-          <b>2. 划切面包</b><br>
-          <span class="en-text" style="font-size:14px; color:#D96B27;">Slice the Bread</span><br>
-          <span style="font-size:15px;">按住手指划过面包劈开它<br><span class="en-text" style="font-size:13px;">Drag/Swipe across bread</span></span>
+          <div style="font-size:32px;">🔪</div>
+          <div>
+            <b>2. 划切面包</b> <span class="en-text" style="font-size:13px; color:#D96B27;">Slice Bread</span><br>
+            <span style="font-size:14px;">按住手指划过面包劈开它</span>
+          </div>
         </div>
         <div class="how-card">
-          <div style="font-size:36px;">🔨</div>
-          <b>3. 敲打怪兽</b><br>
-          <span class="en-text" style="font-size:14px; color:#D96B27;">Whack Monsters</span><br>
-          <span style="font-size:15px;">快速点击正确的生字<br><span class="en-text" style="font-size:13px;">Tap the right monster</span></span>
+          <div style="font-size:32px;">🔨</div>
+          <div>
+            <b>3. 敲打怪兽</b> <span class="en-text" style="font-size:13px; color:#D96B27;">Whack Monsters</span><br>
+            <span style="font-size:14px;">快速点击正确的生字</span>
+          </div>
         </div>
       </div>
 
@@ -671,12 +744,12 @@
   <!-- 结束弹窗 -->
   <div class="modal-mask" id="end-modal" style="display: none;">
     <div class="modal-box">
-      <div style="font-size: 80px;">🏆👑🥖</div>
-      <h1 style="font-size: 40px; color: #D62828; margin: 10px 0;">
+      <div style="font-size: clamp(54px, 9vw, 80px);">🏆👑🥖</div>
+      <h1 style="font-size: clamp(26px, 4.5vw, 40px); color: #D62828; margin: 10px 0;">
         超级神厨诞生！<br>
-        <span class="en-text" style="font-size: 24px; color: #FF7B00;">Super Master Chef!</span>
+        <span class="en-text" style="font-size: clamp(18px, 3vw, 24px); color: #FF7B00;">Super Master Chef!</span>
       </h1>
-      <p id="end-summary" style="font-size: 22px; color: #4A1C00; line-height: 1.6;"></p>
+      <p id="end-summary" style="font-size: clamp(16px, 2.4vw, 22px); color: #4A1C00; line-height: 1.6;"></p>
       <button class="big-btn" onclick="startGame()">再挑战一次 Play Again!</button>
     </div>
   </div>
@@ -685,7 +758,7 @@
   const levels = [
     {
       target: "特", py: "tè", mechanic: "wipe",
-      hint: "💨 【擦黑烟 Wipe Smoke】左右擦拭屏幕吹散黑烟！Swipe left & right to clear the smoke!",
+      hint: "💨 【擦黑烟 Wipe Smoke】左右擦拭屏幕吹散黑烟！",
       zh1: "咖啡店烤出了", zh2: "别的面包！",
       en: "Special (tè bié) — The café baked special bread!",
       choices: [
@@ -696,7 +769,7 @@
     },
     {
       target: "别", py: "bié", mechanic: "slice",
-      hint: "🔪 【切面包 Slice Bread】按住并划过面包劈开它！Drag & swipe across the right bread!",
+      hint: "🔪 【切面包 Slice Bread】按住并划过面包劈开它！",
       zh1: "这块面包很特", zh2: "，和大家的不一样。",
       en: "Special / Different (tè bié) — This bread is very special.",
       choices: [
@@ -707,7 +780,7 @@
     },
     {
       target: "星", py: "xīng", mechanic: "whack",
-      hint: "🔨 【打怪兽 Whack Monster】点击敲打偷吃小怪兽！Tap the monster with the right word!",
+      hint: "🔨 【打怪兽 Whack Monster】点击敲打偷吃小怪兽！",
       zh1: "今天是", zh2: "期天，全家人去吃早餐。",
       en: "Sunday / Week (xīng qī) — Today is Sunday.",
       choices: [
@@ -718,7 +791,7 @@
     },
     {
       target: "期", py: "qī", mechanic: "slice",
-      hint: "🔪 【切面包 Slice Bread】按住并划过飞天面包！Drag & swipe across the right bread!",
+      hint: "🔪 【切面包 Slice Bread】按住并划过飞天面包！",
       zh1: "每个星", zh2: "我们最喜欢吃爱心早餐。",
       en: "Week (xīng qī) — Every week we love eating breakfast.",
       choices: [
@@ -729,7 +802,7 @@
     },
     {
       target: "进", py: "jìn", mechanic: "whack",
-      hint: "🔨 【打怪兽 Whack Monster】敲打守门怪兽打开店门！Tap the right monster to enter!",
+      hint: "🔨 【打怪兽 Whack Monster】敲打守门怪兽打开店门！",
       zh1: "我们走", zh2: "热闹的咖啡店里。",
       en: "Enter / Walk into (zǒu jìn) — We walk into the café.",
       choices: [
@@ -740,7 +813,7 @@
     },
     {
       target: "餐", py: "cān", mechanic: "wipe",
-      hint: "💨 【擦黑烟 Wipe Smoke】来回擦拭屏幕看清订单！Rub the screen to clear the smoke!",
+      hint: "💨 【擦黑烟 Wipe Smoke】来回擦拭屏幕看清订单！",
       zh1: "爸爸点了一份美味的早", zh2: "。",
       en: "Breakfast / Meal (zǎo cān) — Dad ordered a delicious breakfast.",
       choices: [
@@ -751,7 +824,7 @@
     },
     {
       target: "闻", py: "wén", mechanic: "whack",
-      hint: "🔨 【打怪兽 Whack Monster】敲打偷闻香味的小老鼠！Tap the right mouse!",
+      hint: "🔨 【打怪兽 Whack Monster】敲打偷闻香味的小老鼠！",
       zh1: "吸吸鼻子，我", zh2: "到了烤面包的香味！",
       en: "Smell (wén dào) — I smelled the aroma of baked bread!",
       choices: [
@@ -762,7 +835,7 @@
     },
     {
       target: "香", py: "xiāng", mechanic: "slice",
-      hint: "🔪 【切面包 Slice Bread】按住划一刀切开香甜面包！Drag & swipe across the sweet bread!",
+      hint: "🔪 【切面包 Slice Bread】按住划一刀切开香甜面包！",
       zh1: "刚出炉的面包真是", zh2: "喷喷的！",
       en: "Fragrant / Sweet-smelling (xiāng pēn pēn) — Freshly baked bread smells so good!",
       choices: [
@@ -773,7 +846,7 @@
     },
     {
       target: "味", py: "wèi", mechanic: "wipe",
-      hint: "💨 【擦蒸汽 Wipe Steam】擦干烤箱玻璃选出正确生字！Rub the glass to see clearly!",
+      hint: "💨 【擦蒸汽 Wipe Steam】擦干烤箱玻璃选出正确生字！",
       zh1: "咬一口，这面包的", zh2: "道好极了！",
       en: "Taste / Flavor (wèi dào) — The taste of this bread is wonderful!",
       choices: [
@@ -784,7 +857,7 @@
     },
     {
       target: "食", py: "shí", mechanic: "whack",
-      hint: "🔨 【打怪兽 Whack Monster】赶跑抢食物的外星吃货！Tap the right alien!",
+      hint: "🔨 【打怪兽 Whack Monster】赶跑抢食物的外星吃货！",
       zh1: "桌上摆满了好吃的", zh2: "物。",
       en: "Food (shí wù) — The table is full of delicious food.",
       choices: [
@@ -795,7 +868,7 @@
     },
     {
       target: "物", py: "wù", mechanic: "slice",
-      hint: "🔪 【切食物 Slice Food】按住划过正确的美味食物！Drag & swipe across the right food!",
+      hint: "🔪 【切食物 Slice Food】按住划过正确的美味食物！",
       zh1: "我们要珍惜每一份食", zh2: "。",
       en: "Food / Things (shí wù) — We should cherish every piece of food.",
       choices: [
@@ -806,7 +879,7 @@
     },
     {
       target: "分", py: "fēn", mechanic: "slice",
-      hint: "🔪 【切面包 Slice Bread】按住划一刀，大家一起分工合作！Swipe to work together!",
+      hint: "🔪 【切面包 Slice Bread】按住划一刀，大家一起分工合作！",
       zh1: "大家一起", zh2: "工合作，烤出了最特别的面包！",
       en: "Division of labor & cooperation (fēn gōng hé zuò) — Working together makes the most special bread!",
       choices: [
@@ -817,7 +890,7 @@
     },
     {
       target: "完", py: "wán", mechanic: "whack",
-      hint: "🔨 【光盘行动 Tap to Finish】点击正确生字吃光面包！Tap the right word to finish!",
+      hint: "🔨 【光盘行动 Tap to Finish】点击正确生字吃光面包！",
       zh1: "大家一起把美味的面包吃", zh2: "啦！",
       en: "Finish (chī wán) — Everyone finished eating the delicious bread!",
       choices: [
@@ -828,7 +901,7 @@
     },
     {
       target: "懂", py: "dǒng", mechanic: "wipe",
-      hint: "💨 【擦爱心玻璃 Wipe Heart Glass】擦亮玻璃解锁终极秘密！Rub to unlock the secret!",
+      hint: "💨 【擦爱心玻璃 Wipe Heart Glass】擦亮玻璃解锁终极秘密！",
       zh1: "我终于", zh2: "得了：合作与分享让面包更特别！",
       en: "Understand (dǒng de) — I understand: cooperation & sharing make bread special!",
       choices: [
@@ -932,11 +1005,13 @@
   }
 
   function startGame() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
     document.getElementById('start-modal').style.display = 'none';
     document.getElementById('end-modal').style.display = 'none';
     idx = 0;
     score = 0;
     combo = 0;
+    resizeCanvas();
     loadLevel();
   }
 
@@ -1008,7 +1083,7 @@
         bread.className = 'slice-bread-item';
         bread.innerHTML = `
           <div class="slice-guide-line"></div>
-          <div style="font-size:48px; margin-bottom:-5px;">${item.icon}</div>
+          <div class="slice-bread-icon">${item.icon}</div>
           <div class="py-pill">${item.p}</div>
           <div class="char-big">${item.c}</div>
         `;
@@ -1055,7 +1130,7 @@
       fog.innerHTML = `
         <div class="fog-instruction">
           💨 快【左右擦一擦】吹散黑烟！💨<br>
-          <span class="en-text" style="font-size: 22px; color: #FFF;">Rub left & right to wipe away the smoke!</span>
+          <span class="en-text" style="font-size: clamp(14px, 2.2vw, 22px); color: #FFF;">Rub left &amp; right to wipe away the smoke!</span>
         </div>
         <div class="wipe-bar-bg"><div class="wipe-bar-fill" id="wipe-fill"></div></div>
       `;
@@ -1069,7 +1144,7 @@
         if (lastWipeX !== null && lastWipeY !== null) {
           const dist = Math.hypot(clientX - lastWipeX, clientY - lastWipeY);
           if (dist > 4) {
-            wipeProgress += Math.min(10, dist * 0.22);
+            wipeProgress += Math.min(10, dist * 0.24);
             sfx('wipe');
             const fillEl = document.getElementById('wipe-fill');
             if (fillEl) fillEl.style.width = Math.min(100, wipeProgress) + '%';
@@ -1111,13 +1186,14 @@
       arena.appendChild(fog);
     }
 
+    resizeCanvas();
     startTimer();
   }
 
   function checkSliceCollision(x1, y1, x2, y2) {
     if (locked || levels[idx].mechanic !== 'slice') return;
     const dist = Math.hypot(x2 - x1, y2 - y1);
-    if (dist < 10) return;
+    if (dist < 6) return;
 
     const canvasRect = canvas.getBoundingClientRect();
     const screenX = canvasRect.left + x2;
@@ -1126,11 +1202,12 @@
     for (let target of activeSliceTargets) {
       if (target.sliced) continue;
       const rect = target.el.getBoundingClientRect();
+      const pad = Math.min(12, rect.width * 0.1);
       if (
-        screenX > rect.left + 15 &&
-        screenX < rect.right - 15 &&
-        screenY > rect.top + 15 &&
-        screenY < rect.bottom - 15
+        screenX > rect.left + pad &&
+        screenX < rect.right - pad &&
+        screenY > rect.top + pad &&
+        screenY < rect.bottom - pad
       ) {
         target.sliced = true;
         performBreadSplitAnimation(target);
@@ -1146,16 +1223,16 @@
   function performBreadSplitAnimation(target) {
     target.el.innerHTML = `
       <div class="bread-half-left">
-        <div style="font-size:48px; margin-bottom:-5px;">${target.icon}</div>
+        <div class="slice-bread-icon">${target.icon}</div>
         <div class="py-pill">${target.py}</div>
         <div class="char-big">${target.char}</div>
       </div>
       <div class="bread-half-right">
-        <div style="font-size:48px; margin-bottom:-5px;">${target.icon}</div>
+        <div class="slice-bread-icon">${target.icon}</div>
         <div class="py-pill">${target.py}</div>
         <div class="char-big">${target.char}</div>
       </div>
-      <div style="font-size:65px; z-index:20; animation: popIn 0.25s ease;">✨💥✨</div>
+      <div style="font-size:clamp(36px, 6vw, 65px); z-index:20; animation: popIn 0.25s ease;">✨💥✨</div>
     `;
   }
 
@@ -1222,9 +1299,9 @@
     const overlay = document.createElement('div');
     overlay.className = 'disaster-overlay';
     overlay.innerHTML = `
-      <div style="font-size: 72px;">💥${badFood}💥</div>
-      <div style="font-size: 28px; font-weight: bold; margin: 10px 0;">${msg}</div>
-      <div class="en-text" style="font-size: 20px; color: #FFD166;">Try again in 2 seconds... (2秒后重新烤制)</div>
+      <div style="font-size: clamp(44px, 7vw, 72px);">💥${badFood}💥</div>
+      <div style="font-size: clamp(18px, 3vw, 28px); font-weight: bold; margin: 10px 0;">${msg}</div>
+      <div class="en-text" style="font-size: clamp(14px, 2.2vw, 20px); color: #FFD166;">Try again in 2 seconds... (2秒后重新烤制)</div>
     `;
     document.getElementById('oven-arena').appendChild(overlay);
 
@@ -1246,9 +1323,9 @@
     sfx('good');
     document.getElementById('end-summary').innerHTML = `
       恭喜你征服了暴躁大厨的疯狂烤箱！<br>
-      最终得分 Total Score：<b style="color:#D62828; font-size:32px;">${score}</b> ⭐<br>
+      最终得分 Total Score：<b style="color:#D62828; font-size:clamp(24px, 4vw, 32px);">${score}</b> ⭐<br>
       你已经全部掌握了第7课的 <b>14个生字</b>，懂得了<b>“分工合作”</b>的快乐！<br>
-      <span class="en-text" style="font-size: 17px; color: #2A9D8F;">You mastered all 14 words and learned the joy of teamwork!</span>
+      <span class="en-text" style="font-size: clamp(14px, 2vw, 17px); color: #2A9D8F;">You mastered all 14 words and learned the joy of teamwork!</span>
     `;
     document.getElementById('end-modal').style.display = 'flex';
   }
@@ -1259,10 +1336,15 @@
 
   function resizeCanvas() {
     const arena = document.getElementById('oven-arena');
-    canvas.width = arena.clientWidth;
-    canvas.height = arena.clientHeight;
+    if (arena && canvas) {
+      canvas.width = arena.clientWidth;
+      canvas.height = arena.clientHeight;
+    }
   }
   window.addEventListener('resize', resizeCanvas);
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(resizeCanvas).observe(document.getElementById('oven-arena'));
+  }
   setTimeout(resizeCanvas, 200);
 
   const arenaEl = document.getElementById('oven-arena');
