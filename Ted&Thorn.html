@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>曼谷大富翁：Thorn vs Ted 中文口语争霸赛</title>
+  <style>
+    :root {
+      --bg-dark: #0a0e17;
+      --bg-panel: #121826;
+      --bg-tile: #182032;
+      --border-line: #2a3754;
+      --thorn-color: #ff2a6d;
+      --thorn-bg: rgba(255, 42, 109, 0.18);
+      --thorn-glow: rgba(255, 42, 109, 0.45);
+      --ted-color: #05d9e8;
+      --ted-bg: rgba(5, 217, 232, 0.16);
+      --ted-glow: rgba(5, 217, 232, 0.45);
+      --gold: #ffc857;
+      --green: #00f59b;
+      --text-main: #f2f5ff;
+      --text-muted: #8e9fb8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 12% 15%, rgba(255, 42, 109, 0.08), transparent 35%),
+        radial-gradient(circle at 88% 85%, rgba(5, 217, 232, 0.08), transparent 35%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      user-select: none;
+    }
+
+    /* 大富翁 6x6 环形主棋盘容器 */
+    .monopoly-board {
+      width: 100%;
+      max-width: 1180px;
+      height: min(94vh, 820px);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(6, 1fr);
+      gap: 8px;
+      background: #0d121e;
+      padding: 10px;
+      border-radius: 18px;
+      border: 2px solid var(--border-line);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    /* 单个棋盘格子 */
+    .tile {
+      background: var(--bg-tile);
+      border: 1.5px solid var(--border-line);
+      border-radius: 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 6px 8px;
+      position: relative;
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+
+    .tile.active-step {
+      border-color: var(--gold);
+      box-shadow: 0 0 18px rgba(255, 200, 87, 0.65);
+      transform: scale(1.03);
+      z-index: 5;
+    }
+
+    /* 地标顶部色条（归属权） */
+    .tile-bar {
+      height: 6px;
+      width: 100%;
+      border-radius: 4px;
+      background: #2c3957;
+      margin-bottom: 3px;
+      transition: background 0.3s;
+    }
+
+    .tile.owner-thorn {
+      border-color: var(--thorn-color);
+      background: linear-gradient(180deg, var(--thorn-bg), var(--bg-tile) 65%);
+    }
+    .tile.owner-thorn .tile-bar { background: var(--thorn-color); }
+
+    .tile.owner-ted {
+      border-color: var(--ted-color);
+      background: linear-gradient(180deg, var(--ted-bg), var(--bg-tile) 65%);
+    }
+    .tile.owner-ted .tile-bar { background: var(--ted-color); }
+
+    /* 四个角落特殊格 */
+    .tile.corner {
+      background: linear-gradient(135deg, #1d2740, #131a2b);
+      border-color: #3f527a;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .tile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .tile-stars {
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+    }
+
+    .tile-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: auto 0;
+    }
+
+    .tile-icon {
+      font-size: 1.45rem;
+      line-height: 1.1;
+    }
+
+    .tile-name {
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-top: 2px;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .tile-price {
+      font-size: 0.72rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-top: 1px;
+    }
+
+    /* 棋子停靠区 */
+    .pawns-dock {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      min-height: 22px;
+      margin-top: 2px;
+    }
+
+    .pawn {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+      animation: bounceIn 0.25s ease;
+    }
+
+    .pawn.thorn {
+      background: var(--thorn-color);
+      color: #fff;
+      border: 1px solid #ffd1e0;
+    }
+
+    .pawn.ted {
+      background: var(--ted-color);
+      color: #03151e;
+      border: 1px solid #c7fbff;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.6); }
+      70% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    /* 中央大富翁主控竞技场 (占据中间 4x4 区域) */
+    .center-arena {
+      grid-column: 2 / 6;
+      grid-row: 2 / 6;
+      background: radial-gradient(circle at center, #161f33 0%, #0f1523 100%);
+      border: 1.5px solid var(--border-line);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    /* 顶部标题与课堂计时 */
+    .arena-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 8px;
+    }
+
+    .game-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--thorn-color), var(--gold), var(--ted-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .top-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .timer-pill {
+      background: #0a0e17;
+      border: 1px solid var(--border-line);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: var(--gold);
+    }
+
+    .btn-mini {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--border-line);
+      color: var(--text-main);
+      padding: 4px 9px;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-mini:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    /* 双人资产对比卡 */
+    .players-hud {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 8px 0;
+    }
+
+    .p-card {
+      background: var(--bg-panel);
+      border: 2px solid var(--border-line);
+      border-radius: 12px;
+      padding: 10px 14px;
+      transition: all 0.3s;
+    }
+
+    .p-card.thorn.active {
+      border-color: var(--thorn-color);
+      box-shadow: 0 0 20px var(--thorn-glow);
+    }
+
+    .p-card.ted.active {
+      border-color: var(--ted-color);
+      box-shadow: 0 0 20px var(--ted-glow);
+    }
+
+    .p-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .p-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .p-card.thorn .p-name { color: var(--thorn-color); }
+    .p-card.ted .p-name { color: var(--ted-color); }
+
+    .p-grade {
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 7px;
+      border-radius: 10px;
+      color: var(--text-muted);
+    }
+
+    .p-money {
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: var(--gold);
+      margin: 4px 0 2px;
+    }
+
+    .p-assets {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* 中央骰子与行动区 */
+    .dice-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      my: auto;
+    }
+
+    .turn-banner {
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .dice-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .dice-box {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(145deg, #ffffff, #dce3f2);
+      color: #0b0e17;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 -4px 0 #b0bdd6;
+      transition: transform 0.2s;
+    }
+
+    .dice-box.rolling {
+      animation: shakeDice 0.4s infinite;
+    }
+
+    @keyframes shakeDice {
+      0% { transform: rotate(0deg) scale(1.05); }
+      25% { transform: rotate(-14deg) scale(1.1); }
+      50% { transform: rotate(14deg) scale(1.05); }
+      75% { transform: rotate(-8deg) scale(1.1); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    .btn-roll {
+      background: linear-gradient(135deg, #ffc857, #ff9f1c);
+      color: #1a1100;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255, 200, 87, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-roll:hover:not(:disabled) {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .btn-roll:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* 底部动态播报栏 */
+    .event-log {
+      background: rgba(10, 14, 23, 0.85);
+      border: 1px solid var(--border-line);
+      border-radius: 10px;
+      padding: 8px 14px;
+      text-align: center;
+      font-size: 0.86rem;
+      color: #e2e8f8;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 挑战弹窗 Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 14, 0.86);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 660px;
+      background: var(--bg-panel);
+      border: 2px solid var(--border-line);
+      border-radius: 18px;
+      padding: 24px 26px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+      animation: popIn 0.22s ease-out;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-box.thorn-theme { border-color: var(--thorn-color); }
+    .modal-box.ted-theme { border-color: var(--ted-color); }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .badge-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .pill-thorn { background: var(--thorn-color); color: #fff; }
+    .pill-ted { background: var(--ted-color); color: #04151e; }
+    .pill-mode { background: var(--gold); color: #1b1200; }
+    .pill-type { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+    .q-timer {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--gold);
+    }
+
+    .q-timer.urgent {
+      color: var(--thorn-color);
+      animation: pulse 0.6s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .modal-sub {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .prompt-box {
+      background: #0b0f1a;
+      border: 1px solid var(--border-line);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .prompt-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--thorn-color);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .prompt-sentence {
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #fff;
+    }
+
+    .chips-area {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-line);
+    }
+
+    .chips-title {
+      font-size: 0.78rem;
+      color: var(--green);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .chips-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: rgba(0, 245, 155, 0.14);
+      border: 1px solid var(--green);
+      color: var(--green);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .helper-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .helper-text {
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid var(--gold);
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: #dce4f5;
+      margin-bottom: 14px;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .helper-text.show { display: block; }
+
+    .judge-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-judge {
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .btn-judge:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+    }
+
+    .btn-yes {
+      background: var(--green);
+      color: #031f14;
+    }
+
+    .btn-no {
+      background: #28324a;
+      color: #ff85a4;
+      border: 1px solid rgba(255, 42, 109, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="monopoly-board" id="board">
+    <!-- 20个外圈格子由 JS 动态按 6x6 网格坐标渲染 -->
+
+    <!-- 中央大富翁控制台 (占据中间 4x4) -->
+    <div class="center-arena">
+      <div class="arena-top">
+        <div class="game-title">🎲 曼谷大富翁 · 口语争霸赛</div>
+        <div class="top-tools">
+          <div class="timer-pill">⏱ <span id="sessionTimer">12:00</span></div>
+          <button class="btn-mini" id="timerBtn" onclick="toggleSessionTimer()">开始计时</button>
+          <button class="btn-mini" id="soundBtn" onclick="toggleSound()">🔊 音效</button>
+          <button class="btn-mini" onclick="endGameNow()">🏆 结算</button>
+          <button class="btn-mini" onclick="resetGame()">🔄 重开</button>
+        </div>
+      </div>
+
+      <!-- Thorn 与 Ted 资产状态卡 -->
+      <div class="players-hud">
+        <div class="p-card thorn active" id="hudThorn">
+          <div class="p-header">
+            <span class="p-name">👑 Thorn (姐姐)</span>
+            <span class="p-grade">九年级难度</span>
+          </div>
+          <div class="p-money" id="moneyThorn">$1500</div>
+          <div class="p-assets">
+            <span id="propsThorn">🏠 地标: 0 处</span>
+            <span id="worthThorn">总资产: $1500</span>
+          </div>
+        </div>
+
+        <div class="p-card ted" id="hudTed">
+          <div class="p-header">
+            <span class="p-name">🚀 Ted (弟弟)</span>
+            <span class="p-grade">六年级难度</span>
+          </div>
+          <div class="p-money" id="moneyTed">$1500</div>
+          <div class="p-assets">
+            <span id="propsTed">🏠 地标: 0 处</span>
+            <span id="worthTed">总资产: $1500</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 骰子操作台 -->
+      <div class="dice-stage">
+        <div class="turn-banner" id="turnBanner">🔥 当前回合：👑 Thorn (姐姐)</div>
+        <div class="dice-row">
+          <div class="dice-box" id="diceDisplay">🎲</div>
+          <button class="btn-roll" id="rollBtn" onclick="rollDice()">掷骰子前进</button>
+        </div>
+      </div>
+
+      <!-- 实时播报日志 -->
+      <div class="event-log" id="eventLog">
+        欢迎来到曼谷大富翁！Thorn 和 Ted 初始资金各 $1500，经过起点奖励 $300！
+      </div>
+    </div>
+  </div>
+
+  <!-- 口语挑战 & 裁判弹窗 -->
+  <div class="modal-overlay" id="challengeModal">
+    <div class="modal-box" id="modalBox">
+      <div class="modal-header">
+        <div class="badge-group">
+          <span class="pill" id="mPlayerBadge">👑 Thorn</span>
+          <span class="pill pill-mode" id="mModeBadge">🏠 买地挑战</span>
+          <span class="pill pill-type" id="mTypeBadge">🔧 语序急救</span>
+          <strong id="mTileTitle" style="font-size: 1rem;">📍 暹罗广场</strong>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="q-timer" id="qTimerDisplay">15s</span>
+          <button class="btn-mini" onclick="resetQTimer()">重计时</button>
+        </div>
+      </div>
+
+      <p class="modal-sub" id="mInstruction">在倒计时结束前说出正确的中文表达，即可成功买下这块地盘！</p>
+
+      <div class="prompt-box">
+        <span class="prompt-tag" id="mPromptTag">⚠️ 发现泰式语序陷阱：</span>
+        <div class="prompt-sentence" id="mPromptText">题目加载中...</div>
+
+        <div class="chips-area" id="mChipsArea" style="display:none;">
+          <span class="chips-title">💎 必须用以下成熟词汇升级表达（禁止使用“好棒/好讨厌/坏掉了”等低龄词）：</span>
+          <div class="chips-list" id="mChipsList"></div>
+        </div>
+      </div>
+
+      <div class="helper-bar">
+        <button class="btn-mini" onclick="showHelper('hint')">💡 语法/思路提示</button>
+        <button class="btn-mini" onclick="showHelper('answer')">👀 查看参考答案</button>
+      </div>
+      <div class="helper-text" id="mHelperText"></div>
+
+      <div class="judge-grid">
+        <button class="btn-judge btn-yes" id="btnYes" onclick="resolveTurn(true)">✅ 表达过关</button>
+        <button class="btn-judge btn-no" id="btnNo" onclick="resolveTurn(false)">❌ 挑战失败</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 命运卡 / 特殊格提示弹窗 -->
+  <div class="modal-overlay" id="eventModal">
+    <div class="modal-box" style="border-color: var(--gold); text-align: center; max-width: 480px;">
+      <div id="evIcon" style="font-size: 3rem; margin-bottom: 6px;">🎲</div>
+      <h2 id="evTitle" style="color: var(--gold); margin-bottom: 8px;">命运转盘</h2>
+      <p id="evDesc" style="color: #dce4f5; line-height: 1.6; margin-bottom: 20px;">事件说明</p>
+      <button class="btn-judge btn-yes" style="width: 180px;" onclick="closeEventModal()">确定并继续</button>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * =================================================================
+     * 【6x6 大富翁环形地图 20 格坐标与题库配置】
+     * - ted:   Ted (弟弟 · 六年级，中文中等) 专属题目
+     * - thorn: Thorn (姐姐 · 九年级，中文中等偏上) 专属题目
+     * =================================================================
+     */
+    const BOARD_TILES = [
+      // --- 顶边 (从左到右: row 1, col 1~6) ---
+      { index: 0, row: 1, col: 1, kind: "corner", cornerType: "start", icon: "🏁", name: "曼谷起点", sub: "经过 +$300" },
+      {
+        index: 1, row: 1, col: 2, kind: "prop", icon: "🛍️", name: "暹罗广场", price: 200, rent: 120,
+        ted: {
+          type: "order",
+          prompt: "我买了衣服红色在暹罗广场昨天。",
+          hint: "泰语把颜色和地点放后面。中文顺序：时间 + 在哪里 + 买了 + 什么样的衣服。",
+          answer: "我昨天在暹罗广场买了一件红色的衣服。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "这家网红店的东西好贵，而且不好吃，我感觉被骗了。",
+          words: ["华而不实", "性价比低", "大失所望"],
+          hint: "用至少两个高级词替换“好贵、不好吃、感觉被骗了”。",
+          answer: "示范：这家网红店简直华而不实，性价比极低，让我大失所望。"
+        }
+      },
+      {
+        index: 2, row: 1, col: 3, kind: "prop", icon: "🚆", name: "BTS轻轨站", price: 220, rent: 130,
+        ted: {
+          type: "order",
+          prompt: "你去先吧，我等一下再跟去。",
+          hint: "泰语说 'ไปก่อน'（去先），中文要把“先”放在动词前面！",
+          answer: "你先去吧，我等一下再跟过去。"
+        },
+        thorn: {
+          type: "order",
+          prompt: "早高峰的时候，坐BTS比开车快很多在曼谷。",
+          hint: "地点状语“在曼谷”通常放在句首或主语后，不能挂在句尾。",
+          answer: "在曼谷早高峰的时候，坐BTS比开车快得多。"
+        }
+      },
+      {
+        index: 3, row: 1, col: 4, kind: "prop", icon: "🏪", name: "7-11便利店", price: 180, rent: 110,
+        ted: {
+          type: "vocab",
+          prompt: "这个新出的热压吐司好好吃，我每天都想吃！",
+          words: ["名不虚传", "忍不住", "回购"],
+          hint: "告别“好好吃”！用“名不虚传”夸它，用“忍不住”表达每天都想买。",
+          answer: "示范：这款新出的热压吐司果然名不虚传，让人忍不住天天回购。"
+        },
+        thorn: {
+          type: "order",
+          prompt: "我顺便买了一瓶水给Ted在回家的路上。",
+          hint: "中文习惯：时间/路线（在回家的路上）+ 给谁（给Ted）+ 做了什么。",
+          answer: "我在回家的路上顺便给Ted买了一瓶水。"
+        }
+      },
+      {
+        index: 4, row: 1, col: 5, kind: "prop", icon: "🧋", name: "网红奶茶店", price: 240, rent: 140,
+        ted: {
+          type: "order",
+          prompt: "我等朋友在奶茶店门口已经半个小时了。",
+          hint: "把地点“在奶茶店门口”移到动作“等朋友”的前面。",
+          answer: "我已经在奶茶店门口等朋友等了半个小时了。"
+        },
+        thorn: {
+          type: "order",
+          prompt: "那家新开的泰式奶茶店排了长长的队昨天下午。",
+          hint: "时间“昨天下午”放在开头，注意存现句的自然表达。",
+          answer: "昨天下午，那家新开的泰式奶茶店门口排起了长长的队伍。"
+        }
+      },
+      { index: 5, row: 1, col: 6, kind: "corner", cornerType: "chance", icon: "🎲", name: "命运转盘", sub: "随机奇遇" },
+
+      // --- 右边 (从上到下: row 2~5, col 6) ---
+      {
+        index: 6, row: 2, col: 6, kind: "prop", icon: "🏫", name: "学校食堂", price: 200, rent: 120,
+        ted: {
+          type: "order",
+          prompt: "今天中午我想吃饭跟我的好朋友一起。",
+          hint: "泰语 'กินข้าวกับเพื่อน'（吃饭跟朋友），中文要说“跟朋友一起吃饭”。",
+          answer: "今天中午我想跟我的好朋友一起吃饭。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "中午食堂人太多、太吵了，我都不能好好想下午考试的事。",
+          words: ["喧闹", "静下心来", "思绪"],
+          hint: "用“喧闹”代替“太吵”，用“静下心来”代替“好好想”。",
+          answer: "示范：中午食堂实在太喧闹了，我根本无法静下心来整理下午考试的思绪。"
+        }
+      },
+      {
+        index: 7, row: 3, col: 6, kind: "prop", icon: "📝", name: "期末考场", price: 260, rent: 150,
+        ted: {
+          type: "vocab",
+          prompt: "这次数学考试好难，看到卷子我都不会写，好想哭。",
+          words: ["极具挑战性", "一头雾水", "崩溃"],
+          hint: "用“一头雾水”形容看不懂题，用“崩溃”代替“好想哭”。",
+          answer: "示范：这次数学考试极具挑战性，我看着卷子一头雾水，差点当场崩溃。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "虽然复习的时候很累，但是考出好成绩的时候觉得很开心。",
+          words: ["来之不易", "成就感", "苦尽甘来"],
+          hint: "用成熟词汇表达努力后获得好成绩的感受。",
+          answer: "示范：这段时间复习虽然辛苦，但拿到理想成绩的那一刻，真是苦尽甘来，充满了成就感。"
+        }
+      },
+      {
+        index: 8, row: 4, col: 6, kind: "prop", icon: "🏀", name: "街头篮球场", price: 220, rent: 130,
+        ted: {
+          type: "order",
+          prompt: "他打篮球很厉害比我，但是我跑很快比他。",
+          hint: "把两个“比”字句的语序调整为：A 比 B + 动词/形容词。",
+          answer: "他打篮球比我厉害，但是我跑得比他快。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "比赛最后十秒钟我们反超了，大家高兴得跳了起来！",
+          words: ["惊心动魄", "逆转", "沸腾"],
+          hint: "用“惊心动魄”形容最后十秒，用“逆转”代替“反超”。",
+          answer: "示范：比赛最后十秒上演了惊心动魄的大逆转，全场瞬间沸腾了！"
+        }
+      },
+      {
+        index: 9, row: 5, col: 6, kind: "prop", icon: "📚", name: "中文补习班", price: 240, rent: 140,
+        ted: {
+          type: "order",
+          prompt: "我学中文已经三年了在曼谷，现在会说很多词。",
+          hint: "地点“在曼谷”要放在动词“学中文”前面。",
+          answer: "我在曼谷学中文已经三年了，现在会说很多词。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "很多中文词如果只靠死记硬背，过两天就忘光了，一点用都没有。",
+          words: ["事倍功半", "死记硬背", "融会贯通"],
+          hint: "用“事倍功半”形容效率低，用“融会贯通”形容真正学会。",
+          answer: "示范：学习中文如果只靠死记硬背，往往会事倍功半，必须学会在对话中融会贯通。"
+        }
+      },
+
+      // --- 底边 (从右到左: row 6, col 6~1) ---
+      { index: 10, row: 6, col: 6, kind: "corner", cornerType: "traffic", icon: "🚦", name: "曼谷大堵车", sub: "纠错脱困" },
+      {
+        index: 11, row: 6, col: 5, kind: "prop", icon: "🎡", name: "湄南河夜市", price: 280, rent: 160,
+        ted: {
+          type: "order",
+          prompt: "晚上的湄南河漂亮非常比白天。",
+          hint: "中文比较句结构：A + 比 + B + 形容词 + 得多（不能说“漂亮非常比B”）。",
+          answer: "晚上的湄南河比白天漂亮得多。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "夜市的风景很好看，吹着风让人觉得很舒服、很放松。",
+          words: ["灯火辉煌", "惬意", "流连忘返"],
+          hint: "用“灯火辉煌”描写夜景，用“惬意”代替“很舒服”。",
+          answer: "示范：夜晚的湄南河畔灯火辉煌，吹着晚风逛夜市十分惬意，让人流连忘返。"
+        }
+      },
+      {
+        index: 12, row: 6, col: 4, kind: "prop", icon: "🎬", name: "IMAX电影院", price: 260, rent: 150,
+        ted: {
+          type: "vocab",
+          prompt: "这部电影的结局好意外，我完全没有想到！",
+          words: ["大跌眼镜", "出乎意料", "震撼"],
+          hint: "用“出乎意料”或“大跌眼镜”替换“好意外、没想到”。",
+          answer: "示范：这部电影的结局完全出乎意料，简直让人大跌眼镜！"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "网上对这部电影有的人说好看，有的人说很烂，我不知道该不该去。",
+          words: ["众说纷纭", "褒贬不一", "犹豫不决"],
+          hint: "用“褒贬不一”形容评价两极，用“犹豫不决”形容不知道去不去。",
+          answer: "示范：网上对这部电影的评价褒贬不一，搞得我也犹豫不决，不知道该不该去看。"
+        }
+      },
+      {
+        index: 13, row: 6, col: 3, kind: "prop", icon: "🎪", name: "乍都乍市场", price: 300, rent: 180,
+        ted: {
+          type: "vocab",
+          prompt: "这个市场太大了，像迷宫一样，我不知道往哪边走。",
+          words: ["眼花缭乱", "迷失方向", "规模庞大"],
+          hint: "用“规模庞大”代替“太大了”，用“眼花缭乱”形容商品多。",
+          answer: "示范：乍都乍市场规模庞大，商品让人眼花缭乱，一不小心就会迷失方向。"
+        },
+        thorn: {
+          type: "order",
+          prompt: "如果我不看手机地图，肯定会迷路在这个巨大的市场里。",
+          hint: "把地点状语“在这个巨大的市场里”放到“迷路”之前。",
+          answer: "如果我不看手机地图，肯定会在这个巨大的市场里迷路。"
+        }
+      },
+      {
+        index: 14, row: 6, col: 2, kind: "prop", icon: "🎮", name: "电竞动漫展", price: 320, rent: 190,
+        ted: {
+          type: "vocab",
+          prompt: "这个游戏的画面做得好好看，玩起来超级有意思。",
+          words: ["精致", "身临其境", "爱不释手"],
+          hint: "告别“好好看、超级有意思”，试着用成语升级表达！",
+          answer: "示范：这款游戏的画面制作非常精致，让人有种身临其境的感觉，玩起来爱不释手。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "他平时看起来很安静，没想到在比赛的时候这么厉害！",
+          words: ["深藏不露", "刮目相看", "爆发力"],
+          hint: "用“深藏不露”形容平时低调，用“刮目相看”形容让人佩服。",
+          answer: "示范：他平时看起来文文静静的，没想到在赛场上如此深藏不露，真让人刮目相看。"
+        }
+      },
+      { index: 15, row: 6, col: 1, kind: "corner", cornerType: "bonus", icon: "⚡", name: "极速抢答站", sub: "成功 +$350" },
+
+      // --- 左边 (从下到上: row 5~2, col 1) ---
+      {
+        index: 16, row: 5, col: 1, kind: "prop", icon: "🚗", name: "曼谷高架桥", price: 250, rent: 150,
+        ted: {
+          type: "vocab",
+          prompt: "路上的车一动不动，我等得好烦，都快要迟到了！",
+          words: ["水泄不通", "抓狂", "心急如焚"],
+          hint: "把“车一动不动”升级为“水泄不通”，把“好烦”升级为“抓狂”。",
+          answer: "示范：高架桥上堵得水泄不通，眼看就要迟到了，简直让人抓狂！"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "下雨天开车出门太浪费时间了，还不如坐地铁。",
+          words: ["得不偿失", "明智", "明摆着"],
+          hint: "用“得不偿失”形容开车又堵又慢，用“明智”形容坐地铁的选择。",
+          answer: "示范：下雨天开车出门简直得不偿失，坐地铁显然是更明智的选择。"
+        }
+      },
+      {
+        index: 17, row: 4, col: 1, kind: "prop", icon: "🍢", name: "泰式烤肉店", price: 280, rent: 160,
+        ted: {
+          type: "order",
+          prompt: "我今天吃太多了，现在肚子好饱，走不动了。",
+          hint: "标准普通话里常说“吃得太多了”，且把“好饱”升级得更自然！",
+          answer: "我今天吃得太多了，现在撑得连路都走不动了。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "这家店虽然藏在小巷子里，但是每天都有很多人专门开车来吃。",
+          words: ["酒香不怕巷子深", "慕名而来", "络绎不绝"],
+          hint: "试试用上俗语“酒香不怕巷子深”或“慕名而来”！",
+          answer: "示范：正所谓酒香不怕巷子深，这家烤肉店虽然位置偏僻，但每天慕名而来的食客依然络绎不绝。"
+        }
+      },
+      {
+        index: 18, row: 3, col: 1, kind: "prop", icon: "📱", name: "网络热搜榜", price: 300, rent: 180,
+        ted: {
+          type: "vocab",
+          prompt: "他说话好假，明明是他的错，还要怪别人，我好讨厌这样。",
+          words: ["虚伪", "推卸责任", "反感"],
+          hint: "用“虚伪”代替“好假”，用“推卸责任”代替“怪别人”。",
+          answer: "示范：他这个人太虚伪了，明明是自己的错还喜欢推卸责任，真让人反感。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "网上的新闻真真假假，我们不能别人说什么就信什么。",
+          words: ["真假难辨", "人云亦云", "独立思考"],
+          hint: "用“真假难辨”和“人云亦云”把这句话变成九年级水平的观点表达！",
+          answer: "示范：网络上的信息真假难辨，我们一定要保持独立思考，千万不能人云亦云。"
+        }
+      },
+      {
+        index: 19, row: 2, col: 1, kind: "prop", icon: "🏠", name: "姐弟卧室领地", price: 350, rent: 220,
+        ted: {
+          type: "order",
+          prompt: "你不要拿我的东西不问我先，Thorn！",
+          hint: "中文语序：没有经过我的同意 / 不先问我，不要随便拿我的东西。",
+          answer: "Thorn，你不先问我，就不要随便拿我的东西！"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "虽然我和Ted平时经常吵架，但遇到大事的时候还是会互相帮忙的。",
+          words: ["斗嘴", "关键时刻", "默契"],
+          hint: "把“吵架”换成更亲切生动的“斗嘴”，加上“关键时刻”和“默契”。",
+          answer: "示范：虽然我和Ted平时总爱斗嘴，但到了关键时刻还是非常有默契、会互相支持的。"
+        }
+      }
+    ];
+
+    // 堵车与极速抢答站专用额外题库
+    const SPECIAL_QUESTIONS = {
+      traffic: {
+        ted: {
+          type: "order",
+          prompt: "现在堵车很厉害在Sukhumvit路，我们可能会迟到。",
+          hint: "把地点状语“在Sukhumvit路”移到句首或“堵车”前面。",
+          answer: "现在Sukhumvit路堵车很厉害，我们可能会迟到。"
+        },
+        thorn: {
+          type: "order",
+          prompt: "司机师傅建议我们提前下车走过去因为前面发生了交通事故。",
+          hint: "因果复句在中文里通常“因为”在前，“所以/建议”在后。",
+          answer: "因为前面发生了交通事故，司机师傅建议我们提前下车走过去。"
+        }
+      },
+      bonus: {
+        ted: {
+          type: "vocab",
+          prompt: "今天天气好热好热，我在外面走了五分钟就流了好多汗。",
+          words: ["炎热", "大汗淋漓", "受不了"],
+          hint: "把“好热好热”升级为“炎热”，把“流了好多汗”升级为“大汗淋漓”。",
+          answer: "示范：今天天气实在太炎热了，我在外面走了五分钟就已经大汗淋漓，简直受不了。"
+        },
+        thorn: {
+          type: "vocab",
+          prompt: "我们本来想去海边玩，结果突然下大雨，计划全乱了，真不知道该笑还是该哭。",
+          words: ["突如其来", "泡汤", "哭笑不得"],
+          hint: "用“突如其来”形容大雨，用“泡汤”形容计划取消，用“哭笑不得”收尾。",
+          answer: "示范：我们本来打算去海边度假，结果一场突如其来的暴雨让计划全泡汤了，真让人哭笑不得。"
+        }
+      }
+    };
+
+    // 游戏全局状态
+    let state = {
+      turn: "thorn", // "thorn" (姐姐) | "ted" (弟弟)
+      players: {
+        thorn: { name: "Thorn", label: "👑 Thorn (姐姐)", pos: 0, money: 1500 },
+        ted:   { name: "Ted",   label: "🚀 Ted (弟弟)",   pos: 0, money: 1500 }
+      },
+      tiles: BOARD_TILES.map(t => ({ ...t, owner: null, level: 0 })), // level: 0未拥有, 1普通, 2豪华
+      isBusy: false,
+      currentChallenge: null, // { mode: 'buy'|'rent'|'upgrade'|'traffic'|'bonus', tileIndex }
+      soundOn: true,
+      sessionSec: 720, // 默认12分钟
+      sessionRunning: false,
+      sessionTimerId: null,
+      qSec: 15,
+      qTimerId: null
+    };
+
+    // 轻量合成音效
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(freq, type = "sine", dur = 0.12, delay = 0) {
+      if (!state.soundOn) return;
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+      gain.gain.setValueAtTime(0.14, audioCtx.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + dur);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(audioCtx.currentTime + delay);
+      osc.stop(audioCtx.currentTime + delay + dur);
+    }
+
+    const SFX = {
+      step: () => beep(460, "sine", 0.07),
+      dice: () => beep(620, "triangle", 0.06),
+      coin: () => { beep(784, "sine", 0.1, 0); beep(1046, "sine", 0.2, 0.09); },
+      win:  () => { beep(523, "triangle", 0.12, 0); beep(659, "triangle", 0.12, 0.1); beep(784, "triangle", 0.25, 0.2); },
+      lose: () => { beep(240, "sawtooth", 0.16, 0); beep(180, "sawtooth", 0.24, 0.14); },
+      tick: () => beep(850, "sine", 0.04)
+    };
+
+    // 渲染 6x6 环形棋盘
+    function renderBoard() {
+      const board = document.getElementById("board");
+      // 保留中央竞技场，清除旧格子
+      const oldTiles = board.querySelectorAll(".tile");
+      oldTiles.forEach(el => el.remove());
+
+      state.tiles.forEach(tile => {
+        const div = document.createElement("div");
+        div.className = "tile";
+        div.id = `tile-${tile.index}`;
+        div.style.gridRow = tile.row;
+        div.style.gridColumn = tile.col;
+
+        if (tile.kind === "corner") {
+          div.classList.add("corner");
+          div.innerHTML = `
+            <div class="tile-icon">${tile.icon}</div>
+            <div class="tile-name">${tile.name}</div>
+            <div class="tile-price">${tile.sub}</div>
+            <div class="pawns-dock" id="dock-${tile.index}"></div>
+          `;
+        } else {
+          if (tile.owner === "thorn") div.classList.add("owner-thorn");
+          if (tile.owner === "ted") div.classList.add("owner-ted");
+
+          const stars = tile.level === 2 ? "★★" : (tile.level === 1 ? "★" : "");
+          const currentRent = tile.rent * (tile.level === 2 ? 2 : 1);
+          const priceLabel = tile.owner
+            ? `过路费 $${currentRent}`
+            : `售价 $${tile.price}`;
+
+          div.innerHTML = `
+            <div class="tile-bar"></div>
+            <div class="tile-header">
+              <span>#${tile.index}</span>
+              <span class="tile-stars">${stars}</span>
+            </div>
+            <div class="tile-body">
+              <div class="tile-icon">${tile.icon}</div>
+              <div class="tile-name">${tile.name}</div>
+              <div class="tile-price">${priceLabel}</div>
+            </div>
+            <div class="pawns-dock" id="dock-${tile.index}"></div>
+          `;
+        }
+
+        board.appendChild(div);
+      });
+
+      renderPawns();
+      updateHUD();
+    }
+
+    // 渲染两位玩家的棋子位置
+    function renderPawns() {
+      document.querySelectorAll(".pawns-dock").forEach(d => d.innerHTML = "");
+
+      const thornDock = document.getElementById(`dock-${state.players.thorn.pos}`);
+      if (thornDock) {
+        thornDock.innerHTML += `<span class="pawn thorn">👑 Thorn</span>`;
+      }
+
+      const tedDock = document.getElementById(`dock-${state.players.ted.pos}`);
+      if (tedDock) {
+        tedDock.innerHTML += `<span class="pawn ted">🚀 Ted</span>`;
+      }
+    }
+
+    // 更新中央双方现金、地产数量与总资产
+    function updateHUD() {
+      ["thorn", "ted"].forEach(pid => {
+        const p = state.players[pid];
+        const ownedTiles = state.tiles.filter(t => t.owner === pid);
+        const propValue = ownedTiles.reduce((sum, t) => sum + t.price * (t.level || 1), 0);
+        const netWorth = p.money + propValue;
+
+        if (pid === "thorn") {
+          document.getElementById("moneyThorn").innerText = `$${p.money}`;
+          document.getElementById("propsThorn").innerText = `🏠 地标: ${ownedTiles.length} 处`;
+          document.getElementById("worthThorn").innerText = `总资产: $${netWorth}`;
+        } else {
+          document.getElementById("moneyTed").innerText = `$${p.money}`;
+          document.getElementById("propsTed").innerText = `🏠 地标: ${ownedTiles.length} 处`;
+          document.getElementById("worthTed").innerText = `总资产: $${netWorth}`;
+        }
+      });
+
+      document.getElementById("hudThorn").classList.toggle("active", state.turn === "thorn");
+      document.getElementById("hudTed").classList.toggle("active", state.turn === "ted");
+
+      const currentP = state.players[state.turn];
+      const banner = document.getElementById("turnBanner");
+      banner.innerText = `🔥 当前行动回合：${currentP.label}`;
+      banner.style.color = state.turn === "thorn" ? "var(--thorn-color)" : "var(--ted-color)";
+    }
+
+    // 掷骰子并步进移动
+    function rollDice() {
+      if (state.isBusy) return;
+      state.isBusy = true;
+      document.getElementById("rollBtn").disabled = true;
+
+      if (!state.sessionRunning) toggleSessionTimer();
+
+      const diceEl = document.getElementById("diceDisplay");
+      diceEl.classList.add("rolling");
+
+      const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+      let rollTicks = 0;
+      const anim = setInterval(() => {
+        diceEl.innerText = diceFaces[Math.floor(Math.random() * 6)];
+        SFX.dice();
+        rollTicks++;
+        if (rollTicks >= 8) {
+          clearInterval(anim);
+          diceEl.classList.remove("rolling");
+          const steps = Math.floor(Math.random() * 6) + 1;
+          diceEl.innerText = diceFaces[steps - 1];
+          logEvent(`${state.players[state.turn].label} 掷出了 ${steps} 点！正在前进...`);
+          movePawnSteps(steps);
+        }
+      }, 70);
+    }
+
+    function movePawnSteps(stepsLeft) {
+      if (stepsLeft <= 0) {
+        document.querySelectorAll(".tile").forEach(t => t.classList.remove("active-step"));
+        onLandTile();
+        return;
+      }
+
+      const player = state.players[state.turn];
+      player.pos = (player.pos + 1) % state.tiles.length;
+      SFX.step();
+
+      // 经过起点奖励 $300
+      if (player.pos === 0) {
+        player.money += 300;
+        SFX.coin();
+        logEvent(`🎉 ${player.label} 经过【曼谷起点】，领取零花钱 +$300！`);
+      }
+
+      renderPawns();
+      updateHUD();
+
+      document.querySelectorAll(".tile").forEach(t => t.classList.remove("active-step"));
+      const curTileEl = document.getElementById(`tile-${player.pos}`);
+      if (curTileEl) curTileEl.classList.add("active-step");
+
+      setTimeout(() => movePawnSteps(stepsLeft - 1), 240);
+    }
+
+    // 落脚触发格子事件
+    function onLandTile() {
+      const player = state.players[state.turn];
+      const tile = state.tiles[player.pos];
+
+      if (tile.kind === "corner") {
+        handleCornerTile(tile);
+      } else {
+        handlePropertyTile(tile);
+      }
+    }
+
+    // 处理 4 个特殊角格
+    function handleCornerTile(tile) {
+      const player = state.players[state.turn];
+
+      if (tile.cornerType === "start") {
+        player.money += 200; // 刚好停在起点额外再奖 $200
+        SFX.coin();
+        updateHUD();
+        showEventModal("🏁", "正好停在曼谷起点！", `${player.label} 额外获得中文勤学奖金 +$200！`);
+      } else if (tile.cornerType === "chance") {
+        triggerChanceCard();
+      } else if (tile.cornerType === "traffic") {
+        openChallengeModal({
+          mode: "traffic",
+          tileIndex: tile.index,
+          title: "🚦 曼谷大堵车 · 纠错脱困",
+          modeLabel: "🚨 堵车急救",
+          instruction: "被困在高架桥上了！15秒内口头纠正这句泰式病句即可免费通行（失败罚款 $200）：",
+          qData: SPECIAL_QUESTIONS.traffic[state.turn],
+          timeLimit: 15,
+          yesText: "✅ 语序正确 · 顺利脱困",
+          noText: "❌ 纠错失败 · 交罚款 $200"
+        });
+      } else if (tile.cornerType === "bonus") {
+        openChallengeModal({
+          mode: "bonus",
+          tileIndex: tile.index,
+          title: "⚡ 极速抢答站 · 高阶词汇挑战",
+          modeLabel: "💎 奖金挑战",
+          instruction: "15秒内用成熟词汇升级这句话，挑战成功直接赢得 +$350 奖金！",
+          qData: SPECIAL_QUESTIONS.bonus[state.turn],
+          timeLimit: 15,
+          yesText: "✅ 升级成功 · 领奖 +$350",
+          noText: "❌ 挑战失败 · 错过奖金"
+        });
+      }
+    }
+
+    function triggerChanceCard() {
+      const pKey = state.turn;
+      const otherKey = pKey === "thorn" ? "ted" : "thorn";
+      const me = state.players[pKey];
+      const other = state.players[otherKey];
+
+      const events = [
+        {
+          icon: "🧧",
+          title: "中文老师发红包！",
+          desc: `${me.label} 最近口语进步神速，获得奖学金 +$250！`,
+          run: () => { me.money += 250; SFX.coin(); }
+        },
+        {
+          icon: "🧋",
+          title: "请全班喝泰式奶茶",
+          desc: `${me.label} 心情大好请客喝奶茶，花费 -$150！`,
+          run: () => { me.money -= 150; SFX.lose(); }
+        },
+        {
+          icon: "🔄",
+          title: "时空任意门：位置互换！",
+          desc: `${me.label} 和 ${other.label} 瞬间交换了在曼谷地图上的位置！`,
+          run: () => {
+            const temp = me.pos;
+            me.pos = other.pos;
+            other.pos = temp;
+            renderPawns();
+            SFX.win();
+          }
+        },
+        {
+          icon: "💸",
+          title: "零花钱大比拼",
+          desc: `${other.label} 给 ${me.label} 转账 $150 零花钱！`,
+          run: () => { other.money -= 150; me.money += 150; SFX.coin(); }
+        }
+      ];
+
+      const picked = events[Math.floor(Math.random() * events.length)];
+      picked.run();
+      updateHUD();
+      showEventModal(picked.icon, picked.title, picked.desc);
+    }
+
+    // 处理 16 个曼谷地标格
+    function handlePropertyTile(tile) {
+      const me = state.players[state.turn];
+      const qData = tile[state.turn];
+
+      if (!tile.owner) {
+        // 无主地标：买地挑战
+        const canAfford = me.money >= tile.price;
+        openChallengeModal({
+          mode: "buy",
+          tileIndex: tile.index,
+          title: `${tile.icon} ${tile.name} (售价 $${tile.price})`,
+          modeLabel: canAfford ? "🏠 买地挑战" : "🎓 奖学金挑战",
+          instruction: canAfford
+            ? `15秒内完成中文表达挑战，即可花费 $${tile.price} 买下「${tile.name}」！`
+            : `当前现金不足 $${tile.price}，但答对题目仍可获得 +$150 努力奖学金！`,
+          qData,
+          timeLimit: 15,
+          yesText: canAfford ? `✅ 过关 · 买下地标 (-$${tile.price})` : "✅ 过关 · 领取奖学金 +$150",
+          noText: "❌ 挑战失败 · 放弃机会"
+        });
+      } else if (tile.owner === state.turn) {
+        // 自己的地标：升级挑战
+        if (tile.level >= 2) {
+          logEvent(`⭐ ${me.label} 回到了自己的满级地标「${tile.name}」，安全休息一回合！`);
+          finishTurn();
+        } else {
+          const upgradeCost = Math.round(tile.price * 0.5);
+          openChallengeModal({
+            mode: "upgrade",
+            tileIndex: tile.index,
+            title: `${tile.icon} ${tile.name} (升级费用 $${upgradeCost})`,
+            modeLabel: "⭐ 地标升级",
+            instruction: `来到己方地标！15秒内完成升级挑战并支付 $${upgradeCost}，过路费将永久翻倍！`,
+            qData,
+            timeLimit: 15,
+            yesText: `✅ 过关 · 升级为 ★★ (-$${upgradeCost})`,
+            noText: "❌ 暂不升级 · 结束回合"
+          });
+        }
+      } else {
+        // 对方的地标：免租反击战！
+        const currentRent = tile.rent * (tile.level === 2 ? 2 : 1);
+        const ownerName = state.players[tile.owner].label;
+        openChallengeModal({
+          mode: "rent",
+          tileIndex: tile.index,
+          title: `${tile.icon} ${tile.name} (${ownerName}的领地)`,
+          modeLabel: "🛡️ 免租反击战",
+          instruction: `踩到对方地盘，需付过路费 $${currentRent}！12秒内挑战成功即可【免除过路费】！`,
+          qData,
+          timeLimit: 12,
+          yesText: `✅ 反击成功 · 免付 $${currentRent}！`,
+          noText: `❌ 反击失败 · 支付过路费 $${currentRent}`
+        });
+      }
+    }
+
+    // 打开题目弹窗
+    function openChallengeModal(cfg) {
+      state.currentChallenge = cfg;
+      const isThorn = state.turn === "thorn";
+
+      const box = document.getElementById("modalBox");
+      box.className = "modal-box " + (isThorn ? "thorn-theme" : "ted-theme");
+
+      const pBadge = document.getElementById("mPlayerBadge");
+      pBadge.className = "pill " + (isThorn ? "pill-thorn" : "pill-ted");
+      pBadge.innerText = isThorn ? "👑 Thorn (9年级)" : "🚀 Ted (6年级)";
+
+      document.getElementById("mModeBadge").innerText = cfg.modeLabel;
+      document.getElementById("mTypeBadge").innerText = cfg.qData.type === "order" ? "🔧 语序急救" : "💎 词汇升级";
+      document.getElementById("mTileTitle").innerText = cfg.title;
+      document.getElementById("mInstruction").innerText = cfg.instruction;
+      document.getElementById("mPromptText").innerText = cfg.qData.prompt;
+
+      const chipsArea = document.getElementById("mChipsArea");
+      if (cfg.qData.type === "vocab") {
+        document.getElementById("mPromptTag").innerText = "🍼 原始低龄表达：";
+        chipsArea.style.display = "block";
+        document.getElementById("mChipsList").innerHTML = cfg.qData.words
+          .map(w => `<span class="chip">${w}</span>`).join("");
+      } else {
+        document.getElementById("mPromptTag").innerText = "⚠️ 发现泰式中文语序陷阱：";
+        chipsArea.style.display = "none";
+      }
+
+      const helperEl = document.getElementById("mHelperText");
+      helperEl.classList.remove("show");
+      helperEl.dataset.hint = cfg.qData.hint;
+      helperEl.dataset.answer = cfg.qData.answer;
+
+      document.getElementById("btnYes").innerText = cfg.yesText;
+      document.getElementById("btnNo").innerText = cfg.noText;
+
+      startQTimer(cfg.timeLimit);
+      document.getElementById("challengeModal").classList.add("open");
+    }
+
+    function showHelper(kind) {
+      const el = document.getElementById("mHelperText");
+      const content = kind === "hint" ? `💡 提示：${el.dataset.hint}` : `✅ 参考表达：${el.dataset.answer}`;
+      if (el.classList.contains("show") && el.innerText === content) {
+        el.classList.remove("show");
+      } else {
+        el.innerText = content;
+        el.classList.add("show");
+      }
+    }
+
+    function startQTimer(sec) {
+      clearInterval(state.qTimerId);
+      state.qSec = sec;
+      updateQTimerUI();
+      state.qTimerId = setInterval(() => {
+        state.qSec--;
+        updateQTimerUI();
+        if (state.qSec <= 4 && state.qSec > 0) SFX.tick();
+        if (state.qSec <= 0) {
+          clearInterval(state.qTimerId);
+          SFX.lose();
+        }
+      }, 1000);
+    }
+
+    function resetQTimer() {
+      if (state.currentChallenge) startQTimer(state.currentChallenge.timeLimit);
+    }
+
+    function updateQTimerUI() {
+      const el = document.getElementById("qTimerDisplay");
+      el.innerText = `${Math.max(0, state.qSec)}s`;
+      el.classList.toggle("urgent", state.qSec <= 5);
+    }
+
+    // 老师判定题目结果并结算大富翁资产
+    function resolveTurn(passed) {
+      clearInterval(state.qTimerId);
+      document.getElementById("challengeModal").classList.remove("open");
+
+      const cfg = state.currentChallenge;
+      const me = state.players[state.turn];
+      const otherKey = state.turn === "thorn" ? "ted" : "thorn";
+      const other = state.players[otherKey];
+      const tile = state.tiles[cfg.tileIndex];
+
+      if (cfg.mode === "buy") {
+        if (passed) {
+          if (me.money >= tile.price) {
+            me.money -= tile.price;
+            tile.owner = state.turn;
+            tile.level = 1;
+            SFX.win();
+            logEvent(`🏠 太棒了！${me.label} 表达过关，成功买下「${tile.name}」！`);
+          } else {
+            me.money += 150;
+            SFX.coin();
+            logEvent(`🎓 ${me.label} 表达过关，获得勤学奖学金 +$150！`);
+          }
+        } else {
+          SFX.lose();
+          logEvent(`❌ ${me.label} 挑战未通过，错失了买下「${tile.name}」的机会。`);
+        }
+      } else if (cfg.mode === "upgrade") {
+        const upgradeCost = Math.round(tile.price * 0.5);
+        if (passed && me.money >= upgradeCost) {
+          me.money -= upgradeCost;
+          tile.level = 2;
+          SFX.win();
+          logEvent(`⭐ ${me.label} 将「${tile.name}」升级为 ★★ 豪华版，过路费翻倍！`);
+        } else {
+          SFX.lose();
+          logEvent(`❌ ${me.label} 未完成升级，「${tile.name}」维持原状。`);
+        }
+      } else if (cfg.mode === "rent") {
+        const currentRent = tile.rent * (tile.level === 2 ? 2 : 1);
+        if (passed) {
+          SFX.win();
+          logEvent(`🛡️ 漂亮！${me.label} 极限反击成功，免除了 $${currentRent} 过路费！`);
+        } else {
+          me.money -= currentRent;
+          other.money += currentRent;
+          SFX.lose();
+          logEvent(`💸 ${me.label} 反击失败，向 ${other.label} 支付了 $${currentRent} 过路费！`);
+        }
+      } else if (cfg.mode === "traffic") {
+        if (passed) {
+          SFX.win();
+          logEvent(`🚦 语序满分！${me.label} 顺利冲出曼谷大堵车，免交罚款！`);
+        } else {
+          me.money -= 200;
+          SFX.lose();
+          logEvent(`💸 纠错超时，${me.label} 支付了 $200 拖车罚款。`);
+        }
+      } else if (cfg.mode === "bonus") {
+        if (passed) {
+          me.money += 350;
+          SFX.coin();
+          logEvent(`⚡ 词汇大爆发！${me.label} 赢得极速抢答奖金 +$350！`);
+        } else {
+          SFX.lose();
+          logEvent(`❌ 差一点点！${me.label} 未能拿走抢答奖金。`);
+        }
+      }
+
+      renderBoard();
+      checkBankruptcyOrNext();
+    }
+
+    function showEventModal(icon, title, desc) {
+      document.getElementById("evIcon").innerText = icon;
+      document.getElementById("evTitle").innerText = title;
+      document.getElementById("evDesc").innerText = desc;
+      document.getElementById("eventModal").classList.add("open");
+    }
+
+    function closeEventModal() {
+      document.getElementById("eventModal").classList.remove("open");
+      renderBoard();
+      checkBankruptcyOrNext();
+    }
+
+    function checkBankruptcyOrNext() {
+      if (state.players.thorn.money < 0 || state.players.ted.money < 0) {
+        endGameNow();
+        return;
+      }
+      finishTurn();
+    }
+
+    function finishTurn() {
+      state.turn = state.turn === "thorn" ? "ted" : "thorn";
+      state.isBusy = false;
+      document.getElementById("rollBtn").disabled = false;
+      updateHUD();
+    }
+
+    function logEvent(msg) {
+      document.getElementById("eventLog").innerText = msg;
+    }
+
+    // 结算胜负（比较总资产 = 现金 + 地产价值）
+    function endGameNow() {
+      clearInterval(state.sessionTimerId);
+      clearInterval(state.qTimerId);
+      state.sessionRunning = false;
+
+      const calcWorth = (pid) => {
+        const owned = state.tiles.filter(t => t.owner === pid);
+        const propVal = owned.reduce((s, t) => s + t.price * (t.level || 1), 0);
+        return state.players[pid].money + propVal;
+      };
+
+      const thornWorth = calcWorth("thorn");
+      const tedWorth = calcWorth("ted");
+
+      let title = "";
+      if (thornWorth > tedWorth) {
+        title = "🎉 恭喜 Thorn (姐姐) 成为曼谷大富翁！";
+      } else if (tedWorth > thornWorth) {
+        title = "🎉 恭喜 Ted (弟弟) 逆袭成为曼谷大富翁！";
+      } else {
+        title = "🤝 势均力敌！Thorn 与 Ted 打成平手！";
+      }
+
+      SFX.win();
+      showEventModal(
+        "🏆",
+        title,
+        `最终总资产统计：\n👑 Thorn (姐姐)：$${thornWorth}  vs  🚀 Ted (弟弟)：$${tedWorth}\n\n今天的中文表达非常地道，点击下方继续或点右上角重开！`
+      );
+      state.isBusy = false;
+      document.getElementById("rollBtn").disabled = false;
+    }
+
+    // 课堂倒计时控制
+    function toggleSessionTimer() {
+      const btn = document.getElementById("timerBtn");
+      if (state.sessionRunning) {
+        clearInterval(state.sessionTimerId);
+        state.sessionRunning = false;
+        btn.innerText = "继续";
+      } else {
+        state.sessionRunning = true;
+        btn.innerText = "暂停";
+        state.sessionTimerId = setInterval(() => {
+          state.sessionSec--;
+          const m = String(Math.floor(state.sessionSec / 60)).padStart(2, "0");
+          const s = String(state.sessionSec % 60).padStart(2, "0");
+          document.getElementById("sessionTimer").innerText = `${m}:${s}`;
+          if (state.sessionSec <= 0) {
+            endGameNow();
+          }
+        }, 1000);
+      }
+    }
+
+    function toggleSound() {
+      state.soundOn = !state.soundOn;
+      document.getElementById("soundBtn").innerText = state.soundOn ? "🔊 音效" : "🔇 静音";
+    }
+
+    function resetGame() {
+      clearInterval(state.sessionTimerId);
+      clearInterval(state.qTimerId);
+      state.turn = "thorn";
+      state.players.thorn.pos = 0;
+      state.players.thorn.money = 1500;
+      state.players.ted.pos = 0;
+      state.players.ted.money = 1500;
+      state.tiles = BOARD_TILES.map(t => ({ ...t, owner: null, level: 0 }));
+      state.isBusy = false;
+      state.sessionSec = 720;
+      state.sessionRunning = false;
+
+      document.getElementById("sessionTimer").innerText = "12:00";
+      document.getElementById("timerBtn").innerText = "开始计时";
+      document.getElementById("diceDisplay").innerText = "🎲";
+      document.getElementById("rollBtn").disabled = false;
+      document.getElementById("challengeModal").classList.remove("open");
+      document.getElementById("eventModal").classList.remove("open");
+
+      logEvent("🔄 新一局曼谷大富翁开始！请 👑 Thorn (姐姐) 先掷骰子！");
+      renderBoard();
+    }
+
+    // 初始化启动
+    renderBoard();
+  </script>
+</body>
+</html>
