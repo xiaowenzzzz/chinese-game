@@ -2,14 +2,14 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>社区职业大采访 - 感谢我周围的人 | Franky Laoshi</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     /* 全局童趣绘本风格字体与背景 */
     body {
-      font-family: 'Fredoka', 'Noto Sans SC', sans-serif;
+      font-family: 'Fredoka', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: #FEF9E7;
       background-image: 
         radial-gradient(#FDE68A 2px, transparent 2px),
@@ -19,11 +19,19 @@
       color: #334155;
       overflow-x: hidden;
       user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    button {
+      touch-action: manipulation;
     }
 
     /* 楷体/清晰教学字体用于汉字展示 */
     .hanzi-font {
-      font-family: 'KaiTi', 'STKaiti', 'Noto Sans SC', serif;
+      font-family: 'KaiTi', 'STKaiti', 'BiauKai', 'DFKai-SB', 'Noto Sans SC', serif;
     }
 
     /* 拼音与英文一键切换控制类 */
@@ -35,7 +43,7 @@
       display: none !important;
     }
 
-    /* Ruby 拼音排版优化，确保二年级学生看得清 */
+    /* Ruby 拼音排版优化，确保手机与平板端二年级学生看得清 */
     ruby {
       ruby-align: center;
       display: inline-flex;
@@ -45,7 +53,7 @@
     }
     rt {
       font-family: 'Fredoka', Arial, sans-serif;
-      font-size: 0.78rem;
+      font-size: clamp(0.68rem, 2vw, 0.78rem);
       font-weight: 600;
       color: #E11D48;
       letter-spacing: 0.02em;
@@ -53,14 +61,16 @@
       transition: opacity 0.2s ease;
     }
 
-    /* 词块立体按钮效果 */
+    /* 词块立体按钮效果（同时支持鼠标悬停与移动端按压反馈） */
     .word-tile {
-      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
       box-shadow: 0 4px 0 #CBD5E1;
     }
-    .word-tile:hover:not(:disabled) {
-      transform: translateY(-3px);
-      box-shadow: 0 7px 0 #94A3B8;
+    @media (hover: hover) {
+      .word-tile:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 0 #94A3B8;
+      }
     }
     .word-tile:active:not(:disabled) {
       transform: translateY(2px);
@@ -69,12 +79,24 @@
 
     /* 答案槽内的词块样式 */
     .answer-tile {
-      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);
       box-shadow: 0 4px 0 #F59E0B;
     }
-    .answer-tile:hover {
-      transform: translateY(-2px);
-      background-color: #FEF3C7;
+    @media (hover: hover) {
+      .answer-tile:hover {
+        transform: translateY(-2px);
+        background-color: #FEF3C7;
+      }
+    }
+    .answer-tile:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #F59E0B;
+    }
+
+    /* Safari 毛玻璃兼容 */
+    .glass-bar {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     /* 错误抖动动画 */
@@ -92,7 +114,7 @@
     /* 正确弹出动画 */
     @keyframes popIn {
       0% { transform: scale(0.8); opacity: 0; }
-      70% { transform: scale(1.06); }
+      70% { transform: scale(1.05); }
       100% { transform: scale(1); opacity: 1; }
     }
     .animate-pop {
@@ -114,87 +136,103 @@
       transform: rotate(-3deg);
       box-shadow: 0 2px 8px rgba(225, 29, 72, 0.15);
     }
+
+    /* 超小屏手机微调 */
+    @media (max-width: 380px) {
+      .word-tile, .answer-tile {
+        padding-left: 0.65rem;
+        padding-right: 0.65rem;
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+      }
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="flex flex-col justify-between">
 
   <!-- 顶部导航与控制栏 -->
-  <header class="bg-white/95 backdrop-blur-md border-b-4 border-amber-300 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-5xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+  <header class="bg-white/95 glass-bar border-b-4 border-amber-300 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-2">
       
       <!-- 左侧标题与课本标识 -->
-      <div class="flex items-center gap-2.5">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-2xl shadow-md border-2 border-white">
+      <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xl sm:text-2xl shadow-md border-2 border-white shrink-0">
           🎙️
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-lg sm:text-xl font-black text-slate-800 tracking-tight">社区职业大采访</h1>
-            <span class="hidden sm:inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-emerald-300">
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <h1 class="text-base sm:text-xl font-black text-slate-800 tracking-tight truncate">社区职业大采访</h1>
+            <span class="inline-block bg-emerald-100 text-emerald-700 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full border border-emerald-300 shrink-0">
               欢乐伙伴 2A · 第八课
             </span>
           </div>
-          <p class="text-xs text-slate-500 font-medium">感谢我周围的人 <span class="en-text text-amber-600">· Thank You, People Around Me</span></p>
+          <p class="text-[11px] sm:text-xs text-slate-500 font-medium truncate">
+            感谢我周围的人 <span class="en-text text-amber-600">· Thank You, People Around Me</span>
+          </p>
         </div>
       </div>
 
       <!-- 中间：一键切换拼音 / 英文开关 + 爱心积分 -->
-      <div class="flex items-center gap-1.5 sm:gap-2.5 flex-wrap">
-        <!-- 拼音开关 -->
-        <button id="btn-toggle-pinyin" onclick="togglePinyin()" 
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-rose-500 text-white shadow-sm hover:bg-rose-600 active:scale-95 transition cursor-pointer border-2 border-rose-200">
-          <span>拼</span>
-          <span id="pinyin-status">拼音: 开</span>
-        </button>
+      <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-1.5 sm:gap-2.5 flex-wrap">
+        <div class="flex items-center gap-1.5">
+          <!-- 拼音开关 -->
+          <button id="btn-toggle-pinyin" onclick="togglePinyin()" 
+            class="flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold bg-rose-500 text-white shadow-sm active:scale-95 transition cursor-pointer border-2 border-rose-200">
+            <span>拼</span>
+            <span id="pinyin-status">拼音: 开</span>
+          </button>
 
-        <!-- 英文开关 -->
-        <button id="btn-toggle-english" onclick="toggleEnglish()" 
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-sky-500 text-white shadow-sm hover:bg-sky-600 active:scale-95 transition cursor-pointer border-2 border-sky-200">
-          <span>EN</span>
-          <span id="english-status">英文: 开</span>
-        </button>
-
-        <!-- 感恩小红心计数器 -->
-        <div class="flex items-center gap-1 bg-amber-100 border-2 border-amber-300 px-3 py-1 rounded-full shadow-inner">
-          <span class="text-base sm:text-lg animate-pulse">❤️</span>
-          <span id="heart-score" class="font-black text-amber-800 text-sm sm:text-base">0</span>
-          <span class="text-xs text-amber-700 font-bold">/ 26</span>
+          <!-- 英文开关 -->
+          <button id="btn-toggle-english" onclick="toggleEnglish()" 
+            class="flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold bg-sky-500 text-white shadow-sm active:scale-95 transition cursor-pointer border-2 border-sky-200">
+            <span>EN</span>
+            <span id="english-status">英文: 开</span>
+          </button>
         </div>
 
-        <!-- Franky Laoshi 顶部防伪徽章 -->
-        <div class="hidden md:flex items-center gap-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-200 px-3 py-1 rounded-xl shadow-xs">
-          <span class="text-sm">🛡️</span>
-          <div class="leading-none">
-            <div class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Original By</div>
-            <div class="text-xs font-black text-indigo-700">Franky Laoshi</div>
+        <div class="flex items-center gap-2">
+          <!-- 感恩小红心计数器 -->
+          <div class="flex items-center gap-1 bg-amber-100 border-2 border-amber-300 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-inner">
+            <span class="text-sm sm:text-lg animate-pulse">❤️</span>
+            <span id="heart-score" class="font-black text-amber-800 text-xs sm:text-base">0</span>
+            <span class="text-[11px] sm:text-xs text-amber-700 font-bold">/ 26</span>
+          </div>
+
+          <!-- Franky Laoshi 顶部防伪徽章 -->
+          <div class="hidden md:flex items-center gap-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-200 px-3 py-1 rounded-xl">
+            <span class="text-sm">🛡️</span>
+            <div class="leading-none">
+              <div class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Original By</div>
+              <div class="text-xs font-black text-indigo-700">Franky Laoshi</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 四大关卡切换标签栏 -->
-    <nav class="max-w-5xl mx-auto px-3 sm:px-6 pb-2.5 pt-1">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="level-tabs">
+    <nav class="max-w-5xl mx-auto px-3 sm:px-6 pb-2 sm:pb-2.5 pt-1">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2" id="level-tabs">
         <!-- JS 动态渲染 4 个关卡标签 -->
       </div>
     </nav>
   </header>
 
   <!-- 主游戏区域 -->
-  <main class="flex-grow max-w-4xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 flex flex-col gap-4">
+  <main class="flex-grow max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 sm:py-6 flex flex-col gap-3.5 sm:gap-4">
 
     <!-- 关卡进度条与证书入口 -->
-    <div class="bg-white/90 rounded-2xl p-3 sm:px-5 border-2 border-sky-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3 flex-grow">
-        <span id="level-badge" class="px-3 py-1 rounded-xl text-xs sm:text-sm font-black bg-sky-100 text-sky-700">
+    <div class="bg-white/90 rounded-2xl p-2.5 sm:px-5 sm:py-3 border-2 border-sky-200 shadow-sm flex items-center justify-between gap-2 sm:gap-3">
+      <div class="flex items-center gap-2 sm:gap-3 flex-grow min-w-0">
+        <span id="level-badge" class="px-2.5 sm:px-3 py-1 rounded-xl text-xs sm:text-sm font-black bg-sky-100 text-sky-700 shrink-0">
           第一关
         </span>
-        <div class="flex-grow max-w-xs">
-          <div class="flex justify-between text-xs font-bold text-slate-600 mb-1">
-            <span id="progress-label">第 1 / 10 题</span>
-            <span id="level-complete-count" class="text-emerald-600">已完成 0 题</span>
+        <div class="flex-grow max-w-xs min-w-0">
+          <div class="flex justify-between text-[11px] sm:text-xs font-bold text-slate-600 mb-1 gap-1">
+            <span id="progress-label" class="truncate">第 1 / 10 题</span>
+            <span id="level-complete-count" class="text-emerald-600 shrink-0">已完成 0 题</span>
           </div>
-          <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+          <div class="w-full h-2.5 sm:h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
             <div id="progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-300 rounded-full" style="width: 10%;"></div>
           </div>
         </div>
@@ -202,62 +240,62 @@
 
       <!-- 查看荣誉证书按钮 -->
       <button onclick="openCertificateModal()" 
-        class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs sm:text-sm shadow-sm active:scale-95 transition cursor-pointer">
+        class="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs sm:text-sm shadow-sm active:scale-95 transition cursor-pointer shrink-0">
         <span>🏆</span>
         <span>小记者证书</span>
       </button>
     </div>
 
     <!-- 采访情境卡片 (Prompt Card) -->
-    <section class="bg-white rounded-3xl p-4 sm:p-6 border-4 border-amber-200 shadow-md relative overflow-hidden">
+    <section class="bg-white rounded-3xl p-3.5 sm:p-6 border-4 border-amber-200 shadow-md relative overflow-hidden">
       <!-- 背景装饰云朵 -->
       <div class="absolute -right-6 -top-6 text-7xl opacity-10 pointer-events-none">🏘️</div>
 
-      <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+      <div class="flex flex-col sm:flex-row items-center gap-3.5 sm:gap-6">
         <!-- 左侧人物大头像框 -->
         <div class="relative flex-shrink-0">
-          <div id="character-avatar" class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-sky-100 to-emerald-100 border-4 border-white shadow-md flex items-center justify-center text-5xl sm:text-6xl animate-float">
+          <div id="character-avatar" class="w-20 h-20 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-sky-100 to-emerald-100 border-4 border-white shadow-md flex items-center justify-center text-4xl sm:text-6xl animate-float">
             👨‍🌾
           </div>
-          <span id="character-tag" class="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-500 text-white text-xs font-bold px-3 py-0.5 rounded-full shadow">
+          <span id="character-tag" class="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-500 text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-0.5 rounded-full shadow">
             园丁
           </span>
         </div>
 
         <!-- 右侧采访对话气泡与英文提示 -->
-        <div class="flex-grow text-center sm:text-left space-y-2 w-full">
+        <div class="flex-grow text-center sm:text-left space-y-2 w-full min-w-0">
           <!-- 提问气泡 -->
-          <div id="question-box" class="inline-block bg-sky-50 border-2 border-sky-200 rounded-2xl px-4 py-2 text-sky-900">
-            <div class="flex items-center justify-center sm:justify-start gap-2">
-              <span class="text-lg">🎤</span>
+          <div id="question-box" class="inline-block w-full sm:w-auto bg-sky-50 border-2 border-sky-200 rounded-2xl px-3.5 py-2 text-sky-900">
+            <div class="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+              <span class="text-base sm:text-lg">🎤</span>
               <span id="question-zh" class="font-bold text-base sm:text-lg hanzi-font">
                 <ruby>他<rt>tā</rt></ruby><ruby>是<rt>shì</rt></ruby><ruby>做<rt>zuò</rt></ruby><ruby>什<rt>shén</rt></ruby><ruby>么<rt>me</rt></ruby><ruby>工<rt>gōng</rt></ruby><ruby>作<rt>zuò</rt></ruby><ruby>的<rt>de</rt></ruby>？
               </span>
-              <button onclick="speakQuestion()" title="朗读问题" class="w-7 h-7 rounded-full bg-sky-200 hover:bg-sky-300 text-sky-800 flex items-center justify-center text-xs transition cursor-pointer">
+              <button onclick="speakQuestion()" title="朗读问题" class="w-7 h-7 rounded-full bg-sky-200 hover:bg-sky-300 active:scale-90 text-sky-800 flex items-center justify-center text-xs transition cursor-pointer shrink-0">
                 🔊
               </button>
             </div>
             <p id="question-en" class="en-text text-xs text-sky-600 font-medium mt-0.5">What job does he do?</p>
           </div>
 
-          <!-- 目标句意提示（帮助非母语学生理解要拼什么） -->
-          <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <!-- 目标句意提示 -->
+          <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-2.5 sm:p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div class="text-xs font-bold text-amber-700 uppercase tracking-wide flex items-center justify-center sm:justify-start gap-1">
                 <span>💡 请帮小记者写出回答：</span>
               </div>
-              <p id="target-en-hint" class="en-text text-sm sm:text-base font-bold text-slate-700 mt-0.5">
+              <p id="target-en-hint" class="en-text text-xs sm:text-base font-bold text-slate-700 mt-0.5">
                 "He is a gardener, he can plant flowers."
               </p>
-              <p id="target-zh-clue" class="text-xs text-slate-500 mt-0.5">
+              <p id="target-zh-clue" class="text-[11px] sm:text-xs text-slate-500 mt-0.5">
                 提示：点击下方词块按顺序连成一句话
               </p>
             </div>
 
-            <!-- 偷听标准答案读音按钮（辅助二年级学生） -->
+            <!-- 偷听标准答案读音按钮 -->
             <button onclick="speakTargetSentence()" 
-              class="self-center sm:self-auto flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-amber-100 text-amber-700 border-2 border-amber-300 font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer shrink-0">
-              <span class="text-base">🔈</span>
+              class="self-center sm:self-auto flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-white hover:bg-amber-100 text-amber-700 border-2 border-amber-300 font-bold text-xs shadow-sm active:scale-95 transition cursor-pointer shrink-0">
+              <span class="text-sm sm:text-base">🔈</span>
               <span>听句子提示</span>
             </button>
           </div>
@@ -266,14 +304,14 @@
     </section>
 
     <!-- 句子组装区 (Answer Drop Zone) -->
-    <section class="bg-white rounded-3xl p-4 sm:p-5 border-4 border-emerald-300 shadow-md">
-      <div class="flex items-center justify-between mb-2.5">
-        <span class="text-xs sm:text-sm font-black text-emerald-700 flex items-center gap-1.5">
+    <section class="bg-white rounded-3xl p-3.5 sm:p-5 border-4 border-emerald-300 shadow-md">
+      <div class="flex items-center justify-between gap-2 mb-2">
+        <span class="text-xs sm:text-sm font-black text-emerald-700 flex items-center gap-1.5 flex-wrap">
           <span>📝 我的采访笔记</span>
-          <span class="en-text font-medium text-emerald-600">(Click tiles below to build the sentence)</span>
+          <span class="en-text font-medium text-emerald-600 text-[11px] sm:text-xs">(Tap tiles below to build)</span>
         </span>
         <button onclick="resetCurrentQuestion()" 
-          class="text-xs font-bold text-slate-500 hover:text-rose-600 flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-rose-50 transition cursor-pointer">
+          class="text-xs font-bold text-slate-500 hover:text-rose-600 active:scale-95 flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-50 hover:bg-rose-50 transition cursor-pointer shrink-0">
           <span>🔄</span>
           <span>清空重拼</span>
         </button>
@@ -281,49 +319,49 @@
 
       <!-- 放置已选词块的容器 -->
       <div id="answer-area" 
-        class="min-h-[84px] sm:min-h-[96px] bg-emerald-50/70 border-2 border-dashed border-emerald-300 rounded-2xl p-3 flex flex-wrap items-center gap-2 sm:gap-2.5 transition-colors">
-        <span id="answer-placeholder" class="text-slate-400 text-sm font-medium mx-auto">
+        class="min-h-[78px] sm:min-h-[96px] bg-emerald-50/70 border-2 border-dashed border-emerald-300 rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center gap-2 sm:gap-2.5 transition-colors">
+        <span id="answer-placeholder" class="text-slate-400 text-xs sm:text-sm font-medium mx-auto text-center">
           👇 请点击下面的词语卡片，把它们排成正确的句子吧！
         </span>
       </div>
 
       <!-- 反馈提示横幅 -->
-      <div id="feedback-banner" class="hidden mt-3 rounded-2xl p-3 text-sm font-bold flex items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <span id="feedback-icon" class="text-xl">🎉</span>
+      <div id="feedback-banner" class="hidden mt-3 rounded-2xl p-3 text-xs sm:text-sm font-bold flex flex-col sm:flex-row items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2 text-center sm:text-left">
+          <span id="feedback-icon" class="text-xl shrink-0">🎉</span>
           <div>
             <div id="feedback-text">太棒了！句子完全正确！</div>
             <div id="feedback-subtext" class="en-text text-xs font-normal opacity-90">Great job! Sentence is correct!</div>
           </div>
         </div>
         <button id="btn-next-question" onclick="nextQuestion()" 
-          class="hidden px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm shadow active:scale-95 transition cursor-pointer shrink-0">
+          class="hidden w-full sm:w-auto px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm shadow active:scale-95 transition cursor-pointer shrink-0">
           下一题 ➡️
         </button>
       </div>
     </section>
 
     <!-- 词块选择池 (Word Bank) -->
-    <section class="bg-white/95 rounded-3xl p-4 sm:p-5 border-4 border-sky-200 shadow-md">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-xs sm:text-sm font-black text-sky-800 flex items-center gap-1.5">
+    <section class="bg-white/95 rounded-3xl p-3.5 sm:p-5 border-4 border-sky-200 shadow-md">
+      <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
+        <span class="text-xs sm:text-sm font-black text-sky-800 flex items-center gap-1.5 flex-wrap">
           <span>🧩 词语卡片池</span>
           <span id="distractor-badge" class="hidden bg-rose-100 text-rose-700 text-[11px] font-bold px-2 py-0.5 rounded-full border border-rose-200">
             ⚠️ 小心有干扰词哦！
           </span>
         </span>
-        <span class="text-xs text-slate-400 font-medium">点击卡片选中 / 再次点击退回</span>
+        <span class="text-[11px] sm:text-xs text-slate-400 font-medium">点击卡片选中 / 再点退回</span>
       </div>
 
       <!-- 词块按钮容器 -->
-      <div id="word-bank" class="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 min-h-[76px]">
+      <div id="word-bank" class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 min-h-[72px]">
         <!-- JS 动态渲染词块 -->
       </div>
 
       <!-- 底部主操作按钮 -->
-      <div class="mt-5 flex items-center justify-center gap-3">
+      <div class="mt-4 sm:mt-5 flex items-center justify-center gap-3">
         <button id="btn-check-answer" onclick="checkAnswer()" 
-          class="w-full sm:w-auto sm:min-w-[220px] py-3 px-8 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-black text-base sm:text-lg shadow-[0_5px_0_#047857] active:translate-y-1 active:shadow-[0_1px_0_#047857] transition cursor-pointer flex items-center justify-center gap-2">
+          class="w-full sm:w-auto sm:min-w-[230px] py-3 px-8 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-black text-base sm:text-lg shadow-[0_5px_0_#047857] active:translate-y-1 active:shadow-[0_1px_0_#047857] transition cursor-pointer flex items-center justify-center gap-2">
           <span>✅</span>
           <span>检查句子 (Check)</span>
         </button>
@@ -334,12 +372,12 @@
 
   <!-- 页脚与 Franky Laoshi 专属防伪水印 -->
   <footer class="bg-white/90 border-t-2 border-amber-200 py-3 px-4 mt-4">
-    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-      <div class="flex items-center gap-2">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 text-center sm:text-left">
+      <div class="flex items-center justify-center gap-2">
         <span>📚 教材同步：《欢乐伙伴 2A》第八课《感谢我周围的人》</span>
       </div>
       <!-- Franky Laoshi 印章 -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center justify-center gap-2 flex-wrap">
         <span class="franky-stamp bg-rose-50 text-rose-700 font-black px-3 py-1 rounded-lg text-xs tracking-wide">
           ★ Designed by Franky Laoshi ★
         </span>
@@ -349,30 +387,30 @@
   </footer>
 
   <!-- 通关小记者荣誉证书弹窗 -->
-  <div id="certificate-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-[#FFFDF5] max-w-lg w-full rounded-3xl border-8 border-double border-amber-400 p-6 sm:p-8 shadow-2xl relative animate-pop text-center">
+  <div id="certificate-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 glass-bar flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#FFFDF5] max-w-lg w-full max-h-[90dvh] overflow-y-auto rounded-3xl border-8 border-double border-amber-400 p-5 sm:p-8 shadow-2xl relative animate-pop text-center">
       <!-- 关闭按钮 -->
-      <button onclick="closeCertificateModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold flex items-center justify-center cursor-pointer">
+      <button onclick="closeCertificateModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-90 text-slate-600 font-bold flex items-center justify-center cursor-pointer">
         ✕
       </button>
 
-      <div class="text-4xl sm:text-5xl mb-2">🏅🎙️❤️</div>
-      <h2 class="text-2xl sm:text-3xl font-black text-amber-800 tracking-wide">社区小小记者证</h2>
-      <p class="text-xs font-bold text-amber-600 uppercase tracking-widest mt-0.5">Junior Community Reporter Certificate</p>
+      <div class="text-3xl sm:text-5xl mb-1.5">🏅🎙️❤️</div>
+      <h2 class="text-xl sm:text-3xl font-black text-amber-800 tracking-wide">社区小小记者证</h2>
+      <p class="text-[11px] sm:text-xs font-bold text-amber-600 uppercase tracking-widest mt-0.5">Junior Community Reporter Certificate</p>
 
       <!-- 输入学生姓名 -->
-      <div class="my-4 bg-amber-50/90 border-2 border-amber-200 rounded-2xl p-3">
+      <div class="my-3.5 bg-amber-50/90 border-2 border-amber-200 rounded-2xl p-3">
         <label class="block text-xs font-bold text-slate-500 mb-1">点击下方输入你的名字 (Enter Your Name)：</label>
         <input id="student-name-input" type="text" placeholder="例如：二年级甲班 卡雅" maxlength="20"
-          class="w-full text-center font-black text-lg sm:text-xl text-indigo-800 bg-white border-2 border-amber-300 rounded-xl py-1.5 px-3 focus:outline-none focus:border-indigo-500" />
+          class="w-full text-center font-black text-base sm:text-xl text-indigo-800 bg-white border-2 border-amber-300 rounded-xl py-1.5 px-3 focus:outline-none focus:border-indigo-500 select-text" />
       </div>
 
       <!-- 课本核心感恩金句 -->
-      <div class="bg-gradient-to-r from-rose-50 via-amber-50 to-emerald-50 border-2 border-rose-200 rounded-2xl p-4 my-3">
-        <p class="text-sm text-slate-600 font-medium mb-1">
-          你已经收集了 <span id="cert-heart-count" class="font-black text-rose-600 text-lg">0</span> / 26 颗感恩小红心！
+      <div class="bg-gradient-to-r from-rose-50 via-amber-50 to-emerald-50 border-2 border-rose-200 rounded-2xl p-3.5 my-3">
+        <p class="text-xs sm:text-sm text-slate-600 font-medium mb-1">
+          你已经收集了 <span id="cert-heart-count" class="font-black text-rose-600 text-base sm:text-lg">0</span> / 26 颗感恩小红心！
         </p>
-        <p class="hanzi-font text-lg sm:text-xl font-black text-rose-700 leading-relaxed mt-2">
+        <p class="hanzi-font text-base sm:text-xl font-black text-rose-700 leading-relaxed mt-2">
           “<ruby>谢<rt>xiè</rt></ruby><ruby>谢<rt>xie</rt></ruby><ruby>您<rt>nín</rt></ruby>！<ruby>因<rt>yīn</rt></ruby><ruby>为<rt>wèi</rt></ruby><ruby>有<rt>yǒu</rt></ruby><ruby>您<rt>nín</rt></ruby>，<ruby>世<rt>shì</rt></ruby><ruby>界<rt>jiè</rt></ruby><ruby>更<rt>gèng</rt></ruby><ruby>美<rt>měi</rt></ruby><ruby>丽<rt>lì</rt></ruby>！”
         </p>
         <p class="en-text text-xs text-slate-500 italic mt-1">
@@ -381,14 +419,14 @@
       </div>
 
       <!-- Franky Laoshi 官方认证红章 -->
-      <div class="mt-5 flex items-center justify-between px-2 pt-2 border-t border-amber-200">
-        <div class="text-left text-xs text-slate-500">
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-2 px-1 pt-2 border-t border-amber-200">
+        <div class="text-left text-[11px] sm:text-xs text-slate-500">
           <div>课程：《欢乐伙伴 2A》第八课</div>
           <div id="cert-date">日期：2026年</div>
         </div>
-        <div class="franky-stamp bg-rose-50/90 px-3.5 py-1.5 rounded-xl text-center">
-          <div class="text-[10px] font-bold text-rose-500 uppercase">Verified & Designed By</div>
-          <div class="text-sm font-black text-rose-700">Franky Laoshi</div>
+        <div class="franky-stamp bg-rose-50/90 px-3 py-1.5 rounded-xl text-center">
+          <div class="text-[9px] sm:text-[10px] font-bold text-rose-500 uppercase">Verified & Designed By</div>
+          <div class="text-xs sm:text-sm font-black text-rose-700">Franky Laoshi</div>
         </div>
       </div>
     </div>
@@ -923,20 +961,26 @@
       currentQuestionIdx: 0,
       showPinyin: true,
       showEnglish: true,
-      completedSet: new Set(), // 记录 "levelIdx-questionIdx"
-      bankTiles: [],           // 当前词池数组 { id, text, py, used }
-      selectedTileIds: [],     // 用户按顺序选中的词块 ID
+      completedSet: new Set(),
+      bankTiles: [],
+      selectedTileIds: [],
       isQuestionSolved: false
     };
 
     // ============================================================================
-    // 音效与语音朗读系统 (Web Audio API & Web Speech API)
+    // 音效与语音朗读系统 (兼容 iOS / Android / 桌面端)
     // ============================================================================
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let audioCtx = null;
 
     function playTone(freq, type, duration, delay = 0) {
       try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) audioCtx = new AudioContextClass();
+        }
+        if (!audioCtx) return;
         if (audioCtx.state === 'suspended') audioCtx.resume();
+
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = type;
@@ -948,7 +992,7 @@
         osc.start(audioCtx.currentTime + delay);
         osc.stop(audioCtx.currentTime + delay + duration);
       } catch (e) {
-        // 忽略音频自动播放限制报错
+        // 忽略音频限制报错
       }
     }
 
@@ -957,10 +1001,10 @@
     }
 
     function playSuccessSound() {
-      playTone(523.25, 'triangle', 0.15, 0);     // C5
-      playTone(659.25, 'triangle', 0.15, 0.1);   // E5
-      playTone(783.99, 'triangle', 0.25, 0.2);   // G5
-      playTone(1046.50, 'triangle', 0.4, 0.32);  // C6
+      playTone(523.25, 'triangle', 0.15, 0);
+      playTone(659.25, 'triangle', 0.15, 0.1);
+      playTone(783.99, 'triangle', 0.25, 0.2);
+      playTone(1046.50, 'triangle', 0.4, 0.32);
     }
 
     function playErrorSound() {
@@ -970,12 +1014,29 @@
 
     function speakChinese(text) {
       if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'zh-CN';
-      utter.rate = 0.88; // 适合二年级学生的清晰语速
-      utter.pitch = 1.05;
-      window.speechSynthesis.speak(utter);
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'zh-CN';
+        utter.rate = 0.88;
+        utter.pitch = 1.05;
+
+        const voices = window.speechSynthesis.getVoices();
+        const zhVoice = voices.find(v => v.lang.includes('zh-CN') || v.lang.includes('zh'));
+        if (zhVoice) {
+          utter.voice = zhVoice;
+        }
+
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        console.warn('Speech synthesis unavailable:', e);
+      }
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
     }
 
     function speakQuestion() {
@@ -994,8 +1055,7 @@
     // ============================================================================
     function buildRubyHTML(text, py) {
       if (!py) {
-        // 标点符号
-        return `<span class="hanzi-font text-xl sm:text-2xl font-black">${text}</span>`;
+        return `<span class="hanzi-font text-lg sm:text-2xl font-black">${text}</span>`;
       }
       const chars = Array.from(text);
       const syllables = py.trim().split(/\s+/);
@@ -1072,19 +1132,19 @@
 
         return `
           <button onclick="selectLevel(${idx})"
-            class="flex items-center justify-between px-3 py-2 rounded-2xl border-2 text-left transition cursor-pointer ${
+            class="flex items-center justify-between px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-2xl border-2 text-left transition cursor-pointer ${
               isActive 
                 ? 'bg-amber-400 border-amber-500 text-slate-900 shadow-sm font-black scale-[1.01]' 
                 : 'bg-slate-50 hover:bg-amber-50 border-slate-200 text-slate-600 font-bold'
             }">
-            <div class="flex items-center gap-2 min-w-0">
-              <span class="text-lg sm:text-xl">${lvl.icon}</span>
+            <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <span class="text-base sm:text-xl shrink-0">${lvl.icon}</span>
               <div class="truncate">
                 <div class="text-xs sm:text-sm leading-tight truncate">${lvl.title}</div>
                 <div class="en-text text-[10px] opacity-80 truncate">${lvl.subtitle}</div>
               </div>
             </div>
-            <span class="ml-1 text-[11px] px-1.5 py-0.5 rounded-full shrink-0 ${
+            <span class="ml-1 text-[10px] sm:text-[11px] px-1.5 py-0.5 rounded-full shrink-0 ${
               isAllDone ? 'bg-emerald-500 text-white' : 'bg-white/80 text-slate-700'
             }">
               ${isAllDone ? '★' : `${solvedInLvl}/${totalInLvl}`}
@@ -1109,7 +1169,6 @@
       state.isQuestionSolved = state.completedSet.has(key);
       state.selectedTileIds = [];
 
-      // 构建词块池（包含正确词块 + 干扰词块）
       let rawTiles = q.tokens.map((t, i) => ({
         id: `t-${i}`,
         text: t.text,
@@ -1129,30 +1188,26 @@
         });
       }
 
-      // 打乱顺序，避免和原句完全一致
       let shuffled = shuffleArray(rawTiles);
       if (shuffled.map(x => x.text).join('') === q.tokens.map(x => x.text).join('')) {
         shuffled.reverse();
       }
       state.bankTiles = shuffled;
 
-      // 更新顶部标签与进度条
       renderLevelTabs();
       document.getElementById('level-badge').textContent = `${lvl.badge} · ${lvl.title}`;
       document.getElementById('progress-label').textContent = `第 ${state.currentQuestionIdx + 1} / ${lvl.questions.length} 题`;
       const solvedInLvl = lvl.questions.filter((_, idx) => state.completedSet.has(`${state.currentLevelIdx}-${idx}`)).length;
-      document.getElementById('level-complete-count').textContent = `本关已完成 ${solvedInLvl} 题`;
+      document.getElementById('level-complete-count').textContent = `已完成 ${solvedInLvl} 题`;
       document.getElementById('progress-bar').style.width = `${((state.currentQuestionIdx + 1) / lvl.questions.length) * 100}%`;
       document.getElementById('heart-score').textContent = state.completedSet.size;
 
-      // 更新人物与提问卡片
       document.getElementById('character-avatar').textContent = q.avatar;
       document.getElementById('character-tag').textContent = q.tag;
       document.getElementById('question-zh').innerHTML = q.qZh;
       document.getElementById('question-en').textContent = q.qEn;
       document.getElementById('target-en-hint').textContent = `"${q.enHint}"`;
 
-      // 干扰词提醒徽章
       const distBadge = document.getElementById('distractor-badge');
       if (hasDistractors) {
         distBadge.classList.remove('hidden');
@@ -1160,7 +1215,6 @@
         distBadge.classList.add('hidden');
       }
 
-      // 重置反馈横幅
       const banner = document.getElementById('feedback-banner');
       banner.classList.add('hidden');
       document.getElementById('btn-next-question').classList.add('hidden');
@@ -1172,10 +1226,9 @@
       const answerArea = document.getElementById('answer-area');
       const wordBank = document.getElementById('word-bank');
 
-      // 1. 渲染已选答案区
       if (state.selectedTileIds.length === 0) {
         answerArea.innerHTML = `
-          <span class="text-slate-400 text-sm font-medium mx-auto">
+          <span class="text-slate-400 text-xs sm:text-sm font-medium mx-auto text-center">
             👇 请点击下面的词语卡片，把它们排成正确的句子吧！
           </span>
         `;
@@ -1185,7 +1238,7 @@
           const isErrorPos = posIdx === highlightErrorIndex;
           return `
             <button onclick="deselectTile('${tile.id}')"
-              class="answer-tile px-3.5 py-2 rounded-2xl border-2 font-bold hanzi-font text-lg sm:text-xl cursor-pointer ${
+              class="answer-tile px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl border-2 font-bold hanzi-font text-base sm:text-xl cursor-pointer ${
                 isErrorPos 
                   ? 'bg-rose-100 border-rose-500 text-rose-800 animate-shake' 
                   : 'bg-amber-100 border-amber-400 text-slate-800'
@@ -1196,12 +1249,11 @@
         }).join('');
       }
 
-      // 2. 渲染词块选择池
       wordBank.innerHTML = state.bankTiles.map(tile => {
         const isUsed = state.selectedTileIds.includes(tile.id);
         return `
           <button onclick="selectTile('${tile.id}')" ${isUsed ? 'disabled' : ''}
-            class="word-tile px-4 py-2.5 rounded-2xl border-2 font-bold hanzi-font text-lg sm:text-xl ${
+            class="word-tile px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl border-2 font-bold hanzi-font text-base sm:text-xl ${
               isUsed 
                 ? 'bg-slate-100 border-slate-200 text-slate-300 opacity-40 cursor-not-allowed shadow-none' 
                 : 'bg-white border-sky-300 text-slate-800 hover:border-amber-400 cursor-pointer'
@@ -1242,10 +1294,6 @@
       const targetTokens = q.tokens;
       const userTiles = state.selectedTileIds.map(id => state.bankTiles.find(t => t.id === id));
 
-      const banner = document.getElementById('feedback-banner');
-      const icon = document.getElementById('feedback-icon');
-      const text = document.getElementById('feedback-text');
-      const subtext = document.getElementById('feedback-subtext');
       const nextBtn = document.getElementById('btn-next-question');
 
       if (userTiles.length === 0) {
@@ -1254,7 +1302,6 @@
         return;
       }
 
-      // 逐位比对，找出第一个出错的位置，对二年级学生友好提示
       let firstErrorIdx = -1;
       const minLen = Math.min(userTiles.length, targetTokens.length);
       for (let i = 0; i < minLen; i++) {
@@ -1264,27 +1311,24 @@
         }
       }
 
-      // 1. 发现某一位词块不对（或误选了干扰词）
       if (firstErrorIdx !== -1) {
         const wrongTile = userTiles[firstErrorIdx];
         renderTiles(firstErrorIdx);
         playErrorSound();
         if (wrongTile.isDistractor) {
-          showBanner('error', '🧐', `哎呀！“${wrongTile.text}”是干扰词，这里用不到它哦！`, `"${wrongTile.text}" is a distractor word. Click it to remove!`);
+          showBanner('error', '🧐', `哎呀！“${wrongTile.text}”是干扰词，这里用不到它哦！`, `"${wrongTile.text}" is a distractor word. Tap it to remove!`);
         } else {
-          showBanner('error', '💡', `第 ${firstErrorIdx + 1} 个词“${wrongTile.text}”的位置不对，点它退回再试试！`, `Check word #${firstErrorIdx + 1} ("${wrongTile.text}"). Click to remove and try again!`);
+          showBanner('error', '💡', `第 ${firstErrorIdx + 1} 个词“${wrongTile.text}”的位置不对，点它退回再试试！`, `Check word #${firstErrorIdx + 1} ("${wrongTile.text}"). Tap to remove and try again!`);
         }
         return;
       }
 
-      // 2. 前面都对，但句子还没拼完整
       if (userTiles.length < targetTokens.length) {
         playErrorSound();
         showBanner('warning', '🧩', '前面都对啦，但是句子还没拼完哦（别忘了标点符号）！', 'Good start! Keep adding the remaining tiles (and punctuation).');
         return;
       }
 
-      // 3. 完全正确！
       const key = `${state.currentLevelIdx}-${state.currentQuestionIdx}`;
       const isFirstTimeSolved = !state.completedSet.has(key);
       state.completedSet.add(key);
@@ -1293,7 +1337,7 @@
       document.getElementById('heart-score').textContent = state.completedSet.size;
       const lvl = getCurrentLevel();
       const solvedInLvl = lvl.questions.filter((_, idx) => state.completedSet.has(`${state.currentLevelIdx}-${idx}`)).length;
-      document.getElementById('level-complete-count').textContent = `本关已完成 ${solvedInLvl} 题`;
+      document.getElementById('level-complete-count').textContent = `已完成 ${solvedInLvl} 题`;
       renderLevelTabs();
 
       playSuccessSound();
@@ -1313,7 +1357,7 @@
 
     function showBanner(type, emoji, mainMsg, subMsg) {
       const banner = document.getElementById('feedback-banner');
-      banner.className = 'mt-3 rounded-2xl p-3 text-sm font-bold flex items-center justify-between gap-2 animate-pop';
+      banner.className = 'mt-3 rounded-2xl p-3 text-xs sm:text-sm font-bold flex flex-col sm:flex-row items-center justify-between gap-2.5 animate-pop';
       if (type === 'success') {
         banner.classList.add('bg-emerald-100', 'text-emerald-900', 'border-2', 'border-emerald-400');
       } else if (type === 'error') {
@@ -1332,12 +1376,10 @@
         state.currentQuestionIdx++;
         loadQuestion();
       } else if (state.currentLevelIdx < GAME_LEVELS.length - 1) {
-        // 自动进入下一关
         state.currentLevelIdx++;
         state.currentQuestionIdx = 0;
         loadQuestion();
       } else {
-        // 全部关卡完成，弹出小记者证书！
         openCertificateModal();
       }
       playClickSound();
@@ -1387,7 +1429,7 @@
         particles.forEach(p => {
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.45; // 重力
+          p.vy += 0.45;
           p.rotation += p.vRot;
 
           ctx.save();
@@ -1407,7 +1449,6 @@
       animate();
     }
 
-    // 页面初始化
     window.onload = function () {
       loadQuestion();
     };
