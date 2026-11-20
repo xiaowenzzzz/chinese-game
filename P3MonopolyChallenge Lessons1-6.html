@@ -28,17 +28,17 @@
       --radius-sm: 12px;
 
       /* 六大课文主题色 */
-      --l1-color: #ff6b6b; /* 第一课：美丽的愿望 - 珊瑚红 */
+      --l1-color: #ff6b6b;
       --l1-bg: #fff0f0;
-      --l2-color: #ff9f43; /* 第二课：我的朋友和家人 - 暖阳橙 */
+      --l2-color: #ff9f43;
       --l2-bg: #fff6eb;
-      --l3-color: #0abde3; /* 第三课：我的好伙伴 - 海洋蓝 */
+      --l3-color: #0abde3;
       --l3-bg: #eaf9ff;
-      --l4-color: #10ac84; /* 第四课：奇妙的变化 - 翠叶绿 */
+      --l4-color: #10ac84;
       --l4-bg: #e8fbf4;
-      --l5-color: #7c4dff; /* 第五课：难忘的一天 - 梦幻紫 */
+      --l5-color: #7c4dff;
       --l5-bg: #f3eeff;
-      --l6-color: #f368e0; /* 第六课：是我不好 - 蔷薇粉 */
+      --l6-color: #f368e0;
       --l6-bg: #fff0fb;
     }
 
@@ -60,7 +60,7 @@
     }
 
     /* ==========================================================================
-       2. Franky老师 专属全屏防伪水印层 (Anti-Counterfeiting Watermark)
+       2. Franky老师 专属全屏防伪水印层
        ========================================================================== */
     .watermark-overlay {
       position: fixed;
@@ -73,7 +73,6 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='220' viewBox='0 0 320 220'%3E%3Cg transform='rotate(-22 160 110)'%3E%3Ctext x='20' y='85' font-family='sans-serif' font-size='20' font-weight='900' fill='%230f172a'%3E★ Franky老师 专属设计%3C/text%3E%3Ctext x='45' y='115' font-family='sans-serif' font-size='14' font-weight='700' fill='%230f172a'%3E《欢乐伙伴3A》第1-6课%3C/text%3E%3C/g%3E%3C/svg%3E");
     }
 
-    /* 模态框内部防伪角标 */
     .modal-watermark-stamp {
       position: absolute;
       bottom: 12px;
@@ -91,7 +90,7 @@
     }
 
     /* ==========================================================================
-       3. 顶部导航与 Franky老师 专属徽章 (Header & Branding)
+       3. 顶部导航与徽章
        ========================================================================== */
     .app-header {
       background: rgba(255, 255, 255, 0.92);
@@ -154,7 +153,6 @@
       font-weight: 600;
     }
 
-    /* 醒目的 Franky老师 防伪荣誉徽章 */
     .franky-badge {
       display: inline-flex;
       align-items: center;
@@ -211,7 +209,7 @@
     }
 
     /* ==========================================================================
-       4. 主布局容器：桌面端左右分栏，平板/手机端上下自适应
+       4. 主布局容器
        ========================================================================== */
     .main-container {
       max-width: 1440px;
@@ -257,7 +255,6 @@
       position: relative;
     }
 
-    /* 单个棋盘格子 */
     .board-tile {
       background: #ffffff;
       border-radius: clamp(8px, 1.3vw, 14px);
@@ -291,7 +288,6 @@
       50% { transform: scale(1.08); }
     }
 
-    /* 格子顶部课文色条 */
     .tile-header-bar {
       width: 100%;
       font-size: clamp(0.55rem, 0.95vw, 0.72rem);
@@ -304,6 +300,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       line-height: 1.25;
+      pointer-events: none;
     }
 
     .tile-num {
@@ -313,12 +310,14 @@
       font-size: clamp(0.5rem, 0.8vw, 0.65rem);
       font-weight: 800;
       opacity: 0.55;
+      pointer-events: none;
     }
 
     .tile-icon {
       font-size: clamp(1.05rem, 2.3vw, 1.75rem);
       line-height: 1.1;
       margin: 1px 0;
+      pointer-events: none;
     }
 
     .tile-name {
@@ -331,9 +330,9 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      pointer-events: none;
     }
 
-    /* 领地占领标志 */
     .owner-flag {
       position: absolute;
       bottom: 2px;
@@ -345,9 +344,9 @@
       font-weight: 800;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       z-index: 3;
+      pointer-events: none;
     }
 
-    /* 格子上的小组棋子容器 */
     .tile-pawns {
       position: absolute;
       inset: 0;
@@ -386,7 +385,7 @@
     }
 
     /* ==========================================================================
-       6. 棋盘中央控制岛 (5x5 Central Island Dashboard)
+       6. 棋盘中央控制岛
        ========================================================================== */
     .center-island {
       grid-column: 2 / 7;
@@ -441,7 +440,6 @@
       gap: 6px;
     }
 
-    /* 3D 动感骰子 */
     .dice-stage {
       display: flex;
       flex-direction: column;
@@ -484,6 +482,7 @@
       border-radius: 50%;
       background: transparent;
       margin: auto;
+      pointer-events: none;
     }
 
     .pip.active {
@@ -540,7 +539,7 @@
     }
 
     /* ==========================================================================
-       7. 右侧/下方 小组计分板与教师控制台 (Scoreboard & Controls)
+       7. 右侧/下方 小组计分板与教师控制台
        ========================================================================== */
     .sidebar-panel {
       display: flex;
@@ -726,7 +725,6 @@
       color: #b91c1c;
     }
 
-    /* 六课图例卡片 */
     .lesson-legend-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -752,7 +750,7 @@
     }
 
     /* ==========================================================================
-       8. 弹窗系统 (Question Modal, Chance Card Modal, Setup Modal, Podium)
+       8. 弹窗系统
        ========================================================================== */
     .modal-backdrop {
       position: fixed;
@@ -868,7 +866,6 @@
       margin-bottom: 16px;
     }
 
-    /* 选择题选项 */
     .options-list {
       display: grid;
       grid-template-columns: 1fr;
@@ -911,6 +908,7 @@
       justify-content: center;
       font-weight: 900;
       flex-shrink: 0;
+      pointer-events: none;
     }
 
     .option-btn.correct {
@@ -935,7 +933,6 @@
       color: #ffffff;
     }
 
-    /* 句序排一排交互区 */
     .order-answer-box {
       min-height: 64px;
       background: #fffbeb;
@@ -979,9 +976,14 @@
       transition: all 0.15s ease;
     }
 
-    .order-chip:hover {
+    .order-chip:hover:not(:disabled) {
       border-color: #0284c7;
       background: #f0f9ff;
+    }
+
+    .order-chip:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
     }
 
     .order-chip.selected {
@@ -990,7 +992,6 @@
       color: #1e3a8a;
     }
 
-    /* 反馈解析框 */
     .feedback-box {
       padding: 14px 16px;
       border-radius: 16px;
@@ -1047,13 +1048,18 @@
       transition: transform 0.14s ease, filter 0.14s ease;
     }
 
-    .btn-action:hover {
+    .btn-action:hover:not(:disabled) {
       filter: brightness(1.05);
       transform: translateY(-1px);
     }
 
-    .btn-action:active {
+    .btn-action:active:not(:disabled) {
       transform: scale(0.97);
+    }
+
+    .btn-action:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
     }
 
     .btn-primary {
@@ -1077,7 +1083,6 @@
       border: 2px solid #cbd5e1;
     }
 
-    /* Toast 轻量提示消息（替代 alert） */
     .toast-container {
       position: fixed;
       top: 76px;
@@ -1106,7 +1111,6 @@
       animation: popUp 0.25s ease;
     }
 
-    /* 底部版权声明 */
     .app-footer {
       text-align: center;
       padding: 18px 14px 28px;
@@ -1117,7 +1121,6 @@
       z-index: 10;
     }
 
-    /* 手机端细节优化 */
     @media (max-width: 600px) {
       .tile-header-bar {
         font-size: 0.5rem;
@@ -1158,7 +1161,6 @@
             <div class="game-subtitle">新加坡小学三年级《欢乐伙伴3A》第1—6课小组竞赛</div>
           </div>
         </div>
-        <!-- 醒目的 Franky老师 防伪荣誉徽章 -->
         <div class="franky-badge" title="本互动教学网页由 Franky老师 原创设计">
           <span>👑</span>
           <span>Franky老师 专属互动课堂</span>
@@ -1188,16 +1190,11 @@
 
   <!-- 主游戏区域 -->
   <main class="main-container">
-    <!-- 左侧：7x7 大富翁探索岛棋盘 -->
     <section class="board-wrapper" aria-label="欢乐探索岛大富翁棋盘">
-      <div id="monopolyBoard" class="monopoly-board">
-        <!-- 棋盘 24 个格子与中央岛屿将由 JS 动态渲染 -->
-      </div>
+      <div id="monopolyBoard" class="monopoly-board"></div>
     </section>
 
-    <!-- 右侧/下方：小组积分榜与教师控制台 -->
     <aside class="sidebar-panel">
-      <!-- 小组计分卡 -->
       <div class="panel-card">
         <div class="panel-header">
           <div class="panel-title">
@@ -1209,12 +1206,9 @@
             <span>幸运抽组</span>
           </button>
         </div>
-        <div id="teamGrid" class="team-grid">
-          <!-- 各小组卡片由 JS 动态渲染 -->
-        </div>
+        <div id="teamGrid" class="team-grid"></div>
       </div>
 
-      <!-- 六大主题岛屿图例 -->
       <div class="panel-card">
         <div class="panel-header" style="margin-bottom:8px;">
           <div class="panel-title">
@@ -1253,14 +1247,11 @@
     </aside>
   </main>
 
-  <!-- 底部版权防伪声明 -->
   <footer class="app-footer">
     设计制作：<strong>Franky老师</strong> ｜ 新加坡小学三年级华文《欢乐伙伴3A》第1—6课互动复习竞赛
   </footer>
 
-  <!-- ========================================================================
-       弹窗 1：课文挑战题卡弹窗 (Question Modal)
-       ======================================================================== -->
+  <!-- 弹窗 1：课文挑战题卡弹窗 -->
   <div id="questionModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card">
       <div class="modal-watermark-stamp">© Franky老师 · 欢乐伙伴3A</div>
@@ -1280,13 +1271,13 @@
       <div id="qTypeTag" class="question-type-tag">智慧选择题</div>
       <div id="qPromptText" class="question-prompt">题目加载中...</div>
 
-      <!-- 题型容器 A：选择题 -->
+      <!-- 题型 A：选择题 -->
       <div id="mcContainer" class="options-list"></div>
 
-      <!-- 题型容器 B：句序排一排 -->
+      <!-- 题型 B：句序排一排 -->
       <div id="orderContainer" style="display:none;">
         <div style="font-size:0.85rem; font-weight:800; color:#475569; margin-bottom:6px;">
-          👇 请按正确顺序依次点击下方句子卡片：
+          👇 请按正确顺序依次点击下方句子卡片（点击上方已选句子可撤回）：
         </div>
         <div id="orderSelectedBox" class="order-answer-box">
           <div class="order-placeholder">点击下方句子，它们会按顺序排到这里哦！</div>
@@ -1302,7 +1293,7 @@
         </div>
       </div>
 
-      <!-- 题型容器 C：口语小达人（教师点评） -->
+      <!-- 题型 C：口语小达人 -->
       <div id="oralContainer" style="display:none; margin-bottom:14px;">
         <div style="margin-bottom:12px;">
           <button id="btnToggleHint" class="btn-action btn-secondary" type="button" style="min-height:38px; padding:6px 14px; font-size:0.86rem;">
@@ -1326,7 +1317,7 @@
         </div>
       </div>
 
-      <!-- 答题结果解析反馈区 -->
+      <!-- 答题结果反馈区 -->
       <div id="qFeedbackBox" class="feedback-box"></div>
 
       <!-- 底部操作按钮 -->
@@ -1338,9 +1329,7 @@
     </div>
   </div>
 
-  <!-- ========================================================================
-       弹窗 2：特殊格子 / 机会宝藏卡弹窗 (Event & Chance Modal)
-       ======================================================================== -->
+  <!-- 弹窗 2：特殊格子 / 机会宝藏卡弹窗 -->
   <div id="eventModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card" style="max-width:520px; text-align:center;">
       <div class="modal-watermark-stamp">© Franky老师 · 欢乐伙伴3A</div>
@@ -1359,9 +1348,7 @@
     </div>
   </div>
 
-  <!-- ========================================================================
-       弹窗 3：小组设置弹窗 (Team Setup Modal)
-       ======================================================================== -->
+  <!-- 弹窗 3：小组设置弹窗 -->
   <div id="setupModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card" style="max-width:560px;">
       <div class="modal-watermark-stamp">© Franky老师 · 欢乐伙伴3A</div>
@@ -1389,9 +1376,7 @@
     </div>
   </div>
 
-  <!-- ========================================================================
-       弹窗 4：玩法规则说明弹窗 (Rules Modal)
-       ======================================================================== -->
+  <!-- 弹窗 4：玩法规则说明弹窗 -->
   <div id="rulesModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card" style="max-width:600px;">
       <div class="modal-watermark-stamp">© Franky老师 · 欢乐伙伴3A</div>
@@ -1416,9 +1401,7 @@
     </div>
   </div>
 
-  <!-- ========================================================================
-       弹窗 5：最终冠军颁奖台弹窗 (Podium Modal)
-       ======================================================================== -->
+  <!-- 弹窗 5：最终冠军颁奖台弹窗 -->
   <div id="podiumModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card" style="max-width:600px; text-align:center;">
       <div class="modal-watermark-stamp">© Franky老师 · 欢乐伙伴3A</div>
@@ -1439,1298 +1422,1333 @@
   </div>
 
   <script>
-    /* ==========================================================================
-       模块一：Web Audio API 合成趣味音效引擎（零外部音频依赖）
-       ========================================================================== */
-    class SoundEngine {
-      constructor() {
-        this.enabled = true;
-        this.ctx = null;
-      }
+    document.addEventListener("DOMContentLoaded", () => {
+      /* ==========================================================================
+         模块一：Web Audio API 合成趣味音效引擎
+         ========================================================================== */
+      class SoundEngine {
+        constructor() {
+          this.enabled = true;
+          this.ctx = null;
+        }
 
-      init() {
-        if (!this.ctx) {
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (AudioCtx) {
-            this.ctx = new AudioCtx();
+        init() {
+          if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+              this.ctx = new AudioCtx();
+            }
+          }
+          if (this.ctx && this.ctx.state === "suspended") {
+            this.ctx.resume().catch(() => {});
           }
         }
-        if (this.ctx && this.ctx.state === "suspended") {
-          this.ctx.resume();
+
+        playTone(freq, type = "sine", duration = 0.15, gainVal = 0.15, delay = 0) {
+          if (!this.enabled) return;
+          try {
+            this.init();
+            if (!this.ctx) return;
+
+            const now = this.ctx.currentTime + delay;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, now);
+
+            gain.gain.setValueAtTime(gainVal, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + duration);
+          } catch (e) {
+            // 忽略浏览器音频自动播放策略限制
+          }
         }
-      }
 
-      playTone(freq, type = "sine", duration = 0.15, gainVal = 0.15, delay = 0) {
-        if (!this.enabled) return;
-        this.init();
-        if (!this.ctx) return;
+        diceTick() {
+          this.playTone(320 + Math.random() * 180, "triangle", 0.06, 0.12);
+        }
 
-        const now = this.ctx.currentTime + delay;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, now);
+        hop(step = 0) {
+          const base = 380 + (step % 6) * 45;
+          this.playTone(base, "sine", 0.12, 0.16);
+        }
 
-        gain.gain.setValueAtTime(gainVal, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        correct() {
+          this.playTone(523.25, "sine", 0.14, 0.18, 0);
+          this.playTone(659.25, "sine", 0.14, 0.18, 0.1);
+          this.playTone(783.99, "sine", 0.16, 0.18, 0.2);
+          this.playTone(1046.5, "triangle", 0.35, 0.2, 0.3);
+        }
 
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + duration);
-      }
+        wrong() {
+          this.playTone(330, "triangle", 0.22, 0.15, 0);
+          this.playTone(261.63, "triangle", 0.32, 0.15, 0.18);
+        }
 
-      diceTick() {
-        this.playTone(320 + Math.random() * 180, "triangle", 0.06, 0.12);
-      }
-
-      hop(step = 0) {
-        const base = 380 + (step % 6) * 45;
-        this.playTone(base, "sine", 0.12, 0.16);
-      }
-
-      correct() {
-        this.playTone(523.25, "sine", 0.14, 0.18, 0);     // C5
-        this.playTone(659.25, "sine", 0.14, 0.18, 0.1);   // E5
-        this.playTone(783.99, "sine", 0.16, 0.18, 0.2);   // G5
-        this.playTone(1046.5, "triangle", 0.35, 0.2, 0.3); // C6
-      }
-
-      wrong() {
-        this.playTone(330, "triangle", 0.22, 0.15, 0);
-        this.playTone(261.63, "triangle", 0.32, 0.15, 0.18);
-      }
-
-      powerup() {
-        [440, 554, 659, 880].forEach((f, idx) => {
-          this.playTone(f, "sine", 0.15, 0.15, idx * 0.07);
-        });
-      }
-
-      fanfare() {
-        const notes = [523.25, 523.25, 523.25, 659.25, 783.99, 659.25, 1046.5];
-        const times = [0, 0.14, 0.28, 0.42, 0.62, 0.82, 1.02];
-        notes.forEach((f, i) => {
-          this.playTone(f, "triangle", 0.26, 0.2, times[i]);
-        });
-      }
-    }
-
-    const sfx = new SoundEngine();
-
-    /* ==========================================================================
-       模块二：新加坡小学三年级《欢乐伙伴3A》第1—6课严格不超纲题库（30题）
-       ========================================================================== */
-    const LESSON_META = {
-      1: { title: "第1课《美丽的愿望》", short: "第1课 愿望", color: "var(--l1-color)", bg: "var(--l1-bg)", icon: "🌟" },
-      2: { title: "第2课《我的朋友和家人》", short: "第2课 亲友", color: "var(--l2-color)", bg: "var(--l2-bg)", icon: "👨‍👩‍👧‍👦" },
-      3: { title: "第3课《我的好伙伴》", short: "第3课 伙伴", color: "var(--l3-color)", bg: "var(--l3-bg)", icon: "💧" },
-      4: { title: "第4课《奇妙的变化》", short: "第4课 变化", color: "var(--l4-color)", bg: "var(--l4-bg)", icon: "🐸" },
-      5: { title: "第5课《难忘的一天》", short: "第5课 难忘", color: "var(--l5-color)", bg: "var(--l5-bg)", icon: "🎢" },
-      6: { title: "第6课《是我不好》", short: "第6课 道歉", color: "var(--l6-color)", bg: "var(--l6-bg)", icon: "🤝" }
-    };
-
-    const QUESTION_BANK = [
-      /* -------------------- 第一课《美丽的愿望》 (5题) -------------------- */
-      {
-        id: "L1_1", lesson: 1, type: "mc",
-        prompt: "【职业谜语人】身穿白大褂，每天在医院里细心照顾病人、救死扶伤。请问这段话描写的是哪一种职业？",
-        options: ["消防员", "医生和护士", "建筑工人", "巴士司机"],
-        answer: 1,
-        explanation: "医生和护士在医院里工作，他们细心治疗和照顾病人，帮助病人恢复健康。"
-      },
-      {
-        id: "L1_2", lesson: 1, type: "mc",
-        prompt: "选词填空：小明的愿望是长大后当一名消防员，他知道（　　）天天坚持锻炼身体，（　　）能拥有强壮的体魄去保护大家。",
-        options: ["虽然……但是……", "因为……所以……", "只要……就……", "不但……而且……"],
-        answer: 2,
-        explanation: "“只要……就……”表示条件关系，说明坚持锻炼是实现消防员愿望的条件。"
-      },
-      {
-        id: "L1_3", lesson: 1, type: "mc",
-        prompt: "下列哪一个词语最适合用来赞美每天在教室里认真教我们读书写字的老师？",
-        options: ["耐心教导", "横冲直撞", "粗心大意", "垂头丧气"],
-        answer: 0,
-        explanation: "“耐心教导”形容老师非常有耐心地教学生知识与做人的道理，符合三年级课文语境。"
-      },
-      {
-        id: "L1_4", lesson: 1, type: "order",
-        prompt: "【句子排一排】请把下面介绍“实现愿望”的句子按逻辑顺序排好：",
-        strips: [
-          "1. 小华从小就有一个美丽的愿望，希望长大后当一名厨师。",
-          "2. 为了实现这个愿望，他周末常常在厨房里向妈妈请教。",
-          "3. 他先学习洗菜和切菜，接着练习翻炒简单的家常菜。",
-          "4. 看到全家人吃得津津有味，小华心里开心极了。"
-        ],
-        explanation: "按照“立下愿望 → 付出行动 → 具体做法 → 收获快乐”的顺序排列，条理非常清楚！"
-      },
-      {
-        id: "L1_5", lesson: 1, type: "oral",
-        prompt: "【口语小达人】请代表小组说一说：你长大后的愿望是什么？你想为社会或家人做些什么？",
-        hint: "参考句式：我的愿望是长大后当一名……，因为……，我想用自己的本领……（如：帮助生病的人 / 建造美丽的组屋 / 教小朋友知识）。"
-      },
-
-      /* -------------------- 第二课《我的朋友和家人》 (5题) -------------------- */
-      {
-        id: "L2_1", lesson: 2, type: "mc",
-        prompt: "【人物侧写师】伟明在班上总是笑眯眯的，看到同学有困难，他总是第一个跑过去帮忙。大家都很喜欢和他做朋友。伟明是一个怎样的人？",
-        options: ["自私自利", "乐于助人", "胆小怕事", "骄傲自满"],
-        answer: 1,
-        explanation: "“乐于助人”意思是把帮助别人当作快乐的事情，非常符合伟明热心帮同学的表现。"
-      },
-      {
-        id: "L2_2", lesson: 2, type: "mc",
-        prompt: "近义词辨析：妈妈生病发烧了，奶奶在床边细心地（　　）她，给她端水喂药。",
-        options: ["爱护", "保护", "照顾", "爱惜"],
-        answer: 2,
-        explanation: "“照顾”多用于对病人、老人或小孩的照料；“爱护”多用于花草树木、公物或晚辈。"
-      },
-      {
-        id: "L2_3", lesson: 2, type: "mc",
-        prompt: "下列哪句话把爷爷的“外貌和神态”描写得最生动？",
-        options: [
-          "爷爷今年七十岁了，他每天去公园散步。",
-          "爷爷的头发花白，笑起来眼睛眯成了一条缝，显得格外和蔼可亲。",
-          "爷爷是我的家人，我非常喜欢我的爷爷。",
-          "爷爷每天早上都会在客厅里看报纸。"
-        ],
-        answer: 1,
-        explanation: "第2句抓住了“头发花白”的外貌特征和“笑起来眼睛眯成一条缝”的神态，画面感十足！"
-      },
-      {
-        id: "L2_4", lesson: 2, type: "order",
-        prompt: "【句子排一排】请把下面描写“好朋友互相帮助”的段落排成通顺的一段话：",
-        strips: [
-          "1. 放学时，天空突然乌云密布，下起了倾盆大雨。",
-          "2. 我站在学校门口正发愁，因为我忘了带雨伞。",
-          "3. 这时，好朋友美玲撑着伞跑过来，热情地说：“我们一起走吧！”",
-          "4. 一路上，她把雨伞歪向我这边，自己半边肩膀都淋湿了，让我感动极了。"
-        ],
-        explanation: "按照事情发展的起因（下雨没伞）→ 经过（朋友共撑一把伞）→ 结果（感动）排列。"
-      },
-      {
-        id: "L2_5", lesson: 2, type: "oral",
-        prompt: "【口语小达人】请用一两句话介绍你的一位家人或好朋友，说出他的一个外貌特点和性格特点。",
-        hint: "好词提示：圆圆的脸蛋、浓浓的眉毛、戴着一副眼镜；性格：幽默风趣、认真细心、热情大方。"
-      },
-
-      /* -------------------- 第三课《我的好伙伴》 (5题) -------------------- */
-      {
-        id: "L3_1", lesson: 3, type: "mc",
-        prompt: "【猜猜我是谁】“我没有颜色，也没有味道，但我能帮你解渴，让你的身体保持健康。运动后喝我最合适！”请问这位好伙伴是谁？",
-        options: ["汽水", "白开水", "果汁", "奶茶"],
-        answer: 1,
-        explanation: "白开水无色无味，最解渴也最健康，是《我的好伙伴》一课中重要的健康伙伴！"
-      },
-      {
-        id: "L3_2", lesson: 3, type: "mc",
-        prompt: "【火眼金睛找错字】下面哪一句话里有一个错别字？",
-        options: [
-          "字典是我学习华文的好伙伴。",
-          "每天多喝白开水，身体才会更健康。",
-          "我已经把今天的华文功课全部做完了。",
-          "天气这么热，我们因该多补充水分。"
-        ],
-        answer: 3,
-        explanation: "第4句中的“因该”写错了，正确的写法是“应该”。"
-      },
-      {
-        id: "L3_3", lesson: 3, type: "mc",
-        prompt: "“每当我遇到不会读的生字时，这位不会说话的好伙伴就会默默地告诉我它的读音和意思。”这位好伙伴是（　　）。",
-        options: ["字典", "铅笔盒", "运动鞋", "水壶"],
-        answer: 0,
-        explanation: "字典能帮我们查生字的读音和意思，是学习路上的好伙伴。"
-      },
-      {
-        id: "L3_4", lesson: 3, type: "order",
-        prompt: "【句子排一排】请把下面使用部首查字法的步骤按正确顺序排好：",
-        strips: [
-          "1. 遇到不认识的生字，先确定它的部首并数一数部首有几画。",
-          "2. 接着在《部首目录》里找到这个部首和对应的页码。",
-          "3. 然后翻到《检字表》那一页，数一数生字除去部首还有几画。",
-          "4. 最后根据页码翻到正文，就能查到这个字的读音和意思啦！"
-        ],
-        explanation: "这是三年级必学的部首查字法四步骤：定部首 → 查目录 → 数余画 → 翻正文。"
-      },
-      {
-        id: "L3_5", lesson: 3, type: "oral",
-        prompt: "【口语小达人】除了书本和白开水，你生活中还有哪位“好伙伴”（如运动鞋、跳绳、闹钟）？说说它怎么陪伴你。",
-        hint: "参考句式：……是我的好伙伴。每天……的时候，它都会……，有了它，我……。"
-      },
-
-      /* -------------------- 第四课《奇妙的变化》 (5题) -------------------- */
-      {
-        id: "L4_1", lesson: 4, type: "mc",
-        prompt: "词语辨析：太阳升起来了，山谷里的浓雾（　　）散开了，露出了翠绿的树林。",
-        options: ["突然", "渐渐", "立刻", "马虎"],
-        answer: 1,
-        explanation: "“渐渐”表示程度或数量慢慢地、一步一步地变化，符合晨雾慢慢散开的自然现象。"
-      },
-      {
-        id: "L4_2", lesson: 4, type: "mc",
-        prompt: "根据《奇妙的变化》课文知识，小蝌蚪在变成青蛙的过程中，最先长出来的是什么？",
-        options: ["两条前腿", "两条后腿", "绿色的花纹", "宽宽的嘴巴"],
-        answer: 1,
-        explanation: "小蝌蚪成长顺序是：先长出两条后腿，再长出两条前腿，接着尾巴变短，最后变成小青蛙。"
-      },
-      {
-        id: "L4_3", lesson: 4, type: "mc",
-        prompt: "下列哪一组词语最适合用来连接植物从发芽到开花的成长过程？",
-        options: [
-          "虽然……但是……",
-          "先……接着……然后……最后……",
-          "不但……而且……",
-          "如果……就……"
-        ],
-        answer: 1,
-        explanation: "“先……接着……然后……最后……”是表示先后顺序的连接词，最适合描写事物变化的步骤。"
-      },
-      {
-        id: "L4_4", lesson: 4, type: "order",
-        prompt: "【蜕变排序师】请按绿豆发芽成长的先后顺序排列下列句子：",
-        strips: [
-          "1. 我把几颗圆溜溜的绿豆放进铺了湿棉花的杯子里。",
-          "2. 过了两天，绿豆喝饱了水，胖嘟嘟的身体胀破了绿衣裳。",
-          "3. 接着，小绿豆探出了白白嫩嫩的小芽，像个好奇的小脑袋。",
-          "4. 又过了几天，嫩芽越长越高，长出了两片翠绿的小叶子。"
-        ],
-        explanation: "从播种泡水 → 吸水膨胀破皮 → 长出嫩芽 → 长出绿叶，完整展现了植物的奇妙变化！"
-      },
-      {
-        id: "L4_5", lesson: 4, type: "oral",
-        prompt: "【口语小达人】请用上“先……接着……然后……最后……”说一说小蝌蚪是怎样变成青蛙的。",
-        hint: "关键词提示：圆圆的脑袋、长长的尾巴 → 长出后腿 → 长出前腿 → 尾巴变短不见了 → 捉害虫的青蛙。"
-      },
-
-      /* -------------------- 第五课《难忘的一天》 (5题) -------------------- */
-      {
-        id: "L5_1", lesson: 5, type: "mc",
-        prompt: "词语理解：学校明天要去动物园开展学习之旅，弟弟兴奋得晚上都睡不着觉，真希望天快点亮。这种心情可以用哪个成语形容？",
-        options: ["迫不及待", "垂头丧气", "目瞪口呆", "慌慌张张"],
-        answer: 0,
-        explanation: "“迫不及待”形容心情十分急切，一刻也不能等待。"
-      },
-      {
-        id: "L5_2", lesson: 5, type: "mc",
-        prompt: "当表演节目轮到我上台时，我的心“扑通扑通”跳个不停，手心也冒出了冷汗。这时我的心情是（　　）。",
-        options: ["兴高采烈", "忐忑不安", "得意洋洋", "无精打采"],
-        answer: 1,
-        explanation: "“忐忑不安”形容心神不宁、十分紧张的样子，和“心扑通扑通跳、手心冒冷汗”完全吻合。"
-      },
-      {
-        id: "L5_3", lesson: 5, type: "mc",
-        prompt: "下列哪句话把“他很开心”写得最具体、最生动？",
-        options: [
-          "今天他真的很开心，非常开心。",
-          "他听了消息，开心得一蹦三尺高，嘴角咧得像一弯新月。",
-          "因为老师表扬了他，所以他今天很开心。",
-          "他是一个每天都很开心的小男孩。"
-        ],
-        answer: 1,
-        explanation: "第2句通过“一蹦三尺高”的动作和“嘴角咧得像一弯新月”的神态，把抽象的“开心”写活了！"
-      },
-      {
-        id: "L5_4", lesson: 5, type: "order",
-        prompt: "【记忆碎片拼图】请把下面这篇《难忘的一天》日记按时间与事情发展顺序排好：",
-        strips: [
-          "1. 星期六早上，我兴高采烈地跟着爸爸妈妈去海边参加净滩义工活动。",
-          "2. 太阳火辣辣地照着，我们戴上手套，弯腰把沙滩上的塑料瓶一个个捡起来。",
-          "3. 虽然累得满头大汗，但看到沙滩重新变得干干净净，大家都露出了自豪的笑容。",
-          "4. 回家路上，我觉得自己做了一件很有意义的事，这真是难忘的一天！"
-        ],
-        explanation: "时间开头 → 劳动过程 → 辛苦后的收获 → 结尾点题（难忘的一天），结构完整！"
-      },
-      {
-        id: "L5_5", lesson: 5, type: "oral",
-        prompt: "【句子升格挑战】原句：“小华得到第一名，他很开心。”请加入动作或神态描写，把这句话说得更生动！",
-        hint: "提示词：拍手欢呼、眼睛笑成了一条缝、激动得跳了起来、脸上露出了灿烂的笑容。"
-      },
-
-      /* -------------------- 第六课《是我不好》 (5题) -------------------- */
-      {
-        id: "L6_1", lesson: 6, type: "mc",
-        prompt: "【高情商修复站】你在走廊上奔跑时，不小心把同学的水壶撞掉在地上摔裂了。下列哪种做法最真诚、最得体？",
-        options: [
-          "快步跑回教室，假装不是自己撞的。",
-          "生气地说：“谁叫你把水壶放在桌子边上的！”",
-          "马上捡起水壶，诚恳地说：“对不起，是我不好，我不该在走廊跑，我赔你一个新的吧！”",
-          "小声说一句“不好意思”就转身去玩了。"
-        ],
-        answer: 2,
-        explanation: "勇于承认错误（“是我不好”）、不找借口并主动提出弥补办法，才是最真诚的道歉。"
-      },
-      {
-        id: "L6_2", lesson: 6, type: "mc",
-        prompt: "选词填空：小刚不小心弄脏了同桌的新作业本，他感到十分（　　），低着头向同桌道歉。",
-        options: ["骄傲", "惭愧", "羡慕", "愉快"],
-        answer: 1,
-        explanation: "“惭愧”表示因为自己做错了事或没有尽到责任而感到不安、不好意思。"
-      },
-      {
-        id: "L6_3", lesson: 6, type: "mc",
-        prompt: "当好朋友诚恳地向你承认错误并道歉时，你应该怎样回应才显得有礼貌、懂得体谅？",
-        options: [
-          "没关系，既然你不是故意的，我就原谅你吧！",
-          "哼，我永远都不会再理你了！",
-          "你现在知道错啦？太晚了！",
-          "把书包扔在地上不说话。"
-        ],
-        answer: 0,
-        explanation: "学会原谅和互相体谅，才能让友谊更加长久。"
-      },
-      {
-        id: "L6_4", lesson: 6, type: "order",
-        prompt: "【句子排一排】请把下面《是我不好》的小故事按正确顺序排好：",
-        strips: [
-          "1. 下午，我不小心把弟弟搭了半天的积木城堡碰倒了。",
-          "2. 弟弟看着散落一地的积木，难过得眼泪在眼眶里打转。",
-          "3. 我连忙走过去扶起他，诚恳地说：“弟弟，是我不好，我陪你重新搭一座更漂亮的城堡吧！”",
-          "4. 弟弟听了破涕为笑，我们俩又开开心心地一起合作起来。"
-        ],
-        explanation: "闯祸 → 对方难过 → 主动道歉并弥补 → 重归于好，情节自然感人！"
-      },
-      {
-        id: "L6_5", lesson: 6, type: "oral",
-        prompt: "【情景表演】假如你借了同学的故事书，回家时不小心把封面折破了一角。明天还书时，你会怎么对同学说？",
-        hint: "道歉三步曲：① 真诚说声“对不起，是我不好”；② 说明原因但不推卸责任；③ 提出修补或赔偿的方法。"
-      }
-    ];
-
-    /* ==========================================================================
-       模块三：24格大富翁探索岛地图数据
-       ========================================================================== */
-    const BOARD_TILES = [
-      { id: 0,  type: "start",   name: "快乐出发港", icon: "🚢", desc: "经过或停留此地，奖励 +20 积分！" },
-      { id: 1,  type: "lesson",  lesson: 1, name: "愿望起航站", icon: "🌟" },
-      { id: 2,  type: "lesson",  lesson: 1, name: "职业梦想屋", icon: "🩺" },
-      { id: 3,  type: "lesson",  lesson: 1, name: "理想灯塔",   icon: "🚒" },
-      { id: 4,  type: "chance",  name: "机会宝藏格", icon: "🎁", desc: "抽取一张神秘宝藏卡！" },
-      { id: 5,  type: "lesson",  lesson: 2, name: "温馨家庭屋", icon: "🏡" },
-      { id: 6,  type: "lesson",  lesson: 2, name: "友谊桥梁",   icon: "🤝" },
-      { id: 7,  type: "lesson",  lesson: 2, name: "夸夸镜子湖", icon: "🪞" },
-      { id: 8,  type: "water",   name: "健康饮水站", icon: "💧", desc: "第3课健康小贴士：多喝白开水，身体更健康！直接 +15 积分！" },
-      { id: 9,  type: "lesson",  lesson: 3, name: "字典智慧阁", icon: "📖" },
-      { id: 10, type: "lesson",  lesson: 3, name: "活力运动场", icon: "👟" },
-      { id: 11, type: "lesson",  lesson: 3, name: "书香小木屋", icon: "✏️" },
-      { id: 12, type: "chance",  name: "机会宝藏格", icon: "🎁", desc: "抽取一张神秘宝藏卡！" },
-      { id: 13, type: "lesson",  lesson: 4, name: "蝌蚪池塘",   icon: "🐸" },
-      { id: 14, type: "lesson",  lesson: 4, name: "发芽温室",   icon: "🌱" },
-      { id: 15, type: "lesson",  lesson: 4, name: "四季观察台", icon: "🌈" },
-      { id: 16, type: "water",   name: "健康饮水站", icon: "🥤", desc: "第3课健康小贴士：运动后补充白开水！直接 +15 积分！" },
-      { id: 17, type: "lesson",  lesson: 5, name: "时光列车站", icon: "🎢" },
-      { id: 18, type: "lesson",  lesson: 5, name: "心情万花筒", icon: "😄" },
-      { id: 19, type: "lesson",  lesson: 5, name: "难忘纪念碑", icon: "📸" },
-      { id: 20, type: "chance",  name: "机会宝藏格", icon: "🎁", desc: "抽取一张神秘宝藏卡！" },
-      { id: 21, type: "lesson",  lesson: 6, name: "诚实小驿站", icon: "💌" },
-      { id: 22, type: "lesson",  lesson: 6, name: "体谅花园",   icon: "🌷" },
-      { id: 23, type: "lesson",  lesson: 6, name: "和好彩虹桥", icon: "🌈" }
-    ];
-
-    // 将24格映射到 7x7 网格的行列位置 (row: 1..7, col: 1..7)
-    function getGridCoord(index) {
-      if (index >= 0 && index <= 6) {
-        return { row: 1, col: index + 1 }; // 顶行：左到右
-      } else if (index >= 7 && index <= 11) {
-        return { row: index - 5, col: 7 }; // 右列：上到下 (row 2..6)
-      } else if (index >= 12 && index <= 18) {
-        return { row: 7, col: 19 - index }; // 底行：右到左 (col 7..1)
-      } else {
-        return { row: 25 - index, col: 1 }; // 左列：下到上 (row 6..2)
-      }
-    }
-
-    // 机会宝藏卡池
-    const CHANCE_CARDS = [
-      {
-        emoji: "⚡",
-        title: "双倍积分卡！",
-        desc: "恭喜获得【⚡双倍积分卡】！下一次本组答对课文题目时，获得的积分自动翻倍！",
-        apply: (team) => { team.doubleCard = true; }
-      },
-      {
-        emoji: "🛡️",
-        title: "岛屿护盾卡！",
-        desc: "恭喜获得【🛡️护盾卡】！下一次经过其他小组占领的岛屿时，自动免除过路费！",
-        apply: (team) => { team.shieldCard = true; }
-      },
-      {
-        emoji: "🤝",
-        title: "友好分享宝藏！",
-        desc: "独乐乐不如众乐乐！本组获得 +20 积分，同时所有其他小组一起分享快乐，各得 +10 积分！",
-        apply: (team, allTeams) => {
-          allTeams.forEach(t => {
-            t.score += (t.id === team.id) ? 20 : 10;
+        powerup() {
+          [440, 554, 659, 880].forEach((f, idx) => {
+            this.playTone(f, "sine", 0.15, 0.15, idx * 0.07);
           });
         }
-      },
-      {
-        emoji: "⛵",
-        title: "顺风快船奖励！",
-        desc: "海风吹来好消息！本组直接获得 +25 探索积分！",
-        apply: (team) => { team.score += 25; }
-      },
-      {
-        emoji: "🌟",
-        title: "勤学小博士奖！",
-        desc: "全组同学坐姿端正、认真倾听！直接奖励 +20 积分！",
-        apply: (team) => { team.score += 20; }
-      }
-    ];
 
-    /* ==========================================================================
-       模块四：游戏状态管理 (Game State)
-       ========================================================================== */
-    const DEFAULT_TEAMS = [
-      { id: 1, name: "勇敢狮队", icon: "🦁", color: "#ef4444", score: 50, pos: 0, doubleCard: false, shieldCard: false },
-      { id: 2, name: "聪明豚队", icon: "🐬", color: "#0ea5e9", score: 50, pos: 0, doubleCard: false, shieldCard: false },
-      { id: 3, name: "快乐熊队", icon: "🐼", color: "#10b981", score: 50, pos: 0, doubleCard: false, shieldCard: false },
-      { id: 4, name: "飞翔鹰队", icon: "🦅", color: "#8b5cf6", score: 50, pos: 0, doubleCard: false, shieldCard: false }
-    ];
-
-    const EXTRA_TEAM_TEMPLATES = [
-      { name: "机灵猴队", icon: "🐵", color: "#f59e0b" },
-      { name: "勤劳蜂队", icon: "🐝", color: "#ec4899" }
-    ];
-
-    let gameState = {
-      teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
-      currentTeamIdx: 0,
-      tileOwners: {}, // { tileId: teamId }
-      usedQuestionIds: new Set(),
-      isMoving: false,
-      diceValue: 6,
-      activeQuestion: null,
-      activeTile: null,
-      selectedOrderStrips: [],
-      timerSeconds: 45,
-      timerRunning: false,
-      timerInterval: null
-    };
-
-    /* ==========================================================================
-       模块五：UI 渲染引擎
-       ========================================================================== */
-    const boardEl = document.getElementById("monopolyBoard");
-    const teamGridEl = document.getElementById("teamGrid");
-
-    function showToast(msg) {
-      const container = document.getElementById("toastContainer");
-      const toast = document.createElement("div");
-      toast.className = "toast-msg";
-      toast.textContent = msg;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transition = "opacity 0.3s ease";
-        setTimeout(() => toast.remove(), 300);
-      }, 2400);
-    }
-
-    // 渲染骰子点数
-    function renderDiceFace(val) {
-      // 3x3 网格索引 0..8
-      const patterns = {
-        1: [4],
-        2: [2, 6],
-        3: [2, 4, 6],
-        4: [0, 2, 6, 8],
-        5: [0, 2, 4, 6, 8],
-        6: [0, 2, 3, 5, 6, 8]
-      };
-      const activePips = patterns[val] || [4];
-      let html = "";
-      for (let i = 0; i < 9; i++) {
-        const isAct = activePips.includes(i);
-        const isRed = (val === 1 || val === 4) && isAct;
-        html += `<div class="pip ${isAct ? "active" : ""} ${isRed ? "red-pip" : ""}"></div>`;
-      }
-      return html;
-    }
-
-    // 渲染完整24格棋盘与中央控制台
-    function renderBoard(statusText = "点击「掷骰子」或按空格键出发！") {
-      const currentTeam = gameState.teams[gameState.currentTeamIdx];
-      let html = "";
-
-      BOARD_TILES.forEach((tile) => {
-        const coord = getGridCoord(tile.id);
-        let barColor = "#64748b";
-        let barText = "特殊格";
-        let tileBg = "#ffffff";
-
-        if (tile.type === "lesson") {
-          const meta = LESSON_META[tile.lesson];
-          barColor = meta.color;
-          barText = meta.short;
-          tileBg = meta.bg;
-        } else if (tile.type === "start") {
-          barColor = "#f59e0b";
-          barText = "起点 +20";
-          tileBg = "#fffbeb";
-        } else if (tile.type === "chance") {
-          barColor = "#ec4899";
-          barText = "宝藏卡";
-          tileBg = "#fdf2f8";
-        } else if (tile.type === "water") {
-          barColor = "#0284c7";
-          barText = "饮水 +15";
-          tileBg = "#f0f9ff";
+        fanfare() {
+          const notes = [523.25, 523.25, 523.25, 659.25, 783.99, 659.25, 1046.5];
+          const times = [0, 0.14, 0.28, 0.42, 0.62, 0.82, 1.02];
+          notes.forEach((f, i) => {
+            this.playTone(f, "triangle", 0.26, 0.2, times[i]);
+          });
         }
+      }
 
-        // 检查领地占领者
-        const ownerId = gameState.tileOwners[tile.id];
-        const ownerTeam = gameState.teams.find(t => t.id === ownerId);
-        const ownerBorder = ownerTeam ? `border-color:${ownerTeam.color}; border-width:3px;` : "";
-        const ownerBadge = ownerTeam
-          ? `<div class="owner-flag" style="background:${ownerTeam.color};" title="已由${ownerTeam.name}占领">🚩${ownerTeam.icon}</div>`
-          : "";
+      const sfx = new SoundEngine();
 
-        // 停留在此格的棋子
-        const pawnsHere = gameState.teams.filter(t => t.pos === tile.id);
-        const pawnsHtml = pawnsHere.map(t => {
-          const isCur = t.id === currentTeam.id;
-          return `<div class="pawn-token ${isCur ? "current-pawn" : ""}" style="background:${t.color};" title="${t.name}">${t.icon}</div>`;
-        }).join("");
+      /* ==========================================================================
+         模块二：《欢乐伙伴3A》第1—6课题库（30题）
+         ========================================================================== */
+      const LESSON_META = {
+        1: { title: "第1课《美丽的愿望》", short: "第1课 愿望", color: "var(--l1-color)", bg: "var(--l1-bg)", icon: "🌟" },
+        2: { title: "第2课《我的朋友和家人》", short: "第2课 亲友", color: "var(--l2-color)", bg: "var(--l2-bg)", icon: "👨‍👩‍👧‍👦" },
+        3: { title: "第3课《我的好伙伴》", short: "第3课 伙伴", color: "var(--l3-color)", bg: "var(--l3-bg)", icon: "💧" },
+        4: { title: "第4课《奇妙的变化》", short: "第4课 变化", color: "var(--l4-color)", bg: "var(--l4-bg)", icon: "🐸" },
+        5: { title: "第5课《难忘的一天》", short: "第5课 难忘", color: "var(--l5-color)", bg: "var(--l5-bg)", icon: "🎢" },
+        6: { title: "第6课《是我不好》", short: "第6课 道歉", color: "var(--l6-color)", bg: "var(--l6-bg)", icon: "🤝" }
+      };
+
+      const QUESTION_BANK = [
+        /* -------------------- 第一课《美丽的愿望》 (5题) -------------------- */
+        {
+          id: "L1_1", lesson: 1, type: "mc",
+          prompt: "【职业谜语人】身穿白大褂，每天在医院里细心照顾病人、救死扶伤。请问这段话描写的是哪一种职业？",
+          options: ["消防员", "医生和护士", "建筑工人", "巴士司机"],
+          answer: 1,
+          explanation: "医生和护士在医院里工作，他们细心治疗和照顾病人，帮助病人恢复健康。"
+        },
+        {
+          id: "L1_2", lesson: 1, type: "mc",
+          prompt: "选词填空：小明的愿望是长大后当一名消防员，他知道（  ）天天坚持锻炼身体，（  ）能拥有强壮的体魄去保护大家。",
+          options: ["虽然……但是……", "因为……所以……", "只要……就……", "不但……而且……"],
+          answer: 2,
+          explanation: "“只要……就……”表示条件关系，说明坚持锻炼是实现消防员愿望的条件。"
+        },
+        {
+          id: "L1_3", lesson: 1, type: "mc",
+          prompt: "下列哪一个词语最适合用来赞美每天在教室里认真教我们读书写字的老师？",
+          options: ["耐心教导", "横冲直撞", "粗心大意", "垂头丧气"],
+          answer: 0,
+          explanation: "“耐心教导”形容老师非常有耐心地教学生知识与做人的道理，符合三年级课文语境。"
+        },
+        {
+          id: "L1_4", lesson: 1, type: "order",
+          prompt: "【句子排一排】请把下面介绍“实现愿望”的句子按逻辑顺序排好：",
+          strips: [
+            "1. 小华从小就有一个美丽的愿望，希望长大后当一名厨师。",
+            "2. 为了实现这个愿望，他周末常常在厨房里向妈妈请教。",
+            "3. 他先学习洗菜和切菜，接着练习翻炒简单的家常菜。",
+            "4. 看到全家人吃得津津有味，小华心里开心极了。"
+          ],
+          explanation: "按照“立下愿望 → 付出行动 → 具体做法 → 收获快乐”的顺序排列，条理非常清楚！"
+        },
+        {
+          id: "L1_5", lesson: 1, type: "oral",
+          prompt: "【口语小达人】请代表小组说一说：你长大后的愿望是什么？你想为社会或家人做些什么？",
+          hint: "参考句式：我的愿望是长大后当一名……，因为……，我想用自己的本领……（如：帮助生病的人 / 建造美丽的组屋 / 教小朋友知识）。"
+        },
+
+        /* -------------------- 第二课《我的朋友和家人》 (5题) -------------------- */
+        {
+          id: "L2_1", lesson: 2, type: "mc",
+          prompt: "【人物侧写师】伟明在班上总是笑眯眯的，看到同学有困难，他总是第一个跑过去帮忙。大家都很喜欢和他做朋友。伟明是一个怎样的人？",
+          options: ["自私自利", "乐于助人", "胆小怕事", "骄傲自满"],
+          answer: 1,
+          explanation: "“乐于助人”意思是把帮助别人当作快乐的事情，非常符合伟明热心帮同学的表现。"
+        },
+        {
+          id: "L2_2", lesson: 2, type: "mc",
+          prompt: "近义词辨析：妈妈生病发烧了，奶奶在床边细心地（  ）她，给她端水喂药。",
+          options: ["爱护", "保护", "照顾", "爱惜"],
+          answer: 2,
+          explanation: "“照顾”多用于对病人、老人或小孩的照料；“爱护”多用于花草树木、公物或晚辈。"
+        },
+        {
+          id: "L2_3", lesson: 2, type: "mc",
+          prompt: "下列哪句话把爷爷的“外貌和神态”描写得最生动？",
+          options: [
+            "爷爷今年七十岁了，他每天去公园散步。",
+            "爷爷的头发花白，笑起来眼睛眯成了一条缝，显得格外和蔼可亲。",
+            "爷爷是我的家人，我非常喜欢我的爷爷。",
+            "爷爷每天早上都会在客厅里看报纸。"
+          ],
+          answer: 1,
+          explanation: "第2句抓住了“头发花白”的外貌特征和“笑起来眼睛眯成一条缝”的神态，画面感十足！"
+        },
+        {
+          id: "L2_4", lesson: 2, type: "order",
+          prompt: "【句子排一排】请把下面描写“好朋友互相帮助”的段落排成通顺的一段话：",
+          strips: [
+            "1. 放学时，天空突然乌云密布，下起了倾盆大雨。",
+            "2. 我站在学校门口正发愁，因为我忘了带雨伞。",
+            "3. 这时，好朋友美玲撑着伞跑过来，热情地说：“我们一起走吧！”",
+            "4. 一路上，她把雨伞歪向我这边，自己半边肩膀都淋湿了，让我感动极了。"
+          ],
+          explanation: "按照事情发展的起因（下雨没伞）→ 经过（朋友共撑一把伞）→ 结果（感动）排列。"
+        },
+        {
+          id: "L2_5", lesson: 2, type: "oral",
+          prompt: "【口语小达人】请用一两句话介绍你的一位家人或好朋友，说出他的一个外貌特点和性格特点。",
+          hint: "好词提示：圆圆的脸蛋、浓浓的眉毛、戴着一副眼镜；性格：幽默风趣、认真细心、热情大方。"
+        },
+
+        /* -------------------- 第三课《我的好伙伴》 (5题) -------------------- */
+        {
+          id: "L3_1", lesson: 3, type: "mc",
+          prompt: "【猜猜我是谁】“我没有颜色，也没有味道，但我能帮你解渴，让你的身体保持健康。运动后喝我最合适！”请问这位好伙伴是谁？",
+          options: ["汽水", "白开水", "果汁", "奶茶"],
+          answer: 1,
+          explanation: "白开水无色无味，最解渴也最健康，是《我的好伙伴》一课中重要的健康伙伴！"
+        },
+        {
+          id: "L3_2", lesson: 3, type: "mc",
+          prompt: "【火眼金睛找错字】下面哪一句话里有一个错别字？",
+          options: [
+            "字典是我学习华文的好伙伴。",
+            "每天多喝白开水，身体才会更健康。",
+            "我已经把今天的华文功课全部做完了。",
+            "天气这么热，我们因该多补充水分。"
+          ],
+          answer: 3,
+          explanation: "第4句中的“因该”写错了，正确的写法是“应该”。"
+        },
+        {
+          id: "L3_3", lesson: 3, type: "mc",
+          prompt: "“每当我遇到不会读的生字时，这位不会说话的好伙伴就会默默地告诉我它的读音和意思。”这位好伙伴是（  ）。",
+          options: ["字典", "铅笔盒", "运动鞋", "水壶"],
+          answer: 0,
+          explanation: "字典能帮我们查生字的读音和意思，是学习路上的好伙伴。"
+        },
+        {
+          id: "L3_4", lesson: 3, type: "order",
+          prompt: "【句子排一排】请把下面使用部首查字法的步骤按正确顺序排好：",
+          strips: [
+            "1. 遇到不认识的生字，先确定它的部首并数一数部首有几画。",
+            "2. 接着在《部首目录》里找到这个部首和对应的页码。",
+            "3. 然后翻到《检字表》那一页，数一数生字除去部首还有几画。",
+            "4. 最后根据页码翻到正文，就能查到这个字的读音和意思啦！"
+          ],
+          explanation: "这是三年级必学的部首查字法四步骤：定部首 → 查目录 → 数余画 → 翻正文。"
+        },
+        {
+          id: "L3_5", lesson: 3, type: "oral",
+          prompt: "【口语小达人】除了书本和白开水，你生活中还有哪位“好伙伴”（如运动鞋、跳绳、闹钟）？说说它怎么陪伴你。",
+          hint: "参考句式：……是我的好伙伴。每天……的时候，它都会……，有了它，我……。"
+        },
+
+        /* -------------------- 第四课《奇妙的变化》 (5题) -------------------- */
+        {
+          id: "L4_1", lesson: 4, type: "mc",
+          prompt: "词语辨析：太阳升起来了，山谷里的浓雾（  ）散开了，露出了翠绿的树林。",
+          options: ["突然", "渐渐", "立刻", "马虎"],
+          answer: 1,
+          explanation: "“渐渐”表示程度或数量慢慢地、一步一步地变化，符合晨雾慢慢散开的自然现象。"
+        },
+        {
+          id: "L4_2", lesson: 4, type: "mc",
+          prompt: "根据《奇妙的变化》课文知识，小蝌蚪在变成青蛙的过程中，最先长出来的是什么？",
+          options: ["两条前腿", "两条后腿", "绿色的花纹", "宽宽的嘴巴"],
+          answer: 1,
+          explanation: "小蝌蚪成长顺序是：先长出两条后腿，再长出两条前腿，接着尾巴变短，最后变成小青蛙。"
+        },
+        {
+          id: "L4_3", lesson: 4, type: "mc",
+          prompt: "下列哪一组词语最适合用来连接植物从发芽到开花的成长过程？",
+          options: [
+            "虽然……但是……",
+            "先……接着……然后……最后……",
+            "不但……而且……",
+            "如果……就……"
+          ],
+          answer: 1,
+          explanation: "“先……接着……然后……最后……”是表示先后顺序的连接词，最适合描写事物变化的步骤。"
+        },
+        {
+          id: "L4_4", lesson: 4, type: "order",
+          prompt: "【蜕变排序师】请按绿豆发芽成长的先后顺序排列下列句子：",
+          strips: [
+            "1. 我把几颗圆溜溜的绿豆放进铺了湿棉花的杯子里。",
+            "2. 过了两天，绿豆喝饱了水，胖嘟嘟的身体胀破了绿衣裳。",
+            "3. 接着，小绿豆探出了白白嫩嫩的小芽，像个好奇的小脑袋。",
+            "4. 又过了几天，嫩芽越长越高，长出了两片翠绿的小叶子。"
+          ],
+          explanation: "从播种泡水 → 吸水膨胀破皮 → 长出嫩芽 → 长出绿叶，完整展现了植物的奇妙变化！"
+        },
+        {
+          id: "L4_5", lesson: 4, type: "oral",
+          prompt: "【口语小达人】请用上“先……接着……然后……最后……”说一说小蝌蚪是怎样变成青蛙的。",
+          hint: "关键词提示：圆圆的脑袋、长长的尾巴 → 长出后腿 → 长出前腿 → 尾巴变短不见了 → 捉害虫的青蛙。"
+        },
+
+        /* -------------------- 第五课《难忘的一天》 (5题) -------------------- */
+        {
+          id: "L5_1", lesson: 5, type: "mc",
+          prompt: "词语理解：学校明天要去动物园开展学习之旅，弟弟兴奋得晚上都睡不着觉，真希望天快点亮。这种心情可以用哪个成语形容？",
+          options: ["迫不及待", "垂头丧气", "目瞪口呆", "慌慌张张"],
+          answer: 0,
+          explanation: "“迫不及待”形容心情十分急切，一刻也不能等待。"
+        },
+        {
+          id: "L5_2", lesson: 5, type: "mc",
+          prompt: "当表演节目轮到我上台时，我的心“扑通扑通”跳个不停，手心也冒出了冷汗。这时我的心情是（  ）。",
+          options: ["兴高采烈", "忐忑不安", "得意洋洋", "无精打采"],
+          answer: 1,
+          explanation: "“忐忑不安”形容心神不宁、十分紧张的样子，和“心扑通扑通跳、手心冒冷汗”完全吻合。"
+        },
+        {
+          id: "L5_3", lesson: 5, type: "mc",
+          prompt: "下列哪句话把“他很开心”写得最具体、最生动？",
+          options: [
+            "今天他真的很开心，非常开心。",
+            "他听了消息，开心得一蹦三尺高，嘴角咧得像一弯新月。",
+            "因为老师表扬了他，所以他今天很开心。",
+            "他是一个每天都很开心的小男孩。"
+          ],
+          answer: 1,
+          explanation: "第2句通过“一蹦三尺高”的动作和“嘴角咧得像一弯新月”的神态，把抽象的“开心”写活了！"
+        },
+        {
+          id: "L5_4", lesson: 5, type: "order",
+          prompt: "【记忆碎片拼图】请把下面这篇《难忘的一天》日记按时间与事情发展顺序排好：",
+          strips: [
+            "1. 星期六早上，我兴高采烈地跟着爸爸妈妈去海边参加净滩义工活动。",
+            "2. 太阳火辣辣地照着，我们戴上手套，弯腰把沙滩上的塑料瓶一个个捡起来。",
+            "3. 虽然累得满头大汗，但看到沙滩重新变得干干净净，大家都露出了自豪的笑容。",
+            "4. 回家路上，我觉得自己做了一件很有意义的事，这真是难忘的一天！"
+          ],
+          explanation: "时间开头 → 劳动过程 → 辛苦后的收获 → 结尾点题（难忘的一天），结构完整！"
+        },
+        {
+          id: "L5_5", lesson: 5, type: "oral",
+          prompt: "【句子升格挑战】原句：“小华得到第一名，他很开心。”请加入动作或神态描写，把这句话说得更生动！",
+          hint: "提示词：拍手欢呼、眼睛笑成了一条缝、激动得跳了起来、脸上露出了灿烂的笑容。"
+        },
+
+        /* -------------------- 第六课《是我不好》 (5题) -------------------- */
+        {
+          id: "L6_1", lesson: 6, type: "mc",
+          prompt: "【高情商修复站】你在走廊上奔跑时，不小心把同学的水壶撞掉在地上摔裂了。下列哪种做法最真诚、最得体？",
+          options: [
+            "快步跑回教室，假装不是自己撞的。",
+            "生气地说：“谁叫你把水壶放在桌子边上的！”",
+            "马上捡起水壶，诚恳地说：“对不起，是我不好，我不该在走廊跑，我赔你一个新的吧！”",
+            "小声说一句“不好意思”就转身去玩了。"
+          ],
+          answer: 2,
+          explanation: "勇于承认错误（“是我不好”）、不找借口并主动提出弥补办法，才是最真诚的道歉。"
+        },
+        {
+          id: "L6_2", lesson: 6, type: "mc",
+          prompt: "选词填空：小刚不小心弄脏了同桌的新作业本，他感到十分（  ），低着头向同桌道歉。",
+          options: ["骄傲", "惭愧", "羡慕", "愉快"],
+          answer: 1,
+          explanation: "“惭愧”表示因为自己做错了事或没有尽到责任而感到不安、不好意思。"
+        },
+        {
+          id: "L6_3", lesson: 6, type: "mc",
+          prompt: "当好朋友诚恳地向你承认错误并道歉时，你应该怎样回应才显得有礼貌、懂得体谅？",
+          options: [
+            "没关系，既然你不是故意的，我就原谅你吧！",
+            "哼，我永远都不会再理你了！",
+            "你现在知道错啦？太晚了！",
+            "把书包扔在地上不说话。"
+          ],
+          answer: 0,
+          explanation: "学会原谅和互相体谅，才能让友谊更加长久。"
+        },
+        {
+          id: "L6_4", lesson: 6, type: "order",
+          prompt: "【句子排一排】请把下面《是我不好》的小故事按正确顺序排好：",
+          strips: [
+            "1. 下午，我不小心把弟弟搭了半天的积木城堡碰倒了。",
+            "2. 弟弟看着散落一地的积木，难过得眼泪在眼眶里打转。",
+            "3. 我连忙走过去扶起他，诚恳地说：“弟弟，是我不好，我陪你重新搭一座更漂亮的城堡吧！”",
+            "4. 弟弟听了破涕为笑，我们俩又开开心心地一起合作起来。"
+          ],
+          explanation: "闯祸 → 对方难过 → 主动道歉并弥补 → 重归于好，情节自然感人！"
+        },
+        {
+          id: "L6_5", lesson: 6, type: "oral",
+          prompt: "【情景表演】假如你借了同学的故事书，回家时不小心把封面折破了一角。明天还书时，你会怎么对同学说？",
+          hint: "道歉三步曲：① 真诚说声“对不起，是我不好”；② 说明原因但不推卸责任；③ 提出修补或赔偿的方法。"
+        }
+      ];
+
+      /* ==========================================================================
+         模块三：24格大富翁探索岛地图数据
+         ========================================================================== */
+      const BOARD_TILES = [
+        { id: 0,  type: "start",   name: "快乐出发港", icon: "🚢", desc: "经过或停留此地，奖励 +20 积分！" },
+        { id: 1,  type: "lesson",  lesson: 1, name: "愿望起航站", icon: "🌟" },
+        { id: 2,  type: "lesson",  lesson: 1, name: "职业梦想屋", icon: "🩺" },
+        { id: 3,  type: "lesson",  lesson: 1, name: "理想灯塔",   icon: "🚒" },
+        { id: 4,  type: "chance",  name: "机会宝藏格", icon: "🎁", desc: "抽取一张神秘宝藏卡！" },
+        { id: 5,  type: "lesson",  lesson: 2, name: "温馨家庭屋", icon: "🏡" },
+        { id: 6,  type: "lesson",  lesson: 2, name: "友谊桥梁",   icon: "🤝" },
+        { id: 7,  type: "lesson",  lesson: 2, name: "夸夸镜子湖", icon: "🪞" },
+        { id: 8,  type: "water",   name: "健康饮水站", icon: "💧", desc: "第3课健康小贴士：多喝白开水，身体更健康！直接 +15 积分！" },
+        { id: 9,  type: "lesson",  lesson: 3, name: "字典智慧阁", icon: "📖" },
+        { id: 10, type: "lesson",  lesson: 3, name: "活力运动场", icon: "👟" },
+        { id: 11, type: "lesson",  lesson: 3, name: "书香小木屋", icon: "✏️" },
+        { id: 12, type: "chance",  name: "机会宝藏格", icon: "🎁", desc: "抽取一张神秘宝藏卡！" },
+        { id: 13, type: "lesson",  lesson: 4, name: "蝌蚪池塘",   icon: "🐸" },
+        { id: 14, type: "lesson",  lesson: 4, name: "发芽温室",   icon: "🌱" },
+        { id: 15, type: "lesson",  lesson: 4, name: "四季观察台", icon: "🌈" },
+        { id: 16, type: "water",   name: "健康饮水站", icon: "🥤", desc: "第3课健康小贴士：运动后补充白开水！直接 +15 积分！" },
+        { id: 17, type: "lesson",  lesson: 5, name: "时光列车站", icon: "🎢" },
+        { id: 18, type: "lesson",  lesson: 5, name: "心情万花筒", icon: "😄" },
+        { id: 19, type: "lesson",  lesson: 5, name: "难忘纪念碑", icon: "📸" },
+        { id: 20, type: "chance",  name: "机会宝藏格", icon: "🎁", desc: "抽取一张神秘宝藏卡！" },
+        { id: 21, type: "lesson",  lesson: 6, name: "诚实小驿站", icon: "💌" },
+        { id: 22, type: "lesson",  lesson: 6, name: "体谅花园",   icon: "🌷" },
+        { id: 23, type: "lesson",  lesson: 6, name: "和好彩虹桥", icon: "🌈" }
+      ];
+
+      function getGridCoord(index) {
+        if (index >= 0 && index <= 6) {
+          return { row: 1, col: index + 1 };
+        } else if (index >= 7 && index <= 11) {
+          return { row: index - 5, col: 7 };
+        } else if (index >= 12 && index <= 18) {
+          return { row: 7, col: 19 - index };
+        } else {
+          return { row: 25 - index, col: 1 };
+        }
+      }
+
+      const CHANCE_CARDS = [
+        {
+          emoji: "⚡",
+          title: "双倍积分卡！",
+          desc: "恭喜获得【⚡双倍积分卡】！下一次本组答对课文题目时，获得的积分自动翻倍！",
+          apply: (team) => { team.doubleCard = true; }
+        },
+        {
+          emoji: "🛡️",
+          title: "岛屿护盾卡！",
+          desc: "恭喜获得【🛡️护盾卡】！下一次经过其他小组占领的岛屿时，自动免除过路费！",
+          apply: (team) => { team.shieldCard = true; }
+        },
+        {
+          emoji: "🤝",
+          title: "友好分享宝藏！",
+          desc: "独乐乐不如众乐乐！本组获得 +20 积分，同时所有其他小组一起分享快乐，各得 +10 积分！",
+          apply: (team, allTeams) => {
+            allTeams.forEach(t => {
+              t.score += (t.id === team.id) ? 20 : 10;
+            });
+          }
+        },
+        {
+          emoji: "⛵",
+          title: "顺风快船奖励！",
+          desc: "海风吹来好消息！本组直接获得 +25 探索积分！",
+          apply: (team) => { team.score += 25; }
+        },
+        {
+          emoji: "🌟",
+          title: "勤学小博士奖！",
+          desc: "全组同学坐姿端正、认真倾听！直接奖励 +20 积分！",
+          apply: (team) => { team.score += 20; }
+        }
+      ];
+
+      /* ==========================================================================
+         模块四：游戏状态管理
+         ========================================================================== */
+      const DEFAULT_TEAMS = [
+        { id: 1, name: "勇敢狮队", icon: "🦁", color: "#ef4444", score: 50, pos: 0, doubleCard: false, shieldCard: false },
+        { id: 2, name: "聪明豚队", icon: "🐬", color: "#0ea5e9", score: 50, pos: 0, doubleCard: false, shieldCard: false },
+        { id: 3, name: "快乐熊队", icon: "🐼", color: "#10b981", score: 50, pos: 0, doubleCard: false, shieldCard: false },
+        { id: 4, name: "飞翔鹰队", icon: "🦅", color: "#8b5cf6", score: 50, pos: 0, doubleCard: false, shieldCard: false }
+      ];
+
+      const EXTRA_TEAM_TEMPLATES = [
+        { name: "机灵猴队", icon: "🐵", color: "#f59e0b" },
+        { name: "勤劳蜂队", icon: "🐝", color: "#ec4899" }
+      ];
+
+      let gameState = {
+        teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
+        currentTeamIdx: 0,
+        tileOwners: {},
+        usedQuestionIds: new Set(),
+        isMoving: false,
+        isRandomSpinning: false,
+        diceValue: 6,
+        activeQuestion: null,
+        activeTile: null,
+        selectedOrderStrips: [],
+        currentShuffledStrips: [],
+        orderLocked: false,
+        timerSeconds: 45,
+        timerRunning: false,
+        timerInterval: null
+      };
+
+      /* ==========================================================================
+         模块五：UI 渲染引擎（统一采用事件委托，杜绝行内 onclick 失效问题）
+         ========================================================================== */
+      const boardEl = document.getElementById("monopolyBoard");
+      const teamGridEl = document.getElementById("teamGrid");
+
+      function showToast(msg) {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = "toast-msg";
+        toast.textContent = msg;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transition = "opacity 0.3s ease";
+          setTimeout(() => toast.remove(), 300);
+        }, 2400);
+      }
+
+      function renderDiceFace(val) {
+        const patterns = {
+          1: [4],
+          2: [2, 6],
+          3: [2, 4, 6],
+          4: [0, 2, 6, 8],
+          5: [0, 2, 4, 6, 8],
+          6: [0, 2, 3, 5, 6, 8]
+        };
+        const activePips = patterns[val] || [4];
+        let html = "";
+        for (let i = 0; i < 9; i++) {
+          const isAct = activePips.includes(i);
+          const isRed = (val === 1 || val === 4) && isAct;
+          html += `<div class="pip ${isAct ? "active" : ""} ${isRed ? "red-pip" : ""}"></div>`;
+        }
+        return html;
+      }
+
+      function renderBoard(statusText = "点击「掷骰子」或按空格键出发！") {
+        const currentTeam = gameState.teams[gameState.currentTeamIdx];
+        let html = "";
+
+        BOARD_TILES.forEach((tile) => {
+          const coord = getGridCoord(tile.id);
+          let barColor = "#64748b";
+          let barText = "特殊格";
+          let tileBg = "#ffffff";
+
+          if (tile.type === "lesson") {
+            const meta = LESSON_META[tile.lesson];
+            barColor = meta.color;
+            barText = meta.short;
+            tileBg = meta.bg;
+          } else if (tile.type === "start") {
+            barColor = "#f59e0b";
+            barText = "起点 +20";
+            tileBg = "#fffbeb";
+          } else if (tile.type === "chance") {
+            barColor = "#ec4899";
+            barText = "宝藏卡";
+            tileBg = "#fdf2f8";
+          } else if (tile.type === "water") {
+            barColor = "#0284c7";
+            barText = "饮水 +15";
+            tileBg = "#f0f9ff";
+          }
+
+          const ownerId = gameState.tileOwners[tile.id];
+          const ownerTeam = gameState.teams.find(t => t.id === ownerId);
+          const ownerBorder = ownerTeam ? `border-color:${ownerTeam.color}; border-width:3px;` : "";
+          const ownerBadge = ownerTeam
+            ? `<div class="owner-flag" style="background:${ownerTeam.color};" title="已由${ownerTeam.name}占领">🚩${ownerTeam.icon}</div>`
+            : "";
+
+          const pawnsHere = gameState.teams.filter(t => t.pos === tile.id);
+          const pawnsHtml = pawnsHere.map(t => {
+            const isCur = t.id === currentTeam.id;
+            return `<div class="pawn-token ${isCur ? "current-pawn" : ""}" style="background:${t.color};" title="${t.name}">${t.icon}</div>`;
+          }).join("");
+
+          html += `
+            <div class="board-tile" id="tile-${tile.id}" data-tile-id="${tile.id}"
+                 style="grid-row:${coord.row}; grid-column:${coord.col}; background:${tileBg}; ${ownerBorder}">
+              <span class="tile-num">${tile.id}</span>
+              <div class="tile-header-bar" style="background:${barColor};">${barText}</div>
+              <div class="tile-icon">${tile.icon}</div>
+              <div class="tile-name">${tile.name}</div>
+              ${ownerBadge}
+              <div class="tile-pawns">${pawnsHtml}</div>
+            </div>
+          `;
+        });
 
         html += `
-          <div class="board-tile" id="tile-${tile.id}"
-               style="grid-row:${coord.row}; grid-column:${coord.col}; background:${tileBg}; ${ownerBorder}"
-               onclick="handleTilePreview(${tile.id})">
-            <span class="tile-num">${tile.id}</span>
-            <div class="tile-header-bar" style="background:${barColor};">${barText}</div>
-            <div class="tile-icon">${tile.icon}</div>
-            <div class="tile-name">${tile.name}</div>
-            ${ownerBadge}
-            <div class="tile-pawns">${pawnsHtml}</div>
+          <div class="center-island">
+            <div class="center-watermark">✨ Franky老师 · 欢乐伙伴3A</div>
+
+            <div class="turn-banner" style="border-color:${currentTeam.color};">
+              <div class="turn-label">当前行动小组</div>
+              <div class="turn-team-display" style="color:${currentTeam.color};">
+                <span>${currentTeam.icon}</span>
+                <span>${currentTeam.name}</span>
+              </div>
+            </div>
+
+            <div class="dice-stage">
+              <div id="diceBox" class="dice-box" data-action="roll" title="点击掷骰子">
+                ${renderDiceFace(gameState.diceValue)}
+              </div>
+              <button id="btnRollDice" class="btn-roll" type="button" data-action="roll" ${gameState.isMoving ? "disabled" : ""}>
+                <span>🎲</span>
+                <span>掷骰子 (空格)</span>
+              </button>
+            </div>
+
+            <div id="statusTicker" class="status-ticker">${statusText}</div>
           </div>
         `;
+
+        boardEl.innerHTML = html;
+      }
+
+      // 棋盘统一事件委托（处理格子预览、骰子点击、掷骰子按钮）
+      boardEl.addEventListener("click", (e) => {
+        const rollTarget = e.target.closest("[data-action='roll']");
+        if (rollTarget) {
+          triggerRollDice();
+          return;
+        }
+        const tileTarget = e.target.closest("[data-tile-id]");
+        if (tileTarget) {
+          const tileId = Number(tileTarget.dataset.tileId);
+          handleTilePreview(tileId);
+        }
       });
 
-      // 中央 5x5 控制岛
-      html += `
-        <div class="center-island">
-          <div class="center-watermark">✨ Franky老师 · 欢乐伙伴3A</div>
+      function renderScoreboard() {
+        const currentTeam = gameState.teams[gameState.currentTeamIdx];
+        teamGridEl.innerHTML = gameState.teams.map((team, idx) => {
+          const isCurrent = team.id === currentTeam.id;
+          const ownedCount = Object.values(gameState.tileOwners).filter(oid => oid === team.id).length;
 
-          <div class="turn-banner" style="border-color:${currentTeam.color};">
-            <div class="turn-label">当前行动小组</div>
-            <div class="turn-team-display" style="color:${currentTeam.color};">
-              <span>${currentTeam.icon}</span>
-              <span>${currentTeam.name}</span>
-            </div>
-          </div>
-
-          <div class="dice-stage">
-            <div id="diceBox" class="dice-box" onclick="triggerRollDice()" title="点击掷骰子">
-              ${renderDiceFace(gameState.diceValue)}
-            </div>
-            <button id="btnRollDice" class="btn-roll" type="button" onclick="triggerRollDice()" ${gameState.isMoving ? "disabled" : ""}>
-              <span>🎲</span>
-              <span>掷骰子 (空格)</span>
-            </button>
-          </div>
-
-          <div id="statusTicker" class="status-ticker">${statusText}</div>
-        </div>
-      `;
-
-      boardEl.innerHTML = html;
-    }
-
-    // 渲染右侧/下方小组计分板
-    function renderScoreboard() {
-      const currentTeam = gameState.teams[gameState.currentTeamIdx];
-      teamGridEl.innerHTML = gameState.teams.map((team, idx) => {
-        const isCurrent = team.id === currentTeam.id;
-        const ownedCount = Object.values(gameState.tileOwners).filter(oid => oid === team.id).length;
-
-        return `
-          <div class="team-card ${isCurrent ? "active-turn" : ""}">
-            <div class="team-card-top">
-              <div class="team-identity">
-                <div class="team-avatar" style="background:${team.color};">${team.icon}</div>
-                <div>
-                  <button class="team-name-btn" type="button" onclick="openSetupModal()" title="点击修改小组名称">
-                    ${team.name} ✏️
-                  </button>
-                  <div style="font-size:0.74rem; color:#64748b; padding-left:6px;">
-                    位置：第 ${team.pos} 格 ｜ 领地：${ownedCount} 座
+          return `
+            <div class="team-card ${isCurrent ? "active-turn" : ""}">
+              <div class="team-card-top">
+                <div class="team-identity">
+                  <div class="team-avatar" style="background:${team.color};">${team.icon}</div>
+                  <div>
+                    <button class="team-name-btn" type="button" data-action="open-setup" title="点击修改小组名称">
+                      ${team.name} ✏️
+                    </button>
+                    <div style="font-size:0.74rem; color:#64748b; padding-left:6px;">
+                      位置：第 ${team.pos} 格 ｜ 领地：${ownedCount} 座
+                    </div>
                   </div>
                 </div>
+                <div class="team-score-badge">
+                  <span>🪙</span>
+                  <span>${team.score}</span>
+                </div>
               </div>
-              <div class="team-score-badge">
-                <span>🪙</span>
-                <span>${team.score}</span>
+
+              <div class="team-card-meta">
+                <div class="team-badges">
+                  ${isCurrent ? `<span class="mini-tag" style="background:#fef3c7; color:#b45309;">🎯 回合中</span>` : ""}
+                  ${team.doubleCard ? `<span class="mini-tag powerup">⚡ 双倍卡</span>` : ""}
+                  ${team.shieldCard ? `<span class="mini-tag powerup">🛡️ 护盾卡</span>` : ""}
+                  ${!isCurrent && !team.doubleCard && !team.shieldCard ? `<span class="mini-tag">探索小队</span>` : ""}
+                </div>
+
+                <div class="score-adjust-btns">
+                  <button class="btn-mini-score btn-plus" type="button" data-team-idx="${idx}" data-delta="10" title="奖励10分">+10</button>
+                  <button class="btn-mini-score btn-minus" type="button" data-team-idx="${idx}" data-delta="-10" title="扣减10分">-10</button>
+                </div>
               </div>
             </div>
-
-            <div class="team-card-meta">
-              <div class="team-badges">
-                ${isCurrent ? `<span class="mini-tag" style="background:#fef3c7; color:#b45309;">🎯 回合中</span>` : ""}
-                ${team.doubleCard ? `<span class="mini-tag powerup">⚡ 双倍卡</span>` : ""}
-                ${team.shieldCard ? `<span class="mini-tag powerup">🛡️ 护盾卡</span>` : ""}
-                ${!isCurrent && !team.doubleCard && !team.shieldCard ? `<span class="mini-tag">探索小队</span>` : ""}
-              </div>
-
-              <div class="score-adjust-btns">
-                <button class="btn-mini-score btn-plus" type="button" onclick="manualAdjustScore(${idx}, 10)" title="奖励10分">+10</button>
-                <button class="btn-mini-score btn-minus" type="button" onclick="manualAdjustScore(${idx}, -10)" title="扣减10分">-10</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function manualAdjustScore(teamIdx, delta) {
-      const team = gameState.teams[teamIdx];
-      if (!team) return;
-      team.score = Math.max(0, team.score + delta);
-      if (delta > 0) {
-        sfx.hop(3);
-        showToast(`👏 Franky老师奖励【${team.name}】+${delta} 积分！`);
-      } else {
-        showToast(`📝 【${team.name}】调整 ${delta} 积分`);
+          `;
+        }).join("");
       }
-      renderScoreboard();
-    }
 
-    function handleTilePreview(tileId) {
-      const tile = BOARD_TILES[tileId];
-      if (!tile) return;
-      if (tile.type === "lesson") {
-        const meta = LESSON_META[tile.lesson];
-        const ownerId = gameState.tileOwners[tile.id];
-        const owner = gameState.teams.find(t => t.id === ownerId);
-        const ownerStr = owner ? `（当前岛主：${owner.icon}${owner.name}）` : "（无主岛屿，答对即可占领！）";
-        showToast(`📍 ${tile.name}｜${meta.title} ${ownerStr}`);
-      } else {
-        showToast(`📍 ${tile.name}：${tile.desc}`);
+      // 计分板统一事件委托
+      teamGridEl.addEventListener("click", (e) => {
+        const setupBtn = e.target.closest("[data-action='open-setup']");
+        if (setupBtn) {
+          openSetupModal();
+          return;
+        }
+        const scoreBtn = e.target.closest("[data-delta]");
+        if (scoreBtn) {
+          const idx = Number(scoreBtn.dataset.teamIdx);
+          const delta = Number(scoreBtn.dataset.delta);
+          manualAdjustScore(idx, delta);
+        }
+      });
+
+      function manualAdjustScore(teamIdx, delta) {
+        const team = gameState.teams[teamIdx];
+        if (!team) return;
+        team.score = Math.max(0, team.score + delta);
+        if (delta > 0) {
+          sfx.hop(3);
+          showToast(`👏 Franky老师奖励【${team.name}】+${delta} 积分！`);
+        } else {
+          showToast(`📝 【${team.name}】调整 ${delta} 积分`);
+        }
+        renderScoreboard();
       }
-    }
 
-    /* ==========================================================================
-       模块六：掷骰子与棋子逐格移动动画
-       ========================================================================== */
-    function triggerRollDice() {
-      if (gameState.isMoving) return;
-      // 如果有弹窗打开，不触发掷骰子
-      if (document.querySelector(".modal-backdrop.open")) return;
+      function handleTilePreview(tileId) {
+        const tile = BOARD_TILES[tileId];
+        if (!tile) return;
+        if (tile.type === "lesson") {
+          const meta = LESSON_META[tile.lesson];
+          const ownerId = gameState.tileOwners[tile.id];
+          const owner = gameState.teams.find(t => t.id === ownerId);
+          const ownerStr = owner ? `（当前岛主：${owner.icon}${owner.name}）` : "（无主岛屿，答对即可占领！）";
+          showToast(`📍 ${tile.name}｜${meta.title} ${ownerStr}`);
+        } else {
+          showToast(`📍 ${tile.name}：${tile.desc}`);
+        }
+      }
 
-      gameState.isMoving = true;
-      const btn = document.getElementById("btnRollDice");
-      const diceBox = document.getElementById("diceBox");
-      const ticker = document.getElementById("statusTicker");
-      if (btn) btn.disabled = true;
-      if (diceBox) diceBox.classList.add("rolling");
+      /* ==========================================================================
+         模块六：掷骰子与棋子逐格移动动画
+         ========================================================================== */
+      function triggerRollDice() {
+        if (gameState.isMoving || gameState.isRandomSpinning) return;
+        if (document.querySelector(".modal-backdrop.open")) return;
 
-      const currentTeam = gameState.teams[gameState.currentTeamIdx];
-      if (ticker) ticker.textContent = `${currentTeam.icon} ${currentTeam.name} 正在掷骰子...`;
+        gameState.isMoving = true;
+        const btn = document.getElementById("btnRollDice");
+        const diceBox = document.getElementById("diceBox");
+        const ticker = document.getElementById("statusTicker");
+        if (btn) btn.disabled = true;
+        if (diceBox) diceBox.classList.add("rolling");
 
-      let rollCount = 0;
-      const finalVal = Math.floor(Math.random() * 6) + 1;
+        const currentTeam = gameState.teams[gameState.currentTeamIdx];
+        if (ticker) ticker.textContent = `${currentTeam.icon} ${currentTeam.name} 正在掷骰子...`;
 
-      const rollAnim = setInterval(() => {
-        rollCount++;
-        const tempFace = Math.floor(Math.random() * 6) + 1;
-        if (diceBox) diceBox.innerHTML = renderDiceFace(tempFace);
-        sfx.diceTick();
+        let rollCount = 0;
+        const finalVal = Math.floor(Math.random() * 6) + 1;
 
-        if (rollCount >= 12) {
-          clearInterval(rollAnim);
-          gameState.diceValue = finalVal;
-          if (diceBox) {
-            diceBox.classList.remove("rolling");
-            diceBox.innerHTML = renderDiceFace(finalVal);
+        const rollAnim = setInterval(() => {
+          rollCount++;
+          const tempFace = Math.floor(Math.random() * 6) + 1;
+          if (diceBox) diceBox.innerHTML = renderDiceFace(tempFace);
+          sfx.diceTick();
+
+          if (rollCount >= 12) {
+            clearInterval(rollAnim);
+            gameState.diceValue = finalVal;
+            if (diceBox) {
+              diceBox.classList.remove("rolling");
+              diceBox.innerHTML = renderDiceFace(finalVal);
+            }
+            if (ticker) ticker.textContent = `🎲 掷出了 ${finalVal} 点！前进 ${finalVal} 步！`;
+            movePawnStepByStep(finalVal);
           }
-          if (ticker) ticker.textContent = `🎲 掷出了 ${finalVal} 点！前进 ${finalVal} 步！`;
-          movePawnStepByStep(finalVal);
-        }
-      }, 65);
-    }
+        }, 65);
+      }
 
-    function movePawnStepByStep(steps) {
-      const team = gameState.teams[gameState.currentTeamIdx];
-      let moved = 0;
+      function movePawnStepByStep(steps) {
+        const team = gameState.teams[gameState.currentTeamIdx];
+        let moved = 0;
 
-      const stepTimer = setInterval(() => {
-        moved++;
-        const nextPos = (team.pos + 1) % BOARD_TILES.length;
-        team.pos = nextPos;
-        sfx.hop(moved);
+        const stepTimer = setInterval(() => {
+          moved++;
+          const nextPos = (team.pos + 1) % BOARD_TILES.length;
+          team.pos = nextPos;
+          sfx.hop(moved);
 
-        // 经过起点（不是最后一步停在起点时）奖励 +20 积分
-        if (nextPos === 0 && moved < steps) {
+          if (nextPos === 0 && moved < steps) {
+            team.score += 20;
+            showToast(`🚢 ${team.name} 经过快乐出发港，获得 +20 积分！`);
+            renderScoreboard();
+          }
+
+          renderBoard(`👣 ${team.icon} ${team.name} 前进中 (${moved}/${steps})...`);
+
+          if (moved >= steps) {
+            clearInterval(stepTimer);
+            const landedTileEl = document.getElementById(`tile-${team.pos}`);
+            if (landedTileEl) landedTileEl.classList.add("active-landing");
+
+            setTimeout(() => {
+              handleLandedTile(BOARD_TILES[team.pos]);
+            }, 420);
+          }
+        }, 280);
+      }
+
+      /* ==========================================================================
+         模块七：落点事件分发
+         ========================================================================== */
+      function handleLandedTile(tile) {
+        const team = gameState.teams[gameState.currentTeamIdx];
+        gameState.activeTile = tile;
+
+        if (tile.type === "start") {
           team.score += 20;
-          showToast(`🚢 ${team.name} 经过快乐出发港，获得 +20 积分！`);
+          sfx.correct();
+          openEventModal("🚢", "抵达快乐出发港！", `${team.icon} ${team.name} 顺利绕岛一周回到快乐出发港，获得 +20 航行积分！`);
           renderScoreboard();
+          return;
         }
 
-        renderBoard(`👣 ${team.icon} ${team.name} 前进中 (${moved}/${steps})...`);
-
-        if (moved >= steps) {
-          clearInterval(stepTimer);
-          const landedTileEl = document.getElementById(`tile-${team.pos}`);
-          if (landedTileEl) landedTileEl.classList.add("active-landing");
-
-          setTimeout(() => {
-            handleLandedTile(BOARD_TILES[team.pos]);
-          }, 420);
+        if (tile.type === "water") {
+          team.score += 15;
+          sfx.powerup();
+          openEventModal(tile.icon, "健康饮水补充站", `《我的好伙伴》健康小贴士：白开水是最健康的饮料！${team.icon} ${team.name} 补充能量，获得 +15 积分！`);
+          renderScoreboard();
+          return;
         }
-      }, 280);
-    }
 
-    /* ==========================================================================
-       模块七：落点事件分发（起点 / 饮水站 / 宝藏卡 / 课文挑战题）
-       ========================================================================== */
-    function handleLandedTile(tile) {
-      const team = gameState.teams[gameState.currentTeamIdx];
-      gameState.activeTile = tile;
+        if (tile.type === "chance") {
+          const card = CHANCE_CARDS[Math.floor(Math.random() * CHANCE_CARDS.length)];
+          card.apply(team, gameState.teams);
+          sfx.powerup();
+          openEventModal(card.emoji, card.title, card.desc);
+          renderScoreboard();
+          return;
+        }
 
-      if (tile.type === "start") {
-        team.score += 20;
-        sfx.correct();
-        openEventModal("🚢", "抵达快乐出发港！", `${team.icon} ${team.name} 顺利绕岛一周回到快乐出发港，获得 +20 航行积分！`);
-        renderScoreboard();
-        return;
+        if (tile.type === "lesson") {
+          const ownerId = gameState.tileOwners[tile.id];
+          if (ownerId && ownerId !== team.id && team.shieldCard) {
+            team.shieldCard = false;
+            showToast(`🛡️ ${team.name} 触发了【护盾卡】，自动免除过路费！`);
+            renderScoreboard();
+          }
+          launchLessonQuestion(tile);
+        }
       }
 
-      if (tile.type === "water") {
-        team.score += 15;
-        sfx.powerup();
-        openEventModal(tile.icon, "健康饮水补充站", `《我的好伙伴》健康小贴士：白开水是最健康的饮料！${team.icon} ${team.name} 补充能量，获得 +15 积分！`);
-        renderScoreboard();
-        return;
+      function openEventModal(emoji, title, desc) {
+        document.getElementById("eventEmoji").textContent = emoji;
+        document.getElementById("eventTitle").textContent = title;
+        document.getElementById("eventDesc").textContent = desc;
+        document.getElementById("eventModal").classList.add("open");
       }
 
-      if (tile.type === "chance") {
-        const card = CHANCE_CARDS[Math.floor(Math.random() * CHANCE_CARDS.length)];
-        card.apply(team, gameState.teams);
-        sfx.powerup();
-        openEventModal(card.emoji, card.title, card.desc);
-        renderScoreboard();
-        return;
+      document.getElementById("btnConfirmEvent").addEventListener("click", () => {
+        document.getElementById("eventModal").classList.remove("open");
+        advanceToNextTeam();
+      });
+
+      /* ==========================================================================
+         模块八：课文题卡弹窗与交互答题逻辑
+         ========================================================================== */
+      function pickQuestionForLesson(lessonNum) {
+        let pool = QUESTION_BANK.filter(q => q.lesson === lessonNum && !gameState.usedQuestionIds.has(q.id));
+        if (pool.length === 0) {
+          QUESTION_BANK.filter(q => q.lesson === lessonNum).forEach(q => gameState.usedQuestionIds.delete(q.id));
+          pool = QUESTION_BANK.filter(q => q.lesson === lessonNum);
+        }
+        const chosen = pool[Math.floor(Math.random() * pool.length)];
+        gameState.usedQuestionIds.add(chosen.id);
+        return chosen;
       }
 
-      if (tile.type === "lesson") {
-        // 检查是否踩中他人领地且有护盾卡
+      function launchLessonQuestion(tile) {
+        const team = gameState.teams[gameState.currentTeamIdx];
+        const meta = LESSON_META[tile.lesson];
+        const question = pickQuestionForLesson(tile.lesson);
+        gameState.activeQuestion = question;
+
+        const badge = document.getElementById("qLessonBadge");
+        badge.style.background = meta.color;
+        badge.textContent = `${meta.icon} ${meta.title} · ${tile.name}`;
+        document.getElementById("qTeamBadge").textContent = `${team.icon} ${team.name} 挑战中`;
+
         const ownerId = gameState.tileOwners[tile.id];
-        if (ownerId && ownerId !== team.id && team.shieldCard) {
-          team.shieldCard = false;
-          showToast(`🛡️ ${team.name} 触发了【护盾卡】，自动免除过路费！`);
-          renderScoreboard();
+        const ownerTeam = gameState.teams.find(t => t.id === ownerId);
+        let territoryNote = "";
+        if (!ownerTeam) {
+          territoryNote = "（无主岛屿：答对即可插旗占领！）";
+        } else if (ownerTeam.id === team.id) {
+          territoryNote = "（自家领地：答对巩固可获额外奖励！）";
+        } else {
+          territoryNote = `（${ownerTeam.icon}${ownerTeam.name} 的领地：答对赢挑战奖，答错付 10 分过路费）`;
         }
-        launchLessonQuestion(tile);
-      }
-    }
 
-    function openEventModal(emoji, title, desc) {
-      document.getElementById("eventEmoji").textContent = emoji;
-      document.getElementById("eventTitle").textContent = title;
-      document.getElementById("eventDesc").textContent = desc;
-      document.getElementById("eventModal").classList.add("open");
-    }
+        document.getElementById("qPromptText").innerHTML = `${question.prompt}<div style="font-size:0.84rem; color:#0284c7; margin-top:6px;">${territoryNote}</div>`;
 
-    document.getElementById("btnConfirmEvent").addEventListener("click", () => {
-      document.getElementById("eventModal").classList.remove("open");
-      advanceToNextTeam();
-    });
+        const fb = document.getElementById("qFeedbackBox");
+        fb.className = "feedback-box";
+        fb.innerHTML = "";
+        document.getElementById("btnCloseQuestion").style.display = "none";
 
-    /* ==========================================================================
-       模块八：课文题卡弹窗与交互答题逻辑
-       ========================================================================== */
-    function pickQuestionForLesson(lessonNum) {
-      let pool = QUESTION_BANK.filter(q => q.lesson === lessonNum && !gameState.usedQuestionIds.has(q.id));
-      // 如果该课题目全部出完一轮，则重置该课题目池
-      if (pool.length === 0) {
-        QUESTION_BANK.filter(q => q.lesson === lessonNum).forEach(q => gameState.usedQuestionIds.delete(q.id));
-        pool = QUESTION_BANK.filter(q => q.lesson === lessonNum);
-      }
-      const chosen = pool[Math.floor(Math.random() * pool.length)];
-      gameState.usedQuestionIds.add(chosen.id);
-      return chosen;
-    }
+        document.getElementById("mcContainer").style.display = "none";
+        document.getElementById("orderContainer").style.display = "none";
+        document.getElementById("oralContainer").style.display = "none";
 
-    function launchLessonQuestion(tile) {
-      const team = gameState.teams[gameState.currentTeamIdx];
-      const meta = LESSON_META[tile.lesson];
-      const question = pickQuestionForLesson(tile.lesson);
-      gameState.activeQuestion = question;
+        if (question.type === "mc") {
+          document.getElementById("qTypeTag").textContent = "🧠 智慧选择题";
+          renderMultipleChoice(question);
+        } else if (question.type === "order") {
+          document.getElementById("qTypeTag").textContent = "🧩 句序排一排";
+          renderOrderPuzzle(question);
+        } else if (question.type === "oral") {
+          document.getElementById("qTypeTag").textContent = "🎤 口语小达人";
+          renderOralChallenge(question);
+        }
 
-      // 填充顶部课目标签与小组名
-      const badge = document.getElementById("qLessonBadge");
-      badge.style.background = meta.color;
-      badge.textContent = `${meta.icon} ${meta.title} · ${tile.name}`;
-      document.getElementById("qTeamBadge").textContent = `${team.icon} ${team.name} 挑战中`;
-
-      // 检查领地归属提示
-      const ownerId = gameState.tileOwners[tile.id];
-      const ownerTeam = gameState.teams.find(t => t.id === ownerId);
-      let territoryNote = "";
-      if (!ownerTeam) {
-        territoryNote = "（无主岛屿：答对即可插旗占领！）";
-      } else if (ownerTeam.id === team.id) {
-        territoryNote = "（自家领地：答对巩固可获额外奖励！）";
-      } else {
-        territoryNote = `（${ownerTeam.icon}${ownerTeam.name} 的领地：答对赢挑战奖，答错付 10 分过路费）`;
+        startQuestionTimer(45);
+        document.getElementById("questionModal").classList.add("open");
       }
 
-      document.getElementById("qPromptText").innerHTML = `${question.prompt}<div style="font-size:0.84rem; color:#0284c7; margin-top:6px;">${territoryNote}</div>`;
-
-      // 重置反馈区与底部按钮
-      const fb = document.getElementById("qFeedbackBox");
-      fb.className = "feedback-box";
-      fb.innerHTML = "";
-      document.getElementById("btnCloseQuestion").style.display = "none";
-
-      // 隐藏所有题型容器
-      document.getElementById("mcContainer").style.display = "none";
-      document.getElementById("orderContainer").style.display = "none";
-      document.getElementById("oralContainer").style.display = "none";
-
-      if (question.type === "mc") {
-        document.getElementById("qTypeTag").textContent = "🧠 智慧选择题";
-        renderMultipleChoice(question);
-      } else if (question.type === "order") {
-        document.getElementById("qTypeTag").textContent = "🧩 句序排一排";
-        renderOrderPuzzle(question);
-      } else if (question.type === "oral") {
-        document.getElementById("qTypeTag").textContent = "🎤 口语小达人";
-        renderOralChallenge(question);
-      }
-
-      // 启动 45 秒倒计时
-      startQuestionTimer(45);
-      document.getElementById("questionModal").classList.add("open");
-    }
-
-    // 1. 渲染选择题
-    function renderMultipleChoice(q) {
-      const container = document.getElementById("mcContainer");
-      container.style.display = "grid";
-      const letters = ["A", "B", "C", "D"];
-      container.innerHTML = q.options.map((opt, idx) => `
-        <button class="option-btn" type="button" onclick="submitMultipleChoice(${idx}, this)">
-          <span class="option-letter">${letters[idx]}</span>
-          <span>${opt}</span>
-        </button>
-      `).join("");
-    }
-
-    function submitMultipleChoice(selectedIdx, btnEl) {
-      stopQuestionTimer();
-      const q = gameState.activeQuestion;
-      const buttons = document.querySelectorAll("#mcContainer .option-btn");
-      buttons.forEach(b => b.disabled = true);
-
-      const isCorrect = selectedIdx === q.answer;
-      buttons[q.answer].classList.add("correct");
-      if (!isCorrect) {
-        btnEl.classList.add("wrong");
-      }
-
-      resolveQuestionOutcome(isCorrect, isCorrect ? 20 : 0, q.explanation);
-    }
-
-    // 2. 渲染句序排一排
-    function renderOrderPuzzle(q) {
-      const container = document.getElementById("orderContainer");
-      container.style.display = "block";
-      gameState.selectedOrderStrips = [];
-
-      // 打乱顺序（确保和原顺序不同）
-      const indexed = q.strips.map((text, idx) => ({ text, correctIdx: idx }));
-      let shuffled = [...indexed].sort(() => Math.random() - 0.5);
-      if (shuffled.every((item, i) => item.correctIdx === i)) {
-        shuffled.reverse();
-      }
-      gameState.currentShuffledStrips = shuffled;
-      updateOrderPuzzleUI();
-    }
-
-    function updateOrderPuzzleUI() {
-      const selectedBox = document.getElementById("orderSelectedBox");
-      const poolBox = document.getElementById("orderPoolBox");
-
-      if (gameState.selectedOrderStrips.length === 0) {
-        selectedBox.innerHTML = `<div class="order-placeholder">点击下方句子卡片，它们会按顺序排到这里哦！</div>`;
-      } else {
-        selectedBox.innerHTML = gameState.selectedOrderStrips.map((item, idx) => `
-          <div class="order-chip selected" onclick="unselectOrderStrip(${idx})" title="点击撤回此句">
-            <span style="background:#2563eb; color:#fff; width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; flex-shrink:0;">${idx + 1}</span>
-            <span>${item.text.replace(/^\d+\.\s*/, "")}</span>
-          </div>
-        `).join("");
-      }
-
-      const selectedIds = new Set(gameState.selectedOrderStrips.map(s => s.correctIdx));
-      poolBox.innerHTML = gameState.currentShuffledStrips
-        .filter(item => !selectedIds.has(item.correctIdx))
-        .map(item => `
-          <button class="order-chip" type="button" onclick="selectOrderStrip(${item.correctIdx})">
-            <span>📄</span>
-            <span>${item.text.replace(/^\d+\.\s*/, "")}</span>
+      // 1. 选择题
+      const mcContainer = document.getElementById("mcContainer");
+      function renderMultipleChoice(q) {
+        mcContainer.style.display = "grid";
+        const letters = ["A", "B", "C", "D"];
+        mcContainer.innerHTML = q.options.map((opt, idx) => `
+          <button class="option-btn" type="button" data-opt-idx="${idx}">
+            <span class="option-letter">${letters[idx]}</span>
+            <span>${opt}</span>
           </button>
         `).join("");
-    }
-
-    function selectOrderStrip(correctIdx) {
-      const item = gameState.currentShuffledStrips.find(s => s.correctIdx === correctIdx);
-      if (!item) return;
-      sfx.hop(gameState.selectedOrderStrips.length);
-      gameState.selectedOrderStrips.push(item);
-      updateOrderPuzzleUI();
-    }
-
-    function unselectOrderStrip(posIdx) {
-      gameState.selectedOrderStrips.splice(posIdx, 1);
-      updateOrderPuzzleUI();
-    }
-
-    document.getElementById("btnOrderReset").addEventListener("click", () => {
-      gameState.selectedOrderStrips = [];
-      updateOrderPuzzleUI();
-    });
-
-    document.getElementById("btnOrderSubmit").addEventListener("click", () => {
-      const q = gameState.activeQuestion;
-      if (gameState.selectedOrderStrips.length < q.strips.length) {
-        showToast("⚠️ 请先把所有句子都排进上方框里再提交哦！");
-        return;
-      }
-      stopQuestionTimer();
-      document.getElementById("btnOrderSubmit").disabled = true;
-      document.getElementById("btnOrderReset").disabled = true;
-
-      const isCorrect = gameState.selectedOrderStrips.every((item, idx) => item.correctIdx === idx);
-      const correctOrderHtml = `<div style="margin-top:8px; padding-top:8px; border-top:1px dashed rgba(0,0,0,0.15);"><strong>正确顺序：</strong><br>${q.strips.join("<br>")}</div>`;
-      resolveQuestionOutcome(isCorrect, isCorrect ? 25 : 0, q.explanation + correctOrderHtml);
-    });
-
-    // 3. 渲染口语小达人
-    function renderOralChallenge(q) {
-      const container = document.getElementById("oralContainer");
-      container.style.display = "block";
-      const hintBox = document.getElementById("oralHintBox");
-      hintBox.style.display = "none";
-      hintBox.textContent = q.hint;
-
-      document.getElementById("btnOralGreat").disabled = false;
-      document.getElementById("btnOralGood").disabled = false;
-      document.getElementById("btnOralRetry").disabled = false;
-    }
-
-    document.getElementById("btnToggleHint").addEventListener("click", () => {
-      const hintBox = document.getElementById("oralHintBox");
-      hintBox.style.display = hintBox.style.display === "none" ? "block" : "none";
-    });
-
-    document.getElementById("btnOralGreat").addEventListener("click", () => {
-      stopQuestionTimer();
-      disableOralButtons();
-      resolveQuestionOutcome(true, 30, "口头表达流畅生动，用词准确，获得满堂喝彩！");
-    });
-
-    document.getElementById("btnOralGood").addEventListener("click", () => {
-      stopQuestionTimer();
-      disableOralButtons();
-      resolveQuestionOutcome(true, 20, "句子通顺完整，勇敢表达，成功完成岛屿挑战！");
-    });
-
-    document.getElementById("btnOralRetry").addEventListener("click", () => {
-      stopQuestionTimer();
-      disableOralButtons();
-      resolveQuestionOutcome(false, 0, "非常勇敢地尝试了！多听听其他小组的发言，下次一定更棒！");
-    });
-
-    function disableOralButtons() {
-      document.getElementById("btnOralGreat").disabled = true;
-      document.getElementById("btnOralGood").disabled = true;
-      document.getElementById("btnOralRetry").disabled = true;
-    }
-
-    // 统一结算答题得分、双倍卡、领地占领与过路费
-    function resolveQuestionOutcome(isSuccess, basePoints, explanationHtml) {
-      const team = gameState.teams[gameState.currentTeamIdx];
-      const tile = gameState.activeTile;
-      const fb = document.getElementById("qFeedbackBox");
-      const ownerId = gameState.tileOwners[tile.id];
-      const ownerTeam = gameState.teams.find(t => t.id === ownerId);
-
-      let summaryMsg = "";
-
-      if (isSuccess) {
-        sfx.correct();
-        let earned = basePoints;
-        let doubleNote = "";
-        if (team.doubleCard) {
-          earned *= 2;
-          team.doubleCard = false;
-          doubleNote = "（⚡触发双倍积分卡，得分翻倍！）";
-        }
-        team.score += earned;
-
-        // 领地判定
-        if (!ownerTeam) {
-          gameState.tileOwners[tile.id] = team.id;
-          summaryMsg = `🎉 回答正确！${team.icon} ${team.name} 获得 <strong>+${earned} 积分</strong>${doubleNote}，并成功插旗<strong>占领了【${tile.name}】</strong>！`;
-        } else if (ownerTeam.id === team.id) {
-          team.score += 10;
-          summaryMsg = `🎉 巩固成功！${team.icon} ${team.name} 获得 <strong>+${earned + 10} 积分</strong>${doubleNote}（含自家领地额外 +10 分）！`;
-        } else {
-          summaryMsg = `🎉 挑战成功！${team.icon} ${team.name} 攻克了 ${ownerTeam.name} 的领地关卡，赢得 <strong>+${earned} 积分</strong>${doubleNote}！`;
-        }
-
-        fb.className = "feedback-box show success";
-      } else {
-        sfx.wrong();
-        if (ownerTeam && ownerTeam.id !== team.id) {
-          const toll = Math.min(10, team.score);
-          team.score -= toll;
-          ownerTeam.score += 10;
-          summaryMsg = `💡 差一点就答对啦！因为这里是由 ${ownerTeam.icon} ${ownerTeam.name} 占领的岛屿，本组支付 ${toll} 积分过路费给岛主。`;
-        } else {
-          summaryMsg = `💡 差一点就答对啦！继续加油，本回合暂未占领岛屿。`;
-        }
-        fb.className = "feedback-box show error";
       }
 
-      fb.innerHTML = `<div style="margin-bottom:6px;">${summaryMsg}</div><div><strong>📚 知识点解析：</strong>${explanationHtml}</div>`;
-      document.getElementById("btnCloseQuestion").style.display = "inline-flex";
-      renderScoreboard();
-      renderBoard();
-    }
+      mcContainer.addEventListener("click", (e) => {
+        const btnEl = e.target.closest(".option-btn");
+        if (!btnEl || btnEl.disabled) return;
+        const selectedIdx = Number(btnEl.dataset.optIdx);
 
-    document.getElementById("btnCloseQuestion").addEventListener("click", () => {
-      document.getElementById("questionModal").classList.remove("open");
-      advanceToNextTeam();
-    });
+        stopQuestionTimer();
+        const q = gameState.activeQuestion;
+        const buttons = mcContainer.querySelectorAll(".option-btn");
+        buttons.forEach(b => b.disabled = true);
 
-    function advanceToNextTeam() {
-      gameState.isMoving = false;
-      gameState.currentTeamIdx = (gameState.currentTeamIdx + 1) % gameState.teams.length;
-      const nextTeam = gameState.teams[gameState.currentTeamIdx];
-      renderScoreboard();
-      renderBoard(`轮到 ${nextTeam.icon} ${nextTeam.name} 掷骰子！`);
-    }
-
-    /* ==========================================================================
-       模块九：45秒课堂倒计时器
-       ========================================================================== */
-    function startQuestionTimer(seconds = 45) {
-      stopQuestionTimer();
-      gameState.timerSeconds = seconds;
-      gameState.timerRunning = true;
-      updateTimerDisplay();
-
-      gameState.timerInterval = setInterval(() => {
-        if (!gameState.timerRunning) return;
-        gameState.timerSeconds--;
-        updateTimerDisplay();
-        if (gameState.timerSeconds <= 5 && gameState.timerSeconds > 0) {
-          sfx.diceTick();
+        const isCorrect = selectedIdx === q.answer;
+        if (buttons[q.answer]) buttons[q.answer].classList.add("correct");
+        if (!isCorrect) {
+          btnEl.classList.add("wrong");
         }
-        if (gameState.timerSeconds <= 0) {
-          stopQuestionTimer();
+
+        resolveQuestionOutcome(isCorrect, isCorrect ? 20 : 0, q.explanation);
+      });
+
+      // 2. 句序排一排（修复了按钮未重新启用 & 改用事件委托）
+      const orderSelectedBox = document.getElementById("orderSelectedBox");
+      const orderPoolBox = document.getElementById("orderPoolBox");
+
+      function renderOrderPuzzle(q) {
+        const container = document.getElementById("orderContainer");
+        container.style.display = "block";
+        gameState.selectedOrderStrips = [];
+        gameState.orderLocked = false;
+
+        // 修复关键Bug：每次打开排一排题目时恢复按钮可点击状态
+        document.getElementById("btnOrderSubmit").disabled = false;
+        document.getElementById("btnOrderReset").disabled = false;
+
+        const indexed = q.strips.map((text, idx) => ({ text, correctIdx: idx }));
+        let shuffled = [...indexed].sort(() => Math.random() - 0.5);
+        if (shuffled.every((item, i) => item.correctIdx === i)) {
+          shuffled.reverse();
+        }
+        gameState.currentShuffledStrips = shuffled;
+        updateOrderPuzzleUI();
+      }
+
+      function updateOrderPuzzleUI() {
+        if (gameState.selectedOrderStrips.length === 0) {
+          orderSelectedBox.innerHTML = `<div class="order-placeholder">点击下方句子卡片，它们会按顺序排到这里哦！</div>`;
+        } else {
+          orderSelectedBox.innerHTML = gameState.selectedOrderStrips.map((item, idx) => `
+            <button class="order-chip selected" type="button" data-pos-idx="${idx}" ${gameState.orderLocked ? "disabled" : ""} title="点击撤回此句">
+              <span style="background:#2563eb; color:#fff; width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; flex-shrink:0;">${idx + 1}</span>
+              <span>${item.text.replace(/^\d+\.\s*/, "")}</span>
+            </button>
+          `).join("");
+        }
+
+        const selectedIds = new Set(gameState.selectedOrderStrips.map(s => s.correctIdx));
+        orderPoolBox.innerHTML = gameState.currentShuffledStrips
+          .filter(item => !selectedIds.has(item.correctIdx))
+          .map(item => `
+            <button class="order-chip" type="button" data-correct-idx="${item.correctIdx}" ${gameState.orderLocked ? "disabled" : ""}>
+              <span>📄</span>
+              <span>${item.text.replace(/^\d+\.\s*/, "")}</span>
+            </button>
+          `).join("");
+      }
+
+      orderPoolBox.addEventListener("click", (e) => {
+        if (gameState.orderLocked) return;
+        const btn = e.target.closest("[data-correct-idx]");
+        if (!btn) return;
+        const correctIdx = Number(btn.dataset.correctIdx);
+        const item = gameState.currentShuffledStrips.find(s => s.correctIdx === correctIdx);
+        if (!item) return;
+        sfx.hop(gameState.selectedOrderStrips.length);
+        gameState.selectedOrderStrips.push(item);
+        updateOrderPuzzleUI();
+      });
+
+      orderSelectedBox.addEventListener("click", (e) => {
+        if (gameState.orderLocked) return;
+        const btn = e.target.closest("[data-pos-idx]");
+        if (!btn) return;
+        const posIdx = Number(btn.dataset.posIdx);
+        gameState.selectedOrderStrips.splice(posIdx, 1);
+        updateOrderPuzzleUI();
+      });
+
+      document.getElementById("btnOrderReset").addEventListener("click", () => {
+        if (gameState.orderLocked) return;
+        gameState.selectedOrderStrips = [];
+        updateOrderPuzzleUI();
+      });
+
+      document.getElementById("btnOrderSubmit").addEventListener("click", () => {
+        if (gameState.orderLocked) return;
+        const q = gameState.activeQuestion;
+        if (gameState.selectedOrderStrips.length < q.strips.length) {
+          showToast("⚠️ 请先把所有句子都排进上方框里再提交哦！");
+          return;
+        }
+        stopQuestionTimer();
+        gameState.orderLocked = true;
+        document.getElementById("btnOrderSubmit").disabled = true;
+        document.getElementById("btnOrderReset").disabled = true;
+        updateOrderPuzzleUI();
+
+        const isCorrect = gameState.selectedOrderStrips.every((item, idx) => item.correctIdx === idx);
+        const correctOrderHtml = `<div style="margin-top:8px; padding-top:8px; border-top:1px dashed rgba(0,0,0,0.15);"><strong>正确顺序：</strong><br>${q.strips.join("<br>")}</div>`;
+        resolveQuestionOutcome(isCorrect, isCorrect ? 25 : 0, q.explanation + correctOrderHtml);
+      });
+
+      // 3. 口语小达人
+      function renderOralChallenge(q) {
+        const container = document.getElementById("oralContainer");
+        container.style.display = "block";
+        const hintBox = document.getElementById("oralHintBox");
+        hintBox.style.display = "none";
+        hintBox.textContent = q.hint;
+
+        document.getElementById("btnOralGreat").disabled = false;
+        document.getElementById("btnOralGood").disabled = false;
+        document.getElementById("btnOralRetry").disabled = false;
+      }
+
+      document.getElementById("btnToggleHint").addEventListener("click", () => {
+        const hintBox = document.getElementById("oralHintBox");
+        hintBox.style.display = hintBox.style.display === "none" ? "block" : "none";
+      });
+
+      document.getElementById("btnOralGreat").addEventListener("click", () => {
+        stopQuestionTimer();
+        disableOralButtons();
+        resolveQuestionOutcome(true, 30, "口头表达流畅生动，用词准确，获得满堂喝彩！");
+      });
+
+      document.getElementById("btnOralGood").addEventListener("click", () => {
+        stopQuestionTimer();
+        disableOralButtons();
+        resolveQuestionOutcome(true, 20, "句子通顺完整，勇敢表达，成功完成岛屿挑战！");
+      });
+
+      document.getElementById("btnOralRetry").addEventListener("click", () => {
+        stopQuestionTimer();
+        disableOralButtons();
+        resolveQuestionOutcome(false, 0, "非常勇敢地尝试了！多听听其他小组的发言，下次一定更棒！");
+      });
+
+      function disableOralButtons() {
+        document.getElementById("btnOralGreat").disabled = true;
+        document.getElementById("btnOralGood").disabled = true;
+        document.getElementById("btnOralRetry").disabled = true;
+      }
+
+      function resolveQuestionOutcome(isSuccess, basePoints, explanationHtml) {
+        const team = gameState.teams[gameState.currentTeamIdx];
+        const tile = gameState.activeTile;
+        const fb = document.getElementById("qFeedbackBox");
+        const ownerId = gameState.tileOwners[tile.id];
+        const ownerTeam = gameState.teams.find(t => t.id === ownerId);
+
+        let summaryMsg = "";
+
+        if (isSuccess) {
+          sfx.correct();
+          let earned = basePoints;
+          let doubleNote = "";
+          if (team.doubleCard) {
+            earned *= 2;
+            team.doubleCard = false;
+            doubleNote = "（⚡触发双倍积分卡，得分翻倍！）";
+          }
+          team.score += earned;
+
+          if (!ownerTeam) {
+            gameState.tileOwners[tile.id] = team.id;
+            summaryMsg = `🎉 回答正确！${team.icon} ${team.name} 获得 <strong>+${earned} 积分</strong>${doubleNote}，并成功插旗<strong>占领了【${tile.name}】</strong>！`;
+          } else if (ownerTeam.id === team.id) {
+            team.score += 10;
+            summaryMsg = `🎉 巩固成功！${team.icon} ${team.name} 获得 <strong>+${earned + 10} 积分</strong>${doubleNote}（含自家领地额外 +10 分）！`;
+          } else {
+            summaryMsg = `🎉 挑战成功！${team.icon} ${team.name} 攻克了 ${ownerTeam.name} 的领地关卡，赢得 <strong>+${earned} 积分</strong>${doubleNote}！`;
+          }
+
+          fb.className = "feedback-box show success";
+        } else {
           sfx.wrong();
-          showToast("⏰ 时间到！请小组代表立刻作答！");
+          if (ownerTeam && ownerTeam.id !== team.id) {
+            const toll = Math.min(10, team.score);
+            team.score -= toll;
+            ownerTeam.score += 10;
+            summaryMsg = `💡 差一点就答对啦！因为这里是由 ${ownerTeam.icon} ${ownerTeam.name} 占领的岛屿，本组支付 ${toll} 积分过路费给岛主。`;
+          } else {
+            summaryMsg = `💡 差一点就答对啦！继续加油，本回合暂未占领岛屿。`;
+          }
+          fb.className = "feedback-box show error";
         }
-      }, 1000);
-    }
 
-    function stopQuestionTimer() {
-      gameState.timerRunning = false;
-      if (gameState.timerInterval) {
-        clearInterval(gameState.timerInterval);
-        gameState.timerInterval = null;
-      }
-    }
-
-    function updateTimerDisplay() {
-      const pill = document.getElementById("qTimerToggle");
-      const valEl = document.getElementById("qTimerValue");
-      valEl.textContent = `${gameState.timerSeconds}s`;
-      if (gameState.timerSeconds <= 10 && gameState.timerSeconds > 0) {
-        pill.classList.add("urgent");
-      } else {
-        pill.classList.remove("urgent");
-      }
-    }
-
-    document.getElementById("qTimerToggle").addEventListener("click", () => {
-      gameState.timerRunning = !gameState.timerRunning;
-      showToast(gameState.timerRunning ? "▶️ 倒计时继续" : "⏸️ 倒计时已暂停");
-    });
-
-    /* ==========================================================================
-       模块十：顶部功能按钮与弹窗交互（音效、设置、规则、幸运抽组、颁奖台）
-       ========================================================================== */
-    // 音效开关
-    document.getElementById("btnSoundToggle").addEventListener("click", () => {
-      sfx.enabled = !sfx.enabled;
-      document.getElementById("soundIcon").textContent = sfx.enabled ? "🔊" : "🔇";
-      document.getElementById("soundText").textContent = sfx.enabled ? "音效开" : "音效关";
-      if (sfx.enabled) sfx.hop(2);
-    });
-
-    // 幸运抽组
-    document.getElementById("btnRandomTeam").addEventListener("click", () => {
-      if (gameState.isMoving) return;
-      let count = 0;
-      const maxSpins = 12;
-      const spin = setInterval(() => {
-        count++;
-        gameState.currentTeamIdx = Math.floor(Math.random() * gameState.teams.length);
-        sfx.diceTick();
-        renderScoreboard();
-        if (count >= maxSpins) {
-          clearInterval(spin);
-          const lucky = gameState.teams[gameState.currentTeamIdx];
-          sfx.powerup();
-          renderBoard(`🎯 幸运抽中：${lucky.icon} ${lucky.name}！`);
-          showToast(`🎯 幸运转盘选中了【${lucky.icon} ${lucky.name}】！`);
-        }
-      }, 70);
-    });
-
-    // 小组设置弹窗
-    function openSetupModal() {
-      renderSetupList();
-      document.getElementById("setupModal").classList.add("open");
-    }
-
-    function renderSetupList() {
-      const list = document.getElementById("setupTeamList");
-      list.innerHTML = gameState.teams.map((t, idx) => `
-        <div style="display:flex; align-items:center; gap:10px; background:#f8fafc; padding:8px 12px; border-radius:12px; border:1px solid #cbd5e1;">
-          <span style="width:34px; height:34px; border-radius:10px; background:${t.color}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
-            ${t.icon}
-          </span>
-          <input type="text" value="${t.name}" maxlength="10"
-                 onchange="renameTeam(${idx}, this.value)"
-                 style="flex:1; min-height:38px; padding:4px 10px; border-radius:8px; border:2px solid #cbd5e1; font-size:0.95rem; font-weight:700;" />
-          <span style="font-size:0.85rem; font-weight:800; color:#d97706;">${t.score}分</span>
-        </div>
-      `).join("");
-    }
-
-    function renameTeam(idx, newName) {
-      const trimmed = newName.trim();
-      if (trimmed && gameState.teams[idx]) {
-        gameState.teams[idx].name = trimmed;
+        fb.innerHTML = `<div style="margin-bottom:6px;">${summaryMsg}</div><div><strong>📚 知识点解析：</strong>${explanationHtml}</div>`;
+        document.getElementById("btnCloseQuestion").style.display = "inline-flex";
         renderScoreboard();
         renderBoard();
       }
-    }
 
-    document.getElementById("btnTeamSetup").addEventListener("click", openSetupModal);
-    document.getElementById("btnCloseSetup").addEventListener("click", () => {
-      document.getElementById("setupModal").classList.remove("open");
-    });
-
-    document.getElementById("btnAddTeam").addEventListener("click", () => {
-      if (gameState.teams.length >= 6) {
-        showToast("⚠️ 最多支持 6 个参赛小组哦！");
-        return;
-      }
-      const nextId = gameState.teams.length + 1;
-      const tpl = EXTRA_TEAM_TEMPLATES[(nextId - 5) % EXTRA_TEAM_TEMPLATES.length];
-      gameState.teams.push({
-        id: Date.now(),
-        name: tpl.name,
-        icon: tpl.icon,
-        color: tpl.color,
-        score: 50,
-        pos: 0,
-        doubleCard: false,
-        shieldCard: false
+      document.getElementById("btnCloseQuestion").addEventListener("click", () => {
+        stopQuestionTimer();
+        document.getElementById("questionModal").classList.remove("open");
+        advanceToNextTeam();
       });
-      renderSetupList();
-      renderScoreboard();
-      renderBoard();
-      showToast(`➕ 已添加【${tpl.icon} ${tpl.name}】！`);
-    });
 
-    document.getElementById("btnRemoveTeam").addEventListener("click", () => {
-      if (gameState.teams.length <= 2) {
-        showToast("⚠️ 至少需要保留 2 个参赛小组哦！");
-        return;
+      function advanceToNextTeam() {
+        gameState.isMoving = false;
+        gameState.currentTeamIdx = (gameState.currentTeamIdx + 1) % gameState.teams.length;
+        const nextTeam = gameState.teams[gameState.currentTeamIdx];
+        renderScoreboard();
+        renderBoard(`轮到 ${nextTeam.icon} ${nextTeam.name} 掷骰子！`);
       }
-      const removed = gameState.teams.pop();
-      // 清除被移除小组的领地
-      Object.keys(gameState.tileOwners).forEach(k => {
-        if (gameState.tileOwners[k] === removed.id) delete gameState.tileOwners[k];
+
+      /* ==========================================================================
+         模块九：45秒课堂倒计时器
+         ========================================================================== */
+      function startQuestionTimer(seconds = 45) {
+        stopQuestionTimer();
+        gameState.timerSeconds = seconds;
+        gameState.timerRunning = true;
+        updateTimerDisplay();
+
+        gameState.timerInterval = setInterval(() => {
+          if (!gameState.timerRunning) return;
+          gameState.timerSeconds--;
+          updateTimerDisplay();
+          if (gameState.timerSeconds <= 5 && gameState.timerSeconds > 0) {
+            sfx.diceTick();
+          }
+          if (gameState.timerSeconds <= 0) {
+            stopQuestionTimer();
+            sfx.wrong();
+            showToast("⏰ 时间到！请小组代表立刻作答！");
+          }
+        }, 1000);
+      }
+
+      function stopQuestionTimer() {
+        gameState.timerRunning = false;
+        if (gameState.timerInterval) {
+          clearInterval(gameState.timerInterval);
+          gameState.timerInterval = null;
+        }
+      }
+
+      function updateTimerDisplay() {
+        const pill = document.getElementById("qTimerToggle");
+        const valEl = document.getElementById("qTimerValue");
+        valEl.textContent = `${gameState.timerSeconds}s`;
+        if (gameState.timerSeconds <= 10 && gameState.timerSeconds > 0) {
+          pill.classList.add("urgent");
+        } else {
+          pill.classList.remove("urgent");
+        }
+      }
+
+      document.getElementById("qTimerToggle").addEventListener("click", () => {
+        if (gameState.timerSeconds <= 0) return;
+        gameState.timerRunning = !gameState.timerRunning;
+        showToast(gameState.timerRunning ? "▶️ 倒计时继续" : "⏸️ 倒计时已暂停");
       });
-      if (gameState.currentTeamIdx >= gameState.teams.length) {
-        gameState.currentTeamIdx = 0;
+
+      /* ==========================================================================
+         模块十：顶部功能按钮与弹窗交互
+         ========================================================================== */
+      document.getElementById("btnSoundToggle").addEventListener("click", () => {
+        sfx.enabled = !sfx.enabled;
+        document.getElementById("soundIcon").textContent = sfx.enabled ? "🔊" : "🔇";
+        document.getElementById("soundText").textContent = sfx.enabled ? "音效开" : "音效关";
+        if (sfx.enabled) sfx.hop(2);
+      });
+
+      document.getElementById("btnRandomTeam").addEventListener("click", () => {
+        if (gameState.isMoving || gameState.isRandomSpinning) return;
+        gameState.isRandomSpinning = true;
+        let count = 0;
+        const maxSpins = 12;
+        const spin = setInterval(() => {
+          count++;
+          gameState.currentTeamIdx = Math.floor(Math.random() * gameState.teams.length);
+          sfx.diceTick();
+          renderScoreboard();
+          if (count >= maxSpins) {
+            clearInterval(spin);
+            gameState.isRandomSpinning = false;
+            const lucky = gameState.teams[gameState.currentTeamIdx];
+            sfx.powerup();
+            renderBoard(`🎯 幸运抽中：${lucky.icon} ${lucky.name}！`);
+            showToast(`🎯 幸运转盘选中了【${lucky.icon} ${lucky.name}】！`);
+          }
+        }, 70);
+      });
+
+      const setupTeamListEl = document.getElementById("setupTeamList");
+      function openSetupModal() {
+        renderSetupList();
+        document.getElementById("setupModal").classList.add("open");
       }
-      renderSetupList();
-      renderScoreboard();
-      renderBoard();
-      showToast(`➖ 已移除【${removed.name}】`);
-    });
 
-    document.getElementById("btnResetGameAll").addEventListener("click", () => {
-      gameState.teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
-      gameState.currentTeamIdx = 0;
-      gameState.tileOwners = {};
-      gameState.usedQuestionIds.clear();
-      gameState.isMoving = false;
-      gameState.diceValue = 6;
-      renderSetupList();
-      renderScoreboard();
-      renderBoard("🔄 已重置整局比赛，新的一轮开始啦！");
-      showToast("🔄 比赛已重置，所有小组回到快乐出发港！");
-    });
-
-    // 规则说明弹窗
-    document.getElementById("btnRules").addEventListener("click", () => {
-      document.getElementById("rulesModal").classList.add("open");
-    });
-    document.getElementById("btnCloseRules").addEventListener("click", () => {
-      document.getElementById("rulesModal").classList.remove("open");
-    });
-
-    // 颁奖台弹窗
-    document.getElementById("btnEndGame").addEventListener("click", () => {
-      sfx.fanfare();
-      // 综合积分（每占领一座岛屿额外 +10 荣耀分）
-      const ranked = gameState.teams.map(t => {
-        const owned = Object.values(gameState.tileOwners).filter(oid => oid === t.id).length;
-        return { ...t, owned, totalScore: t.score + owned * 10 };
-      }).sort((a, b) => b.totalScore - a.totalScore);
-
-      const medals = ["🥇 冠军", "🥈 亚军", "🥉 季军", "🏅 优胜奖", "🏅 优胜奖", "🏅 优胜奖"];
-      document.getElementById("podiumList").innerHTML = ranked.map((t, i) => `
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:16px; background:${i === 0 ? "#fef3c7" : "#f8fafc"}; border:2px solid ${i === 0 ? "#f59e0b" : "#cbd5e1"};">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-weight:900; font-size:1rem; color:${i === 0 ? "#b45309" : "#475569"};">${medals[i]}</span>
-            <span style="font-size:1.4rem;">${t.icon}</span>
-            <div style="text-align:left;">
-              <div style="font-weight:900; font-size:1.05rem;">${t.name}</div>
-              <div style="font-size:0.78rem; color:#64748b;">基础积分 ${t.score} + 领地 ${t.owned}座(×10分)</div>
-            </div>
+      function renderSetupList() {
+        setupTeamListEl.innerHTML = gameState.teams.map((t, idx) => `
+          <div style="display:flex; align-items:center; gap:10px; background:#f8fafc; padding:8px 12px; border-radius:12px; border:1px solid #cbd5e1;">
+            <span style="width:34px; height:34px; border-radius:10px; background:${t.color}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+              ${t.icon}
+            </span>
+            <input type="text" value="${t.name}" maxlength="10" data-team-idx="${idx}"
+                   style="flex:1; min-height:38px; padding:4px 10px; border-radius:8px; border:2px solid #cbd5e1; font-size:0.95rem; font-weight:700;" />
+            <span style="font-size:0.85rem; font-weight:800; color:#d97706;">${t.score}分</span>
           </div>
-          <div style="font-size:1.3rem; font-weight:900; color:#d97706;">${t.totalScore} 分</div>
-        </div>
-      `).join("");
-
-      document.getElementById("podiumModal").classList.add("open");
-    });
-
-    document.getElementById("btnClosePodium").addEventListener("click", () => {
-      document.getElementById("podiumModal").classList.remove("open");
-    });
-
-    // 键盘空格键快捷掷骰子
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Space" && !document.querySelector(".modal-backdrop.open") && document.activeElement.tagName !== "INPUT") {
-        e.preventDefault();
-        triggerRollDice();
+        `).join("");
       }
-    });
 
-    // 页面初始化
-    window.addEventListener("DOMContentLoaded", () => {
+      setupTeamListEl.addEventListener("input", (e) => {
+        const input = e.target.closest("input[data-team-idx]");
+        if (!input) return;
+        const idx = Number(input.dataset.teamIdx);
+        const trimmed = input.value.trim();
+        if (trimmed && gameState.teams[idx]) {
+          gameState.teams[idx].name = trimmed;
+          renderScoreboard();
+          renderBoard();
+        }
+      });
+
+      document.getElementById("btnTeamSetup").addEventListener("click", openSetupModal);
+      document.getElementById("btnCloseSetup").addEventListener("click", () => {
+        document.getElementById("setupModal").classList.remove("open");
+      });
+
+      document.getElementById("btnAddTeam").addEventListener("click", () => {
+        if (gameState.teams.length >= 6) {
+          showToast("⚠️ 最多支持 6 个参赛小组哦！");
+          return;
+        }
+        const nextId = gameState.teams.length + 1;
+        const tpl = EXTRA_TEAM_TEMPLATES[(nextId - 5) % EXTRA_TEAM_TEMPLATES.length];
+        gameState.teams.push({
+          id: Date.now(),
+          name: tpl.name,
+          icon: tpl.icon,
+          color: tpl.color,
+          score: 50,
+          pos: 0,
+          doubleCard: false,
+          shieldCard: false
+        });
+        renderSetupList();
+        renderScoreboard();
+        renderBoard();
+        showToast(`➕ 已添加【${tpl.icon} ${tpl.name}】！`);
+      });
+
+      document.getElementById("btnRemoveTeam").addEventListener("click", () => {
+        if (gameState.teams.length <= 2) {
+          showToast("⚠️ 至少需要保留 2 个参赛小组哦！");
+          return;
+        }
+        const removed = gameState.teams.pop();
+        Object.keys(gameState.tileOwners).forEach(k => {
+          if (gameState.tileOwners[k] === removed.id) delete gameState.tileOwners[k];
+        });
+        if (gameState.currentTeamIdx >= gameState.teams.length) {
+          gameState.currentTeamIdx = 0;
+        }
+        renderSetupList();
+        renderScoreboard();
+        renderBoard();
+        showToast(`➖ 已移除【${removed.name}】`);
+      });
+
+      document.getElementById("btnResetGameAll").addEventListener("click", () => {
+        stopQuestionTimer();
+        gameState.teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
+        gameState.currentTeamIdx = 0;
+        gameState.tileOwners = {};
+        gameState.usedQuestionIds.clear();
+        gameState.isMoving = false;
+        gameState.isRandomSpinning = false;
+        gameState.diceValue = 6;
+        renderSetupList();
+        renderScoreboard();
+        renderBoard("🔄 已重置整局比赛，新的一轮开始啦！");
+        showToast("🔄 比赛已重置，所有小组回到快乐出发港！");
+      });
+
+      document.getElementById("btnRules").addEventListener("click", () => {
+        document.getElementById("rulesModal").classList.add("open");
+      });
+      document.getElementById("btnCloseRules").addEventListener("click", () => {
+        document.getElementById("rulesModal").classList.remove("open");
+      });
+
+      document.getElementById("btnEndGame").addEventListener("click", () => {
+        sfx.fanfare();
+        const ranked = gameState.teams.map(t => {
+          const owned = Object.values(gameState.tileOwners).filter(oid => oid === t.id).length;
+          return { ...t, owned, totalScore: t.score + owned * 10 };
+        }).sort((a, b) => b.totalScore - a.totalScore);
+
+        const medals = ["🥇 冠军", "🥈 亚军", "🥉 季军", "🏅 优胜奖", "🏅 优胜奖", "🏅 优胜奖"];
+        document.getElementById("podiumList").innerHTML = ranked.map((t, i) => `
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:16px; background:${i === 0 ? "#fef3c7" : "#f8fafc"}; border:2px solid ${i === 0 ? "#f59e0b" : "#cbd5e1"};">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-weight:900; font-size:1rem; color:${i === 0 ? "#b45309" : "#475569"};">${medals[i]}</span>
+              <span style="font-size:1.4rem;">${t.icon}</span>
+              <div style="text-align:left;">
+                <div style="font-weight:900; font-size:1.05rem;">${t.name}</div>
+                <div style="font-size:0.78rem; color:#64748b;">基础积分 ${t.score} + 领地 ${t.owned}座(×10分)</div>
+              </div>
+            </div>
+            <div style="font-size:1.3rem; font-weight:900; color:#d97706;">${t.totalScore} 分</div>
+          </div>
+        `).join("");
+
+        document.getElementById("podiumModal").classList.add("open");
+      });
+
+      document.getElementById("btnClosePodium").addEventListener("click", () => {
+        document.getElementById("podiumModal").classList.remove("open");
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.code === "Space" && !document.querySelector(".modal-backdrop.open") && document.activeElement.tagName !== "INPUT") {
+          e.preventDefault();
+          triggerRollDice();
+        }
+      });
+
+      // 初始化渲染
       renderBoard();
       renderScoreboard();
     });
