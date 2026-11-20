@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="author" content="Franky Laoshi">
 <title>阳光咖啡店大冒险：沉浸经营版 - Franky Laoshi</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
@@ -18,7 +19,12 @@
     --accent-gold: #FFB703;
   }
 
-  * { box-sizing: border-box; user-select: none; }
+  * {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
 
   body {
     margin: 0;
@@ -29,17 +35,19 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
+    min-height: 100dvh;
+    overflow-x: hidden;
   }
 
   #app {
     width: 98vw;
     max-width: 1040px;
-    height: 92vh;
-    max-height: 700px;
+    min-height: 92vh;
+    min-height: 92dvh;
+    max-height: 740px;
     background: var(--floor-cream);
-    border: 8px solid var(--wood-dark);
-    border-radius: 32px;
+    border: 6px solid var(--wood-dark);
+    border-radius: 28px;
     box-shadow: 0 16px 40px rgba(92, 58, 33, 0.3);
     display: flex;
     flex-direction: column;
@@ -51,58 +59,66 @@
   .top-bar {
     background: var(--wood-dark);
     color: #FFF;
-    padding: 10px 24px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     z-index: 10;
+    flex-shrink: 0;
   }
 
   .shop-sign {
-    font-size: 1.4rem;
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem);
     font-weight: 900;
     color: var(--accent-gold);
     display: flex;
     align-items: center;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   /* 顶部 Franky Laoshi 专属徽章 */
   .author-badge {
-    font-size: 0.85rem;
+    font-size: clamp(0.72rem, 1.3vw, 0.85rem);
     background: rgba(255, 183, 3, 0.2);
     color: #FFE8A3;
     border: 1.5px solid var(--accent-gold);
-    padding: 2px 10px;
+    padding: 2px 9px;
     border-radius: 12px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
     font-weight: 800;
   }
 
   .hud-group {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     align-items: center;
+    flex-wrap: wrap;
   }
 
   .hud-pill {
     background: rgba(255,255,255,0.15);
     border: 2px solid rgba(255,255,255,0.3);
-    padding: 5px 14px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-weight: 900;
-    font-size: 1.05rem;
+    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
+    white-space: nowrap;
   }
 
   .combo-badge {
     background: linear-gradient(45deg, #FF512F, #F09819);
-    padding: 5px 14px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-weight: 900;
+    font-size: clamp(0.82rem, 1.5vw, 1rem);
     animation: pop 0.3s ease;
+    white-space: nowrap;
   }
 
   /* 咖啡店俯视主地图 */
@@ -119,20 +135,21 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 15px 25px;
+    padding: clamp(10px, 2vw, 15px) clamp(12px, 2.5vw, 25px) 38px;
+    min-height: 0;
   }
 
   /* 右下角常驻防伪木牌水印 */
   .watermark-tag {
     position: absolute;
-    bottom: 10px;
-    right: 16px;
-    background: rgba(92, 58, 33, 0.85);
+    bottom: 8px;
+    right: 14px;
+    background: rgba(92, 58, 33, 0.88);
     color: #FAEDCD;
     border: 2px solid var(--wood-light);
-    padding: 4px 12px;
+    padding: 3px 11px;
     border-radius: 14px;
-    font-size: 0.85rem;
+    font-size: clamp(0.75rem, 1.3vw, 0.85rem);
     font-weight: 900;
     letter-spacing: 0.5px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
@@ -145,29 +162,31 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     background: rgba(212, 163, 115, 0.35);
-    border-radius: 18px;
-    padding: 8px 20px;
+    border-radius: 16px;
+    padding: 7px 14px;
     border: 2px dashed var(--wood-light);
   }
 
   .mission-banner {
-    font-size: 1.2rem;
+    font-size: clamp(0.92rem, 1.8vw, 1.18rem);
     font-weight: 900;
     color: var(--wood-dark);
   }
 
   .decor-items {
     display: flex;
-    gap: 12px;
-    font-size: 1.8rem;
+    gap: 8px;
+    font-size: clamp(1.2rem, 2.2vw, 1.7rem);
   }
 
   .decor-slot {
-    width: 42px;
-    height: 42px;
+    width: clamp(32px, 4.5vw, 42px);
+    height: clamp(32px, 4.5vw, 42px);
     background: rgba(255,255,255,0.6);
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -177,7 +196,7 @@
 
   .decor-slot.unlocked {
     filter: grayscale(0%) opacity(1);
-    transform: scale(1.15);
+    transform: scale(1.12);
     background: #FFF;
     box-shadow: 0 4px 10px rgba(255, 183, 3, 0.4);
   }
@@ -186,74 +205,77 @@
   .seating-area {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     flex: 1;
-    gap: 20px;
+    gap: clamp(12px, 2vw, 20px);
     margin: 10px 0;
+    min-height: 0;
   }
 
   /* 门口红地毯排队区 */
   .red-carpet {
-    width: 260px;
-    height: 100%;
+    width: clamp(200px, 26vw, 260px);
     background: linear-gradient(180deg, #E63946, #D62828);
-    border: 5px solid #FFB703;
-    border-radius: 24px;
+    border: 4px solid #FFB703;
+    border-radius: 22px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 15px;
+    padding: 36px 12px 12px;
     color: white;
     box-shadow: 0 8px 20px rgba(214, 40, 40, 0.25);
     position: relative;
+    flex-shrink: 0;
   }
 
   .carpet-label {
     position: absolute;
-    top: 10px;
+    top: 8px;
     background: #FFB703;
     color: #5C3A21;
-    padding: 3px 12px;
+    padding: 2px 10px;
     border-radius: 12px;
     font-weight: 900;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
   }
 
   .draggable-customer {
     background: #FFF;
     color: var(--wood-dark);
-    border-radius: 24px;
-    padding: 15px;
-    width: 210px;
+    border-radius: 20px;
+    padding: clamp(10px, 1.8vw, 15px);
+    width: 100%;
+    max-width: 210px;
     text-align: center;
     cursor: grab;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    border: 4px solid var(--accent-gold);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    border: 3px solid var(--accent-gold);
     transition: transform 0.2s;
     touch-action: none;
   }
 
   .draggable-customer:active {
     cursor: grabbing;
-    transform: scale(1.08);
+    transform: scale(1.06);
   }
 
   .cust-emoji {
-    font-size: 4.5rem;
+    font-size: clamp(2.8rem, 6vw, 4.4rem);
     line-height: 1.1;
     animation: bounce 2s infinite;
   }
 
   .cust-pinyin {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
     font-weight: 900;
     color: #E63946;
-    margin-top: 5px;
+    margin-top: 4px;
   }
 
   .cust-word-hint {
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
     font-weight: 900;
     color: var(--wood-dark);
   }
@@ -261,12 +283,19 @@
   .cust-en {
     background: #F1FAEE;
     color: #1D3557;
-    padding: 4px 10px;
+    padding: 3px 9px;
     border-radius: 10px;
-    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 1.4vw, 0.95rem);
     font-weight: 800;
-    margin-top: 6px;
+    margin-top: 5px;
     display: inline-block;
+  }
+
+  .carpet-tip {
+    font-size: 0.82rem;
+    margin-top: 8px;
+    font-weight: 800;
+    text-align: center;
   }
 
   /* 4张咖啡圆桌网格 */
@@ -274,40 +303,49 @@
     flex: 1;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    height: 100%;
+    gap: clamp(10px, 2vw, 20px);
+    min-height: 0;
   }
 
   .cafe-table {
     background: radial-gradient(circle, #FFF8EB 60%, #E6CCB2 100%);
-    border: 6px solid var(--wood-light);
-    border-radius: 30px;
+    border: 5px solid var(--wood-light);
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    box-shadow: 0 8px 0 #B08968;
+    box-shadow: 0 6px 0 #B08968;
     transition: all 0.2s;
     cursor: pointer;
+    padding: 8px;
+    touch-action: manipulation;
+  }
+
+  .cafe-table:active {
+    transform: translateY(3px);
+    box-shadow: 0 3px 0 #B08968;
   }
 
   .cafe-table.drag-over {
-    transform: scale(1.05);
+    transform: scale(1.04);
     border-color: var(--accent-green);
     background: #E0FBF6;
   }
 
   .table-char {
-    font-size: 3.4rem;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 900;
     color: var(--wood-dark);
+    line-height: 1.1;
   }
 
   .table-sub {
-    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 1.4vw, 0.95rem);
     font-weight: 800;
     color: #8C6D53;
+    margin-top: 2px;
   }
 
   /* === 模式 2：魔法料理台（点餐制作） === */
@@ -317,69 +355,86 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    gap: 10px;
+    padding: 6px 0;
   }
 
   .order-ticket {
     background: #FFF;
     border: 4px dashed var(--accent-orange);
-    border-radius: 24px;
-    padding: 15px 35px;
+    border-radius: 22px;
+    padding: clamp(10px, 2vw, 15px) clamp(16px, 3.5vw, 35px);
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: clamp(14px, 3vw, 25px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    max-width: 100%;
   }
 
   .magic-pot {
-    font-size: 5rem;
+    font-size: clamp(3rem, 6vw, 4.8rem);
     background: #FFF3E0;
-    width: 110px;
-    height: 110px;
+    width: clamp(78px, 12vw, 110px);
+    height: clamp(78px, 12vw, 110px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 5px solid var(--accent-orange);
+    border: 4px solid var(--accent-orange);
     transition: transform 0.3s;
+    flex-shrink: 0;
   }
 
   .bubble-zone {
     display: flex;
-    gap: 25px;
+    gap: clamp(12px, 2.5vw, 25px);
     justify-content: center;
     flex-wrap: wrap;
-    padding: 15px;
+    padding: 8px;
+    width: 100%;
   }
 
   .ingredient-bubble {
-    width: 115px;
-    height: 115px;
+    width: clamp(74px, 16vw, 115px);
+    height: clamp(74px, 16vw, 115px);
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #FFFFFF, #FFE5EC);
     border: 4px solid var(--accent-pink);
-    box-shadow: 0 10px 20px rgba(255, 93, 143, 0.25);
+    box-shadow: 0 8px 16px rgba(255, 93, 143, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3.2rem;
+    font-size: clamp(2rem, 4.8vw, 3.2rem);
     font-weight: 900;
     color: var(--wood-dark);
     cursor: pointer;
     animation: float 3s ease-in-out infinite;
     transition: transform 0.15s;
+    touch-action: manipulation;
   }
 
   .ingredient-bubble:nth-child(2) { animation-delay: 0.5s; background: radial-gradient(circle at 30% 30%, #FFF, #E0FBF6); border-color: var(--accent-green); }
   .ingredient-bubble:nth-child(3) { animation-delay: 1s; background: radial-gradient(circle at 30% 30%, #FFF, #FFF3B0); border-color: var(--accent-gold); }
   .ingredient-bubble:nth-child(4) { animation-delay: 1.5s; background: radial-gradient(circle at 30% 30%, #FFF, #E2ECE9); border-color: #4EA8DE; }
 
-  .ingredient-bubble:hover { transform: scale(1.12); }
+  .ingredient-bubble:hover, .ingredient-bubble:active { transform: scale(1.1); }
 
   /* === 模式 3：健康少放打地鼠 === */
+  .whack-banner {
+    background: #FFE5EC;
+    border: 3px solid #FF5D8F;
+    padding: 8px 18px;
+    border-radius: 18px;
+    font-weight: 900;
+    color: #C9184A;
+    font-size: clamp(0.92rem, 1.8vw, 1.2rem);
+    text-align: center;
+  }
+
   .whack-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: clamp(10px, 2vw, 20px);
     width: 100%;
     max-width: 720px;
     margin: auto;
@@ -387,51 +442,54 @@
 
   .plate-hole {
     background: #FFF;
-    border: 5px solid var(--wood-light);
-    border-radius: 50%;
-    height: 145px;
+    border: 4px solid var(--wood-light);
+    border-radius: 28px;
+    height: clamp(105px, 18vh, 145px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: inset 0 6px 12px rgba(0,0,0,0.1);
+    box-shadow: inset 0 5px 10px rgba(0,0,0,0.08);
     transition: transform 0.1s;
     position: relative;
+    padding: 6px;
+    touch-action: manipulation;
   }
 
-  .plate-hole:active { transform: scale(0.92); }
+  .plate-hole:active { transform: scale(0.93); }
 
   .food-item {
     text-align: center;
     animation: pop 0.25s ease;
   }
 
-  .food-emoji { font-size: 3rem; }
-  .food-label { font-size: 1.3rem; font-weight: 900; }
-  .food-en { font-size: 0.85rem; color: #666; font-weight: 700; }
+  .food-emoji { font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.1; }
+  .food-label { font-size: clamp(1rem, 2vw, 1.3rem); font-weight: 900; }
+  .food-en { font-size: clamp(0.72rem, 1.3vw, 0.85rem); color: #666; font-weight: 700; }
 
   /* 覆盖层（开始/结算） */
   .full-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(254, 250, 224, 0.96);
+    background: rgba(254, 250, 224, 0.97);
     z-index: 20;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 30px;
+    padding: 20px;
+    overflow-y: auto;
   }
 
   .overlay-signature {
-    margin-top: 18px;
-    font-size: 1rem;
+    margin-top: 14px;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
     font-weight: 900;
     color: var(--wood-dark);
     background: rgba(212, 163, 115, 0.3);
-    padding: 6px 18px;
+    padding: 5px 16px;
     border-radius: 20px;
     border: 2px solid var(--wood-light);
   }
@@ -440,18 +498,19 @@
     background: var(--accent-orange);
     color: #FFF;
     border: none;
-    padding: 16px 45px;
-    font-size: 1.6rem;
+    padding: clamp(12px, 2vw, 16px) clamp(28px, 5vw, 45px);
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
     font-weight: 900;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 8px 0 #C85A00;
-    margin-top: 20px;
+    box-shadow: 0 7px 0 #C85A00;
+    margin-top: 16px;
     transition: all 0.1s;
+    touch-action: manipulation;
   }
 
   .big-btn:active {
-    transform: translateY(5px);
+    transform: translateY(4px);
     box-shadow: 0 3px 0 #C85A00;
   }
 
@@ -460,20 +519,122 @@
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 900;
     color: #2EC4B6;
     text-shadow: 0 4px 10px rgba(0,0,0,0.2);
     pointer-events: none;
     z-index: 30;
+    white-space: nowrap;
     animation: flyUp 0.9s forwards;
   }
 
-  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
   @keyframes pop { 0% { transform: scale(0.5); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
   @keyframes flyUp { 0% { opacity: 1; transform: translate(-50%, -30%); } 100% { opacity: 0; transform: translate(-50%, -120%); } }
   .hidden { display: none !important; }
+
+  /* =========================================================
+     响应式断点：手机 & 竖屏平板 (<= 768px)
+     ========================================================= */
+  @media (max-width: 768px) {
+    #app {
+      width: 100vw;
+      min-height: 100vh;
+      min-height: 100dvh;
+      max-height: none;
+      border-width: 4px;
+      border-radius: 0;
+    }
+
+    .top-bar {
+      padding: 8px 12px;
+      justify-content: center;
+    }
+
+    .shop-sign {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* 第一关改为上下结构：上方横排客人卡，下方2x2桌子 */
+    .seating-area {
+      flex-direction: column;
+      gap: 10px;
+      margin: 6px 0;
+    }
+
+    .red-carpet {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 28px 12px 10px;
+      gap: 10px;
+    }
+
+    .draggable-customer {
+      max-width: none;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .cust-emoji {
+      font-size: 2.8rem;
+    }
+
+    .carpet-tip {
+      margin-top: 0;
+      max-width: 82px;
+      font-size: 0.78rem;
+      line-height: 1.3;
+    }
+
+    .tables-grid {
+      min-height: 220px;
+    }
+
+    /* 第三关打地鼠改为 2 列 × 3 行，适配竖屏宽度 */
+    .whack-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .plate-hole {
+      height: 105px;
+      border-radius: 20px;
+    }
+  }
+
+  /* =========================================================
+     响应式断点：极矮手机横屏 (<= 460px 高度)
+     ========================================================= */
+  @media (max-height: 460px) and (orientation: landscape) {
+    #app {
+      width: 100vw;
+      min-height: 100dvh;
+      max-height: none;
+      border-width: 3px;
+      border-radius: 0;
+    }
+    .top-bar {
+      padding: 5px 14px;
+    }
+    .decor-shelf {
+      padding: 4px 12px;
+    }
+    .cafe-map {
+      padding: 6px 14px 30px;
+    }
+    .plate-hole {
+      height: 85px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -511,11 +672,13 @@
         <div class="carpet-label">🚪 门口排队区</div>
         <div id="cust-card" class="draggable-customer" draggable="true">
           <div id="cust-emoji" class="cust-emoji">🐻</div>
-          <div id="cust-pinyin" class="cust-pinyin">pái duì</div>
-          <div id="cust-word" class="cust-word-hint">排 [ ? ]</div>
-          <div id="cust-en" class="cust-en">Line up / Queue</div>
+          <div>
+            <div id="cust-pinyin" class="cust-pinyin">pái duì</div>
+            <div id="cust-word" class="cust-word-hint">排 [ ? ]</div>
+            <div id="cust-en" class="cust-en">Line up / Queue</div>
+          </div>
         </div>
-        <div style="font-size: 0.9rem; margin-top: 10px; font-weight: 800;">👉 拖动或点击右边桌子</div>
+        <div class="carpet-tip">👉 拖动或点击对应圆桌</div>
       </div>
 
       <div id="tables-grid" class="tables-grid">
@@ -528,13 +691,13 @@
       <div class="order-ticket">
         <div id="pot-icon" class="magic-pot">🍹</div>
         <div>
-          <div id="kitchen-pinyin" style="font-size: 1.4rem; font-weight: 900; color: #E63946;">nǎi chá</div>
-          <div id="kitchen-word" style="font-size: 2.3rem; font-weight: 900; color: #5C3A21;">奶 [ ? ]</div>
-          <div id="kitchen-en" style="background: #F3E5F5; color: #6A1B9A; padding: 4px 14px; border-radius: 12px; font-weight: 900; display: inline-block; margin-top: 5px;">Milk Tea</div>
+          <div id="kitchen-pinyin" style="font-size: clamp(1.1rem, 2.2vw, 1.4rem); font-weight: 900; color: #E63946;">nǎi chá</div>
+          <div id="kitchen-word" style="font-size: clamp(1.6rem, 3.5vw, 2.3rem); font-weight: 900; color: #5C3A21;">奶 [ ? ]</div>
+          <div id="kitchen-en" style="background: #F3E5F5; color: #6A1B9A; padding: 3px 12px; border-radius: 12px; font-weight: 900; font-size: clamp(0.85rem, 1.6vw, 1rem); display: inline-block; margin-top: 4px;">Milk Tea</div>
         </div>
       </div>
 
-      <div style="font-weight: 900; color: #5C3A21; font-size: 1.15rem;">✨ 点击正确的生字气泡，放进魔法料理台！</div>
+      <div style="font-weight: 900; color: #5C3A21; font-size: clamp(0.95rem, 1.8vw, 1.15rem); text-align: center;">✨ 点击正确的生字气泡，放进魔法料理台！</div>
       <div id="bubble-zone" class="bubble-zone">
         <!-- 气泡动态生成 -->
       </div>
@@ -542,7 +705,7 @@
 
     <!-- 关卡 3：健康少放保卫战 -->
     <div id="mode-whack" class="kitchen-stage hidden">
-      <div style="background: #FFE5EC; border: 3px solid #FF5D8F; padding: 10px 25px; border-radius: 20px; font-weight: 900; color: #C9184A; font-size: 1.2rem;">
+      <div class="whack-banner">
         ⚡ 赶走“太多糖、太多油、炸鸡怪”！（已赶走：<span id="whack-count">0</span>/6）
       </div>
       <div id="whack-grid" class="whack-grid">
@@ -556,11 +719,11 @@
 
   <!-- 开始画面 -->
   <div id="start-overlay" class="full-overlay">
-    <div style="font-size: 5.5rem; animation: bounce 1.5s infinite;">🏪☕🐻</div>
-    <h1 style="font-size: 2.6rem; color: #5C3A21; margin: 10px 0;">阳光咖啡店大冒险</h1>
-    <p style="font-size: 1.25rem; color: #7F5539; max-width: 620px; line-height: 1.6;">
+    <div style="font-size: clamp(3.5rem, 8vw, 5.5rem); animation: bounce 1.5s infinite;">🏪☕🐻</div>
+    <h1 style="font-size: clamp(1.8rem, 4.2vw, 2.6rem); color: #5C3A21; margin: 8px 0;">阳光咖啡店大冒险</h1>
+    <p style="font-size: clamp(0.95rem, 2vw, 1.25rem); color: #7F5539; max-width: 620px; line-height: 1.6; margin: 6px 0;">
       第 7 课 15 个生字大挑战！<br>
-      <b>第一关</b>：拖动小动物找座位（队、找、座、位）<br>
+      <b>第一关</b>：帮小动物找座位（队、找、座、位）<br>
       <b>第二关</b>：魔法料理做早餐（茶、糖、炒、油、炸、冰、温、咖、啡、饭、青）<br>
       <b>第三关</b>：赶走“太多糖/太多油”健康大作战！
     </p>
@@ -570,9 +733,9 @@
 
   <!-- 通关画面 -->
   <div id="end-overlay" class="full-overlay hidden">
-    <div style="font-size: 5.5rem;">🏆🎉👑</div>
-    <h1 style="font-size: 2.6rem; color: #5C3A21; margin: 10px 0;">五星级小店长诞生！</h1>
-    <p id="final-stats" style="font-size: 1.35rem; color: #7F5539; font-weight: 800;">
+    <div style="font-size: clamp(3.5rem, 8vw, 5.5rem);">🏆🎉👑</div>
+    <h1 style="font-size: clamp(1.8rem, 4.2vw, 2.6rem); color: #5C3A21; margin: 8px 0;">五星级小店长诞生！</h1>
+    <p id="final-stats" style="font-size: clamp(1.05rem, 2.2vw, 1.35rem); color: #7F5539; font-weight: 800;">
       你一共赚到了 180 枚金币，解锁了全部豪华装饰！
     </p>
     <button class="big-btn" onclick="startGame()">再玩一次 ↻</button>
@@ -707,6 +870,7 @@
   }
 
   function startGame() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
     coins = 0; combo = 0; s1Index = 0; s2Index = 0; whackCount = 0;
     document.getElementById('coins-num').innerText = '0';
     document.getElementById('combo-display').classList.add('hidden');
@@ -720,7 +884,7 @@
   // === 关卡 1：拖拽/点击找座位 ===
   function startStage1() {
     document.getElementById('stage-num').innerText = '1';
-    document.getElementById('mission-text').innerText = '第一关：把客人拖到（或点击）对应的座位圆桌！';
+    document.getElementById('mission-text').innerText = '第一关：帮客人找到对应的座位圆桌！';
     document.getElementById('mode-seating').classList.remove('hidden');
     document.getElementById('mode-kitchen').classList.add('hidden');
     document.getElementById('mode-whack').classList.add('hidden');
@@ -742,7 +906,7 @@
       const table = document.createElement('div');
       table.className = 'cafe-table';
       table.innerHTML = `
-        <div style="font-size: 1.4rem;">🪑</div>
+        <div style="font-size: clamp(1.1rem, 2vw, 1.4rem);">🪑</div>
         <div class="table-char">${char}</div>
         <div class="table-sub">${i + 1}号圆桌</div>
       `;
@@ -756,7 +920,7 @@
         handleStage1Choice(char, table);
       };
 
-      // 同时支持直接点击（方便平板/触屏白板）
+      // 同时支持直接点击（方便手机/平板/触屏白板）
       table.onclick = () => handleStage1Choice(char, table);
       grid.appendChild(table);
     });
@@ -768,7 +932,7 @@
       playSfx('coin');
       speakWord(q.full, q.en);
       addScore();
-      tableEl.innerHTML = `<div style="font-size:3.5rem;">${q.emoji}❤️</div><div style="font-weight:900;color:#2EC4B6;">${q.full}！</div>`;
+      tableEl.innerHTML = `<div style="font-size: clamp(2.2rem, 5vw, 3.5rem);">${q.emoji}❤️</div><div style="font-weight:900;color:#2EC4B6;">${q.full}！</div>`;
       setTimeout(() => {
         s1Index++;
         if (s1Index < stage1Data.length) loadStage1Q();
@@ -811,7 +975,7 @@
           speakWord(q.full, q.en);
           addScore();
           document.getElementById('pot-icon').innerText = q.pot;
-          document.getElementById('pot-icon').style.transform = 'scale(1.25)';
+          document.getElementById('pot-icon').style.transform = 'scale(1.2)';
           document.getElementById('kitchen-word').innerText = q.full;
           setTimeout(() => {
             document.getElementById('pot-icon').style.transform = 'scale(1)';
@@ -871,7 +1035,7 @@
         addScore();
         whackCount++;
         document.getElementById('whack-count').innerText = whackCount;
-        hole.innerHTML = '<div style="font-size:2.5rem;">💥</div>';
+        hole.innerHTML = '<div style="font-size:2.2rem;">💥</div>';
         hole.onclick = null;
         if (whackCount >= 6) {
           clearInterval(whackTimer);
