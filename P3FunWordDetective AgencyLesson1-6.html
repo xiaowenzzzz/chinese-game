@@ -1,0 +1,2904 @@
+<!DOCTYPE html>
+<html lang="zh-SG">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>《六大谜案追踪：欢乐文字侦探社》——《欢乐伙伴3A》第1-6课 | Franky老师</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ==========================================================================
+       1. 设计变量与全局重置 (Design Tokens & Reset)
+       ========================================================================== */
+    :root {
+      --bg-navy-deep: #0f2942;
+      --bg-navy-mid: #163a5f;
+      --bg-teal-accent: #1d4e68;
+      --paper-cream: #fdf8ec;
+      --paper-warm: #fffdf7;
+      --paper-border: #e2cfa9;
+      --gold-bright: #fbbf24;
+      --gold-deep: #d97706;
+      --emerald-ok: #10b981;
+      --emerald-dark: #047857;
+      --crimson-stamp: #dc2626;
+      --text-dark: #1e293b;
+      --text-muted: #475569;
+      --shadow-card: 0 10px 26px rgba(6, 18, 32, 0.28);
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text-dark);
+      background:
+        radial-gradient(circle at 15% 18%, rgba(251, 191, 36, 0.14) 0%, transparent 38%),
+        radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.14) 0%, transparent 40%),
+        linear-gradient(155deg, var(--bg-navy-deep) 0%, var(--bg-navy-mid) 52%, var(--bg-teal-accent) 100%);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 背景侦探坐标网格纹理 */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ==========================================================================
+       2. Franky老师 专属全屏防伪水印与机密红章 (Anti-Counterfeiting Branding)
+       ========================================================================== */
+    .watermark-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 45;
+      opacity: 0.06;
+      background-repeat: repeat;
+      background-size: 350px 230px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='230' viewBox='0 0 350 230'%3E%3Cg transform='rotate(-22 175 115)'%3E%3Ctext x='15' y='88' font-family='sans-serif' font-size='19' font-weight='900' fill='%23ffffff'%3E🕵️‍♂️ Franky老师 · 欢乐伙伴3A%3C/text%3E%3Ctext x='48' y='118' font-family='sans-serif' font-size='15' font-weight='700' fill='%23fbbf24'%3E文字侦探社 · 专属教学设计%3C/text%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* 红色侦探机密印章样式 */
+    .detective-stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--crimson-stamp);
+      border: 2.5px solid var(--crimson-stamp);
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      background: rgba(254, 226, 226, 0.45);
+      transform: rotate(-3deg);
+      user-select: none;
+      box-shadow: inset 0 0 0 1px rgba(220, 38, 38, 0.25);
+    }
+
+    /* ==========================================================================
+       3. 顶部侦探社导航栏 (Header)
+       ========================================================================== */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 35;
+      background: rgba(11, 31, 51, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--gold-bright);
+      padding: 10px 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4);
+      flex-shrink: 0;
+    }
+
+    .main-title {
+      font-size: clamp(1.08rem, 2.2vw, 1.48rem);
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      line-height: 1.25;
+    }
+
+    .sub-title {
+      font-size: clamp(0.75rem, 1.3vw, 0.88rem);
+      color: #bae6fd;
+      font-weight: 600;
+    }
+
+    /* Franky老师 金色荣誉徽章 */
+    .franky-gold-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      color: #78350f;
+      border: 2px solid #f59e0b;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: clamp(0.78rem, 1.2vw, 0.9rem);
+      font-weight: 900;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+      user-select: none;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-nav {
+      min-height: 40px;
+      padding: 6px 13px;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.18s ease;
+    }
+
+    .btn-nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: var(--gold-bright);
+      transform: translateY(-1px);
+    }
+
+    .btn-nav:active {
+      transform: scale(0.96);
+    }
+
+    /* ==========================================================================
+       4. 主布局结构：桌面端双栏，平板与手机端自适应
+       ========================================================================== */
+    .workspace-grid {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (min-width: 1080px) {
+      .workspace-grid {
+        grid-template-columns: minmax(620px, 1.48fr) minmax(360px, 0.82fr);
+        align-items: start;
+        padding: 20px 24px;
+        gap: 22px;
+      }
+    }
+
+    /* ==========================================================================
+       5. 左侧区域：六位密码终极保险箱 + 六大案件档案墙
+       ========================================================================== */
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* 六位密码终极保险箱横幅 */
+    .safe-vault-banner {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 3px solid var(--gold-bright);
+      border-radius: var(--radius-xl);
+      padding: 16px 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), inset 0 0 24px rgba(251, 191, 36, 0.12);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: relative;
+    }
+
+    .vault-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .vault-title {
+      font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+      font-weight: 900;
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vault-subtitle {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    /* 六位机械密码轮盘槽 */
+    .passcode-slots {
+      display: flex;
+      align-items: center;
+      gap: clamp(6px, 1.2vw, 10px);
+      flex-wrap: wrap;
+    }
+
+    .digit-slot {
+      width: clamp(40px, 5.2vw, 52px);
+      height: clamp(50px, 6.2vw, 62px);
+      border-radius: 12px;
+      background: #09111e;
+      border: 2.5px solid #475569;
+      color: #64748b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.7);
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .digit-slot .slot-num {
+      font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+      line-height: 1.1;
+    }
+
+    .digit-slot .slot-case {
+      font-size: 0.62rem;
+      opacity: 0.75;
+    }
+
+    .digit-slot.unlocked {
+      background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+      border-color: #f59e0b;
+      color: #92400e;
+      box-shadow: 0 0 16px rgba(251, 191, 36, 0.55);
+      transform: translateY(-2px);
+    }
+
+    .btn-open-vault {
+      min-height: 46px;
+      padding: 10px 18px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #ffffff;
+      font-size: 0.94rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 5px 0 #92400e, 0 8px 18px rgba(245, 158, 11, 0.35);
+      transition: all 0.15s ease;
+    }
+
+    .btn-open-vault:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-open-vault:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #92400e;
+    }
+
+    .btn-open-vault.ready-glow {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 5px 0 #065f46, 0 0 22px rgba(16, 185, 129, 0.65);
+      animation: pulseReady 1.2s infinite alternate;
+    }
+
+    @keyframes pulseReady {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
+    }
+
+    /* 六大案件档案墙 (3x2 响应式网格) */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .cases-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    /* 牛皮纸档案袋卡片 */
+    .case-dossier-card {
+      background: linear-gradient(180deg, var(--paper-warm) 0%, var(--paper-cream) 100%);
+      border: 3px solid var(--paper-border);
+      border-radius: var(--radius-xl);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      overflow: hidden;
+    }
+
+    .case-dossier-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold-bright);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.35);
+    }
+
+    .case-dossier-card.solved {
+      border-color: var(--emerald-ok);
+      background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+    }
+
+    .dossier-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .case-number-tag {
+      background: #1e293b;
+      color: var(--gold-bright);
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+    }
+
+    .case-status-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .case-status-pill.pending {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+    }
+
+    .case-status-pill.done {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .dossier-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .case-lesson-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #0369a1;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .case-main-name {
+      font-size: 1.16rem;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    .case-brief {
+      font-size: 0.84rem;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .dossier-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1.5px dashed #cbd5e1;
+      gap: 8px;
+    }
+
+    .stage-dots {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #64748b;
+    }
+
+    .btn-investigate {
+      padding: 7px 14px;
+      border-radius: 10px;
+      border: none;
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 0.84rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .case-dossier-card.solved .btn-investigate {
+      background: #059669;
+    }
+
+    /* ==========================================================================
+       6. 右侧控制台：小组积分榜 + 神探抽签器 + 破案线索笔记
+       ========================================================================== */
+    .right-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .console-card {
+      background: rgba(255, 253, 247, 0.96);
+      border: 3px solid var(--paper-border);
+      border-radius: var(--radius-xl);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .console-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px dashed #e2e8f0;
+    }
+
+    .console-title {
+      font-size: 1.08rem;
+      font-weight: 900;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-picker {
+      min-height: 38px;
+      padding: 6px 13px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 3px 10px rgba(234, 88, 12, 0.3);
+      transition: transform 0.15s ease;
+    }
+
+    .btn-picker:active {
+      transform: scale(0.95);
+    }
+
+    /* 手机与平板端支持横向滚动或网格排列的小组列表 */
+    .squad-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 10px;
+    }
+
+    @media (min-width: 1080px) {
+      .squad-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .squad-card {
+      background: #ffffff;
+      border: 2.5px solid #cbd5e1;
+      border-radius: var(--radius-lg);
+      padding: 11px 12px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .squad-card.selected-squad {
+      border-color: #f59e0b;
+      background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .squad-card.leader-squad {
+      border-color: #10b981;
+    }
+
+    .squad-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .squad-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .squad-badge-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .squad-name-edit {
+      background: transparent;
+      border: 1px dashed transparent;
+      font-size: 0.98rem;
+      font-weight: 900;
+      color: #1e293b;
+      padding: 2px 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .squad-name-edit:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .squad-tags-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding-left: 6px;
+      margin-top: 2px;
+    }
+
+    .tag-chip {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 6px;
+    }
+
+    .tag-leader {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .tag-active {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .squad-score {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #d97706;
+      background: #fef3c7;
+      padding: 4px 11px;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .squad-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #f1f5f9;
+      gap: 6px;
+    }
+
+    .btn-select-turn {
+      min-height: 32px;
+      padding: 4px 9px;
+      border-radius: 8px;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-select-turn.is-active {
+      background: #fef3c7;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .score-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-pt {
+      min-width: 42px;
+      min-height: 32px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.78rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .btn-pt:active {
+      transform: scale(0.92);
+    }
+
+    .btn-pt-10 { background: #dcfce7; color: #15803d; }
+    .btn-pt-20 { background: #dbeafe; color: #1d4ed8; }
+    .btn-pt-minus { background: #fee2e2; color: #b91c1c; }
+
+    /* ==========================================================================
+       7. 案件调查大弹窗 (Case Investigation Modal)
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 20, 36, 0.74);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      z-index: 60;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .dossier-modal-card {
+      background: linear-gradient(180deg, #fffdf8 0%, #fdf6e7 100%);
+      width: 100%;
+      max-width: 760px;
+      border-radius: 24px;
+      border: 4px solid var(--gold-bright);
+      padding: clamp(16px, 2.8vw, 26px);
+      box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+      position: relative;
+      max-height: 92vh;
+      overflow-y: auto;
+      animation: popScale 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popScale {
+      from { opacity: 0; transform: scale(0.92) translateY(14px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 2px dashed #cbd5e1;
+    }
+
+    .modal-case-title {
+      font-size: clamp(1.1rem, 2vw, 1.38rem);
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    /* 调查倒计时控制器 */
+    .timer-control-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: #1e293b;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 14px;
+    }
+
+    .timer-readout {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--gold-bright);
+      min-width: 48px;
+      text-align: center;
+    }
+
+    .timer-readout.urgent {
+      color: #f87171;
+      animation: blinkUrgent 0.5s infinite alternate;
+    }
+
+    @keyframes blinkUrgent {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0.65; transform: scale(1.08); }
+    }
+
+    .btn-timer-mini {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 3px 8px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-timer-mini.active-preset {
+      background: var(--gold-bright);
+      color: #0f172a;
+      border-color: var(--gold-bright);
+    }
+
+    /* 关卡进度指示条 */
+    .stage-progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .stage-step-pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
+    .stage-step-pill.current {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3);
+    }
+
+    .stage-step-pill.completed {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    /* 当前加分小组快捷切换条 */
+    .active-squad-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: #fefce8;
+      border: 1.5px solid #fde047;
+      padding: 8px 12px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #713f12;
+    }
+
+    .squad-pill-switch {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .squad-pill-switch.active {
+      background: #f59e0b;
+      color: #ffffff;
+      border-color: #d97706;
+    }
+
+    /* 线索卡片与题干区 */
+    .clue-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .clue-flip-card {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .clue-flip-card.revealed {
+      border-color: #0284c7;
+      background: #f0f9ff;
+    }
+
+    .clue-card-head {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #0369a1;
+      margin-bottom: 4px;
+    }
+
+    .clue-card-body {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+
+    .prompt-box {
+      background: #ffffff;
+      border-left: 5px solid #0284c7;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      font-weight: 800;
+      line-height: 1.65;
+      color: #0f172a;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      margin-bottom: 14px;
+    }
+
+    /* 选择题选项网格 */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .options-grid.two-col {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .choice-btn {
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 15px;
+      border-radius: 14px;
+      border: 2.5px solid #cbd5e1;
+      background: #ffffff;
+      text-align: left;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #1e293b;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+      transition: all 0.15s ease;
+    }
+
+    .choice-btn:hover:not(:disabled) {
+      border-color: #0284c7;
+      background: #f0f9ff;
+      transform: translateX(3px);
+    }
+
+    .choice-letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .choice-btn.correct {
+      border-color: #16a34a;
+      background: #dcfce7;
+      color: #14532d;
+    }
+
+    .choice-btn.correct .choice-letter {
+      background: #16a34a;
+      color: #ffffff;
+    }
+
+    .choice-btn.wrong {
+      border-color: #dc2626;
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    .choice-btn.wrong .choice-letter {
+      background: #dc2626;
+      color: #ffffff;
+    }
+
+    /* 火眼金睛找错字句子点击区 */
+    .typo-sentence-box {
+      background: #fffbeb;
+      border: 2.5px solid #f59e0b;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .char-token {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      height: 44px;
+      margin: 3px;
+      padding: 0 6px;
+      border-radius: 10px;
+      border: 2px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #0f172a;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .char-token:hover {
+      border-color: #0284c7;
+      background: #e0f2fe;
+      transform: translateY(-2px);
+    }
+
+    .char-token.found-typo {
+      border-color: #dc2626;
+      background: #fee2e2;
+      color: #b91c1c;
+      animation: popScale 0.3s ease;
+    }
+
+    .char-token.fixed-char {
+      border-color: #16a34a;
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    /* 排序拼图区 */
+    .sort-target-zone {
+      min-height: 68px;
+      background: #fffbeb;
+      border: 2.5px dashed #f59e0b;
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .sort-pool-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .sort-strip {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 2px solid #94a3b8;
+      background: #ffffff;
+      text-align: left;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #1e293b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .sort-strip:hover {
+      border-color: #0284c7;
+      background: #f0f9ff;
+    }
+
+    .sort-strip.placed {
+      border-color: #2563eb;
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+
+    /* 解析提示框 */
+    .feedback-banner {
+      padding: 13px 16px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .feedback-banner.show {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .feedback-banner.ok {
+      background: #dcfce7;
+      border: 2px solid #22c55e;
+      color: #14532d;
+    }
+
+    .feedback-banner.err {
+      background: #fef2f2;
+      border: 2px solid #ef4444;
+      color: #7f1d1d;
+    }
+
+    .modal-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1.5px solid #e2e8f0;
+    }
+
+    .btn-primary-action {
+      min-height: 44px;
+      padding: 10px 20px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn-success-action {
+      min-height: 44px;
+      padding: 10px 20px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.28);
+    }
+
+    .btn-ghost-action {
+      min-height: 42px;
+      padding: 8px 15px;
+      border-radius: 12px;
+      border: 2px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155;
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       8. 终极密码保险箱键盘弹窗 & 通关奖状颁奖台
+       ========================================================================== */
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 280px;
+      margin: 14px auto;
+    }
+
+    .key-btn {
+      min-height: 52px;
+      border-radius: 14px;
+      border: 2px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #0f172a;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #cbd5e1;
+    }
+
+    .key-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #cbd5e1;
+    }
+
+    /* 金牌文字神探团奖状卡片 */
+    .certificate-frame {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fffdf7 100%);
+      border: 5px double #d97706;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 12px 32px rgba(217, 119, 6, 0.25);
+      margin-bottom: 16px;
+    }
+
+    /* 全屏礼花画布 */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 85;
+    }
+
+    /* Toast 提示 */
+    .toast-stack {
+      position: fixed;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 95;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      width: 92%;
+      max-width: 480px;
+    }
+
+    .toast-pill {
+      background: rgba(15, 23, 42, 0.94);
+      color: #ffffff;
+      border: 2px solid var(--gold-bright);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      animation: popScale 0.22s ease;
+    }
+
+    /* 底部版权声明 */
+    .app-footer {
+      text-align: center;
+      padding: 18px 14px 28px;
+      color: #e2e8f0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Franky老师 全屏斜向防伪水印层 -->
+  <div class="watermark-overlay" aria-hidden="true"></div>
+
+  <!-- 全屏礼花庆祝画布 -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Toast 提示栈 -->
+  <div id="toastStack" class="toast-stack"></div>
+
+  <!-- 顶部导航栏 -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-group">
+        <div class="logo-badge">🔍</div>
+        <div>
+          <div class="main-title">《六大谜案追踪：欢乐文字侦探社》</div>
+          <div class="sub-title">新加坡小学三年级《欢乐伙伴3A》第1—6课小组推理竞赛</div>
+        </div>
+        <!-- 醒目的 Franky老师 专属防伪徽章 -->
+        <div class="franky-gold-badge" title="本教学互动程序由 Franky老师 原创制作">
+          <span>🕵️‍♂️</span>
+          <span>Franky老师 专属互动课堂 · 欢乐伙伴3A</span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <button id="btnAudioToggle" class="btn-nav" type="button">
+          <span id="audioIcon">🔊</span>
+          <span id="audioLabel">音效开</span>
+        </button>
+        <button id="btnSquadConfig" class="btn-nav" type="button">
+          <span>👥</span>
+          <span>小组管理</span>
+        </button>
+        <button id="btnGuide" class="btn-nav" type="button">
+          <span>📋</span>
+          <span>侦探手册</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主工作区 -->
+  <main class="workspace-grid">
+    <!-- 左侧：终极密码保险箱 + 六大谜案档案墙 -->
+    <section class="left-column">
+      <!-- 终极密码保险箱横幅 -->
+      <div class="safe-vault-banner">
+        <div class="vault-info">
+          <div class="vault-title">
+            <span>🔐</span>
+            <span>六位密码终极保险箱</span>
+          </div>
+          <div id="vaultProgressText" class="vault-subtitle">
+            已破获 0 / 6 宗谜案，集齐六位密码即可开启金牌宝箱！
+          </div>
+        </div>
+
+        <div id="passcodeSlots" class="passcode-slots">
+          <!-- 六个密码数字槽由 JS 渲染 -->
+        </div>
+
+        <button id="btnOpenVaultModal" class="btn-open-vault" type="button">
+          <span>🗝️</span>
+          <span>开启终极宝箱</span>
+        </button>
+      </div>
+
+      <!-- 六大谜案档案墙 (3x2) -->
+      <div id="casesGrid" class="cases-grid">
+        <!-- 六张案件牛皮纸档案卡片由 JS 渲染 -->
+      </div>
+    </section>
+
+    <!-- 右侧：侦探小组积分榜 + 神探抽签器 + 线索记录 -->
+    <aside class="right-sidebar">
+      <div class="console-card">
+        <div class="console-header">
+          <div class="console-title">
+            <span>🏅</span>
+            <span>侦探小组积分榜</span>
+          </div>
+          <button id="btnRandomSquad" class="btn-picker" type="button">
+            <span>🎲</span>
+            <span>神探抽签器</span>
+          </button>
+        </div>
+
+        <div id="squadList" class="squad-list">
+          <!-- 小组卡片由 JS 渲染 -->
+        </div>
+      </div>
+
+      <!-- 侦探线索笔记卡 -->
+      <div class="console-card">
+        <div class="console-header" style="margin-bottom:8px; padding-bottom:8px;">
+          <div class="console-title">
+            <span>🗂️</span>
+            <span>破案密码线索簿</span>
+          </div>
+          <span class="detective-stamp">机密档案 · Franky老师监制</span>
+        </div>
+        <div id="clueLogList" style="font-size:0.84rem; color:#475569; line-height:1.65;">
+          点击左侧任意一份【待侦破】案件档案，小组协作完成关卡即可解锁对应的保险箱密码数字！
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 底部版权与红色防伪印章 -->
+  <footer class="app-footer">
+    <div>设计监制：<strong>Franky老师</strong> ｜ 新加坡小学三年级华文《欢乐伙伴3A》第1—6课互动推理课堂</div>
+    <div class="detective-stamp" style="background:rgba(255,255,255,0.92);">机密档案 · Franky老师监制</div>
+  </footer>
+
+  <!-- ========================================================================
+       弹窗 1：案件调查多关卡弹窗 (Case Investigation Modal)
+       ======================================================================== -->
+  <div id="caseModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="dossier-modal-card">
+      <div class="modal-header-bar">
+        <div>
+          <div id="mCaseSubtitle" style="font-size:0.8rem; font-weight:800; color:#0369a1;">第一课《美丽的愿望》</div>
+          <div id="mCaseTitle" class="modal-case-title">案件一：《神秘的职业来信》</div>
+        </div>
+
+        <!-- 倒计时器控件 -->
+        <div class="timer-control-bar">
+          <span>⏱️</span>
+          <span id="timerReadout" class="timer-readout">45s</span>
+          <button class="btn-timer-mini" type="button" data-preset="30">30s</button>
+          <button class="btn-timer-mini active-preset" type="button" data-preset="45">45s</button>
+          <button class="btn-timer-mini" type="button" data-preset="60">60s</button>
+          <button id="btnTimerPause" class="btn-timer-mini" type="button">暂停</button>
+          <button id="btnTimerReset" class="btn-timer-mini" type="button">重置</button>
+        </div>
+      </div>
+
+      <!-- 关卡进度条 -->
+      <div id="stageProgressBar" class="stage-progress-bar"></div>
+
+      <!-- 当前答题/加分小组选择条 -->
+      <div class="active-squad-bar">
+        <span>🎯 当前主答小组（答对自动加分）：</span>
+        <div id="modalSquadSwitches" style="display:flex; flex-wrap:wrap; gap:5px;"></div>
+      </div>
+
+      <!-- 动态关卡内容区 -->
+      <div id="stageContentArea"></div>
+
+      <!-- 答题结果反馈区 -->
+      <div id="stageFeedback" class="feedback-banner"></div>
+
+      <!-- 弹窗底部栏 -->
+      <div class="modal-bottom-bar">
+        <div class="detective-stamp">机密档案 · Franky老师监制</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="btnCloseCaseModal" class="btn-ghost-action" type="button">返回档案墙</button>
+          <button id="btnNextStage" class="btn-primary-action" type="button" style="display:none;">
+            进入下一关 ➡️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       弹窗 2：终极密码保险箱与通关奖状弹窗 (Ultimate Vault & Victory Modal)
+       ======================================================================== -->
+  <div id="vaultModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="dossier-modal-card" style="max-width:600px; text-align:center;">
+      <div class="modal-header-bar" style="justify-content:center;">
+        <h2 style="font-size:1.4rem; font-weight:900; color:#0f172a;">🔐 六位密码终极保险箱</h2>
+      </div>
+
+      <!-- 未解锁状态：密码输入盘 -->
+      <div id="vaultLockView">
+        <p style="font-size:0.92rem; color:#475569; margin-bottom:12px;">
+          请输入从六大谜案中破译出的 <strong>6位秘密数字密码</strong>：
+        </p>
+
+        <div id="vaultInputDisplay" style="display:flex; justify-content:center; gap:8px; margin-bottom:12px;"></div>
+
+        <div id="vaultQuickFillWrap" style="margin-bottom:10px; display:none;">
+          <button id="btnAutoFillPasscode" class="btn-success-action" type="button" style="margin:0 auto;">
+            ✨ 一键填入已破译的六位密码 (3-8-1-6-9-5)
+          </button>
+        </div>
+
+        <div class="keypad-grid" id="vaultKeypad"></div>
+
+        <div id="vaultErrorMsg" style="color:#dc2626; font-weight:800; font-size:0.88rem; min-height:22px; margin-top:6px;"></div>
+      </div>
+
+      <!-- 已解锁状态：奖状与冠军排行榜 -->
+      <div id="vaultUnlockedView" style="display:none;">
+        <div class="certificate-frame">
+          <div style="font-size:3rem; margin-bottom:4px;">🏆</div>
+          <div style="font-size:0.85rem; font-weight:900; color:#b45309; letter-spacing:1px;">
+            新加坡小学三年级《欢乐伙伴3A》文字侦探社
+          </div>
+          <h3 style="font-size:1.45rem; font-weight:900; color:#78350f; margin:6px 0;">
+            🏅 Franky老师认证 · 金牌文字神探团 🏅
+          </h3>
+          <p style="font-size:0.92rem; color:#451a03; line-height:1.6; margin-bottom:10px;">
+            恭喜全体小侦探成功破获《欢乐伙伴3A》第1至第6课全部六大谜案，展现出敏锐的观察力、严密的推理力与出色的华文表达力！
+          </p>
+          <div class="detective-stamp">机密档案 · Franky老师监制</div>
+        </div>
+
+        <h4 style="font-size:1.05rem; font-weight:900; color:#0f172a; margin-bottom:8px;">
+          🎖️ 侦探小组最终荣誉榜
+        </h4>
+        <div id="finalRankingList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
+      </div>
+
+      <div class="modal-bottom-bar">
+        <div class="detective-stamp">机密档案 · Franky老师监制</div>
+        <button id="btnCloseVaultModal" class="btn-ghost-action" type="button">关闭窗口</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       弹窗 3：小组管理弹窗 (Squad Config Modal)
+       ======================================================================== -->
+  <div id="squadConfigModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="dossier-modal-card" style="max-width:540px;">
+      <div class="modal-header-bar">
+        <h2 style="font-size:1.25rem; font-weight:900;">👥 侦探小组设置 (2—6组)</h2>
+        <button id="btnCloseSquadConfig" class="btn-ghost-action" type="button" style="min-height:36px; padding:4px 12px;">✖ 关闭</button>
+      </div>
+      <p style="font-size:0.86rem; color:#475569; margin-bottom:12px;">
+        点击输入框可直接修改侦探队名称，或增减参赛小组数量：
+      </p>
+      <div id="squadConfigList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; margin-bottom:12px;">
+        <div style="display:flex; gap:8px;">
+          <button id="btnAddSquad" class="btn-success-action" type="button" style="min-height:38px; padding:6px 14px; font-size:0.86rem;">➕ 增加小组</button>
+          <button id="btnRemoveSquad" class="btn-ghost-action" type="button" style="min-height:38px; padding:6px 14px; font-size:0.86rem;">➖ 减少小组</button>
+        </div>
+        <button id="btnResetAllProgress" class="btn-ghost-action" type="button" style="min-height:38px; padding:6px 14px; font-size:0.86rem; background:#fee2e2; color:#b91c1c; border-color:#fca5a5;">
+          🔄 重置全部案件与积分
+        </button>
+      </div>
+      <div class="modal-bottom-bar">
+        <div class="detective-stamp">机密档案 · Franky老师监制</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       弹窗 4：侦探手册（玩法规则）弹窗 (Guide Modal)
+       ======================================================================== -->
+  <div id="guideModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="dossier-modal-card" style="max-width:600px;">
+      <div class="modal-header-bar">
+        <h2 style="font-size:1.25rem; font-weight:900;">📋 《欢乐文字侦探社》行动指南</h2>
+        <button id="btnCloseGuide" class="btn-ghost-action" type="button" style="min-height:36px; padding:4px 12px;">✖ 关闭</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px; font-size:0.94rem; line-height:1.65; color:#334155; margin-bottom:14px;">
+        <div style="background:#f0f9ff; padding:12px; border-radius:14px;">
+          <strong>1. 抽签出动：</strong> 老师可点击右侧<strong>“🎲 神探抽签器”</strong>随机点名一组侦探出动，或手动点击小组卡片上的<strong>“设为当前组”</strong>。
+        </div>
+        <div style="background:#fefce8; padding:12px; border-radius:14px;">
+          <strong>2. 破解六大谜案：</strong> 六份牛皮纸档案分别对应《欢乐伙伴3A》第1至第6课。每宗案件包含 <strong>2至3个递进式关卡</strong>（线索推理、近义词辨析、找错别字、句子排序与口语演练）。
+        </div>
+        <div style="background:#f0fdf4; padding:12px; border-radius:14px;">
+          <strong>3. 破译六位保险箱密码：</strong> 每成功破获一宗案件，就能点亮<strong>1位秘密数字密码</strong>，并为本组赢得 <strong>+20 破案大奖</strong>！集齐全部六位密码即可开启终极宝箱，颁发<strong>Franky老师认证·金牌文字神探团</strong>奖状！
+        </div>
+      </div>
+      <div class="modal-bottom-bar">
+        <div class="detective-stamp">机密档案 · Franky老师监制</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       模块一：Web Audio API 侦探主题合成音效引擎
+       ========================================================================== */
+    class DetectiveSoundFX {
+      constructor() {
+        this.enabled = true;
+        this.ctx = null;
+      }
+
+      ensureCtx() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === "suspended") {
+          this.ctx.resume();
+        }
+      }
+
+      tone(freq, type = "sine", dur = 0.14, vol = 0.15, delay = 0) {
+        if (!this.enabled) return;
+        this.ensureCtx();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime + delay;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+
+        gain.gain.setValueAtTime(vol, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + dur);
+      }
+
+      paperFlip() {
+        this.tone(420, "triangle", 0.08, 0.12, 0);
+        this.tone(560, "sine", 0.09, 0.1, 0.05);
+      }
+
+      clueCorrect() {
+        this.tone(587.33, "sine", 0.12, 0.16, 0);     // D5
+        this.tone(739.99, "sine", 0.12, 0.16, 0.09);  // F#5
+        this.tone(880.00, "triangle", 0.25, 0.18, 0.18); // A5
+      }
+
+      gentleWrong() {
+        this.tone(311.13, "triangle", 0.2, 0.14, 0);
+        this.tone(261.63, "triangle", 0.28, 0.14, 0.16);
+      }
+
+      lockClick() {
+        this.tone(760, "square", 0.05, 0.09, 0);
+        this.tone(1120, "sine", 0.08, 0.12, 0.04);
+      }
+
+      tickWarn() {
+        this.tone(880, "sine", 0.07, 0.12, 0);
+      }
+
+      victoryFanfare() {
+        const seq = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+        const t = [0, 0.12, 0.24, 0.38, 0.56, 0.72];
+        seq.forEach((f, idx) => this.tone(f, "triangle", 0.28, 0.2, t[idx]));
+      }
+    }
+
+    const sfx = new DetectiveSoundFX();
+
+    /* ==========================================================================
+       模块二：六大谜案核心数据（严格紧扣《欢乐伙伴3A》第1—6课，绝不超纲）
+       密码序列：3 - 8 - 1 - 6 - 9 - 5
+       ========================================================================== */
+    const CASES_DATA = [
+      {
+        id: 1,
+        lessonTag: "第一课《美丽的愿望》",
+        title: "案件一：《神秘的职业来信》",
+        brief: "三张匿名线索卡描述了两种令人敬佩的职业，结合近义词辨析与愿望表达，破译第一位密码！",
+        passcodeDigit: "3",
+        stages: [
+          {
+            type: "clue_mc",
+            stageTitle: "第一关：线索推理",
+            clues: [
+              { label: "线索卡 ①", text: "他们身穿白大褂，每天在医院里救死扶伤、细心照顾病人。" },
+              { label: "线索卡 ②", text: "另一位英雄身穿防火服，警铃一响就勇敢冲进火场、保护人民安全。" },
+              { label: "线索卡 ③", text: "他们都日夜坚守岗位，用自己的本领为社会做出贡献。" }
+            ],
+            prompt: "根据以上三张线索卡，来信中赞美的分别是哪两种职业？",
+            options: [
+              "建筑工人 和 巴士司机",
+              "医生和护士 和 消防员",
+              "厨师 和 邮递员",
+              "警察 和 图书管理员"
+            ],
+            answer: 1,
+            explanation: "在医院里“救死扶伤、细心照顾病人”的是医生和护士；“冲进火场、保护人民安全”的是消防员。"
+          },
+          {
+            type: "dual_mc",
+            stageTitle: "第二关：词语辨析",
+            prompt: "神探词语侦查：请为下面两句话分别选出最恰当的词语！",
+            subQuestions: [
+              {
+                q: "（1）奶奶生病了，妈妈在床边细心地（　　）她，给她端水喂药。",
+                options: ["照顾", "爱护"],
+                answer: 0
+              },
+              {
+                q: "（2）只要我们天天坚持努力，就一定能（　　）自己美丽的愿望。",
+                options: ["发现", "实现"],
+                answer: 1
+              }
+            ],
+            explanation: "“照顾”用于照料病人或亲人（“爱护”多用于花草公物）；与“愿望”搭配的是“实现愿望”。"
+          },
+          {
+            type: "oral_bonus",
+            stageTitle: "第三关：神探口语加分卡",
+            prompt: "请主答小组派代表用下面的句式大声说出自己的愿望：",
+            template: "“我的愿望是长大后当一名＿＿＿＿＿＿，因为＿＿＿＿＿＿＿＿＿＿＿＿。”",
+            hint: "好词提示：救死扶伤、耐心教导、保护大家、建造美丽的家园、为人民服务。",
+            btnLabel: "🌟 口语达标 (+10分 & 破案)"
+          }
+        ]
+      },
+      {
+        id: 2,
+        lessonTag: "第二课《我的朋友和家人》",
+        title: "案件二：《目击者的拼图档案》",
+        brief: "从四份人物档案中锁定热心助人的好朋友，并用火眼金睛找出目击者笔录里的错别字！",
+        passcodeDigit: "8",
+        stages: [
+          {
+            type: "profile_mc",
+            stageTitle: "第一关：人物侧写推理",
+            clues: [
+              { label: "外貌特征", text: "乌黑的短发，圆圆的脸蛋，鼻梁上戴着一副眼镜。" },
+              { label: "性格特点", text: "平时说话幽默风趣，同学遇到困难时总是乐于助人。" }
+            ],
+            prompt: "请对照目击者的侧写线索，从下面4份人物档案中找出真正的“热心好朋友”：",
+            options: [
+              "档案A：扎着两条长辫子，瓜子脸，性格安静害羞，喜欢一个人看书。",
+              "档案B：乌黑的短发，圆圆的脸蛋，戴着一副眼镜，性格幽默风趣、乐于助人。",
+              "档案C：留着乌黑的短发，方方的脸庞，不戴眼镜，平时总是板着脸不爱说话。",
+              "档案D：戴着一副眼镜，圆圆的脸蛋，但做事粗心大意，遇到同学求助常常推辞。"
+            ],
+            answer: 1,
+            explanation: "档案B完全符合“乌黑的短发、圆圆的脸蛋、戴着眼镜”的外貌，以及“幽默风趣、乐于助人”的性格！"
+          },
+          {
+            type: "typo_hunt",
+            stageTitle: "第二关：火眼金睛找错字",
+            prompt: "目击者笔录里藏着 1 个三年级常见错别字！请直接点击下面句子中写错的那个字：",
+            chars: ["他", "每", "天", "做", "功", "课", "都", "非", "常", "认", "直", "，", "从", "不", "马", "虎", "。"],
+            typoIndex: 10, // “直”
+            correctChar: "真",
+            choices: ["直", "真", "具"],
+            explanation: "“认直”写错了，正确的写法是“认真”（里面有三横）。"
+          }
+        ]
+      },
+      {
+        id: 3,
+        lessonTag: "第三课《我的好伙伴》",
+        title: "案件三：《消失的无声伙伴》",
+        brief: "破译“无色无味健康伙伴”的独白谜语，并按正确顺序排列部首查字法解锁另一位学习伙伴！",
+        passcodeDigit: "1",
+        stages: [
+          {
+            type: "clue_mc",
+            stageTitle: "第一关：第一人称谜语推理",
+            clues: [
+              { label: "无声独白 ①", text: "“我没有颜色，也没有味道，装在你的水壶里每天陪你上学。”" },
+              { label: "无声独白 ②", text: "“运动流汗后喝我最解渴，比甜滋滋的汽水健康得多！”" }
+            ],
+            prompt: "这位默默守护我们健康的好伙伴是谁？常喝它有什么好处？",
+            options: [
+              "橙汁 —— 味道酸酸甜甜，可以代替吃饭。",
+              "白开水 —— 既解渴又健康，能帮身体补充水分。",
+              "汽水 —— 喝起来冰冰凉凉，有很多气泡。",
+              "牛奶 —— 颜色雪白，是透明无味的。"
+            ],
+            answer: 1,
+            explanation: "白开水无色无味，最解渴也最有益健康，是《我的好伙伴》课文里的健康好伙伴！"
+          },
+          {
+            type: "order_sort",
+            stageTitle: "第二关：查字典步骤排序",
+            prompt: "另一位学习伙伴“字典”被密码锁住了！请按正确顺序依次点击排列【部首查字法】的四个步骤：",
+            strips: [
+              "确定要查的部首，并数一数这个部首有几画。",
+              "在《部首目录》里找到这个部首和对应的页码。",
+              "翻到《检字表》那一页，数一数生字除去部首外还有几画。",
+              "按页码在字典正文中找到这个生字，查看读音和意思。"
+            ],
+            explanation: "部首查字法口诀：先定部首数笔画 → 再查目录找页码 → 检字表中数余画 → 翻到正文查到它！"
+          }
+        ]
+      },
+      {
+        id: 4,
+        lessonTag: "第四课《奇妙的变化》",
+        title: "案件四：《自然实验室的时间轴》",
+        brief: "还原小蝌蚪变成青蛙的成长观察记录，并用顺序连接词播报奇妙的自然变化！",
+        passcodeDigit: "6",
+        stages: [
+          {
+            type: "order_sort",
+            stageTitle: "第一关：蜕变过程排序",
+            prompt: "自然实验室里的小青蛙成长卡片被打乱了！请按时间先后顺序依次点击排列：",
+            strips: [
+              "小蝌蚪先长出两条短短的后腿。",
+              "接着，它又长出了两条前腿。",
+              "然后，它长长的尾巴渐渐变短了。",
+              "最后，尾巴不见了，小蝌蚪变成了一只捉害虫的小青蛙。"
+            ],
+            explanation: "小蝌蚪的奇妙变化顺序是：先长后腿 → 接着长前腿 → 然后尾巴渐渐变短 → 最后变成青蛙！"
+          },
+          {
+            type: "dual_mc",
+            stageTitle: "第二关：关联词与词义侦查",
+            prompt: "请完成自然观察播报员的词义与关联词检验：",
+            subQuestions: [
+              {
+                q: "（1）“小蝌蚪的尾巴渐渐变短了”中，“渐渐”的意思是（　　）。",
+                options: ["一步一步、慢慢地", "突然一下子"],
+                answer: 0
+              },
+              {
+                q: "（2）描写事物变化一步步发生的顺序时，最适合用哪组连接词？",
+                options: ["先……接着……然后……最后……", "虽然……但是……"],
+                answer: 0
+              }
+            ],
+            explanation: "“渐渐”表示慢慢地变化；“先……接着……然后……最后……”能让变化过程条理分明。"
+          }
+        ]
+      },
+      {
+        id: 5,
+        lessonTag: "第五课《难忘的一天》",
+        title: "案件五：《被撕碎的日记残页》",
+        brief: "根据时间推移和人物心情变化拼好日记残页，并把平淡的句子升格写生动！",
+        passcodeDigit: "9",
+        stages: [
+          {
+            type: "order_sort",
+            stageTitle: "第一关：日记碎片重组",
+            prompt: "一篇记录“参加华文讲故事比赛”的日记被撕成了四段，请按心情与时间顺序排好：",
+            strips: [
+              "轮到我上台前，我紧张得心“扑通扑通”直跳，手心也冒出了冷汗。",
+              "这时，台下的好朋友向我竖起大拇指，我深吸一口气鼓起了勇气。",
+              "我声音响亮地讲完了整个故事，台下立刻响起了热烈的掌声。",
+              "捧着奖状走在回家路上，我觉得这真是令我最难忘的一天！"
+            ],
+            explanation: "按照“上台前紧张 → 受到鼓励鼓起勇气 → 顺利讲完赢得掌声 → 收获难忘回忆”排列，真情实感十足！"
+          },
+          {
+            type: "clue_mc",
+            stageTitle: "第二关：句子升格挑战",
+            clues: [
+              { label: "神探写作秘诀", text: "写“开心”或“激动”时，加入人物的【动作】和【神态】描写，句子会立刻活起来！" }
+            ],
+            prompt: "下面哪一句话把“他得到第一名很开心”写得最具体、最生动？",
+            options: [
+              "知道自己得了第一名，他今天真的非常开心，开心极了。",
+              "听到自己得了第一名，他激动得一蹦三尺高，眼睛笑成了一条缝。",
+              "因为他在比赛中得了第一名，所以他心里感到很开心。",
+              "他是一个每次参加比赛都会觉得很开心的三年级学生。"
+            ],
+            answer: 1,
+            explanation: "第2句运用了“一蹦三尺高”的动作描写和“眼睛笑成了一条缝”的神态描写，画面感非常强！"
+          }
+        ]
+      },
+      {
+        id: 6,
+        lessonTag: "第六课《是我不好》",
+        title: "案件六：《课室风波调解室》",
+        brief: "化解课室里碰倒水壶的小风波，学会真诚承认错误“是我不好”，破译最后一位密码！",
+        passcodeDigit: "5",
+        stages: [
+          {
+            type: "clue_mc",
+            stageTitle: "第一关：案情还原与分析",
+            clues: [
+              { label: "课室现场还原", text: "下课时，小伟在课室里追逐，不小心碰倒了同桌丽华的水壶，水流出来弄湿了丽华刚写好的华文作业本。" },
+              { label: "冲突对话", text: "小伟皱着眉头说：“反正是白开水，拿纸巾擦干不就行了，干嘛这么小气！”丽华听了眼圈立刻红了。" }
+            ],
+            prompt: "为什么小伟说“反正是水，擦干不就行了”会让丽华更加难过？",
+            options: [
+              "因为丽华的水壶里装的是果汁，不是白开水。",
+              "因为小伟不但没有承认错误，反而责怪丽华小气，态度很不真诚。",
+              "因为课室里没有纸巾可以用来擦桌子。",
+              "因为丽华不喜欢上华文课。"
+            ],
+            answer: 1,
+            explanation: "做错了事却找借口、指责别人，会伤害同学的感情；勇于承认错误才是解决问题的第一步。"
+          },
+          {
+            type: "clue_mc",
+            stageTitle: "第二关：高情商道歉选择",
+            clues: [
+              { label: "调解指南", text: "真诚的道歉 = 主动承认错误 + 诚恳地说声“对不起，是我不好” + 主动弥补。" }
+            ],
+            prompt: "如果你是小伟，下列哪一种道歉方式最真诚、最得体？",
+            options: [
+              "小声嘟囔一句“对不起啦”，然后立刻跑出去继续玩。",
+              "马上拿来纸巾帮忙擦干水渍，诚恳地说：“丽华，对不起，是我不好，我不该在课室里跑，我帮你把作业本吹干吧！”",
+              "生硬地说：“好吧好吧，算我倒霉，跟你说声对不起总行了吧！”",
+              "假装没看见，悄悄走回自己的座位坐下。"
+            ],
+            answer: 1,
+            explanation: "主动承认错误（“是我不好”）、说明原因不推卸责任，并实际行动帮忙弥补，才是最真诚的道歉！"
+          },
+          {
+            type: "oral_bonus",
+            stageTitle: "第三关：情景演练加分",
+            prompt: "请主答小组派代表，用【诚恳、有礼貌】的语气现场表演向同学道歉：",
+            template: "“＿＿＿＿＿＿，对不起，是我不好！我不应该＿＿＿＿＿＿，我马上＿＿＿＿＿＿，请你原谅我好吗？”",
+            hint: "演练小贴士：眼神看着对方，语气诚恳温和，态度大方。",
+            btnLabel: "🎭 演练过关 (+10分 & 破案)"
+          }
+        ]
+      }
+    ];
+
+    const TARGET_PASSCODE = ["3", "8", "1", "6", "9", "5"];
+
+    /* ==========================================================================
+       模块三：游戏状态管理 (Game State)
+       ========================================================================== */
+    const DEFAULT_SQUADS = [
+      { id: 1, name: "猎鹰侦探队", icon: "🦅", color: "#ef4444", score: 0 },
+      { id: 2, name: "智慧神探队", icon: "🦉", color: "#0284c7", score: 0 },
+      { id: 3, name: "闪电追踪队", icon: "🐆", color: "#10b981", score: 0 },
+      { id: 4, name: "星光推理队", icon: "🦊", color: "#8b5cf6", score: 0 }
+    ];
+
+    const EXTRA_SQUADS = [
+      { name: "海豚解码队", icon: "🐬", color: "#f59e0b" },
+      { name: "熊猫洞察队", icon: "🐼", color: "#ec4899" }
+    ];
+
+    let appState = {
+      squads: JSON.parse(JSON.stringify(DEFAULT_SQUADS)),
+      activeSquadId: 1,
+      solvedCaseIds: new Set(),
+      currentCaseId: null,
+      currentStageIdx: 0,
+      stageCompleted: false,
+      // 关卡临时交互状态
+      revealedClues: new Set(),
+      dualAnswers: {},
+      selectedSortItems: [],
+      shuffledSortItems: [],
+      typoFound: false,
+      // 倒计时器状态
+      timerPreset: 45,
+      timerLeft: 45,
+      timerRunning: false,
+      timerHandle: null,
+      // 保险箱输入状态
+      vaultEntered: []
+    };
+
+    /* ==========================================================================
+       模块四：Toast 通知与主界面渲染
+       ========================================================================== */
+    function showToast(text) {
+      const stack = document.getElementById("toastStack");
+      const el = document.createElement("div");
+      el.className = "toast-pill";
+      el.textContent = text;
+      stack.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = "0";
+        el.style.transition = "opacity 0.25s ease";
+        setTimeout(() => el.remove(), 260);
+      }, 2400);
+    }
+
+    // 渲染顶部六位密码保险箱
+    function renderVaultBanner() {
+      const slotsEl = document.getElementById("passcodeSlots");
+      const progressEl = document.getElementById("vaultProgressText");
+      const openBtn = document.getElementById("btnOpenVaultModal");
+
+      const solvedCount = appState.solvedCaseIds.size;
+      progressEl.textContent = solvedCount === 6
+        ? "🎉 全部 6 宗谜案已破获！六位密码已集齐，快开启终极宝箱！"
+        : `已破获 ${solvedCount} / 6 宗谜案，集齐六位密码即可开启金牌宝箱！`;
+
+      if (solvedCount === 6) {
+        openBtn.classList.add("ready-glow");
+      } else {
+        openBtn.classList.remove("ready-glow");
+      }
+
+      slotsEl.innerHTML = CASES_DATA.map((c) => {
+        const isUnlocked = appState.solvedCaseIds.has(c.id);
+        return `
+          <div class="digit-slot ${isUnlocked ? "unlocked" : ""}" title="${c.lessonTag}">
+            <span class="slot-num">${isUnlocked ? c.passcodeDigit : "?"}</span>
+            <span class="slot-case">案${c.id}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // 渲染六大谜案牛皮纸档案墙
+    function renderCasesGrid() {
+      const grid = document.getElementById("casesGrid");
+      grid.innerHTML = CASES_DATA.map((c) => {
+        const isSolved = appState.solvedCaseIds.has(c.id);
+        return `
+          <article class="case-dossier-card ${isSolved ? "solved" : ""}" onclick="openCaseInvestigation(${c.id})">
+            <div class="dossier-top-row">
+              <span class="case-number-tag">档案 #0${c.id}</span>
+              <span class="case-status-pill ${isSolved ? "done" : "pending"}">
+                ${isSolved ? `✅ 已破案 · 密码 ${c.passcodeDigit}` : "🔎 待侦破"}
+              </span>
+            </div>
+
+            <div class="dossier-body">
+              <div class="case-lesson-label">📘 ${c.lessonTag}</div>
+              <h3 class="case-main-name">${c.title}</h3>
+              <p class="case-brief">${c.brief}</p>
+            </div>
+
+            <div class="dossier-footer">
+              <span class="stage-dots">共 ${c.stages.length} 道关卡</span>
+              <button class="btn-investigate" type="button">
+                <span>${isSolved ? "重温档案" : "开始调查"}</span>
+                <span>➡️</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    // 渲染右侧侦探小组积分榜
+    function renderSquadList() {
+      const listEl = document.getElementById("squadList");
+      const maxScore = Math.max(...appState.squads.map(s => s.score));
+
+      listEl.innerHTML = appState.squads.map((sq) => {
+        const isSelected = sq.id === appState.activeSquadId;
+        const isLeader = maxScore > 0 && sq.score === maxScore;
+
+        return `
+          <div class="squad-card ${isSelected ? "selected-squad" : ""} ${isLeader ? "leader-squad" : ""}">
+            <div class="squad-top">
+              <div class="squad-info">
+                <div class="squad-badge-icon" style="background:${sq.color};">${sq.icon}</div>
+                <div>
+                  <button class="squad-name-edit" type="button" onclick="openSquadConfig()" title="点击修改队名">
+                    ${sq.name} ✏️
+                  </button>
+                  <div class="squad-tags-row">
+                    ${isLeader ? `<span class="tag-chip tag-leader">👑 领先</span>` : ""}
+                    ${isSelected ? `<span class="tag-chip tag-active">🎯 行动中</span>` : `<span class="tag-chip" style="background:#f1f5f9;color:#64748b;">待命</span>`}
+                  </div>
+                </div>
+              </div>
+              <div class="squad-score">${sq.score} 分</div>
+            </div>
+
+            <div class="squad-actions">
+              <button class="btn-select-turn ${isSelected ? "is-active" : ""}" type="button" onclick="setActiveSquad(${sq.id})">
+                ${isSelected ? "当前主答组" : "设为当前组"}
+              </button>
+              <div class="score-btn-group">
+                <button class="btn-pt btn-pt-10" type="button" onclick="adjustSquadScore(${sq.id}, 10)">+10</button>
+                <button class="btn-pt btn-pt-20" type="button" onclick="adjustSquadScore(${sq.id}, 20)">+20</button>
+                <button class="btn-pt btn-pt-minus" type="button" onclick="adjustSquadScore(${sq.id}, -5)">-5</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // 渲染破案密码线索簿
+    function renderClueLog() {
+      const logEl = document.getElementById("clueLogList");
+      if (appState.solvedCaseIds.size === 0) {
+        logEl.innerHTML = "尚未解锁密码数字。点击左侧任意一份【待侦破】案件档案，小组协作完成关卡即可获得密码！";
+        return;
+      }
+      const items = CASES_DATA.filter(c => appState.solvedCaseIds.has(c.id)).map(c =>
+        `<div style="padding:4px 0; border-bottom:1px dashed #e2e8f0;">
+          ✅ <strong>${c.lessonTag}</strong>：已破案，获得第 ${c.id} 位密码 <strong style="color:#d97706; font-size:1rem;">[ ${c.passcodeDigit} ]</strong>
+        </div>`
+      ).join("");
+      logEl.innerHTML = items;
+    }
+
+    function setActiveSquad(id) {
+      appState.activeSquadId = id;
+      renderSquadList();
+      renderModalSquadSwitches();
+    }
+
+    function adjustSquadScore(id, delta) {
+      const sq = appState.squads.find(s => s.id === id);
+      if (!sq) return;
+      sq.score = Math.max(0, sq.score + delta);
+      if (delta > 0) {
+        sfx.clueCorrect();
+        showToast(`👏 奖励【${sq.icon} ${sq.name}】+${delta} 分！`);
+      } else {
+        showToast(`📝 【${sq.name}】调整 ${delta} 分`);
+      }
+      renderSquadList();
+    }
+
+    /* ==========================================================================
+       模块五：神探抽签器（随机点名小组）
+       ========================================================================== */
+    document.getElementById("btnRandomSquad").addEventListener("click", () => {
+      let spins = 0;
+      const totalSpins = 14;
+      const interval = setInterval(() => {
+        spins++;
+        const randSq = appState.squads[Math.floor(Math.random() * appState.squads.length)];
+        appState.activeSquadId = randSq.id;
+        sfx.lockClick();
+        renderSquadList();
+
+        if (spins >= totalSpins) {
+          clearInterval(interval);
+          sfx.clueCorrect();
+          const chosen = appState.squads.find(s => s.id === appState.activeSquadId);
+          showToast(`🎲 神探抽签结果：请【${chosen.icon} ${chosen.name}】出动侦破！`);
+        }
+      }, 65);
+    });
+
+    /* ==========================================================================
+       模块六：案件调查弹窗与多关卡互动引擎
+       ========================================================================== */
+    function openCaseInvestigation(caseId) {
+      const caseObj = CASES_DATA.find(c => c.id === caseId);
+      if (!caseObj) return;
+
+      sfx.paperFlip();
+      appState.currentCaseId = caseId;
+      appState.currentStageIdx = 0;
+
+      document.getElementById("mCaseSubtitle").textContent = `📘 ${caseObj.lessonTag}`;
+      document.getElementById("mCaseTitle").textContent = caseObj.title;
+
+      renderModalSquadSwitches();
+      loadCaseStage(0);
+      resetAndStartTimer(appState.timerPreset);
+
+      document.getElementById("caseModal").classList.add("open");
+    }
+
+    function renderModalSquadSwitches() {
+      const wrap = document.getElementById("modalSquadSwitches");
+      if (!wrap) return;
+      wrap.innerHTML = appState.squads.map(sq => `
+        <button type="button"
+                class="squad-pill-switch ${sq.id === appState.activeSquadId ? "active" : ""}"
+                onclick="setActiveSquad(${sq.id})">
+          ${sq.icon} ${sq.name}
+        </button>
+      `).join("");
+    }
+
+    function loadCaseStage(stageIdx) {
+      const caseObj = CASES_DATA.find(c => c.id === appState.currentCaseId);
+      const stage = caseObj.stages[stageIdx];
+      appState.currentStageIdx = stageIdx;
+      appState.stageCompleted = false;
+      appState.revealedClues = new Set([0]); // 默认先揭开第一张线索卡
+      appState.dualAnswers = {};
+      appState.typoFound = false;
+
+      // 渲染关卡进度条
+      const progressBar = document.getElementById("stageProgressBar");
+      progressBar.innerHTML = caseObj.stages.map((st, idx) => {
+        let cls = "stage-step-pill";
+        if (idx < stageIdx) cls += " completed";
+        else if (idx === stageIdx) cls += " current";
+        return `<span class="${cls}">${idx < stageIdx ? "✓ " : ""}${st.stageTitle}</span>`;
+      }).join("");
+
+      // 隐藏上一关的反馈与下一步按钮
+      const fb = document.getElementById("stageFeedback");
+      fb.className = "feedback-banner";
+      fb.innerHTML = "";
+      document.getElementById("btnNextStage").style.display = "none";
+
+      const area = document.getElementById("stageContentArea");
+
+      // 根据关卡类型渲染对应 UI
+      if (stage.type === "clue_mc") {
+        renderClueMCStage(area, stage);
+      } else if (stage.type === "dual_mc") {
+        renderDualMCStage(area, stage);
+      } else if (stage.type === "profile_mc") {
+        renderProfileMCStage(area, stage);
+      } else if (stage.type === "typo_hunt") {
+        renderTypoHuntStage(area, stage);
+      } else if (stage.type === "order_sort") {
+        renderOrderSortStage(area, stage);
+      } else if (stage.type === "oral_bonus") {
+        renderOralBonusStage(area, stage);
+      }
+    }
+
+    // 1. 线索卡 + 单选题
+    function renderClueMCStage(area, stage) {
+      const letters = ["A", "B", "C", "D"];
+      const cluesHtml = stage.clues ? `
+        <div style="font-size:0.82rem; font-weight:800; color:#0369a1; margin-bottom:6px;">
+          💡 点击下方线索卡可逐一揭开全部线索：
+        </div>
+        <div class="clue-cards-grid">
+          ${stage.clues.map((cl, i) => `
+            <div class="clue-flip-card revealed" onclick="sfx.paperFlip()">
+              <div class="clue-card-head">📌 ${cl.label}</div>
+              <div class="clue-card-body">${cl.text}</div>
+            </div>
+          `).join("")}
+        </div>
+      ` : "";
+
+      area.innerHTML = `
+        ${cluesHtml}
+        <div class="prompt-box">${stage.prompt}</div>
+        <div class="options-grid">
+          ${stage.options.map((opt, idx) => `
+            <button class="choice-btn" type="button" onclick="handleSingleChoice(${idx}, this)">
+              <span class="choice-letter">${letters[idx]}</span>
+              <span>${opt}</span>
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function handleSingleChoice(selectedIdx, btnEl) {
+      if (appState.stageCompleted) return;
+      const caseObj = CASES_DATA.find(c => c.id === appState.currentCaseId);
+      const stage = caseObj.stages[appState.currentStageIdx];
+      const btns = document.querySelectorAll("#stageContentArea .choice-btn");
+
+      if (selectedIdx === stage.answer) {
+        btns.forEach(b => b.disabled = true);
+        btnEl.classList.add("correct");
+        completeCurrentStage(stage.explanation, 10);
+      } else {
+        btnEl.disabled = true;
+        btnEl.classList.add("wrong");
+        sfx.gentleWrong();
+        showToast("🤔 这条线索好像不太对，再仔细想想！");
+      }
+    }
+
+    // 2. 人物侧写档案选择
+    function renderProfileMCStage(area, stage) {
+      const letters = ["A", "B", "C", "D"];
+      area.innerHTML = `
+        <div class="clue-cards-grid">
+          ${stage.clues.map(cl => `
+            <div class="clue-flip-card revealed">
+              <div class="clue-card-head">🕵️‍♂️ 目击者证词 · ${cl.label}</div>
+              <div class="clue-card-body">${cl.text}</div>
+            </div>
+          `).join("")}
+        </div>
+        <div class="prompt-box">${stage.prompt}</div>
+        <div class="options-grid two-col">
+          ${stage.options.map((opt, idx) => `
+            <button class="choice-btn" type="button" onclick="handleSingleChoice(${idx}, this)">
+              <span class="choice-letter">${letters[idx]}</span>
+              <span>${opt}</span>
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    // 3. 双题词语辨析关卡
+    function renderDualMCStage(area, stage) {
+      area.innerHTML = `
+        <div class="prompt-box">${stage.prompt}</div>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:14px;">
+          ${stage.subQuestions.map((sq, qIdx) => `
+            <div style="background:#ffffff; border:2px solid #cbd5e1; border-radius:14px; padding:12px;">
+              <div style="font-weight:800; font-size:1rem; margin-bottom:8px; color:#0f172a;">${sq.q}</div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;" id="dualGroup-${qIdx}">
+                ${sq.options.map((opt, oIdx) => `
+                  <button class="choice-btn" type="button" style="flex:1; min-width:140px;"
+                          onclick="handleDualChoice(${qIdx}, ${oIdx}, this)">
+                    <span class="choice-letter">${oIdx === 0 ? "A" : "B"}</span>
+                    <span>${opt}</span>
+                  </button>
+                `).join("")}
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function handleDualChoice(qIdx, oIdx, btnEl) {
+      if (appState.stageCompleted) return;
+      const caseObj = CASES_DATA.find(c => c.id === appState.currentCaseId);
+      const stage = caseObj.stages[appState.currentStageIdx];
+      const subQ = stage.subQuestions[qIdx];
+
+      if (oIdx === subQ.answer) {
+        const groupBtns = document.querySelectorAll(`#dualGroup-${qIdx} .choice-btn`);
+        groupBtns.forEach(b => b.disabled = true);
+        btnEl.classList.add("correct");
+        appState.dualAnswers[qIdx] = true;
+        sfx.clueCorrect();
+
+        if (Object.keys(appState.dualAnswers).length === stage.subQuestions.length) {
+          completeCurrentStage(stage.explanation, 10);
+        } else {
+          showToast("✅ 第（" + (qIdx + 1) + "）题选对啦，继续完成另一题！");
+        }
+      } else {
+        btnEl.disabled = true;
+        btnEl.classList.add("wrong");
+        sfx.gentleWrong();
+        showToast("🤔 再读一读句子，看看哪个词更合适！");
+      }
+    }
+
+    // 4. 火眼金睛找错字关卡
+    function renderTypoHuntStage(area, stage) {
+      area.innerHTML = `
+        <div class="prompt-box">${stage.prompt}</div>
+        <div class="typo-sentence-box">
+          <div style="font-size:0.82rem; font-weight:800; color:#b45309; margin-bottom:8px;">
+            👆 用手指或鼠标点击句子里写错的那个汉字：
+          </div>
+          <div id="typoCharRow">
+            ${stage.chars.map((ch, idx) => `
+              <button class="char-token" type="button" id="charTok-${idx}" onclick="handleTypoClick(${idx})">${ch}</button>
+            `).join("")}
+          </div>
+        </div>
+        <div id="typoFixPanel" style="display:none; background:#f0f9ff; border:2px solid #38bdf8; border-radius:14px; padding:12px; margin-bottom:14px;">
+          <div style="font-weight:900; color:#0369a1; margin-bottom:8px;">
+            🎯 抓到错别字“直”啦！请选出正确的汉字来改正它：
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            ${stage.choices.map((ch) => `
+              <button class="choice-btn" type="button" style="width:auto; min-width:100px; justify-content:center;"
+                      onclick="handleTypoFixChoice('${ch}', this)">
+                <span style="font-size:1.3rem; font-weight:900;">${ch}</span>
+              </button>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function handleTypoClick(idx) {
+      if (appState.stageCompleted || appState.typoFound) return;
+      const caseObj = CASES_DATA.find(c => c.id === appState.currentCaseId);
+      const stage = caseObj.stages[appState.currentStageIdx];
+
+      if (idx === stage.typoIndex) {
+        appState.typoFound = true;
+        sfx.clueCorrect();
+        document.getElementById(`charTok-${idx}`).classList.add("found-typo");
+        document.getElementById("typoFixPanel").style.display = "block";
+      } else {
+        sfx.gentleWrong();
+        showToast("🔍 这个字没有写错哦，再仔细看看“认直”那个词！");
+      }
+    }
+
+    function handleTypoFixChoice(chosenChar, btnEl) {
+      if (appState.stageCompleted) return;
+      const caseObj = CASES_DATA.find(c => c.id === appState.currentCaseId);
+      const stage = caseObj.stages[appState.currentStageIdx];
+
+      if (chosenChar === stage.correctChar) {
+        btnEl.classList.add("correct");
+        const tok = document.getElementById(`charTok-${stage.typoIndex}`);
+        tok.textContent = stage.correctChar;
+        tok.classList.remove("found-typo");
+        tok.classList.add("fixed-char");
+        completeCurrentStage(stage.explanation, 10);
+      } else {
+        btnEl.disabled = true;
+        btnEl.classList.add("wrong");
+        sfx.gentleWrong();
+        showToast("❌ 这个字不对哦，再选一次！");
+      }
+    }
+
+    // 5. 句子/步骤排序拼图关卡
+    function renderOrderSortStage(area, stage) {
+      const indexed = stage.strips.map((text, idx) => ({ text, correctIdx: idx }));
+      let shuffled = [...indexed].sort(() => Math.random() - 0.5);
+      if (shuffled.every((it, i) => it.correctIdx === i)) shuffled.reverse();
+
+      appState.shuffledSortItems = shuffled;
+      appState.selectedSortItems = [];
+
+      area.innerHTML = `
+        <div class="prompt-box">${stage.prompt}</div>
+        <div style="font-size:0.84rem; font-weight:800; color:#b45309; margin-bottom:6px;">
+          📥 已排列的顺序（点击已排卡片可撤回）：
+        </div>
+        <div id="sortTargetZone" class="sort-target-zone"></div>
+        <div style="font-size:0.84rem; font-weight:800; color:#475569; margin-bottom:6px;">
+          🗂️ 待排列卡片（按先后顺序依次点击）：
+        </div>
+        <div id="sortPoolZone" class="sort-pool-zone"></div>
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <button id="btnResetSort" class="btn-ghost-action" type="button" onclick="resetSortPuzzle()">🔄 重新排列</button>
+          <button id="btnCheckSort" class="btn-primary-action" type="button" onclick="verifySortPuzzle()">✅ 提交顺序</button>
+        </div>
+      `;
+      refreshSortZones();
+    }
+
+    function refreshSortZones() {
+      const target = document.getElementById("sortTargetZone");
+      const pool = document.getElementById("sortPoolZone");
+      if (!target || !pool) return;
+
+      if (appState.selectedSortItems.length === 0) {
+        target.innerHTML = `<div style="text-align:center; color:#b45309; font-size:0.86rem; font-weight:700; padding:10px;">请点击下方卡片开始排列……</div>`;
+      } else {
+        target.innerHTML = appState.selectedSortItems.map((it, idx) => `
+          <button class="sort-strip placed" type="button" onclick="removeSortItem(${idx})">
+            <span style="background:#2563eb; color:#fff; width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; flex-shrink:0;">${idx + 1}</span>
+            <span>${it.text}</span>
+          </button>
+        `).join("");
+      }
+
+      const usedSet = new Set(appState.selectedSortItems.map(s => s.correctIdx));
+      pool.innerHTML = appState.shuffledSortItems
+        .filter(it => !usedSet.has(it.correctIdx))
+        .map(it => `
+          <button class="sort-strip" type="button" onclick="pickSortItem(${it.correctIdx})">
+            <span>📄</span>
+            <span>${it.text}</span>
+          </button>
+        `).join("");
+    }
+
+    function pickSortItem(correctIdx) {
+      if (appState.stageCompleted) return;
+      const item = appState.shuffledSortItems.find(s => s.correctIdx === correctIdx);
+      if (!item) return;
+      sfx.paperFlip();
+      appState.selectedSortItems.push(item);
+      refreshSortZones();
+    }
+
+    function removeSortItem(posIdx) {
+      if (appState.stageCompleted) return;
+      appState.selectedSortItems.splice(posIdx, 1);
+      refreshSortZones();
+    }
+
+    function resetSortPuzzle() {
+      if (appState.stageCompleted) return;
+      appState.selectedSortItems = [];
+      refreshSortZones();
+    }
+
+    function verifySortPuzzle() {
+      if (appState.stageCompleted) return;
+      const caseObj = CASES_DATA.find(c => c.id === appState.currentCaseId);
+      const stage = caseObj.stages[appState.currentStageIdx];
+
+      if (appState.selectedSortItems.length < stage.strips.length) {
+        showToast("⚠️ 请先把全部 4 张卡片都排入上方框内再提交！");
+        return;
+      }
+
+      const isOrderRight = appState.selectedSortItems.every((it, idx) => it.correctIdx === idx);
+      if (isOrderRight) {
+        document.getElementById("btnCheckSort").disabled = true;
+        document.getElementById("btnResetSort").disabled = true;
+        completeCurrentStage(stage.explanation, 15);
+      } else {
+        sfx.gentleWrong();
+        showToast("🤔 顺序还差一点点哦，想想事情发生的先后顺序，重新排一排吧！");
+      }
+    }
+
+    // 6. 口语加分/情景演练关卡
+    function renderOralBonusStage(area, stage) {
+      area.innerHTML = `
+        <div class="prompt-box">${stage.prompt}</div>
+        <div style="background:#fffbeb; border:2.5px dashed #f59e0b; border-radius:16px; padding:16px; font-size:1.08rem; font-weight:900; color:#78350f; line-height:1.7; margin-bottom:12px;">
+          ${stage.template}
+        </div>
+        <div style="background:#f0f9ff; border-radius:12px; padding:10px 14px; font-size:0.88rem; color:#0369a1; font-weight:700; margin-bottom:14px;">
+          💡 ${stage.hint}
+        </div>
+        <div style="text-align:center; margin-bottom:10px;">
+          <button id="btnOralPass" class="btn-success-action" type="button" style="font-size:1.02rem; padding:12px 24px;"
+                  onclick="handleOralPass()">
+            ${stage.btnLabel}
+          </button>
+        </div>
+      `;
+    }
+
+    function handleOralPass() {
+      if (appState.stageCompleted) return;
+      document.getElementById("btnOralPass").disabled = true;
+      completeCurrentStage("口头表达清楚流畅、态度真诚大方，顺利通过最终考验！", 10);
+    }
+
+    // 统一结算单个关卡或整宗案件破案
+    function completeCurrentStage(explanation, bonusPts) {
+      appState.stageCompleted = true;
+      sfx.clueCorrect();
+
+      const caseObj = CASES_DATA.find(c => c.id === appState.currentCaseId);
+      const isLastStage = appState.currentStageIdx === caseObj.stages.length - 1;
+      const activeSq = appState.squads.find(s => s.id === appState.activeSquadId);
+
+      // 给当前主答小组加分
+      if (activeSq) {
+        activeSq.score += bonusPts;
+      }
+
+      const fb = document.getElementById("stageFeedback");
+      fb.className = "feedback-banner show ok";
+
+      if (!isLastStage) {
+        fb.innerHTML = `
+          <div>🎉 <strong>本关线索破解成功！</strong>【${activeSq ? activeSq.name : ""}】获得 <strong>+${bonusPts} 分</strong>！</div>
+          <div style="margin-top:4px;">📚 <strong>神探解析：</strong>${explanation}</div>
+        `;
+        const nextBtn = document.getElementById("btnNextStage");
+        nextBtn.textContent = "进入下一关 ➡️";
+        nextBtn.style.display = "inline-flex";
+      } else {
+        // 整宗案件破案！解锁密码数字并额外奖励 +20 破案分
+        stopTimer();
+        const firstTimeSolved = !appState.solvedCaseIds.has(caseObj.id);
+        appState.solvedCaseIds.add(caseObj.id);
+
+        let solveBonusMsg = `【${activeSq ? activeSq.name : ""}】获得 <strong>+${bonusPts} 分</strong>！`;
+        if (firstTimeSolved && activeSq) {
+          activeSq.score += 20;
+          solveBonusMsg = `【${activeSq.name}】获得关卡 <strong>+${bonusPts} 分</strong> + 首次破案大奖 <strong>+20 分</strong>！`;
+        }
+
+        sfx.victoryFanfare();
+        fb.innerHTML = `
+          <div style="font-size:1.08rem; margin-bottom:6px;">
+            🎊 <strong>恭喜破案！${caseObj.title} 真相大白！</strong>
+          </div>
+          <div style="margin-bottom:8px;">${solveBonusMsg}</div>
+          <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:12px; padding:10px 14px; color:#78350f; font-weight:900; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+            <span>🔑 已破译第 ${caseObj.id} 位保险箱密码数字：</span>
+            <span style="font-size:1.5rem; background:#f59e0b; color:#fff; padding:2px 14px; border-radius:10px;">${caseObj.passcodeDigit}</span>
+          </div>
+          <div style="margin-top:8px;">📚 <strong>神探总结：</strong>${explanation}</div>
+        `;
+
+        const nextBtn = document.getElementById("btnNextStage");
+        nextBtn.textContent = "收下密码并返回档案墙 🏆";
+        nextBtn.style.display = "inline-flex";
+      }
+
+      renderSquadList();
+      renderVaultBanner();
+      renderCasesGrid();
+      renderClueLog();
+    }
+
+    document.getElementById("btnNextStage").addEventListener("click", () => {
+      const caseObj = CASES_DATA.find(c => c.id === appState.currentCaseId);
+      if (appState.currentStageIdx < caseObj.stages.length - 1) {
+        sfx.paperFlip();
+        loadCaseStage(appState.currentStageIdx + 1);
+      } else {
+        document.getElementById("caseModal").classList.remove("open");
+        if (appState.solvedCaseIds.size === 6) {
+          showToast("🎉 六位密码已全部集齐！快点击顶部「开启终极宝箱」！");
+        }
+      }
+    });
+
+    document.getElementById("btnCloseCaseModal").addEventListener("click", () => {
+      stopTimer();
+      document.getElementById("caseModal").classList.remove("open");
+    });
+
+    /* ==========================================================================
+       模块七：案件调查多档倒计时器 (30s / 45s / 60s)
+       ========================================================================== */
+    function resetAndStartTimer(seconds) {
+      stopTimer();
+      appState.timerPreset = seconds;
+      appState.timerLeft = seconds;
+      appState.timerRunning = true;
+      document.getElementById("btnTimerPause").textContent = "暂停";
+      updateTimerUI();
+
+      appState.timerHandle = setInterval(() => {
+        if (!appState.timerRunning) return;
+        appState.timerLeft--;
+        updateTimerUI();
+
+        if (appState.timerLeft <= 5 && appState.timerLeft > 0) {
+          sfx.tickWarn();
+        }
+        if (appState.timerLeft <= 0) {
+          stopTimer();
+          sfx.gentleWrong();
+          showToast("⏰ 调查时间到！请主答小组立刻作答！");
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      appState.timerRunning = false;
+      if (appState.timerHandle) {
+        clearInterval(appState.timerHandle);
+        appState.timerHandle = null;
+      }
+    }
+
+    function updateTimerUI() {
+      const readout = document.getElementById("timerReadout");
+      readout.textContent = `${appState.timerLeft}s`;
+      if (appState.timerLeft <= 5 && appState.timerLeft > 0) {
+        readout.classList.add("urgent");
+      } else {
+        readout.classList.remove("urgent");
+      }
+
+      document.querySelectorAll("[data-preset]").forEach(btn => {
+        const p = Number(btn.getAttribute("data-preset"));
+        btn.classList.toggle("active-preset", p === appState.timerPreset);
+      });
+    }
+
+    document.querySelectorAll("[data-preset]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const p = Number(btn.getAttribute("data-preset"));
+        resetAndStartTimer(p);
+      });
+    });
+
+    document.getElementById("btnTimerPause").addEventListener("click", () => {
+      appState.timerRunning = !appState.timerRunning;
+      document.getElementById("btnTimerPause").textContent = appState.timerRunning ? "暂停" : "继续";
+    });
+
+    document.getElementById("btnTimerReset").addEventListener("click", () => {
+      resetAndStartTimer(appState.timerPreset);
+    });
+
+    /* ==========================================================================
+       模块八：终极密码保险箱与全屏礼花庆祝系统
+       ========================================================================== */
+    function openVaultModal() {
+      appState.vaultEntered = [];
+      document.getElementById("vaultErrorMsg").textContent = "";
+      document.getElementById("vaultLockView").style.display = "block";
+      document.getElementById("vaultUnlockedView").style.display = "none";
+
+      // 如果已破获全部6宗案件，显示一键填入快捷按钮
+      const quickWrap = document.getElementById("vaultQuickFillWrap");
+      quickWrap.style.display = appState.solvedCaseIds.size === 6 ? "block" : "none";
+
+      renderVaultInputBoxes();
+      renderVaultKeypad();
+      document.getElementById("vaultModal").classList.add("open");
+    }
+
+    function renderVaultInputBoxes() {
+      const display = document.getElementById("vaultInputDisplay");
+      let html = "";
+      for (let i = 0; i < 6; i++) {
+        const digit = appState.vaultEntered[i] || "•";
+        html += `
+          <div style="width:44px; height:54px; border-radius:12px; border:2.5px solid #f59e0b; background:#fffbeb; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:900; color:#78350f;">
+            ${digit}
+          </div>
+        `;
+      }
+      display.innerHTML = html;
+    }
+
+    function renderVaultKeypad() {
+      const pad = document.getElementById("vaultKeypad");
+      const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "清除", "0", "开锁"];
+      pad.innerHTML = keys.map(k => `
+        <button class="key-btn" type="button"
+                style="${k === "开锁" ? "background:#10b981;color:#fff;border-color:#059669;" : k === "清除" ? "background:#fee2e2;color:#b91c1c;border-color:#fca5a5;font-size:1rem;" : ""}"
+                onclick="handleVaultKey('${k}')">${k}</button>
+      `).join("");
+    }
+
+    function handleVaultKey(key) {
+      sfx.lockClick();
+      const errEl = document.getElementById("vaultErrorMsg");
+      errEl.textContent = "";
+
+      if (key === "清除") {
+        appState.vaultEntered = [];
+        renderVaultInputBoxes();
+        return;
+      }
+
+      if (key === "开锁") {
+        checkVaultPasscode();
+        return;
+      }
+
+      if (appState.vaultEntered.length < 6) {
+        appState.vaultEntered.push(key);
+        renderVaultInputBoxes();
+        if (appState.vaultEntered.length === 6) {
+          setTimeout(checkVaultPasscode, 220);
+        }
+      }
+    }
+
+    document.getElementById("btnAutoFillPasscode").addEventListener("click", () => {
+      appState.vaultEntered = [...TARGET_PASSCODE];
+      renderVaultInputBoxes();
+      setTimeout(checkVaultPasscode, 250);
+    });
+
+    function checkVaultPasscode() {
+      const enteredStr = appState.vaultEntered.join("");
+      const targetStr = TARGET_PASSCODE.join("");
+      if (enteredStr === targetStr) {
+        unlockVictoryCelebration();
+      } else {
+        sfx.gentleWrong();
+        document.getElementById("vaultErrorMsg").textContent = "❌ 密码不正确哦！请对照六大谜案破译出的数字再试一次。";
+        appState.vaultEntered = [];
+        renderVaultInputBoxes();
+      }
+    }
+
+    function unlockVictoryCelebration() {
+      sfx.victoryFanfare();
+      document.getElementById("vaultLockView").style.display = "none";
+      document.getElementById("vaultUnlockedView").style.display = "block";
+
+      // 渲染最终荣誉排名榜
+      const ranked = [...appState.squads].sort((a, b) => b.score - a.score);
+      const medals = ["🥇 冠军神探", "🥈 亚军神探", "🥉 季军神探", "🏅 优秀神探", "🏅 优秀神探", "🏅 优秀神探"];
+      document.getElementById("finalRankingList").innerHTML = ranked.map((sq, i) => `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-radius:14px; background:${i === 0 ? "#fef3c7" : "#f8fafc"}; border:2px solid ${i === 0 ? "#f59e0b" : "#cbd5e1"};">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-weight:900; color:${i === 0 ? "#b45309" : "#475569"};">${medals[i]}</span>
+            <span style="font-size:1.3rem;">${sq.icon}</span>
+            <span style="font-weight:900; font-size:1rem;">${sq.name}</span>
+          </div>
+          <span style="font-weight:900; font-size:1.15rem; color:#d97706;">${sq.score} 分</span>
+        </div>
+      `).join("");
+
+      launchConfetti();
+    }
+
+    document.getElementById("btnOpenVaultModal").addEventListener("click", openVaultModal);
+    document.getElementById("btnCloseVaultModal").addEventListener("click", () => {
+      document.getElementById("vaultModal").classList.remove("open");
+    });
+
+    /* 响应式礼花粒子系统 */
+    function launchConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ["#fbbf24", "#10b981", "#38bdf8", "#f43f5e", "#a855f7", "#fb923c"];
+      const pieces = Array.from({ length: 130 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: 8 + Math.random() * 8,
+        h: 6 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vy: 2.5 + Math.random() * 4,
+        vx: -2 + Math.random() * 4,
+        rot: Math.random() * 360,
+        vRot: -6 + Math.random() * 12
+      }));
+
+      let frames = 0;
+      function draw() {
+        frames++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rot += p.vRot;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+
+        if (frames < 220) {
+          requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      draw();
+    }
+
+    window.addEventListener("resize", () => {
+      const canvas = document.getElementById("confettiCanvas");
+      if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
+
+    /* ==========================================================================
+       模块九：小组管理、音效开关与侦探手册弹窗
+       ========================================================================== */
+    document.getElementById("btnAudioToggle").addEventListener("click", () => {
+      sfx.enabled = !sfx.enabled;
+      document.getElementById("audioIcon").textContent = sfx.enabled ? "🔊" : "🔇";
+      document.getElementById("audioLabel").textContent = sfx.enabled ? "音效开" : "音效关";
+      if (sfx.enabled) sfx.paperFlip();
+    });
+
+    function openSquadConfig() {
+      renderSquadConfigList();
+      document.getElementById("squadConfigModal").classList.add("open");
+    }
+
+    function renderSquadConfigList() {
+      const list = document.getElementById("squadConfigList");
+      list.innerHTML = appState.squads.map((sq, idx) => `
+        <div style="display:flex; align-items:center; gap:10px; background:#f8fafc; padding:8px 12px; border-radius:12px; border:1.5px solid #cbd5e1;">
+          <span style="width:34px; height:34px; border-radius:10px; background:${sq.color}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+            ${sq.icon}
+          </span>
+          <input type="text" value="${sq.name}" maxlength="10"
+                 onchange="updateSquadName(${idx}, this.value)"
+                 style="flex:1; min-height:38px; padding:4px 10px; border-radius:8px; border:2px solid #cbd5e1; font-size:0.95rem; font-weight:800;" />
+          <span style="font-size:0.86rem; font-weight:900; color:#d97706;">${sq.score} 分</span>
+        </div>
+      `).join("");
+    }
+
+    function updateSquadName(idx, val) {
+      const clean = val.trim();
+      if (clean && appState.squads[idx]) {
+        appState.squads[idx].name = clean;
+        renderSquadList();
+      }
+    }
+
+    document.getElementById("btnSquadConfig").addEventListener("click", openSquadConfig);
+    document.getElementById("btnCloseSquadConfig").addEventListener("click", () => {
+      document.getElementById("squadConfigModal").classList.remove("open");
+    });
+
+    document.getElementById("btnAddSquad").addEventListener("click", () => {
+      if (appState.squads.length >= 6) {
+        showToast("⚠️ 最多支持 6 个侦探小组！");
+        return;
+      }
+      const tpl = EXTRA_SQUADS[(appState.squads.length - 4) % EXTRA_SQUADS.length];
+      appState.squads.push({
+        id: Date.now(),
+        name: tpl.name,
+        icon: tpl.icon,
+        color: tpl.color,
+        score: 0
+      });
+      renderSquadConfigList();
+      renderSquadList();
+      showToast(`➕ 已增设【${tpl.icon} ${tpl.name}】！`);
+    });
+
+    document.getElementById("btnRemoveSquad").addEventListener("click", () => {
+      if (appState.squads.length <= 2) {
+        showToast("⚠️ 至少需要保留 2 个侦探小组！");
+        return;
+      }
+      const removed = appState.squads.pop();
+      if (appState.activeSquadId === removed.id) {
+        appState.activeSquadId = appState.squads[0].id;
+      }
+      renderSquadConfigList();
+      renderSquadList();
+      showToast(`➖ 已移除【${removed.name}】`);
+    });
+
+    document.getElementById("btnResetAllProgress").addEventListener("click", () => {
+      appState.squads = JSON.parse(JSON.stringify(DEFAULT_SQUADS));
+      appState.activeSquadId = 1;
+      appState.solvedCaseIds.clear();
+      renderSquadConfigList();
+      renderSquadList();
+      renderVaultBanner();
+      renderCasesGrid();
+      renderClueLog();
+      showToast("🔄 已重置全部案件档案与小组积分！");
+    });
+
+    document.getElementById("btnGuide").addEventListener("click", () => {
+      document.getElementById("guideModal").classList.add("open");
+    });
+    document.getElementById("btnCloseGuide").addEventListener("click", () => {
+      document.getElementById("guideModal").classList.remove("open");
+    });
+
+    // 页面加载初始化
+    window.addEventListener("DOMContentLoaded", () => {
+      renderVaultBanner();
+      renderCasesGrid();
+      renderSquadList();
+      renderClueLog();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="zh-SG">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>《华文巅峰对决：欢乐伙伴3A 综艺抢答赛》 | Franky老师</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ==========================================================================
+       1. 全局字体与电视综艺宝蓝-暖金背景风格
+       ========================================================================== */
+    body {
+      font-family: "Noto Sans SC", "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(251, 191, 36, 0.22) 0%, transparent 42%),
+        radial-gradient(circle at 82% 20%, rgba(56, 189, 248, 0.25) 0%, transparent 45%),
+        linear-gradient(160deg, #0b2559 0%, #143d8d 48%, #1e40af 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* 综艺舞台聚光灯微纹理 */
+    .stage-grid-bg {
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
+    }
+
+    /* ==========================================================================
+       2. Franky老师 专属全屏斜向防伪水印网格 (不可遮挡阅读)
+       ========================================================================== */
+    .franky-watermark-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 45;
+      opacity: 0.065;
+      background-repeat: repeat;
+      background-size: 360px 230px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='230' viewBox='0 0 360 230'%3E%3Cg transform='rotate(-22 180 115)'%3E%3Ctext x='16' y='92' font-family='sans-serif' font-size='20' font-weight='900' fill='%23ffffff'%3EFranky老师 · 欢乐伙伴3A 专属题库%3C/text%3E%3Ctext x='64' y='122' font-family='sans-serif' font-size='14' font-weight='700' fill='%23fde047'%3E★ 华文巅峰对决 综艺抢答赛 ★%3C/text%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* 弹窗底部防伪印章标签 */
+    .franky-stamp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 1.5px solid #f59e0b;
+      color: #92400e;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      user-select: none;
+      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+    }
+
+    /* ==========================================================================
+       3. 综艺抢答分值卡片动效
+       ========================================================================== */
+    .board-card {
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .board-card:hover:not(:disabled) {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.32), 0 0 0 3px #fde047;
+    }
+
+    .board-card:active:not(:disabled) {
+      transform: scale(0.96);
+    }
+
+    .board-card.used-card {
+      background: rgba(15, 23, 42, 0.45) !important;
+      border-color: rgba(148, 163, 184, 0.35) !important;
+      box-shadow: none !important;
+      cursor: pointer;
+    }
+
+    /* 弹窗弹出动画 */
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.92) translateY(14px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .animate-modal-pop {
+      animation: modalPop 0.26s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* 幸运双倍分卡金色旋转光芒 */
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 24px rgba(250, 204, 21, 0.6); }
+      50% { transform: scale(1.04); box-shadow: 0 0 42px rgba(250, 204, 21, 0.95); }
+    }
+
+    .daily-double-glow {
+      animation: pulseGlow 1.3s infinite ease-in-out;
+    }
+
+    /* 错别字点击方格 */
+    .char-tile {
+      transition: all 0.15s ease;
+    }
+    .char-tile:hover:not(:disabled) {
+      transform: translateY(-2px);
+      border-color: #2563eb;
+      background-color: #eff6ff;
+    }
+  </style>
+</head>
+<body class="stage-grid-bg text-slate-800 flex flex-col justify-between selection:bg-amber-300 selection:text-slate-900">
+
+  <!-- Franky老师 全屏斜向防伪水印网格 -->
+  <div class="franky-watermark-layer" aria-hidden="true"></div>
+
+  <!-- 全屏彩色礼花画布 -->
+  <canvas id="confettiCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-[90]"></canvas>
+
+  <!-- 顶部轻量 Toast 提示栈（替代 alert） -->
+  <div id="toastContainer" class="fixed top-20 left-1/2 -translate-x-1/2 z-[95] flex flex-col items-center gap-2 pointer-events-none w-[92%] max-w-md"></div>
+
+  <!-- ==========================================================================
+       一、顶部综艺状态栏 + Franky老师 醒目金色荣誉徽章
+       ========================================================================== -->
+  <header class="sticky top-0 z-30 bg-blue-950/90 backdrop-blur-md border-b-4 border-amber-400 shadow-xl px-3 sm:px-6 py-2.5">
+    <div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-2.5">
+
+      <!-- 左侧标题 -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-300 via-amber-400 to-orange-500 flex items-center justify-center text-2xl sm:text-3xl shadow-lg border-2 border-white shrink-0">
+          🎤
+        </div>
+        <div>
+          <h1 class="text-base sm:text-xl lg:text-2xl font-black text-white tracking-wide leading-tight">
+            《华文巅峰对决》综艺抢答赛
+          </h1>
+          <p class="text-xs sm:text-sm text-sky-200 font-semibold">
+            新加坡小学三年级《欢乐伙伴3A》第1—6课综合大挑战
+          </p>
+        </div>
+      </div>
+
+      <!-- 中央醒目的 Franky老师 金色荣誉徽章 -->
+      <div class="order-3 lg:order-2 w-full lg:w-auto flex justify-center">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-300 text-amber-950 font-black text-xs sm:text-sm border-2 border-white shadow-[0_0_20px_rgba(251,191,36,0.5)] select-none"
+             title="本互动教学网页由 Franky老师 原创制作">
+          <span>🏆</span>
+          <span>Franky老师 专属互动课堂 · 欢乐伙伴3A</span>
+        </div>
+      </div>
+
+      <!-- 右侧教师控制台工具组 -->
+      <div class="order-2 lg:order-3 flex items-center flex-wrap gap-1.5 sm:gap-2">
+        <!-- 综艺倒计时器快捷区 -->
+        <div class="flex items-center gap-1 bg-blue-900/90 border-2 border-sky-400/50 rounded-xl px-2 py-1 text-white">
+          <span class="text-sm">⏱️</span>
+          <span id="topTimerText" class="font-black text-amber-300 text-sm sm:text-base min-w-[38px] text-center">45s</span>
+          <button type="button" onclick="startGlobalTimer(30)" class="px-1.5 py-0.5 text-xs font-bold rounded-lg bg-blue-800 hover:bg-sky-600 transition">30s</button>
+          <button type="button" onclick="startGlobalTimer(45)" class="px-1.5 py-0.5 text-xs font-bold rounded-lg bg-blue-800 hover:bg-sky-600 transition">45s</button>
+          <button type="button" onclick="startGlobalTimer(60)" class="px-1.5 py-0.5 text-xs font-bold rounded-lg bg-blue-800 hover:bg-sky-600 transition">60s</button>
+          <button type="button" id="btnTopTimerStop" onclick="stopGlobalTimer()" class="px-1.5 py-0.5 text-xs font-bold rounded-lg bg-rose-600/80 hover:bg-rose-500 transition">停</button>
+        </div>
+
+        <!-- 开启最终押注赛按钮 -->
+        <button type="button" id="btnOpenFinalShowdown"
+                class="min-h-[40px] px-3 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-400 hover:to-rose-500 text-white font-black text-xs sm:text-sm shadow-lg border-2 border-amber-300 flex items-center gap-1 transition transform active:scale-95">
+          <span>🔥</span>
+          <span>开启最终押注</span>
+        </button>
+
+        <!-- 音效开关 -->
+        <button type="button" id="btnSoundToggle"
+                class="min-h-[40px] px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm border border-white/25 flex items-center gap-1 transition">
+          <span id="soundIcon">🔊</span>
+          <span class="hidden sm:inline" id="soundLabel">音效开</span>
+        </button>
+
+        <!-- 小组设置 -->
+        <button type="button" id="btnOpenSetup"
+                class="min-h-[40px] px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm border border-white/25 flex items-center gap-1 transition">
+          <span>👥</span>
+          <span class="hidden sm:inline">小组设置</span>
+        </button>
+
+        <!-- 赛制说明 -->
+        <button type="button" id="btnOpenRules"
+                class="min-h-[40px] px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm border border-white/25 flex items-center gap-1 transition">
+          <span>📖</span>
+          <span class="hidden sm:inline">赛制</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 全局倒计时可视化进度条 -->
+    <div class="max-w-[1440px] mx-auto mt-2 h-1.5 bg-blue-900 rounded-full overflow-hidden">
+      <div id="topTimerBar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-300" style="width: 100%;"></div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       二、主舞台中央：6列 × 3行 综艺抢答矩阵
+       ========================================================================== -->
+  <main class="flex-1 max-w-[1440px] w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 relative z-10 flex flex-col justify-center">
+
+    <!-- 进度与当前选题提示横条 -->
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-3 bg-blue-950/65 border border-sky-400/30 rounded-2xl px-4 py-2 text-white">
+      <div class="flex items-center gap-2 text-xs sm:text-sm font-bold">
+        <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-900 font-black">当前选题组</span>
+        <span id="currentTurnBanner" class="text-amber-300 font-black text-sm sm:text-base">⭐ 智慧星队</span>
+        <span class="text-sky-200 hidden sm:inline">（请挑选下方任意未翻开的课文与分值卡片）</span>
+      </div>
+      <div class="flex items-center gap-3 text-xs sm:text-sm font-bold text-sky-200">
+        <span>已完成题卡：<strong id="completedCountText" class="text-amber-300">0 / 18</strong></span>
+        <span class="hidden md:inline text-amber-200/80">✨ 题板内藏有 2 张「幸运双倍分卡」！</span>
+      </div>
+    </div>
+
+    <!-- 6列 × 3行 抢答矩阵容器（手机与平板支持顺滑横向滚动，电脑完整铺开） -->
+    <div class="w-full overflow-x-auto pb-2">
+      <div id="quizMatrixGrid" class="min-w-[860px] lg:min-w-0 grid grid-cols-6 gap-2.5 sm:gap-3.5">
+        <!-- 6列课名表头 + 18张分值卡片由 JS 动态生成 -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       三、底部小组积分榜 + 幸运抽组器
+       ========================================================================== -->
+  <section class="max-w-[1440px] w-full mx-auto px-3 sm:px-6 pb-4 relative z-10">
+    <div class="bg-blue-950/85 backdrop-blur-md border-2 border-sky-400/40 rounded-3xl p-3 sm:p-4 shadow-2xl">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🏅</span>
+          <h2 class="text-white font-black text-base sm:text-lg">参赛小组实时积分榜</h2>
+          <span class="text-xs text-sky-300 font-semibold hidden sm:inline">（点击队名可修改，点击卡片设为当前选题组）</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnLuckyDraw"
+                  class="min-h-[40px] px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm shadow-md border-2 border-white flex items-center gap-1.5 transition transform active:scale-95">
+            <span>🎲</span>
+            <span>幸运抽组器</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 小组积分卡网格 -->
+      <div id="scoreboardGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5">
+        <!-- 小组卡片由 JS 动态渲染 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       四、页脚版权防伪声明
+       ========================================================================== -->
+  <footer class="text-center py-3 px-4 text-sky-200/90 text-xs sm:text-sm font-bold relative z-10">
+    课堂互动系统版权归 <span class="text-amber-300 font-black">Franky老师</span> 所有 · 专为三年级华文课堂打造
+  </footer>
+
+  <!-- ==========================================================================
+       弹窗 1：幸运双倍分卡（Daily Double）炫酷提示弹窗
+       ========================================================================== -->
+  <div id="dailyDoubleModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-gradient-to-b from-amber-300 via-yellow-200 to-amber-100 border-4 border-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl daily-double-glow relative animate-modal-pop">
+      <div class="text-6xl mb-2">🌟</div>
+      <div class="inline-block px-3 py-1 rounded-full bg-rose-600 text-white text-xs font-black tracking-wider mb-2">
+        DAILY DOUBLE · 隐藏彩蛋触发
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-black text-amber-950 mb-2">
+        恭喜抽中「幸运双倍分卡」！
+      </h2>
+      <p class="text-sm sm:text-base font-bold text-amber-900 bg-white/75 rounded-2xl p-3.5 mb-5 leading-relaxed">
+        本题基础分值为 <strong id="ddBasePts" class="text-rose-600 text-lg">200</strong> 分，<br/>
+        只要挑战成功，本组将直接获得 <strong id="ddDoublePts" class="text-rose-600 text-xl">400</strong> 双倍积分！
+      </p>
+      <button type="button" id="btnProceedDailyDouble"
+              class="w-full min-h-[48px] py-3 px-6 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white font-black text-base sm:text-lg shadow-lg border-2 border-white transition transform active:scale-95">
+        立刻迎接双倍挑战 🚀
+      </button>
+      <div class="mt-4 flex justify-center">
+        <span class="franky-stamp-badge">© Franky老师 · 欢乐伙伴3A</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       弹窗 2：抢答题卡互动弹窗 (100分 / 200分 / 300分)
+       ========================================================================== -->
+  <div id="questionModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 z-50 overflow-y-auto">
+    <div class="bg-white border-4 border-amber-400 rounded-3xl max-w-3xl w-full p-4 sm:p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto animate-modal-pop">
+
+      <!-- 弹窗顶部：课文标签 + 分值徽章 + 题卡倒计时 -->
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-4 border-b-2 border-dashed border-slate-200">
+        <div class="flex items-center flex-wrap gap-2">
+          <span id="qLessonBadge" class="px-3.5 py-1 rounded-full bg-blue-600 text-white font-black text-xs sm:text-sm">
+            第1课《美丽的愿望》
+          </span>
+          <span id="qPointsBadge" class="px-3.5 py-1 rounded-full bg-amber-400 text-slate-950 font-black text-xs sm:text-sm">
+            100 分题
+          </span>
+          <span id="qDoubleTag" class="hidden px-2.5 py-1 rounded-full bg-rose-600 text-white font-black text-xs animate-bounce">
+            🌟 双倍积分生效中！
+          </span>
+        </div>
+
+        <!-- 弹窗内置倒计时控制器 -->
+        <div class="flex items-center gap-1.5 bg-slate-900 text-white px-3 py-1 rounded-full">
+          <span>⏱️</span>
+          <span id="modalTimerText" class="font-black text-amber-300 text-sm sm:text-base min-w-[36px] text-center">45s</span>
+          <button type="button" onclick="startModalTimer(30)" class="px-2 py-0.5 text-xs font-bold rounded-full bg-slate-700 hover:bg-sky-600">30s</button>
+          <button type="button" onclick="startModalTimer(45)" class="px-2 py-0.5 text-xs font-bold rounded-full bg-slate-700 hover:bg-sky-600">45s</button>
+          <button type="button" onclick="startModalTimer(60)" class="px-2 py-0.5 text-xs font-bold rounded-full bg-slate-700 hover:bg-sky-600">60s</button>
+        </div>
+      </div>
+
+      <!-- 题型小标题与题干 -->
+      <div id="qCategoryTag" class="inline-block px-3 py-0.5 rounded-lg bg-sky-100 text-sky-800 font-extrabold text-xs sm:text-sm mb-2">
+        词语精准辨析
+      </div>
+      <div id="qPromptBox" class="bg-slate-50 border-l-4 border-blue-600 rounded-2xl p-4 text-base sm:text-xl font-extrabold text-slate-900 leading-relaxed mb-4 whitespace-pre-line">
+        题目内容
+      </div>
+
+      <!-- 题型 A：互动选择题（用于 100分词语辨析 & 200分关联词魔法） -->
+      <div id="mcArea" class="hidden grid grid-cols-1 gap-2.5 mb-4"></div>
+
+      <!-- 题型 B：大家来找茬（用于 100分错别字点击纠正） -->
+      <div id="typoArea" class="hidden mb-4">
+        <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-center mb-3">
+          <div class="text-xs sm:text-sm font-extrabold text-amber-800 mb-2">
+            👆 请用手指或鼠标直接点击句子中写错的那个汉字：
+          </div>
+          <div id="typoCharsRow" class="flex flex-wrap justify-center gap-1.5"></div>
+        </div>
+        <div id="typoChoicePanel" class="hidden bg-sky-50 border-2 border-sky-300 rounded-2xl p-4">
+          <div class="text-sm font-black text-sky-900 mb-2.5">
+            🎯 找对错别字啦！请从下面选出正确的汉字来改正它：
+          </div>
+          <div id="typoFixButtons" class="flex flex-wrap gap-3"></div>
+        </div>
+      </div>
+
+      <!-- 题型 C：逻辑排序（用于 200分事件/成长顺序排列） -->
+      <div id="orderArea" class="hidden mb-4">
+        <div class="text-xs sm:text-sm font-extrabold text-amber-800 mb-1.5">
+          📥 已排列的顺序（点击已排卡片可撤回）：
+        </div>
+        <div id="orderTargetBox" class="min-h-[64px] bg-amber-50 border-2 border-dashed border-amber-400 rounded-2xl p-2.5 flex flex-col gap-2 mb-3"></div>
+        <div class="text-xs sm:text-sm font-extrabold text-slate-600 mb-1.5">
+          🗂️ 请按先后顺序依次点击下方句子：
+        </div>
+        <div id="orderPoolBox" class="flex flex-col gap-2 mb-3"></div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" id="btnResetOrder" class="min-h-[40px] px-4 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-sm">
+            🔄 重新排一排
+          </button>
+          <button type="button" id="btnSubmitOrder" class="min-h-[40px] px-5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-sm shadow">
+            ✅ 提交顺序
+          </button>
+        </div>
+      </div>
+
+      <!-- 题型 D：300分 巅峰表达 / 句子升格挑战 -->
+      <div id="oralArea" class="hidden mb-4">
+        <div class="mb-3">
+          <button type="button" id="btnToggleModel"
+                  class="min-h-[42px] px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 border-2 border-amber-300 font-black text-sm flex items-center gap-1.5 transition">
+            <span>💡</span>
+            <span>查看高分示范与评分要点</span>
+          </button>
+          <div id="oralModelBox" class="hidden mt-2.5 bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-sm sm:text-base text-slate-800 leading-relaxed whitespace-pre-line"></div>
+        </div>
+      </div>
+
+      <!-- 答题结果解析反馈区 -->
+      <div id="qFeedbackBanner" class="hidden rounded-2xl p-4 mb-4 text-sm sm:text-base leading-relaxed"></div>
+
+      <!-- 教师快捷计分控制台（支持切换抢答小组 + 一键加减分） -->
+      <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-3 sm:p-4 mb-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+          <span class="text-xs sm:text-sm font-black text-blue-950">🎯 选择本轮作答 / 抢答小组：</span>
+          <div id="modalTeamSelector" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-blue-200">
+          <div class="flex flex-wrap gap-2">
+            <button type="button" id="btnAwardFull"
+                    class="min-h-[44px] px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow flex items-center gap-1.5 transition active:scale-95">
+              <span>✅</span>
+              <span id="btnAwardFullText">答对加分 (+100)</span>
+            </button>
+            <button type="button" id="btnAwardHalf"
+                    class="hidden min-h-[44px] px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black text-sm shadow flex items-center gap-1.5 transition active:scale-95">
+              <span>👍</span>
+              <span id="btnAwardHalfText">表达良好 (+150鼓励分)</span>
+            </button>
+            <button type="button" id="btnDeductPoints"
+                    class="min-h-[44px] px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-sm shadow flex items-center gap-1.5 transition active:scale-95">
+              <span>❌</span>
+              <span id="btnDeductText">答错扣分 (-100)</span>
+            </button>
+          </div>
+
+          <button type="button" id="btnCloseQuestionModal"
+                  class="min-h-[44px] px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-black text-sm transition">
+            返回题板 ➡️
+          </button>
+        </div>
+      </div>
+
+      <!-- 题卡底部 Franky老师 防伪印章 -->
+      <div class="flex justify-end">
+        <span class="franky-stamp-badge">© Franky老师 · 欢乐伙伴3A</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       弹窗 3：🔥 巅峰逆转 · 最终押注赛 (Final Showdown Modal)
+       ========================================================================== -->
+  <div id="finalShowdownModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 z-50 overflow-y-auto">
+    <div class="bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900 text-white border-4 border-amber-400 rounded-3xl max-w-4xl w-full p-4 sm:p-7 shadow-2xl relative max-h-[94vh] overflow-y-auto animate-modal-pop">
+
+      <!-- 顶部标题 -->
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-4 border-b-2 border-amber-400/40">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl sm:text-3xl">🔥</span>
+          <div>
+            <h2 class="text-xl sm:text-2xl font-black text-amber-300">巅峰逆转 · 最终押注赛 (Final Showdown)</h2>
+            <p class="text-xs sm:text-sm text-sky-200 font-semibold">最后一搏！押注翻倍或逆袭翻盘，决定总冠军归属！</p>
+          </div>
+        </div>
+        <button type="button" id="btnCloseFinalModal" class="min-h-[38px] px-3 py-1 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm">
+          ✖ 暂离
+        </button>
+      </div>
+
+      <!-- 第一步 & 第二步：主题揭晓 + 各组设定押注分值 -->
+      <div id="finalStepWager">
+        <div class="bg-gradient-to-r from-amber-500/20 via-yellow-500/25 to-amber-500/20 border-2 border-amber-400 rounded-2xl p-4 text-center mb-4">
+          <div class="text-xs font-black uppercase tracking-widest text-amber-300 mb-1">STEP 1 · 终极主题揭晓</div>
+          <div class="text-xl sm:text-2xl font-black text-white">
+            《综合大挑战：把生活故事写生动》
+          </div>
+        </div>
+
+        <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <h3 class="text-base sm:text-lg font-black text-sky-200">
+            STEP 2 · 请各小组秘密商议并设定本轮押注分值：
+          </h3>
+          <span class="text-xs text-amber-300 font-bold">💡 若小组当前 ≤ 0 分，系统自动赠送 100 分“逆袭体验分”！</span>
+        </div>
+
+        <div id="wagerTeamsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+          <!-- 各小组押注调节卡片由 JS 动态渲染 -->
+        </div>
+
+        <div class="text-center">
+          <button type="button" id="btnRevealFinalPrompt"
+                  class="min-h-[52px] px-8 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-rose-600 hover:brightness-110 text-white font-black text-base sm:text-lg shadow-xl border-2 border-white transition transform active:scale-95">
+            锁定押注，揭晓终极压轴题 🔥
+          </button>
+        </div>
+      </div>
+
+      <!-- 第三步 & 第四步：终极压轴题展示 + 逐组结算押注胜负 -->
+      <div id="finalStepChallenge" class="hidden">
+        <div class="bg-white text-slate-900 rounded-2xl p-4 sm:p-5 border-4 border-amber-300 shadow-xl mb-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="px-3 py-1 rounded-full bg-rose-600 text-white font-black text-xs sm:text-sm">
+              🏆 终极压轴题（融合第2、5、6课描写与道歉技巧）
+            </span>
+            <div class="flex items-center gap-1.5 bg-slate-900 text-white px-3 py-1 rounded-full text-xs sm:text-sm">
+              <span>⏱️</span>
+              <span id="finalTimerText" class="font-black text-amber-300">60s</span>
+              <button type="button" onclick="startFinalTimer(60)" class="px-2 py-0.5 rounded bg-sky-600 font-bold">开始60s计时</button>
+            </div>
+          </div>
+
+          <p class="text-base sm:text-lg font-extrabold leading-relaxed mb-3">
+            请各小组将下面这句平淡的话，扩写成一段<span class="text-rose-600 underline">生动具体、有真情实感</span>的故事片段（口头接力或白板写话展示）：
+          </p>
+
+          <div class="bg-blue-50 border-l-4 border-blue-600 rounded-xl p-3.5 text-lg sm:text-xl font-black text-blue-950 mb-3">
+            “我不小心弄坏了同桌的文具，向他道歉，他原谅了我。”
+          </div>
+
+          <div class="text-xs sm:text-sm font-bold text-slate-600 mb-3">
+            ✨ <strong>加分锦囊：</strong>① 写出事情发生的经过与自己的动作；② 写出神态和心情变化（如“慌张”、“惭愧”）；③ 写出真诚的对话（用上第六课的“对不起，是我不好”）。
+          </div>
+
+          <!-- 折叠高分示范 -->
+          <div>
+            <button type="button" id="btnToggleFinalSample"
+                    class="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-black text-xs sm:text-sm border border-amber-400">
+              💡 查看《欢乐伙伴3A》满分扩写示范
+            </button>
+            <div id="finalSampleBox" class="hidden mt-2.5 bg-amber-50 border border-amber-300 rounded-xl p-3.5 text-sm sm:text-base text-slate-800 leading-relaxed">
+              <strong>🌟 满分示范：</strong><br/>
+              下课时，我在座位旁转身拿书包，胳膊不小心把同桌俊杰心爱的自动铅笔盒碰掉在地上，盒盖摔裂了一条缝。看着散落一地的文具，我慌张极了，脸刷地一下红到了耳根。我连忙蹲下来把文具一一捡起，捧着铅笔盒走到俊杰面前，低着头惭愧地说：“俊杰，对不起，是我不好！我刚才转身太急了，明天我一定赔你一个新的！”俊杰拍拍我的肩膀，微笑着说：“没关系，既然你不是故意的，而且这么真诚地道歉，我就原谅你啦！”听了他的话，我心里的石头终于落了地。
+            </div>
+          </div>
+        </div>
+
+        <!-- 第四步：各小组押注结果结算 -->
+        <h3 class="text-base sm:text-lg font-black text-amber-300 mb-2.5">
+          STEP 4 · 请 Franky老师 逐组判定押注挑战结果：
+        </h3>
+        <div id="finalSettleGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5"></div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <button type="button" id="btnBackToWager" class="min-h-[46px] px-5 py-2.5 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm">
+            ⬅️ 返回修改押注
+          </button>
+          <button type="button" id="btnCrownChampion"
+                  class="min-h-[52px] px-8 py-3 rounded-2xl bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:brightness-105 text-slate-950 font-black text-base sm:text-xl shadow-[0_0_25px_rgba(251,191,36,0.6)] border-2 border-white transition transform active:scale-95">
+            🏆 揭晓最终总冠军！
+          </button>
+        </div>
+      </div>
+
+      <!-- 底部 Franky老师 防伪印章 -->
+      <div class="mt-5 pt-3 border-t border-white/15 flex justify-end">
+        <span class="franky-stamp-badge">© Franky老师 · 欢乐伙伴3A</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       弹窗 4：🏆 总冠军颁奖台与 Franky老师 荣誉奖状弹窗
+       ========================================================================== -->
+  <div id="podiumModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 z-[60] overflow-y-auto">
+    <div class="bg-gradient-to-b from-amber-50 via-white to-amber-50 border-4 border-amber-400 rounded-3xl max-w-2xl w-full p-5 sm:p-7 text-center shadow-2xl relative max-h-[92vh] overflow-y-auto animate-modal-pop">
+
+      <div class="text-5xl sm:text-6xl mb-1">🏆</div>
+      <div class="inline-block px-4 py-1 rounded-full bg-amber-400 text-amber-950 font-black text-xs sm:text-sm mb-2">
+        《华文巅峰对决：欢乐伙伴3A 综艺抢答赛》
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-3">
+        荣耀冠军颁奖台
+      </h2>
+
+      <!-- 荣誉奖状框 -->
+      <div class="bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-100 border-4 double border-amber-500 rounded-2xl p-4 sm:p-5 mb-4 shadow-inner">
+        <div class="text-xs sm:text-sm font-black text-amber-800 tracking-wider mb-1">
+          ✨ 荣誉证书 · CERTIFICATE OF EXCELLENCE ✨
+        </div>
+        <div id="championHeroText" class="text-xl sm:text-2xl font-black text-rose-600 my-1.5">
+          👑 总冠军：智慧星队 ⭐
+        </div>
+        <p class="text-xs sm:text-sm font-bold text-slate-700 leading-relaxed mb-3">
+          在新加坡小学三年级《欢乐伙伴3A》第1—6课华文知识竞赛中表现卓越，词语运用精准、逻辑思维敏捷、口语表达生动！
+        </p>
+        <div class="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-slate-900 text-amber-300 font-black text-xs sm:text-sm border border-amber-400">
+          <span>🎖️</span>
+          <span>Franky老师 荣誉颁发</span>
+        </div>
+      </div>
+
+      <!-- 完整小组排名榜 -->
+      <div id="podiumRankingList" class="flex flex-col gap-2 mb-5 text-left"></div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200">
+        <span class="franky-stamp-badge">© Franky老师 · 欢乐伙伴3A</span>
+        <button type="button" id="btnClosePodium"
+                class="min-h-[44px] px-6 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-sm shadow">
+          返回主舞台 🎉
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       弹窗 5：小组管理弹窗 (2—6组设置与重置)
+       ========================================================================== -->
+  <div id="setupModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white border-4 border-amber-400 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative animate-modal-pop">
+      <div class="flex items-center justify-between pb-3 mb-3 border-b-2 border-slate-100">
+        <h2 class="text-xl font-black text-slate-900">👥 参赛小组设置 (2—6组)</h2>
+        <button type="button" id="btnCloseSetup" class="px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 font-bold text-sm">✖ 关闭</button>
+      </div>
+      <p class="text-xs sm:text-sm text-slate-600 font-semibold mb-3">
+        可直接修改小组名称，或增减参赛小组数量：
+      </p>
+      <div id="setupTeamsContainer" class="flex flex-col gap-2.5 mb-4 max-h-[45vh] overflow-y-auto"></div>
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div class="flex gap-2">
+          <button type="button" id="btnAddTeam" class="min-h-[40px] px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs sm:text-sm">➕ 增加小组</button>
+          <button type="button" id="btnRemoveTeam" class="min-h-[40px] px-3.5 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-black text-xs sm:text-sm">➖ 减少小组</button>
+        </div>
+        <button type="button" id="btnResetMatch" class="min-h-[40px] px-3.5 py-1.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-700 font-black text-xs sm:text-sm">
+          🔄 重置整场比赛
+        </button>
+      </div>
+      <div class="flex justify-end">
+        <span class="franky-stamp-badge">© Franky老师 · 欢乐伙伴3A</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       弹窗 6：综艺赛制规则弹窗
+       ========================================================================== -->
+  <div id="rulesModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white border-4 border-amber-400 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative animate-modal-pop">
+      <div class="flex items-center justify-between pb-3 mb-3 border-b-2 border-slate-100">
+        <h2 class="text-xl font-black text-slate-900">📖 《华文巅峰对决》赛制说明</h2>
+        <button type="button" id="btnCloseRules" class="px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 font-bold text-sm">✖ 关闭</button>
+      </div>
+      <div class="flex flex-col gap-2.5 text-sm text-slate-700 leading-relaxed mb-4">
+        <div class="bg-blue-50 p-3 rounded-2xl">
+          <strong>1. 六课三梯度选题：</strong> 题板涵盖《欢乐伙伴3A》第1至第6课，每课设有 <strong>100分（词语辨析/找错字）</strong>、<strong>200分（关联词/逻辑排序）</strong> 和 <strong>300分（句子升格口语挑战）</strong>。
+        </div>
+        <div class="bg-amber-50 p-3 rounded-2xl">
+          <strong>2. 幸运双倍分卡（Daily Double）：</strong> 每局题板中随机隐藏 <strong>2张双倍分卡</strong>！点中该卡的小组只要答对，本轮得分自动翻倍（200 / 400 / 600分）！
+        </div>
+        <div class="bg-rose-50 p-3 rounded-2xl">
+          <strong>3. 巅峰逆转 · 最终押注赛：</strong> 18道题全部完成后（或随时点击顶部<strong>“🔥 开启最终押注”</strong>），各组可用现有积分进行秘密押注，通过终极扩写题一决高下！
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <span class="franky-stamp-badge">© Franky老师 · 欢乐伙伴3A</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       模块一：Web Audio API 电视综艺合成音效引擎（零外部音频 URL）
+       ========================================================================== */
+    class ShowdownAudioFX {
+      constructor() {
+        this.enabled = true;
+        this.ctx = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === "suspended") {
+          this.ctx.resume();
+        }
+      }
+
+      playNote(freq, type = "sine", duration = 0.15, gainVal = 0.16, delay = 0) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const t0 = this.ctx.currentTime + delay;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, t0);
+
+        gain.gain.setValueAtTime(gainVal, t0);
+        gain.gain.exponentialRampToValueAtTime(0.001, t0 + duration);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t0);
+        osc.stop(t0 + duration);
+      }
+
+      cardFlip() {
+        this.playNote(440, "triangle", 0.08, 0.14, 0);
+        this.playNote(660, "sine", 0.1, 0.14, 0.05);
+      }
+
+      correctCheer() {
+        this.playNote(523.25, "sine", 0.13, 0.18, 0);      // C5
+        this.playNote(659.25, "sine", 0.13, 0.18, 0.09);   // E5
+        this.playNote(783.99, "sine", 0.15, 0.18, 0.18);   // G5
+        this.playNote(1046.5, "triangle", 0.32, 0.22, 0.27); // C6
+      }
+
+      wrongBuzz() {
+        this.playNote(240, "sawtooth", 0.22, 0.12, 0);
+        this.playNote(185, "sawtooth", 0.32, 0.12, 0.18);
+      }
+
+      tickUrgent() {
+        this.playNote(920, "sine", 0.06, 0.14, 0);
+      }
+
+      dailyDoubleFanfare() {
+        const freqs = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5, 1318.5];
+        const times = [0, 0.08, 0.16, 0.24, 0.36, 0.46, 0.58];
+        freqs.forEach((f, i) => this.playNote(f, "triangle", 0.22, 0.2, times[i]));
+      }
+
+      victoryFanfare() {
+        const freqs = [523.25, 523.25, 523.25, 659.25, 783.99, 659.25, 1046.5];
+        const times = [0, 0.13, 0.26, 0.39, 0.56, 0.74, 0.92];
+        freqs.forEach((f, i) => this.playNote(f, "triangle", 0.28, 0.22, times[i]));
+      }
+    }
+
+    const sfx = new ShowdownAudioFX();
+
+    /* ==========================================================================
+       模块二：新加坡小学三年级《欢乐伙伴3A》第1—6课 18道精品题库（严格不超纲）
+       ========================================================================== */
+    const LESSONS = [
+      { num: 1, title: "第1课《美丽的愿望》", headerGrad: "from-rose-500 to-red-600" },
+      { num: 2, title: "第2课《我的朋友和家人》", headerGrad: "from-amber-500 to-orange-600" },
+      { num: 3, title: "第3课《我的好伙伴》", headerGrad: "from-sky-500 to-blue-600" },
+      { num: 4, title: "第4课《奇妙的变化》", headerGrad: "from-emerald-500 to-teal-600" },
+      { num: 5, title: "第5课《难忘的一天》", headerGrad: "from-violet-500 to-purple-600" },
+      { num: 6, title: "第6课《是我不好》", headerGrad: "from-pink-500 to-rose-600" }
+    ];
+
+    const QUESTION_BANK = [
+      /* ==================== 100分档：词语精准辨析 / 大家来找茬 ==================== */
+      {
+        id: "L1_100", lesson: 1, points: 100, mode: "mc",
+        category: "100分 · 词语精准辨析",
+        prompt: "选词填空：身穿白大褂的医生和护士每天在医院里细心（　　）病人，帮助他们早日恢复健康。",
+        options: ["爱护", "照顾", "保护", "珍惜"],
+        answer: 1,
+        explanation: "“照顾”多用于照料病人、老人或小孩；“爱护”多用于花草树木、公物或晚辈。"
+      },
+      {
+        id: "L2_100", lesson: 2, points: 100, mode: "typo",
+        category: "100分 · 大家来找茬",
+        prompt: "火眼金睛找错字：下面这句话里藏着 1 个三年级常见错别字，请点击写错的那个汉字！",
+        chars: ["他", "平", "时", "乐", "于", "助", "人", "，", "做", "功", "课", "也", "非", "常", "认", "直", "。"],
+        typoIndex: 15,
+        correctChar: "真",
+        choices: ["真", "直", "具"],
+        explanation: "“认直”写错了，正确的写法是“认真”（里面有三横）。"
+      },
+      {
+        id: "L3_100", lesson: 3, points: 100, mode: "mc",
+        category: "100分 · 词语精准辨析",
+        prompt: "“字典”是学习华文的好伙伴。用部首查字法查“伙伴”的“伙”字时，第一步应该先确定它的部首是（　　），再数一数部首有几画。",
+        options: ["火字旁（火）", "单人旁（亻）", "双人旁（彳）", "立刀旁（刂）"],
+        answer: 1,
+        explanation: "“伙”是左右结构的字，部首是“单人旁（亻）”（2画），除去部首再数“火”的4画。"
+      },
+      {
+        id: "L4_100", lesson: 4, points: 100, mode: "mc",
+        category: "100分 · 词语精准辨析",
+        prompt: "近义词辨析：太阳升起来了，山谷里的浓雾（　　）散开了，露出了翠绿的树林。",
+        options: ["突然", "立刻", "渐渐", "马上"],
+        answer: 2,
+        explanation: "“渐渐”表示程度或数量一步一步、慢慢地变化，符合浓雾慢慢散开的自然现象。"
+      },
+      {
+        id: "L5_100", lesson: 5, points: 100, mode: "typo",
+        category: "100分 · 大家来找茬",
+        prompt: "火眼金睛找错字：下面这句话里藏着 1 个三年级常见错别字，请点击写错的那个汉字！",
+        chars: ["明", "天", "要", "去", "动", "物", "园", "学", "习", "之", "旅", "，", "我", "兴", "奋", "得", "迫", "不", "及", "带", "。"],
+        typoIndex: 19,
+        correctChar: "待",
+        choices: ["待", "带", "代"],
+        explanation: "“迫不及带”写错了，正确的写法是“迫不及待”（“待”是双人旁，表示等待）。"
+      },
+      {
+        id: "L6_100", lesson: 6, points: 100, mode: "typo",
+        category: "100分 · 大家来找茬",
+        prompt: "火眼金睛找错字：下面这句话里藏着 1 个三年级常见错别字，请点击写错的那个汉字！",
+        chars: ["小", "刚", "不", "小", "心", "弄", "脏", "了", "同", "桌", "的", "作", "业", "本", "，", "他", "非", "常", "残", "愧", "地", "道", "歉", "。"],
+        typoIndex: 18,
+        correctChar: "惭",
+        choices: ["惭", "残", "渐"],
+        explanation: "“残愧”写错了，正确的写法是“惭愧”（竖心旁“忄”，表示心里感到不安和不好意思）。"
+      },
+
+      /* ==================== 200分档：逻辑排序 / 关联词魔法 ==================== */
+      {
+        id: "L1_200", lesson: 1, points: 200, mode: "mc",
+        category: "200分 · 关联词魔法",
+        prompt: "关联词选择：小华的愿望是当一名出色的厨师，他明白（　　）天天认真练习，厨艺（　　）会不断进步。",
+        options: ["虽然……但是……", "只要……就……", "因为……所以……", "不但……而且……"],
+        answer: 1,
+        explanation: "“只要……就……”表示条件关系，说明“天天认真练习”是“厨艺不断进步”的条件。"
+      },
+      {
+        id: "L2_200", lesson: 2, points: 200, mode: "order",
+        category: "200分 · 逻辑排序",
+        prompt: "请按事情发展的先后顺序，依次点击排列下面描写“好朋友互助”的段落：",
+        strips: [
+          "放学时，天空突然乌云密布，下起了倾盆大雨。",
+          "我站在校门口正发愁，因为我今天忘了带雨伞。",
+          "这时，好朋友美玲撑着伞跑过来，热情地说：“我们一起走吧！”",
+          "一路上，她把雨伞歪向我这边，自己半边肩膀都淋湿了，让我感动极了。"
+        ],
+        explanation: "按照“突然下雨 → 忘带雨伞发愁 → 朋友共撑一伞 → 感动不已”的逻辑顺序排列。"
+      },
+      {
+        id: "L3_200", lesson: 3, points: 200, mode: "mc",
+        category: "200分 · 关联词魔法",
+        prompt: "关联词选择：天气这么炎热，（　　）我们不及时多喝白开水补充水分，身体（　　）容易感到疲倦。",
+        options: ["如果……就……", "虽然……但是……", "因为……所以……", "不是……而是……"],
+        answer: 0,
+        explanation: "“如果……就……”表示假设关系，说明假设不喝水就会产生的后果，提醒大家多喝健康好伙伴——白开水！"
+      },
+      {
+        id: "L4_200", lesson: 4, points: 200, mode: "order",
+        category: "200分 · 逻辑排序",
+        prompt: "小蝌蚪是怎样变成小青蛙的？请按生物成长变化的先后顺序依次点击排列：",
+        strips: [
+          "池塘里的小蝌蚪先长出了两条短短的后腿。",
+          "接着，它又长出了两条前腿。",
+          "然后，它长长的尾巴渐渐变短了。",
+          "最后，尾巴不见了，小蝌蚪变成了一只捉害虫的小青蛙。"
+        ],
+        explanation: "小蝌蚪的奇妙蜕变顺序：先长后腿 → 接着长前腿 → 然后尾巴变短 → 最后变成青蛙！"
+      },
+      {
+        id: "L5_200", lesson: 5, points: 200, mode: "mc",
+        category: "200分 · 关联词魔法",
+        prompt: "关联词选择：星期六参加海边净滩义工活动，（　　）太阳火辣辣地照着，我们累得满头大汗，（　　）看到沙滩变得干干净净，大家都开心极了！",
+        options: ["如果……就……", "虽然……但是……", "只要……就……", "因为……所以……"],
+        answer: 1,
+        explanation: "前半句说“累得满头大汗”，后半句转折说“大家都开心极了”，表示转折关系，应使用“虽然……但是……”。"
+      },
+      {
+        id: "L6_200", lesson: 6, points: 200, mode: "order",
+        category: "200分 · 逻辑排序",
+        prompt: "不小心把弟弟的积木城堡碰倒了，怎样做才是真诚的道歉？请按正确顺序依次点击排列：",
+        strips: [
+          "我在客厅跑动时，不小心把弟弟搭了半天的积木城堡碰倒了。",
+          "看到弟弟难过得眼眶红红的，我心里感到十分惭愧。",
+          "我连忙走过去，诚恳地说：“弟弟，对不起，是我不好，我陪你重新搭一座吧！”",
+          "弟弟听了破涕为笑，我们俩又开开心心地一起合作起来。"
+        ],
+        explanation: "闯祸 → 感到惭愧 → 主动说出“是我不好”并弥补 → 重归于好！"
+      },
+
+      /* ==================== 300分档：巅峰表达 / 句子升格挑战 ==================== */
+      {
+        id: "L1_300", lesson: 1, points: 300, mode: "oral",
+        category: "300分 · 巅峰表达 / 句子升格挑战",
+        prompt: "【基础句】“我的愿望是当一名老师。”\n\n【挑战任务】请结合第一课《美丽的愿望》，说出你为什么有这个愿望，以及你想怎样实现它（可用上“耐心教导”、“只要……就……”）。",
+        modelAnswer: "🌟 高分示范：\n“我的愿望是长大后当一名华文老师。因为老师每天在教室里耐心教导我们读书写字，让我们懂得许多做人的道理。我知道，只要从现在开始认真学习、多读好书，我的愿望就一定能实现！”\n\n📋 评分要点（满分300分）：\n1. 说出具体职业与原因（100分）\n2. 准确运用课内好词如“耐心教导”（100分）\n3. 写出实现愿望的具体行动（100分）"
+      },
+      {
+        id: "L2_300", lesson: 2, points: 300, mode: "oral",
+        category: "300分 · 巅峰表达 / 句子升格挑战",
+        prompt: "【基础句】“奶奶很疼爱我，她笑着看着我。”\n\n【挑战任务】请结合第二课《我的朋友和家人》，加入奶奶的【外貌特征】和【神态动作】描写，把这句话扩写生动！",
+        modelAnswer: "🌟 高分示范：\n“奶奶的头发虽然花白了，但精神很好。每当看到我放学回家，她总是笑眯眯的，眼睛眯成了一条缝，一边亲切地摸摸我的头，一边递上一杯温水。”\n\n📋 评分要点（满分300分）：\n1. 写出外貌特点如“头发花白”（100分）\n2. 写出神态如“笑眯眯、眼睛眯成一条缝”（100分）\n3. 加入具体动作体现疼爱（100分）"
+      },
+      {
+        id: "L3_300", lesson: 3, points: 300, mode: "oral",
+        category: "300分 · 巅峰表达 / 句子升格挑战",
+        prompt: "【基础句】“字典是我的好伙伴，它能帮我。”\n\n【挑战任务】请结合第三课《我的好伙伴》，用上“每当……就……”的句式，具体说出字典在什么时候怎样帮助你！",
+        modelAnswer: "🌟 高分示范：\n“字典是我学习路上的无声好伙伴。每当我在阅读故事书遇到不认识的生字时，我就会请教它。它总是耐心地告诉我生字的读音和意思，帮我扫清了阅读的拦路虎。”\n\n📋 评分要点（满分300分）：\n1. 准确运用“每当……就……”句式（100分）\n2. 写出查阅生字的具体过程（100分）\n3. 语句通顺、富有感情（100分）"
+      },
+      {
+        id: "L4_300", lesson: 4, points: 300, mode: "oral",
+        category: "300分 · 巅峰表达 / 句子升格挑战",
+        prompt: "【基础句】“绿豆发芽长高了。”\n\n【挑战任务】请结合第四课《奇妙的变化》，用上顺序连接词“先……接着……然后……最后……”，把绿豆发芽成长的过程说生动！",
+        modelAnswer: "🌟 高分示范：\n“我把几颗圆溜溜的绿豆放进湿棉花里。它们先喝饱了水，胖嘟嘟的身体胀破了绿衣裳；接着探出了白白嫩嫩的小芽；然后嫩芽一天天长高；最后长出了两片翠绿的小叶子，真奇妙啊！”\n\n📋 评分要点（满分300分）：\n1. 完整使用“先……接着……然后……最后……”（150分）\n2. 加入颜色、形状等细节观察描写（150分）"
+      },
+      {
+        id: "L5_300", lesson: 5, points: 300, mode: "oral",
+        category: "300分 · 巅峰表达 / 句子升格挑战",
+        prompt: "【基础句】“轮到我上台表演，我很紧张；表演完，我很开心。”\n\n【挑战任务】请结合第五课《难忘的一天》，加入心跳、表情或动作描写，把前后【心情变化】写具体！",
+        modelAnswer: "🌟 高分示范：\n“轮到我上台时，我的心‘扑通扑通’直跳，手心也冒出了冷汗。当我顺利表演完，听到台下响起雷鸣般的掌声时，我激动得一蹦三尺高，脸上露出了自豪的笑容！”\n\n📋 评分要点（满分300分）：\n1. 写出紧张时的反应如“心扑通直跳、手心冒冷汗”（100分）\n2. 写出开心时的动作或神态（100分）\n3. 前后心情变化自然生动（100分）"
+      },
+      {
+        id: "L6_300", lesson: 6, points: 300, mode: "oral",
+        category: "300分 · 巅峰表达 / 句子升格挑战",
+        prompt: "【基础句】“我弄破了同学的书，跟他说对不起，他原谅了我。”\n\n【挑战任务】请结合第六课《是我不好》，用真诚的语气表演一段道歉对话（包含：承认错误“是我不好” + 不找借口 + 弥补办法）！",
+        modelAnswer: "🌟 高分示范：\n“我捧着书走到丽华面前，低着头惭愧地说：‘丽华，对不起，是我不好！昨天我没把书放进书包，不小心把封面折破了一角。我已经用透明胶带仔细粘好了，请你原谅我好吗？’丽华微笑着说：‘没关系，看你这么诚恳，我就原谅你啦！’”\n\n📋 评分要点（满分300分）：\n1. 诚恳说出“对不起，是我不好”（100分）\n2. 说明原因不推卸责任并提出弥补（100分）\n3. 语气真诚得体、有礼貌（100分）"
+      }
+    ];
+
+    /* ==========================================================================
+       模块三：比赛全局状态管理
+       ========================================================================== */
+    const INITIAL_TEAMS = [
+      { id: 1, name: "智慧星队 ⭐", color: "from-amber-400 to-orange-500", border: "border-amber-400", score: 0 },
+      { id: 2, name: "阳光虎队 🐯", color: "from-rose-500 to-red-600", border: "border-rose-400", score: 0 },
+      { id: 3, name: "飞跃龙队 🐉", color: "from-sky-500 to-blue-600", border: "border-sky-400", score: 0 },
+      { id: 4, name: "彩虹鲸队 🐋", color: "from-emerald-500 to-teal-600", border: "border-emerald-400", score: 0 }
+    ];
+
+    const EXTRA_TEAM_PRESETS = [
+      { name: "闪电豹队 🐆", color: "from-purple-500 to-indigo-600", border: "border-purple-400" },
+      { name: "快乐熊队 🐼", color: "from-pink-500 to-rose-600", border: "border-pink-400" }
+    ];
+
+    let state = {
+      teams: JSON.parse(JSON.stringify(INITIAL_TEAMS)),
+      activeTeamId: 1,
+      usedQuestionIds: new Set(),
+      dailyDoubleIds: new Set(),
+      activeQuestion: null,
+      isCurrentDailyDouble: false,
+      // 互动题临时状态
+      typoFound: false,
+      orderShuffled: [],
+      orderSelected: [],
+      // 倒计时器状态
+      timerMax: 45,
+      timerLeft: 45,
+      timerHandle: null,
+      // 最终押注赛状态
+      wagers: {},
+      finalResults: {}
+    };
+
+    // 随机埋入 2 张「幸运双倍分卡」
+    function assignRandomDailyDoubles() {
+      state.dailyDoubleIds.clear();
+      const allIds = QUESTION_BANK.map(q => q.id);
+      while (state.dailyDoubleIds.size < 2) {
+        const randId = allIds[Math.floor(Math.random() * allIds.length)];
+        state.dailyDoubleIds.add(randId);
+      }
+    }
+
+    function showToast(msg) {
+      const box = document.getElementById("toastContainer");
+      const pill = document.createElement("div");
+      pill.className = "bg-slate-900/95 text-white border-2 border-amber-400 px-4 py-2 rounded-full text-xs sm:text-sm font-black shadow-xl text-center animate-modal-pop";
+      pill.textContent = msg;
+      box.appendChild(pill);
+      setTimeout(() => {
+        pill.style.opacity = "0";
+        pill.style.transition = "opacity 0.25s ease";
+        setTimeout(() => pill.remove(), 260);
+      }, 2400);
+    }
+
+    /* ==========================================================================
+       模块四：渲染 6列×3行 综艺抢答矩阵 & 底部小组积分榜
+       ========================================================================== */
+    function renderQuizMatrix() {
+      const grid = document.getElementById("quizMatrixGrid");
+      const tiers = [100, 200, 300];
+      let html = "";
+
+      // 第一行：6列课文主题表头
+      LESSONS.forEach(les => {
+        html += `
+          <div class="bg-gradient-to-b ${les.headerGrad} text-white rounded-2xl p-2.5 sm:p-3 text-center shadow-lg border-2 border-white/60 flex flex-col items-center justify-center min-h-[68px]">
+            <span class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider opacity-90">第 ${les.num} 课</span>
+            <span class="text-xs sm:text-sm lg:text-base font-black leading-snug mt-0.5">${les.title.replace(/^第\d课/, "")}</span>
+          </div>
+        `;
+      });
+
+      // 接下来三行：100分 / 200分 / 300分 题卡
+      tiers.forEach(pts => {
+        LESSONS.forEach(les => {
+          const q = QUESTION_BANK.find(item => item.lesson === les.num && item.points === pts);
+          const isUsed = state.usedQuestionIds.has(q.id);
+
+          let cardStyle = "from-blue-600 to-indigo-700 border-sky-300 text-amber-300";
+          let subTag = "词语/找茬";
+          if (pts === 200) {
+            cardStyle = "from-indigo-600 to-purple-700 border-purple-300 text-amber-300";
+            subTag = "关联词/排序";
+          } else if (pts === 300) {
+            cardStyle = "from-amber-500 to-orange-600 border-yellow-200 text-white";
+            subTag = "巅峰扩写";
+          }
+
+          if (isUsed) {
+            html += `
+              <button type="button" onclick="openQuestionCard('${q.id}')"
+                      class="board-card used-card rounded-2xl border-2 p-2.5 sm:p-4 min-h-[82px] sm:min-h-[96px] flex flex-col items-center justify-center text-slate-400"
+                      title="点击可重新查看此题">
+                <span class="text-base sm:text-lg font-black line-through">${pts} 分</span>
+                <span class="text-[11px] font-bold mt-0.5">✅ 已完成</span>
+              </button>
+            `;
+          } else {
+            html += `
+              <button type="button" onclick="openQuestionCard('${q.id}')"
+                      class="board-card bg-gradient-to-br ${cardStyle} rounded-2xl border-2 p-2.5 sm:p-4 min-h-[82px] sm:min-h-[96px] shadow-lg flex flex-col items-center justify-center relative overflow-hidden">
+                <span class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight drop-shadow">${pts}</span>
+                <span class="text-[11px] sm:text-xs font-extrabold text-white/90 bg-black/20 px-2 py-0.5 rounded-full mt-1">${subTag}</span>
+              </button>
+            `;
+          }
+        });
+      });
+
+      grid.innerHTML = html;
+
+      // 更新顶部完成进度与当前选题组
+      document.getElementById("completedCountText").textContent = `${state.usedQuestionIds.size} / 18`;
+      const activeTeam = state.teams.find(t => t.id === state.activeTeamId) || state.teams[0];
+      if (activeTeam) {
+        document.getElementById("currentTurnBanner").textContent = activeTeam.name;
+      }
+    }
+
+    function renderScoreboard() {
+      const container = document.getElementById("scoreboardGrid");
+      const maxScore = Math.max(...state.teams.map(t => t.score));
+
+      // 动态调整列数以适配 2-6 组
+      container.className = state.teams.length <= 4
+        ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5"
+        : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5";
+
+      container.innerHTML = state.teams.map(team => {
+        const isCurrent = team.id === state.activeTeamId;
+        const isLeader = maxScore > 0 && team.score === maxScore;
+
+        return `
+          <div onclick="selectActiveTeam(${team.id})"
+               class="rounded-2xl p-3 border-2 transition cursor-pointer relative ${isCurrent ? "bg-amber-50 border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.35)] -translate-y-0.5" : "bg-white/95 border-slate-200 hover:border-sky-300"}">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="w-3.5 h-8 rounded-full bg-gradient-to-b ${team.color} shrink-0"></span>
+                <div class="min-w-0">
+                  <button type="button" onclick="event.stopPropagation(); openSetupModal();"
+                          class="font-black text-slate-900 text-sm sm:text-base truncate hover:underline text-left block max-w-[150px]"
+                          title="点击修改队名">
+                    ${team.name}
+                  </button>
+                  <div class="flex items-center gap-1 mt-0.5">
+                    ${isCurrent ? `<span class="text-[11px] font-black px-1.5 py-0.2 bg-amber-400 text-slate-950 rounded">🎯 选题/答题中</span>` : `<span class="text-[11px] font-bold text-slate-400">点击设为当前组</span>`}
+                    ${isLeader ? `<span class="text-[11px] font-black px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded">👑 领先</span>` : ""}
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-xl sm:text-2xl font-black text-blue-900 bg-blue-100/80 px-3 py-1 rounded-xl shrink-0">
+                ${team.score}
+              </div>
+            </div>
+
+            <!-- 快捷微调按钮 -->
+            <div class="flex items-center justify-end gap-1.5 pt-2 border-t border-slate-100" onclick="event.stopPropagation()">
+              <button type="button" onclick="manualScoreChange(${team.id}, 100)"
+                      class="min-h-[32px] px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-black text-xs transition active:scale-95">
+                +100
+              </button>
+              <button type="button" onclick="manualScoreChange(${team.id}, 50)"
+                      class="min-h-[32px] px-2.5 py-1 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-800 font-black text-xs transition active:scale-95">
+                +50
+              </button>
+              <button type="button" onclick="manualScoreChange(${team.id}, -50)"
+                      class="min-h-[32px] px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 font-black text-xs transition active:scale-95">
+                -50
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function selectActiveTeam(teamId) {
+      state.activeTeamId = teamId;
+      renderScoreboard();
+      renderQuizMatrix();
+      renderModalTeamSelector();
+    }
+
+    function manualScoreChange(teamId, delta) {
+      const team = state.teams.find(t => t.id === teamId);
+      if (!team) return;
+      team.score += delta;
+      if (delta > 0) {
+        sfx.correctCheer();
+        showToast(`👏 奖励【${team.name}】+${delta} 分！`);
+      } else {
+        showToast(`📝 【${team.name}】调整 ${delta} 分`);
+      }
+      renderScoreboard();
+    }
+
+    /* ==========================================================================
+       模块五：🎲 幸运抽组器
+       ========================================================================== */
+    document.getElementById("btnLuckyDraw").addEventListener("click", () => {
+      let step = 0;
+      const totalSteps = 15;
+      const spinTimer = setInterval(() => {
+        step++;
+        const randTeam = state.teams[Math.floor(Math.random() * state.teams.length)];
+        state.activeTeamId = randTeam.id;
+        sfx.tickUrgent();
+        renderScoreboard();
+        renderQuizMatrix();
+
+        if (step >= totalSteps) {
+          clearInterval(spinTimer);
+          sfx.correctCheer();
+          const winner = state.teams.find(t => t.id === state.activeTeamId);
+          showToast(`🎲 幸运抽组器选中了【${winner.name}】！请选题或抢答！`);
+        }
+      }, 65);
+    });
+
+    /* ==========================================================================
+       模块六：抢答题卡开启、Daily Double 触发与多种题型互动
+       ========================================================================== */
+    function openQuestionCard(qId) {
+      const q = QUESTION_BANK.find(item => item.id === qId);
+      if (!q) return;
+
+      state.activeQuestion = q;
+      const isFresh = !state.usedQuestionIds.has(q.id);
+      state.isCurrentDailyDouble = isFresh && state.dailyDoubleIds.has(q.id);
+
+      if (state.isCurrentDailyDouble) {
+        sfx.dailyDoubleFanfare();
+        document.getElementById("ddBasePts").textContent = q.points;
+        document.getElementById("ddDoublePts").textContent = q.points * 2;
+        openModal("dailyDoubleModal");
+      } else {
+        sfx.cardFlip();
+        showQuestionModalContent();
+      }
+    }
+
+    document.getElementById("btnProceedDailyDouble").addEventListener("click", () => {
+      closeModal("dailyDoubleModal");
+      showQuestionModalContent();
+    });
+
+    function showQuestionModalContent() {
+      const q = state.activeQuestion;
+      const lessonObj = LESSONS.find(l => l.num === q.lesson);
+      const effectivePts = state.isCurrentDailyDouble ? q.points * 2 : q.points;
+
+      document.getElementById("qLessonBadge").textContent = lessonObj.title;
+      document.getElementById("qPointsBadge").textContent = `${effectivePts} 分题`;
+      document.getElementById("qCategoryTag").textContent = q.category;
+      document.getElementById("qPromptBox").textContent = q.prompt;
+
+      const ddTag = document.getElementById("qDoubleTag");
+      if (state.isCurrentDailyDouble) {
+        ddTag.classList.remove("hidden");
+      } else {
+        ddTag.classList.add("hidden");
+      }
+
+      // 更新加扣分按钮分值显示
+      document.getElementById("btnAwardFullText").textContent = `答对加分 (+${effectivePts})`;
+      document.getElementById("btnDeductText").textContent = `答错扣分 (-${effectivePts})`;
+
+      const halfBtn = document.getElementById("btnAwardHalf");
+      if (q.mode === "oral") {
+        halfBtn.classList.remove("hidden");
+        document.getElementById("btnAwardHalfText").textContent = `表达良好 (+${effectivePts / 2}鼓励分)`;
+      } else {
+        halfBtn.classList.add("hidden");
+      }
+
+      // 重置反馈横幅
+      const fb = document.getElementById("qFeedbackBanner");
+      fb.className = "hidden rounded-2xl p-4 mb-4 text-sm sm:text-base leading-relaxed";
+      fb.innerHTML = "";
+
+      // 隐藏所有题型容器
+      document.getElementById("mcArea").classList.add("hidden");
+      document.getElementById("typoArea").classList.add("hidden");
+      document.getElementById("orderArea").classList.add("hidden");
+      document.getElementById("oralArea").classList.add("hidden");
+
+      if (q.mode === "mc") {
+        renderMCQuestion(q);
+      } else if (q.mode === "typo") {
+        renderTypoQuestion(q);
+      } else if (q.mode === "order") {
+        renderOrderQuestion(q);
+      } else if (q.mode === "oral") {
+        renderOralQuestion(q);
+      }
+
+      renderModalTeamSelector();
+      startModalTimer(45);
+      openModal("questionModal");
+    }
+
+    // 渲染弹窗内抢答小组选择器
+    function renderModalTeamSelector() {
+      const wrap = document.getElementById("modalTeamSelector");
+      if (!wrap) return;
+      wrap.innerHTML = state.teams.map(t => `
+        <button type="button" onclick="selectActiveTeam(${t.id})"
+                class="px-3 py-1 rounded-full text-xs sm:text-sm font-black border-2 transition ${t.id === state.activeTeamId ? "bg-amber-400 border-amber-600 text-slate-950 shadow" : "bg-white border-slate-300 text-slate-700 hover:border-blue-400"}">
+          ${t.name}
+        </button>
+      `).join("");
+    }
+
+    // 题型 A：选择题
+    function renderMCQuestion(q) {
+      const area = document.getElementById("mcArea");
+      area.classList.remove("hidden");
+      const letters = ["A", "B", "C", "D"];
+      area.innerHTML = q.options.map((opt, idx) => `
+        <button type="button" onclick="checkMCAnswer(${idx}, this)"
+                class="mc-opt-btn w-full min-h-[52px] p-3.5 rounded-2xl border-2 border-slate-300 bg-white hover:border-blue-500 hover:bg-blue-50 text-left font-bold text-slate-800 text-base sm:text-lg flex items-center gap-3 transition">
+          <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-800 font-black flex items-center justify-center shrink-0">${letters[idx]}</span>
+          <span>${opt}</span>
+        </button>
+      `).join("");
+    }
+
+    function checkMCAnswer(idx, btnEl) {
+      const q = state.activeQuestion;
+      const btns = document.querySelectorAll(".mc-opt-btn");
+      btns.forEach(b => b.disabled = true);
+
+      const isRight = idx === q.answer;
+      btns[q.answer].classList.remove("border-slate-300", "bg-white");
+      btns[q.answer].classList.add("border-emerald-600", "bg-emerald-100", "text-emerald-950");
+
+      if (!isRight) {
+        btnEl.classList.remove("border-slate-300", "bg-white");
+        btnEl.classList.add("border-rose-600", "bg-rose-100", "text-rose-950");
+        sfx.wrongBuzz();
+      } else {
+        sfx.correctCheer();
+      }
+
+      showQuestionFeedback(isRight, q.explanation);
+    }
+
+    // 题型 B：大家来找茬（点击句子中的错别字并选择正确汉字）
+    function renderTypoQuestion(q) {
+      state.typoFound = false;
+      const area = document.getElementById("typoArea");
+      area.classList.remove("hidden");
+      document.getElementById("typoChoicePanel").classList.add("hidden");
+
+      const row = document.getElementById("typoCharsRow");
+      row.innerHTML = q.chars.map((ch, idx) => `
+        <button type="button" id="typoCharBtn-${idx}" onclick="clickTypoChar(${idx})"
+                class="char-tile w-10 h-11 sm:w-11 sm:h-12 rounded-xl border-2 border-slate-300 bg-white font-black text-lg sm:text-xl text-slate-900 flex items-center justify-center shadow-sm">
+          ${ch}
+        </button>
+      `).join("");
+    }
+
+    function clickTypoChar(idx) {
+      if (state.typoFound) return;
+      const q = state.activeQuestion;
+      if (idx === q.typoIndex) {
+        state.typoFound = true;
+        sfx.correctCheer();
+        const btn = document.getElementById(`typoCharBtn-${idx}`);
+        btn.classList.remove("border-slate-300", "bg-white");
+        btn.classList.add("border-rose-600", "bg-rose-100", "text-rose-700", "scale-110");
+
+        const panel = document.getElementById("typoChoicePanel");
+        panel.classList.remove("hidden");
+        document.getElementById("typoFixButtons").innerHTML = q.choices.map(ch => `
+          <button type="button" onclick="chooseTypoFix('${ch}', this)"
+                  class="min-h-[48px] px-6 py-2 rounded-xl border-2 border-sky-400 bg-white hover:bg-sky-100 font-black text-xl text-slate-900 shadow-sm transition">
+            ${ch}
+          </button>
+        `).join("");
+      } else {
+        sfx.wrongBuzz();
+        showToast("🔍 这个字没有写错哦，再仔细找一找！");
+      }
+    }
+
+    function chooseTypoFix(chosenChar, btnEl) {
+      const q = state.activeQuestion;
+      if (chosenChar === q.correctChar) {
+        sfx.correctCheer();
+        btnEl.classList.add("bg-emerald-200", "border-emerald-600");
+        const targetCharBtn = document.getElementById(`typoCharBtn-${q.typoIndex}`);
+        targetCharBtn.textContent = q.correctChar;
+        targetCharBtn.classList.remove("border-rose-600", "bg-rose-100", "text-rose-700");
+        targetCharBtn.classList.add("border-emerald-600", "bg-emerald-100", "text-emerald-800");
+        showQuestionFeedback(true, q.explanation);
+      } else {
+        sfx.wrongBuzz();
+        btnEl.disabled = true;
+        btnEl.classList.add("bg-rose-100", "border-rose-500", "opacity-60");
+        showToast("❌ 这个字不对哦，再选一次！");
+      }
+    }
+
+    // 题型 C：逻辑排序（点击卡片按先后顺序排列）
+    function renderOrderQuestion(q) {
+      const area = document.getElementById("orderArea");
+      area.classList.remove("hidden");
+
+      const indexed = q.strips.map((text, idx) => ({ text, correctIdx: idx }));
+      let shuffled = [...indexed].sort(() => Math.random() - 0.5);
+      if (shuffled.every((it, i) => it.correctIdx === i)) shuffled.reverse();
+
+      state.orderShuffled = shuffled;
+      state.orderSelected = [];
+      refreshOrderUI();
+    }
+
+    function refreshOrderUI() {
+      const target = document.getElementById("orderTargetBox");
+      const pool = document.getElementById("orderPoolBox");
+
+      if (state.orderSelected.length === 0) {
+        target.innerHTML = `<div class="text-center text-amber-700 text-xs sm:text-sm font-bold py-3">请依次点击下方句子，排成通顺的一段话……</div>`;
+      } else {
+        target.innerHTML = state.orderSelected.map((it, i) => `
+          <button type="button" onclick="removeOrderItem(${i})"
+                  class="w-full p-2.5 rounded-xl bg-blue-100 border-2 border-blue-500 text-blue-950 font-bold text-sm sm:text-base text-left flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0">${i + 1}</span>
+            <span>${it.text}</span>
+          </button>
+        `).join("");
+      }
+
+      const usedSet = new Set(state.orderSelected.map(s => s.correctIdx));
+      pool.innerHTML = state.orderShuffled
+        .filter(it => !usedSet.has(it.correctIdx))
+        .map(it => `
+          <button type="button" onclick="pickOrderItem(${it.correctIdx})"
+                  class="w-full p-2.5 rounded-xl bg-white hover:bg-sky-50 border-2 border-slate-300 hover:border-sky-400 text-slate-800 font-bold text-sm sm:text-base text-left flex items-center gap-2.5 transition">
+            <span>📄</span>
+            <span>${it.text}</span>
+          </button>
+        `).join("");
+    }
+
+    function pickOrderItem(correctIdx) {
+      const it = state.orderShuffled.find(s => s.correctIdx === correctIdx);
+      if (!it) return;
+      sfx.cardFlip();
+      state.orderSelected.push(it);
+      refreshOrderUI();
+    }
+
+    function removeOrderItem(posIdx) {
+      state.orderSelected.splice(posIdx, 1);
+      refreshOrderUI();
+    }
+
+    document.getElementById("btnResetOrder").addEventListener("click", () => {
+      state.orderSelected = [];
+      refreshOrderUI();
+    });
+
+    document.getElementById("btnSubmitOrder").addEventListener("click", () => {
+      const q = state.activeQuestion;
+      if (state.orderSelected.length < q.strips.length) {
+        showToast("⚠️ 请先把全部 4 句话排入上方框里再提交！");
+        return;
+      }
+      const isRight = state.orderSelected.every((it, idx) => it.correctIdx === idx);
+      if (isRight) {
+        sfx.correctCheer();
+        showQuestionFeedback(true, q.explanation);
+      } else {
+        sfx.wrongBuzz();
+        showQuestionFeedback(false, `再想想事情发生的先后顺序哦！\n正确顺序：\n${q.strips.map((s, i) => `${i + 1}. ${s}`).join("\n")}`);
+      }
+    });
+
+    // 题型 D：300分 句子升格挑战
+    function renderOralQuestion(q) {
+      const area = document.getElementById("oralArea");
+      area.classList.remove("hidden");
+      const modelBox = document.getElementById("oralModelBox");
+      modelBox.classList.add("hidden");
+      modelBox.textContent = q.modelAnswer;
+    }
+
+    document.getElementById("btnToggleModel").addEventListener("click", () => {
+      const box = document.getElementById("oralModelBox");
+      box.classList.toggle("hidden");
+    });
+
+    function showQuestionFeedback(isRight, text) {
+      const fb = document.getElementById("qFeedbackBanner");
+      fb.classList.remove("hidden", "bg-emerald-100", "border-emerald-500", "text-emerald-950", "bg-rose-100", "border-rose-500", "text-rose-950");
+      if (isRight) {
+        fb.classList.add("bg-emerald-100", "border-2", "border-emerald-500", "text-emerald-950");
+        fb.innerHTML = `<div class="font-black mb-1">🎉 挑战成功！请点击下方「✅ 答对加分」为作答小组记分！</div><div class="whitespace-pre-line">📚 <strong>知识点解析：</strong>${text}</div>`;
+      } else {
+        fb.classList.add("bg-rose-100", "border-2", "border-rose-500", "text-rose-950");
+        fb.innerHTML = `<div class="font-black mb-1">💡 差一点点！看看下面的解析吧：</div><div class="whitespace-pre-line">${text}</div>`;
+      }
+    }
+
+    // 题卡加分 / 扣分结算并标记题目完成
+    function settleQuestionScore(multiplier) {
+      const q = state.activeQuestion;
+      if (!q) return;
+      const team = state.teams.find(t => t.id === state.activeTeamId);
+      const basePts = state.isCurrentDailyDouble ? q.points * 2 : q.points;
+      const delta = Math.round(basePts * multiplier);
+
+      if (team) {
+        team.score += delta;
+        if (delta > 0) {
+          sfx.correctCheer();
+          showToast(`🎉 【${team.name}】答对获得 +${delta} 分！`);
+        } else {
+          sfx.wrongBuzz();
+          showToast(`📉 【${team.name}】答错扣减 ${Math.abs(delta)} 分`);
+        }
+      }
+
+      state.usedQuestionIds.add(q.id);
+      stopGlobalTimer();
+      closeModal("questionModal");
+      renderScoreboard();
+      renderQuizMatrix();
+
+      // 若 18 题全部完成，提示开启最终押注赛
+      if (state.usedQuestionIds.size === QUESTION_BANK.length) {
+        setTimeout(() => {
+          showToast("🔥 18道题已全部完成！快点击顶部「开启最终押注」进入巅峰逆转赛！");
+        }, 600);
+      }
+    }
+
+    document.getElementById("btnAwardFull").addEventListener("click", () => settleQuestionScore(1));
+    document.getElementById("btnAwardHalf").addEventListener("click", () => settleQuestionScore(0.5));
+    document.getElementById("btnDeductPoints").addEventListener("click", () => settleQuestionScore(-1));
+    document.getElementById("btnCloseQuestionModal").addEventListener("click", () => {
+      stopGlobalTimer();
+      closeModal("questionModal");
+    });
+
+    /* ==========================================================================
+       模块七：综艺倒计时器（顶部 + 题卡同步联动）
+       ========================================================================== */
+    function startGlobalTimer(seconds) {
+      stopGlobalTimer();
+      state.timerMax = seconds;
+      state.timerLeft = seconds;
+      updateTimerDisplays();
+
+      state.timerHandle = setInterval(() => {
+        state.timerLeft--;
+        updateTimerDisplays();
+
+        if (state.timerLeft <= 5 && state.timerLeft > 0) {
+          sfx.tickUrgent();
+        }
+        if (state.timerLeft <= 0) {
+          stopGlobalTimer();
+          sfx.wrongBuzz();
+          showToast("⏰ 时间到！请作答小组立刻停止讨论并回答！");
+        }
+      }, 1000);
+    }
+
+    function startModalTimer(seconds) {
+      startGlobalTimer(seconds);
+    }
+
+    function stopGlobalTimer() {
+      if (state.timerHandle) {
+        clearInterval(state.timerHandle);
+        state.timerHandle = null;
+      }
+    }
+
+    function updateTimerDisplays() {
+      const tStr = `${state.timerLeft}s`;
+      const topEl = document.getElementById("topTimerText");
+      const modalEl = document.getElementById("modalTimerText");
+      const barEl = document.getElementById("topTimerBar");
+
+      if (topEl) topEl.textContent = tStr;
+      if (modalEl) modalEl.textContent = tStr;
+      if (barEl) {
+        const pct = Math.max(0, (state.timerLeft / state.timerMax) * 100);
+        barEl.style.width = `${pct}%`;
+      }
+    }
+
+    /* ==========================================================================
+       模块八：🔥 巅峰逆转 · 最终押注赛 (Final Showdown)
+       ========================================================================== */
+    document.getElementById("btnOpenFinalShowdown").addEventListener("click", () => {
+      stopGlobalTimer();
+      sfx.dailyDoubleFanfare();
+
+      // 检查是否有小组 <= 0 分，贴心赠送 100 分“逆袭体验分”
+      let giftedAny = false;
+      state.teams.forEach(t => {
+        if (t.score <= 0) {
+          t.score = 100;
+          giftedAny = true;
+        }
+        state.wagers[t.id] = Math.min(100, t.score);
+        state.finalResults[t.id] = null; // 'win' | 'lose' | null
+      });
+
+      if (giftedAny) {
+        renderScoreboard();
+        showToast("🎁 系统已为 0 分或负分小组赠送 100 分「逆袭体验分」！共赴巅峰对决！");
+      }
+
+      document.getElementById("finalStepWager").classList.remove("hidden");
+      document.getElementById("finalStepChallenge").classList.add("hidden");
+      renderWagerTeamsGrid();
+      openModal("finalShowdownModal");
+    });
+
+    function renderWagerTeamsGrid() {
+      const grid = document.getElementById("wagerTeamsGrid");
+      grid.innerHTML = state.teams.map(t => {
+        const maxWager = Math.max(0, t.score);
+        const curWager = state.wagers[t.id] || 0;
+        return `
+          <div class="bg-blue-900/70 border-2 border-sky-400/50 rounded-2xl p-3.5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-black text-base text-white">${t.name}</span>
+              <span class="text-xs font-bold text-amber-300 bg-black/30 px-2.5 py-1 rounded-full">当前可用：${maxWager} 分</span>
+            </div>
+
+            <div class="flex items-center gap-2 mb-2.5">
+              <span class="text-xs font-bold text-sky-200">押注分值：</span>
+              <input type="number" min="0" max="${maxWager}" step="50" value="${curWager}"
+                     onchange="setTeamWager(${t.id}, this.value)"
+                     class="w-28 px-3 py-1.5 rounded-xl bg-slate-950 border-2 border-amber-400 text-amber-300 font-black text-base text-center" />
+              <span class="text-xs font-bold text-sky-200">分</span>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="setTeamWager(${t.id}, 0)" class="px-2.5 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-bold">保守 0分</button>
+              <button type="button" onclick="setTeamWager(${t.id}, Math.floor(${maxWager} / 2))" class="px-2.5 py-1 rounded-lg bg-sky-600/80 hover:bg-sky-500 text-xs font-bold">押一半 (${Math.floor(maxWager / 2)})</button>
+              <button type="button" onclick="setTeamWager(${t.id}, ${maxWager})" class="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-xs font-black">🔥 全押 ALL-IN (${maxWager})</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function setTeamWager(teamId, rawVal) {
+      const team = state.teams.find(t => t.id === teamId);
+      if (!team) return;
+      const maxW = Math.max(0, team.score);
+      let val = parseInt(rawVal, 10);
+      if (isNaN(val) || val < 0) val = 0;
+      if (val > maxW) val = maxW;
+      state.wagers[teamId] = val;
+      renderWagerTeamsGrid();
+    }
+
+    document.getElementById("btnRevealFinalPrompt").addEventListener("click", () => {
+      sfx.cardFlip();
+      document.getElementById("finalStepWager").classList.add("hidden");
+      document.getElementById("finalStepChallenge").classList.remove("hidden");
+      document.getElementById("finalSampleBox").classList.add("hidden");
+      renderFinalSettleGrid();
+    });
+
+    document.getElementById("btnBackToWager").addEventListener("click", () => {
+      document.getElementById("finalStepChallenge").classList.add("hidden");
+      document.getElementById("finalStepWager").classList.remove("hidden");
+    });
+
+    document.getElementById("btnToggleFinalSample").addEventListener("click", () => {
+      document.getElementById("finalSampleBox").classList.toggle("hidden");
+    });
+
+    let finalTimerInterval = null;
+    function startFinalTimer(sec) {
+      if (finalTimerInterval) clearInterval(finalTimerInterval);
+      let left = sec;
+      const el = document.getElementById("finalTimerText");
+      el.textContent = `${left}s`;
+      finalTimerInterval = setInterval(() => {
+        left--;
+        el.textContent = `${left}s`;
+        if (left <= 5 && left > 0) sfx.tickUrgent();
+        if (left <= 0) {
+          clearInterval(finalTimerInterval);
+          sfx.wrongBuzz();
+          showToast("⏰ 终极创作时间到！请各小组展示作品！");
+        }
+      }, 1000);
+    }
+
+    function renderFinalSettleGrid() {
+      const grid = document.getElementById("finalSettleGrid");
+      grid.innerHTML = state.teams.map(t => {
+        const w = state.wagers[t.id] || 0;
+        const res = state.finalResults[t.id];
+        return `
+          <div class="bg-blue-900/80 border-2 ${res === "win" ? "border-emerald-400" : res === "lose" ? "border-rose-400" : "border-sky-400/40"} rounded-2xl p-3.5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-black text-base text-white">${t.name}</span>
+              <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">押注：${w} 分</span>
+            </div>
+            <div class="text-xs text-sky-200 font-bold mb-2.5">
+              当前总分：<strong class="text-white text-sm">${t.score} 分</strong>
+              ${res === "win" ? `<span class="text-emerald-300 ml-2">✅ 押注成功 (+${w})</span>` : ""}
+              ${res === "lose" ? `<span class="text-rose-300 ml-2">❌ 押注失败 (-${w})</span>` : ""}
+            </div>
+            <div class="flex gap-2">
+              <button type="button" onclick="applyFinalWagerResult(${t.id}, 'win')"
+                      class="flex-1 min-h-[40px] py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition ${res === "win" ? "bg-emerald-500 text-white ring-2 ring-white" : "bg-emerald-600/85 hover:bg-emerald-500 text-white"}">
+                ✅ 押注成功 (+${w})
+              </button>
+              <button type="button" onclick="applyFinalWagerResult(${t.id}, 'lose')"
+                      class="flex-1 min-h-[40px] py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition ${res === "lose" ? "bg-rose-500 text-white ring-2 ring-white" : "bg-rose-600/85 hover:bg-rose-500 text-white"}">
+                ❌ 押注失败 (-${w})
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function applyFinalWagerResult(teamId, outcome) {
+      const team = state.teams.find(t => t.id === teamId);
+      if (!team) return;
+      const w = state.wagers[teamId] || 0;
+      const prev = state.finalResults[teamId];
+
+      // 如果之前已经判定过，先撤回之前的分值变化
+      if (prev === "win") team.score -= w;
+      if (prev === "lose") team.score += w;
+
+      state.finalResults[teamId] = outcome;
+      if (outcome === "win") {
+        team.score += w;
+        sfx.correctCheer();
+      } else {
+        team.score -= w;
+        sfx.wrongBuzz();
+      }
+
+      renderFinalSettleGrid();
+      renderScoreboard();
+    }
+
+    // 揭晓最终总冠军 + 全屏礼花
+    document.getElementById("btnCrownChampion").addEventListener("click", () => {
+      if (finalTimerInterval) clearInterval(finalTimerInterval);
+      closeModal("finalShowdownModal");
+      sfx.victoryFanfare();
+
+      const ranked = [...state.teams].sort((a, b) => b.score - a.score);
+      const topScore = ranked[0].score;
+      const champions = ranked.filter(t => t.score === topScore);
+
+      document.getElementById("championHeroText").textContent =
+        `👑 总冠军：${champions.map(c => c.name).join(" & ")}（${topScore} 分）`;
+
+      const medals = ["🥇 冠军", "🥈 亚军", "🥉 季军", "🏅 优胜奖", "🏅 优胜奖", "🏅 优胜奖"];
+      document.getElementById("podiumRankingList").innerHTML = ranked.map((t, i) => `
+        <div class="flex items-center justify-between px-4 py-2.5 rounded-2xl border-2 ${i === 0 ? "bg-amber-100 border-amber-400" : "bg-slate-50 border-slate-200"}">
+          <div class="flex items-center gap-2.5">
+            <span class="font-black text-sm ${i === 0 ? "text-amber-800" : "text-slate-500"}">${medals[i]}</span>
+            <span class="font-black text-base text-slate-900">${t.name}</span>
+          </div>
+          <span class="font-black text-lg text-blue-900">${t.score} 分</span>
+        </div>
+      `).join("");
+
+      openModal("podiumModal");
+      launchVictoryConfetti();
+    });
+
+    document.getElementById("btnClosePodium").addEventListener("click", () => {
+      closeModal("podiumModal");
+    });
+
+    /* 全屏彩色礼花特效 */
+    function launchVictoryConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const palette = ["#fbbf24", "#38bdf8", "#f43f5e", "#10b981", "#a855f7", "#fb923c"];
+      const particles = Array.from({ length: 140 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: 8 + Math.random() * 8,
+        h: 6 + Math.random() * 6,
+        color: palette[Math.floor(Math.random() * palette.length)],
+        vy: 2.6 + Math.random() * 4.2,
+        vx: -2.2 + Math.random() * 4.4,
+        angle: Math.random() * 360,
+        spin: -7 + Math.random() * 14
+      }));
+
+      let frame = 0;
+      function renderFrame() {
+        frame++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.angle += p.spin;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.angle * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        if (frame < 240) {
+          requestAnimationFrame(renderFrame);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      renderFrame();
+    }
+
+    /* ==========================================================================
+       模块九：小组设置、音效切换与通用弹窗控制
+       ========================================================================== */
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("hidden");
+        el.classList.add("flex");
+      }
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.add("hidden");
+        el.classList.remove("flex");
+      }
+    }
+
+    document.getElementById("btnCloseFinalModal").addEventListener("click", () => {
+      if (finalTimerInterval) clearInterval(finalTimerInterval);
+      closeModal("finalShowdownModal");
+    });
+
+    document.getElementById("btnSoundToggle").addEventListener("click", () => {
+      sfx.enabled = !sfx.enabled;
+      document.getElementById("soundIcon").textContent = sfx.enabled ? "🔊" : "🔇";
+      document.getElementById("soundLabel").textContent = sfx.enabled ? "音效开" : "音效关";
+      if (sfx.enabled) sfx.cardFlip();
+    });
+
+    function openSetupModal() {
+      renderSetupTeamsList();
+      openModal("setupModal");
+    }
+
+    function renderSetupTeamsList() {
+      const box = document.getElementById("setupTeamsContainer");
+      box.innerHTML = state.teams.map((t, idx) => `
+        <div class="flex items-center gap-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <span class="w-4 h-8 rounded-full bg-gradient-to-b ${t.color} shrink-0"></span>
+          <input type="text" value="${t.name}" maxlength="12"
+                 onchange="renameTeam(${idx}, this.value)"
+                 class="flex-1 min-h-[38px] px-3 py-1 rounded-lg border-2 border-slate-300 font-bold text-sm text-slate-900" />
+          <span class="text-xs font-black text-blue-900 bg-blue-100 px-2.5 py-1 rounded-lg">${t.score}分</span>
+        </div>
+      `).join("");
+    }
+
+    function renameTeam(idx, newName) {
+      const clean = newName.trim();
+      if (clean && state.teams[idx]) {
+        state.teams[idx].name = clean;
+        renderScoreboard();
+        renderQuizMatrix();
+      }
+    }
+
+    document.getElementById("btnOpenSetup").addEventListener("click", openSetupModal);
+    document.getElementById("btnCloseSetup").addEventListener("click", () => closeModal("setupModal"));
+
+    document.getElementById("btnAddTeam").addEventListener("click", () => {
+      if (state.teams.length >= 6) {
+        showToast("⚠️ 最多支持 6 个参赛小组！");
+        return;
+      }
+      const preset = EXTRA_TEAM_PRESETS[(state.teams.length - 4) % EXTRA_TEAM_PRESETS.length];
+      state.teams.push({
+        id: Date.now(),
+        name: preset.name,
+        color: preset.color,
+        border: preset.border,
+        score: 0
+      });
+      renderSetupTeamsList();
+      renderScoreboard();
+      showToast(`➕ 已添加【${preset.name}】！`);
+    });
+
+    document.getElementById("btnRemoveTeam").addEventListener("click", () => {
+      if (state.teams.length <= 2) {
+        showToast("⚠️ 至少需要保留 2 个参赛小组！");
+        return;
+      }
+      const removed = state.teams.pop();
+      if (state.activeTeamId === removed.id) {
+        state.activeTeamId = state.teams[0].id;
+      }
+      renderSetupTeamsList();
+      renderScoreboard();
+      renderQuizMatrix();
+      showToast(`➖ 已移除【${removed.name}】`);
+    });
+
+    document.getElementById("btnResetMatch").addEventListener("click", () => {
+      state.teams = JSON.parse(JSON.stringify(INITIAL_TEAMS));
+      state.activeTeamId = 1;
+      state.usedQuestionIds.clear();
+      assignRandomDailyDoubles();
+      stopGlobalTimer();
+      renderSetupTeamsList();
+      renderScoreboard();
+      renderQuizMatrix();
+      showToast("🔄 已重置整场比赛与幸运双倍分卡！");
+    });
+
+    document.getElementById("btnOpenRules").addEventListener("click", () => openModal("rulesModal"));
+    document.getElementById("btnCloseRules").addEventListener("click", () => closeModal("rulesModal"));
+
+    // 初始化启动
+    window.addEventListener("DOMContentLoaded", () => {
+      assignRandomDailyDoubles();
+      renderQuizMatrix();
+      renderScoreboard();
+    });
+  </script>
+</body>
+</html>
