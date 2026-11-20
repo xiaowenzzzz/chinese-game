@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="author" content="Franky Laoshi">
     <title>SISB小小咖啡店长 - P2 第7课 (Franky Laoshi)</title>
     <style>
         :root {
@@ -18,15 +19,20 @@
         * {
             box-sizing: border-box;
             user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
             font-family: "PingFang SC", "Microsoft YaHei", "Comic Sans MS", sans-serif;
         }
 
         html, body {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden; /* 锁定单屏，绝不上下滑动 */
+            min-height: 100vh;
+            min-height: 100dvh;
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
             background-color: var(--bg-cream);
             background-image: radial-gradient(#E6D5B8 1.5px, transparent 1.5px);
             background-size: 24px 24px;
@@ -34,6 +40,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-bottom: calc(36px + env(safe-area-inset-bottom));
+        }
+
+        /* 桌面宽屏保持经典一屏看板体验 */
+        @media (min-width: 960px) and (min-height: 640px) {
+            html, body {
+                height: 100vh;
+                overflow: hidden;
+                padding-bottom: 0;
+            }
         }
 
         /* 顶部招牌 */
@@ -41,37 +57,40 @@
             width: 100%;
             background: linear-gradient(135deg, #388E3C, #1B5E20);
             color: white;
-            padding: 8px 24px;
+            padding: 8px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
             box-shadow: 0 3px 8px rgba(0,0,0,0.15);
             border-bottom: 4px solid #FFD54F;
             flex-shrink: 0;
         }
 
         .shop-title {
-            font-size: 21px;
+            font-size: clamp(17px, 2.2vw, 21px);
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         /* ✨ 专属防伪设计 1：顶部主厨黄铜荣誉铭牌 */
         .author-plaque {
             background: linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%);
             color: #4E342E;
-            font-size: 13px;
+            font-size: clamp(11px, 1.4vw, 13px);
             font-weight: 800;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
             border: 2px solid #FFB300;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.8);
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            letter-spacing: 0.5px;
+            gap: 4px;
+            letter-spacing: 0.4px;
             transform: rotate(-1.5deg);
             transition: transform 0.2s ease;
         }
@@ -83,24 +102,24 @@
         /* ✨ 专属防伪设计 2：右下角咖啡店专属复古印章 */
         .kopitiam-stamp {
             position: fixed;
-            bottom: 12px;
-            right: 16px;
-            background: rgba(255, 248, 231, 0.92);
+            bottom: calc(8px + env(safe-area-inset-bottom));
+            right: 12px;
+            background: rgba(255, 248, 231, 0.94);
             border: 2px dashed #8D6E63;
             outline: 2px solid rgba(141, 110, 99, 0.3);
             outline-offset: 2px;
             border-radius: 12px;
-            padding: 4px 12px;
+            padding: 3px 10px;
             color: #5D4037;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             box-shadow: 0 2px 6px rgba(93, 64, 55, 0.15);
             transform: rotate(-2deg);
             z-index: 50;
-            pointer-events: none; /* 穿透点击，绝不干扰操作 */
+            pointer-events: none;
         }
 
         .kopitiam-stamp .stamp-sub {
@@ -113,19 +132,21 @@
 
         .stats-bar {
             display: flex;
-            gap: 12px;
-            font-size: 15px;
+            gap: 8px;
+            font-size: clamp(13px, 1.6vw, 15px);
             font-weight: bold;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .stat-badge {
             background: rgba(255,255,255,0.2);
-            padding: 5px 14px;
+            padding: 4px 12px;
             border-radius: 20px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
+            white-space: nowrap;
         }
 
         .voice-select {
@@ -133,16 +154,16 @@
             color: var(--coffee-brown);
             border: 2px solid #FFD54F;
             border-radius: 15px;
-            padding: 4px 10px;
-            font-size: 13px;
+            padding: 4px 8px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            max-width: 165px;
+            max-width: 145px;
         }
 
         /* 主游戏区域：严格三层通栏结构 */
         .game-container {
-            width: 94%;
+            width: 95%;
             max-width: 1120px;
             flex: 1;
             margin: 10px 0 12px 0;
@@ -157,19 +178,19 @@
             background: var(--card-white);
             border: 3px solid var(--kopitiam-green);
             border-radius: 20px;
-            padding: 10px 20px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
             box-shadow: 0 4px 0 #C8E6C9;
             flex-shrink: 0;
         }
 
         .customer-avatar {
-            font-size: 54px;
+            font-size: clamp(38px, 6vw, 54px);
             background: #FFF3E0;
-            width: 76px;
-            height: 76px;
+            width: clamp(58px, 8vw, 76px);
+            height: clamp(58px, 8vw, 76px);
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -188,26 +209,28 @@
             background: #FFFDE7;
             border: 2.5px solid #FBC02D;
             border-radius: 16px;
-            padding: 8px 16px;
+            padding: 8px 14px;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 10px;
+            min-width: 0;
         }
 
         .order-text {
-            font-size: 19px;
+            font-size: clamp(15px, 2vw, 19px);
             font-weight: bold;
-            line-height: 1.4;
+            line-height: 1.45;
             margin: 0;
         }
 
         .highlight {
             color: #D84315;
             background: #FFE0B2;
-            padding: 2px 8px;
-            border-radius: 8px;
+            padding: 1px 6px;
+            border-radius: 7px;
+            display: inline-block;
         }
 
         .speak-btn {
@@ -215,8 +238,8 @@
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 8px 14px;
+            font-size: clamp(12px, 1.5vw, 14px);
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px 0 #E65100;
@@ -234,27 +257,29 @@
             background: #D7CCC8;
             border: 3px solid #8D6E63;
             border-radius: 20px;
-            padding: 8px 18px;
+            padding: 8px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-shrink: 0;
         }
 
         .tray-slots {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
+            flex: 1;
+            min-width: 0;
         }
 
         .slot {
             background: white;
             border: 2.5px dashed #A1887F;
             border-radius: 14px;
-            padding: 6px 14px;
-            min-width: 145px;
-            height: 52px;
+            padding: 4px 10px;
+            min-width: 130px;
+            min-height: 52px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -274,7 +299,8 @@
 
         .tray-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .btn-clear {
@@ -282,11 +308,12 @@
             color: white;
             border: none;
             border-radius: 14px;
-            padding: 10px 18px;
-            font-size: 16px;
+            padding: 10px 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px 0 #C62828;
+            white-space: nowrap;
         }
 
         .btn-serve {
@@ -294,11 +321,12 @@
             color: white;
             border: none;
             border-radius: 14px;
-            padding: 10px 26px;
-            font-size: 17px;
+            padding: 10px 22px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px 0 #1B5E20;
+            white-space: nowrap;
         }
 
         .btn-clear:active, .btn-serve:active {
@@ -318,7 +346,7 @@
         .panel {
             background: white;
             border-radius: 18px;
-            padding: 10px 14px;
+            padding: 10px 12px;
             border: 3px solid #E0E0E0;
             display: flex;
             flex-direction: column;
@@ -329,6 +357,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
             margin-bottom: 8px;
             padding-bottom: 5px;
             border-bottom: 2px dashed #EEEEEE;
@@ -336,12 +366,13 @@
         }
 
         .panel-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 8px;
+            flex-wrap: wrap;
+            gap: 6px;
         }
 
         .tag-pill {
@@ -370,7 +401,7 @@
             background: #FFFDF7;
             border: 2px solid #FFE082;
             border-radius: 12px;
-            padding: 4px;
+            padding: 5px 4px;
             text-align: center;
             cursor: pointer;
             transition: transform 0.1s, background 0.2s;
@@ -379,6 +410,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            min-width: 0;
         }
 
         .food-card.drink-card {
@@ -398,18 +430,18 @@
         }
 
         .food-emoji {
-            font-size: 24px;
+            font-size: clamp(20px, 2.6vw, 24px);
             line-height: 1.1;
         }
 
         .food-pinyin {
             font-size: 10px;
             color: #8D6E63;
-            line-height: 1.1;
+            line-height: 1.15;
         }
 
         .food-name {
-            font-size: 14px;
+            font-size: clamp(13px, 1.5vw, 14px);
             font-weight: bold;
             color: #3E2723;
             line-height: 1.2;
@@ -421,7 +453,7 @@
             background: rgba(0,0,0,0.04);
             padding: 1px 5px;
             border-radius: 5px;
-            line-height: 1.1;
+            line-height: 1.15;
             max-width: 96%;
             white-space: nowrap;
             overflow: hidden;
@@ -442,7 +474,7 @@
             background: #E3F2FD;
             border: 2px solid #90CAF9;
             border-radius: 12px;
-            padding: 4px 6px;
+            padding: 6px;
             color: #1565C0;
             cursor: pointer;
             display: flex;
@@ -460,7 +492,7 @@
 
         .mod-pinyin {
             font-size: 10px;
-            line-height: 1.1;
+            line-height: 1.15;
             opacity: 0.85;
         }
 
@@ -472,7 +504,7 @@
 
         .mod-en {
             font-size: 10px;
-            line-height: 1.1;
+            line-height: 1.15;
             opacity: 0.9;
         }
 
@@ -497,15 +529,16 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
+            padding: 16px;
         }
 
         .feedback-box {
             background: white;
             border-radius: 26px;
-            padding: 26px;
+            padding: 24px 20px;
             text-align: center;
             max-width: 390px;
-            width: 90%;
+            width: 100%;
             border: 5px solid var(--warm-orange);
             animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -515,20 +548,93 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        .feedback-emoji { font-size: 64px; margin-bottom: 8px; }
-        .feedback-title { font-size: 24px; font-weight: bold; margin: 0 0 8px 0; }
-        .feedback-desc { font-size: 16px; color: #555; margin-bottom: 18px; }
+        .feedback-emoji { font-size: 56px; margin-bottom: 8px; }
+        .feedback-title { font-size: 22px; font-weight: bold; margin: 0 0 8px 0; }
+        .feedback-desc { font-size: 15px; color: #555; margin-bottom: 18px; }
 
         .btn-next {
             background: var(--warm-orange);
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 10px 30px;
-            font-size: 18px;
+            padding: 10px 28px;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px 0 #E65100;
+        }
+
+        /* =========================================================
+           响应式断点 1：平板竖屏 & 小笔记本 (<= 959px)
+           ========================================================= */
+        @media (max-width: 959px) {
+            .tray-zone {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .tray-slots {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .slot {
+                min-width: 0;
+                padding: 5px 6px;
+            }
+            .tray-actions {
+                justify-content: flex-end;
+            }
+            .kitchen-board {
+                grid-template-columns: 1fr;
+            }
+            .items-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: auto;
+            }
+            .mods-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: auto;
+            }
+        }
+
+        /* =========================================================
+           响应式断点 2：手机竖屏 (<= 600px)
+           ========================================================= */
+        @media (max-width: 600px) {
+            header {
+                padding: 8px 12px;
+            }
+            .customer-zone {
+                padding: 8px 12px;
+                gap: 10px;
+            }
+            .speech-bubble {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 8px 12px;
+            }
+            .speak-btn {
+                align-self: flex-end;
+                padding: 6px 12px;
+            }
+            .tray-slots {
+                grid-template-columns: 1fr 1fr;
+            }
+            #slot-mods {
+                grid-column: span 2;
+            }
+            .tray-actions {
+                display: grid;
+                grid-template-columns: 1fr 1.6fr;
+            }
+            .items-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            .mods-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
         }
     </style>
 </head>
@@ -569,7 +675,7 @@
         <div class="tray-slots">
             <div class="slot" id="slot-food">🍽️ 主食<br><small style="font-weight:normal;font-size:10px;">Main Food</small></div>
             <div class="slot" id="slot-drink">🥤 饮料<br><small style="font-weight:normal;font-size:10px;">Drinks</small></div>
-            <div class="slot" id="slot-mods">✨ 口味和调料<br><small style="font-weight:normal;font-size:10px;">Taste & Condiments</small></div>
+            <div class="slot" id="slot-mods">✨ 口味和调料<br><small style="font-weight:normal;font-size:10px;">Taste &amp; Condiments</small></div>
         </div>
         <div class="tray-actions">
             <button class="btn-clear" onclick="clearTray()">🔄 重做</button>
@@ -584,7 +690,7 @@
             <div class="panel-header">
                 <h3 class="panel-title">
                     <span class="tag-pill tag-food">🍜 主食 Main Food</span>
-                    <span>&</span>
+                    <span>&amp;</span>
                     <span class="tag-pill tag-drink">🥤 饮料 Drinks</span>
                 </h3>
                 <small style="color:#888;">点击可听读音</small>
@@ -597,7 +703,7 @@
             <div class="panel-header">
                 <h3 class="panel-title">
                     <span class="tag-pill tag-taste">👅 口味 Taste</span>
-                    <span>&</span>
+                    <span>&amp;</span>
                     <span class="tag-pill tag-condiment">🧂 调料 Condiments</span>
                 </h3>
             </div>
@@ -906,7 +1012,7 @@
             slotMods.innerHTML = `✨ ${names.join(' + ')}`;
         } else {
             slotMods.className = 'slot';
-            slotMods.innerHTML = `✨ 口味和调料<small style="font-weight:normal;font-size:10px;">Taste & Condiments</small>`;
+            slotMods.innerHTML = `✨ 口味和调料<small style="font-weight:normal;font-size:10px;">Taste &amp; Condiments</small>`;
         }
     }
 
