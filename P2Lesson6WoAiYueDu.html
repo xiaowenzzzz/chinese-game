@@ -9,20 +9,23 @@
      ========================================================== -->
 <meta charset="UTF-8">
 <meta name="author" content="Franky Laoshi">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>帮嘟嘟摘苹果 - 二年级生字大挑战 | Franky Laoshi</title>
 <style>
   * {
     box-sizing: border-box;
     user-select: none;
     -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
+
   body {
     margin: 0;
     padding: 0;
-    font-family: "KaiTi", "STKaiti", "Microsoft YaHei", sans-serif;
+    font-family: "KaiTi", "STKaiti", "PingFang SC", "Microsoft YaHei", sans-serif;
     background: linear-gradient(180deg, #87CEEB 0%, #E0F7FA 75%, #8BC34A 75%, #689F38 100%);
     height: 100vh;
+    height: 100dvh; /* 适配移动端动态视口高度 */
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -33,54 +36,84 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 30px;
-    background: rgba(255, 255, 255, 0.9);
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.92);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     z-index: 10;
+    flex-shrink: 0;
   }
+
   .title {
-    font-size: 28px;
+    font-size: clamp(18px, 2.2vw, 28px);
     font-weight: bold;
     color: #E65100;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
+
   .stats {
     display: flex;
-    gap: 25px;
-    font-size: 26px;
+    gap: clamp(8px, 1.5vw, 22px);
+    font-size: clamp(15px, 1.8vw, 24px);
     font-weight: bold;
   }
-  .score-box { color: #D32F2F; background: #FFEBEE; padding: 6px 20px; border-radius: 20px; border: 2px solid #EF9A9A; }
-  .timer-box { color: #1565C0; background: #E3F2FD; padding: 6px 20px; border-radius: 20px; border: 2px solid #90CAF9; }
-  
+
+  .score-box {
+    color: #D32F2F;
+    background: #FFEBEE;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 2px solid #EF9A9A;
+    white-space: nowrap;
+  }
+
+  .timer-box {
+    color: #1565C0;
+    background: #E3F2FD;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 2px solid #90CAF9;
+    white-space: nowrap;
+  }
+
   .controls {
     display: flex;
-    gap: 12px;
+    gap: 8px;
   }
+
   button {
     font-family: inherit;
-    font-size: 20px;
+    font-size: clamp(14px, 1.5vw, 20px);
     font-weight: bold;
-    padding: 8px 18px;
+    padding: 7px 14px;
     border: none;
-    border-radius: 15px;
+    border-radius: 14px;
     cursor: pointer;
     transition: transform 0.1s;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+    white-space: nowrap;
+    touch-action: manipulation;
   }
-  button:active { transform: translateY(3px); box-shadow: none; }
-  .btn-mode { background: #FFB300; color: #3E2723; }
-  .btn-sound { background: #4CAF50; color: white; }
-  .btn-start { background: #FF5722; color: white; font-size: 24px; padding: 10px 28px; }
 
-  /* 主游戏区 */
+  button:active {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+
+  .btn-mode { background: #FFB300; color: #3E2723; }
+  .btn-start { background: #FF5722; color: white; }
+
+  /* 主游戏区（默认电脑与横屏平板左右布局） */
   .main-stage {
     flex: 1;
     display: flex;
     position: relative;
-    padding: 15px 30px;
+    padding: clamp(10px, 1.5vw, 20px) clamp(12px, 2.5vw, 30px);
+    min-height: 0;
+    gap: 15px;
   }
 
   /* 左侧：小狮子嘟嘟与题目面板 */
@@ -90,139 +123,148 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     z-index: 5;
   }
 
   .prompt-card {
     background: #FFFDE7;
-    border: 5px solid #FFA000;
-    border-radius: 28px;
-    padding: 20px 25px;
+    border: 4px solid #FFA000;
+    border-radius: 24px;
+    padding: clamp(12px, 1.8vw, 20px);
     width: 100%;
     text-align: center;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    margin-top: 10px;
   }
+
   .prompt-hint {
-    font-size: 22px;
+    font-size: clamp(14px, 1.5vw, 21px);
     color: #795548;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
+
   .prompt-target {
-    font-size: 56px;
+    font-size: clamp(32px, 4.2vw, 54px);
     font-weight: bold;
     color: #D84315;
-    letter-spacing: 3px;
-    min-height: 75px;
+    letter-spacing: 2px;
+    min-height: clamp(44px, 5vw, 72px);
     display: flex;
     align-items: center;
     justify-content: center;
   }
+
   .speak-btn {
-    margin-top: 10px;
+    margin-top: 8px;
     background: #29B6F6;
     color: white;
-    font-size: 20px;
-    padding: 6px 18px;
+    font-size: clamp(14px, 1.4vw, 19px);
+    padding: 5px 16px;
     border-radius: 20px;
   }
 
   /* 小狮子嘟嘟 SVG 容器 */
   .dudu-container {
     position: relative;
-    width: 260px;
-    height: 260px;
+    width: clamp(140px, 18vw, 250px);
+    height: clamp(140px, 18vw, 250px);
     transition: transform 0.3s;
+    flex-shrink: 0;
   }
+
   .dudu-happy { animation: bounce 0.5s ease; }
   .dudu-sad { animation: shake 0.4s ease; }
 
   @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-25px) scale(1.05); }
+    50% { transform: translateY(-20px) scale(1.05); }
   }
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-12px); }
-    75% { transform: translateX(12px); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
   }
 
   /* 右侧：大苹果树 */
   .right-tree-area {
-    width: 66%;
+    flex: 1;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 0;
   }
 
   /* 树冠与树干 */
   .tree-trunk {
     position: absolute;
     bottom: -20px;
-    width: 130px;
-    height: 260px;
+    width: clamp(70px, 9vw, 130px);
+    height: 45%;
     background: linear-gradient(90deg, #5D4037, #795548, #4E342E);
     border-radius: 20px;
     z-index: 1;
   }
+
   .tree-canopy {
     position: relative;
-    width: 92%;
-    height: 92%;
+    width: 96%;
+    height: 94%;
     background: radial-gradient(circle at 30% 30%, #66BB6A, #2E7D32);
-    border-radius: 50% 50% 45% 45%;
-    box-shadow: inset -15px -15px 30px rgba(0,0,0,0.2), 0 12px 25px rgba(0,0,0,0.2);
+    border-radius: 48% 48% 42% 42%;
+    box-shadow: inset -12px -12px 25px rgba(0,0,0,0.2), 0 10px 22px rgba(0,0,0,0.2);
     z-index: 2;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    padding: 45px 60px;
-    gap: 15px;
+    padding: clamp(18px, 3vw, 42px) clamp(20px, 4vw, 55px);
+    gap: clamp(8px, 1.2vw, 15px);
     align-items: center;
     justify-items: center;
   }
 
-  /* 苹果样式 */
+  /* 苹果样式（流体尺寸，兼容触控点击面积） */
   .apple {
-    width: 118px;
-    height: 118px;
+    width: clamp(58px, 8.5vw, 114px);
+    height: clamp(58px, 8.5vw, 114px);
     background: radial-gradient(circle at 35% 30%, #FF5252, #D32F2F 70%, #B71C1C);
     border-radius: 48% 48% 52% 52%;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 56px;
+    font-size: clamp(28px, 4.2vw, 54px);
     font-weight: bold;
     color: #FFF;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
     cursor: pointer;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.25);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
     transition: transform 0.15s;
     animation: sway 3s infinite ease-in-out;
+    touch-action: manipulation;
   }
+
   .apple:nth-child(odd) { animation-delay: 0.5s; }
   .apple:active { transform: scale(0.9); }
 
-  /* 苹果叶子与果柄 */
+  /* 苹果叶子与果柄（按比例缩放） */
   .apple::before {
     content: "";
     position: absolute;
-    top: -12px;
-    width: 8px;
-    height: 18px;
+    top: -10%;
+    width: 8%;
+    height: 16%;
     background: #4E342E;
     border-radius: 4px;
   }
+
   .apple::after {
     content: "";
     position: absolute;
-    top: -12px;
-    right: 32px;
-    width: 24px;
-    height: 14px;
+    top: -10%;
+    right: 26%;
+    width: 22%;
+    height: 13%;
     background: #8BC34A;
     border-radius: 50% 0 50% 0;
     transform: rotate(-15deg);
@@ -233,14 +275,16 @@
     50% { transform: rotate(2deg); }
   }
 
-  /* 摘下苹果掉落动画 */
+  /* 动态计算目标坐标的入篮动画 */
   .apple-picked {
     animation: dropToBasket 0.55s forwards ease-in !important;
     pointer-events: none;
+    z-index: 20;
   }
+
   @keyframes dropToBasket {
-    0% { transform: scale(1.2); opacity: 1; }
-    100% { transform: translate(-450px, 320px) scale(0.2); opacity: 0; }
+    0% { transform: scale(1.15); opacity: 1; }
+    100% { transform: translate(var(--tx, -300px), var(--ty, 250px)) scale(0.2); opacity: 0; }
   }
 
   /* 点错抖动 */
@@ -248,10 +292,11 @@
     animation: wrongShake 0.4s !important;
     background: #757575 !important;
   }
+
   @keyframes wrongShake {
     0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
   }
 
   /* 结算弹窗 */
@@ -262,54 +307,180 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 16px;
     z-index: 100;
   }
+
   .modal-box {
     background: #FFFDE7;
-    border: 6px solid #FF9800;
-    border-radius: 30px;
-    padding: 35px 50px;
+    border: 5px solid #FF9800;
+    border-radius: 28px;
+    padding: clamp(22px, 4vw, 35px) clamp(24px, 5vw, 48px);
     text-align: center;
-    max-width: 520px;
+    width: 100%;
+    max-width: 500px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   }
-  .modal-box h2 { font-size: 38px; color: #E65100; margin: 0 0 15px; }
-  .modal-box p { font-size: 24px; color: #4E342E; line-height: 1.6; }
+
+  .modal-box h2 { font-size: clamp(26px, 4vw, 36px); color: #E65100; margin: 0 0 12px; }
+  .modal-box p { font-size: clamp(16px, 2.5vw, 22px); color: #4E342E; line-height: 1.5; margin: 10px 0; }
   .hidden { display: none !important; }
 
   /* Franky Laoshi 个人专属防伪徽章样式 */
   .author-badge {
     position: fixed;
-    right: 18px;
-    bottom: 14px;
+    right: 12px;
+    bottom: 10px;
     z-index: 50;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     background: rgba(255, 253, 231, 0.92);
     border: 2px solid #FFA000;
-    padding: 6px 14px;
+    padding: 4px 12px;
     border-radius: 999px;
     font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-size: 13px;
+    font-size: clamp(11px, 1.2vw, 13px);
     font-weight: bold;
     color: #5D4037;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
     pointer-events: none;
   }
+
   .author-badge span.author-name {
     color: #E65100;
     text-decoration: underline;
     text-decoration-color: #FFB300;
     text-decoration-thickness: 2px;
   }
+
   .modal-watermark {
-    margin-top: 18px;
+    margin-top: 16px;
     font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: #8D6E63;
     letter-spacing: 0.5px;
+  }
+
+  /* =========================================================
+     响应式断点 1：竖屏平板 & 手机端（宽度 <= 900px 且为竖屏，或纯手机宽度 <= 680px）
+     自动切换为【上方提示+嘟嘟，下方苹果树】的上下布局
+     ========================================================= */
+  @media (max-width: 900px) and (orientation: portrait), (max-width: 680px) {
+    .header {
+      padding: 8px 12px;
+      justify-content: center;
+    }
+    .title {
+      width: 100%;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .main-stage {
+      flex-direction: column;
+      padding: 8px 12px 34px; /* 底部留出防伪徽章空间 */
+      gap: 8px;
+    }
+    .left-panel {
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding-bottom: 0;
+      flex-shrink: 0;
+    }
+    .prompt-card {
+      flex: 1;
+      padding: 10px 12px;
+      border-width: 3px;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .prompt-hint {
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+    .prompt-target {
+      font-size: clamp(28px, 7vw, 40px);
+      min-height: 40px;
+    }
+    .speak-btn {
+      margin-top: 4px;
+      padding: 4px 12px;
+      font-size: 13px;
+    }
+    .dudu-container {
+      width: clamp(95px, 24vw, 145px);
+      height: clamp(95px, 24vw, 145px);
+    }
+    .right-tree-area {
+      width: 100%;
+      flex: 1;
+    }
+    .tree-canopy {
+      width: 100%;
+      height: 96%;
+      border-radius: 36% 36% 32% 32%;
+      padding: 16px 14px;
+      gap: 6px;
+    }
+    .apple {
+      width: clamp(54px, 16vw, 86px);
+      height: clamp(54px, 16vw, 86px);
+      font-size: clamp(26px, 7.5vw, 42px);
+    }
+  }
+
+  /* =========================================================
+     响应式断点 2：手机横屏（高度 <= 480px）极限空间压缩
+     ========================================================= */
+  @media (max-height: 480px) and (orientation: landscape) {
+    .header {
+      padding: 4px 14px;
+    }
+    .title {
+      font-size: 16px;
+    }
+    .main-stage {
+      padding: 6px 14px;
+    }
+    .prompt-card {
+      padding: 6px 10px;
+      border-width: 3px;
+    }
+    .prompt-hint {
+      font-size: 12px;
+      margin-bottom: 0;
+    }
+    .prompt-target {
+      font-size: 26px;
+      min-height: 32px;
+    }
+    .speak-btn {
+      margin-top: 2px;
+      padding: 3px 10px;
+      font-size: 12px;
+    }
+    .dudu-container {
+      width: 110px;
+      height: 110px;
+    }
+    .tree-canopy {
+      padding: 12px 24px;
+      gap: 6px;
+    }
+    .apple {
+      width: 52px;
+      height: 52px;
+      font-size: 26px;
+    }
+    .author-badge {
+      display: none; /* 极矮横屏隐藏悬浮徽章避免遮挡苹果 */
+    }
   }
 </style>
 </head>
@@ -330,7 +501,7 @@
 
   <!-- 主舞台 -->
   <div class="main-stage">
-    <!-- 左侧：提示牌 + 卡通小狮子嘟嘟 -->
+    <!-- 左侧/上方：提示牌 + 卡通小狮子嘟嘟 -->
     <div class="left-panel">
       <div class="prompt-card">
         <div class="prompt-hint" id="promptHint">请拍击对应的生字苹果：</div>
@@ -355,7 +526,7 @@
           <circle cx="208" cy="76" r="22" fill="#F6B959" stroke="#D97724" stroke-width="5"/>
           <!-- 脸部 -->
           <circle cx="150" cy="132" r="58" fill="#F6B959"/>
-          <!-- 蓝色安全帽（呼应课件形象） -->
+          <!-- 蓝色安全帽 -->
           <path d="M98 92 Q150 42 202 92 Z" fill="#3B82F6"/>
           <rect x="88" y="88" width="124" height="12" rx="6" fill="#2563EB"/>
           <circle cx="150" cy="65" r="8" fill="#93C5FD"/>
@@ -374,14 +545,14 @@
           <path d="M105 182 Q150 202 195 182 L190 198 Q150 216 110 198 Z" fill="#F97316"/>
           <rect x="165" y="192" width="18" height="36" rx="5" fill="#EA580C"/>
           <!-- 竹篮子 -->
-          <path d="M95 245 L205 245 L192 292 L108 292 Z" fill="#A16207" stroke="#713F12" stroke-width="4"/>
+          <path id="duduBasket" d="M95 245 L205 245 L192 292 L108 292 Z" fill="#A16207" stroke="#713F12" stroke-width="4"/>
           <line x1="100" y1="262" x2="200" y2="262" stroke="#713F12" stroke-width="3"/>
           <line x1="104" y1="278" x2="196" y2="278" stroke="#713F12" stroke-width="3"/>
         </svg>
       </div>
     </div>
 
-    <!-- 右侧：苹果树 -->
+    <!-- 右侧/下方：苹果树 -->
     <div class="right-tree-area">
       <div class="tree-trunk"></div>
       <div class="tree-canopy" id="treeCanopy">
@@ -400,9 +571,9 @@
   <div class="modal" id="startModal">
     <div class="modal-box">
       <h2>🦁 帮嘟嘟摘苹果</h2>
-      <p>安全小卫士嘟嘟要去摘生字苹果啦！<br>听读音或看组词，在白板上快速拍出正确的汉字苹果！</p>
-      <p style="font-size: 20px; color: #D84315;">包含生字：邻、居、互、相、光、照、美、丽、极、安、跑</p>
-      <button class="btn-start" onclick="startGame()">🚀 开始闯关！</button>
+      <p>安全小卫士嘟嘟要去摘生字苹果啦！<br>听读音或看组词，快速点出正确的汉字苹果！</p>
+      <p style="color: #D84315; font-weight: bold;">包含生字：邻、居、互、相、光、照、美、丽、极、安、跑</p>
+      <button class="btn-start" onclick="startGame()" style="font-size: 22px; padding: 10px 28px; margin-top: 6px;">🚀 开始闯关！</button>
       <div class="modal-watermark">✦ Certified Interactive Courseware · Franky Laoshi ✦</div>
     </div>
   </div>
@@ -410,8 +581,8 @@
   <div class="modal hidden" id="endModal">
     <div class="modal-box">
       <h2>🎉 时间到！闯关成功！</h2>
-      <p>你帮嘟嘟一共摘到了 <strong style="font-size:36px; color:#D32F2F;" id="finalScore">0</strong> 个大苹果！</p>
-      <button class="btn-start" onclick="startGame()">🔄 再玩一局</button>
+      <p>你帮嘟嘟一共摘到了 <strong style="font-size:34px; color:#D32F2F;" id="finalScore">0</strong> 个大苹果！</p>
+      <button class="btn-start" onclick="startGame()" style="font-size: 22px; padding: 10px 28px; margin-top: 6px;">🔄 再玩一局</button>
       <div class="modal-watermark">✦ Certified Interactive Courseware · Franky Laoshi ✦</div>
     </div>
   </div>
@@ -423,7 +594,7 @@
     "background: linear-gradient(90deg, #f59e0b, #ea580c); color: #fff; font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 8px;"
   );
 
-  // 核心生字库（包含用户指定的11个字）
+  // 核心生字库
   const wordBank = [
     { char: "邻", pinyin: "lín", phrase: "（  ）居", speak: "邻，邻居的邻" },
     { char: "居", pinyin: "jū",  phrase: "邻（  ）", speak: "居，居住的居" },
@@ -442,12 +613,21 @@
   let timeLeft = 60;
   let timerInterval = null;
   let currentTarget = null;
-  let gameMode = "pinyin"; // "pinyin" 或 "phrase"
+  let gameMode = "pinyin";
   let audioCtx = null;
 
-  // 初始化 Web Audio 音效（无需外部音频文件）
+  // 兼容移动端首次触摸解锁音频上下文
+  function initAudio() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
+  }
+
   function playTone(type) {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    initAudio();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain);
@@ -455,9 +635,9 @@
 
     if (type === "correct") {
       osc.type = "sine";
-      osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-      osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
-      osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+      osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
       gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
       osc.start();
@@ -500,7 +680,7 @@
     const hintEl = document.getElementById("promptHint");
     const targetEl = document.getElementById("promptTarget");
     if (gameMode === "pinyin") {
-      hintEl.textContent = "请拍出这个拼音对应的生字：";
+      hintEl.textContent = "请点出这个拼音对应的生字：";
       targetEl.textContent = currentTarget.pinyin;
     } else {
       hintEl.textContent = "请把正确的生字苹果放进括号里：";
@@ -508,12 +688,11 @@
     }
   }
 
-  // 洗牌函数
   function shuffle(arr) {
     return [...arr].sort(() => Math.random() - 0.5);
   }
 
-  // 生成树上的11个生字苹果（加1个随机重复高频字凑满12格）
+  // 生成树上的12个生字苹果
   function renderApples() {
     const canopy = document.getElementById("treeCanopy");
     canopy.innerHTML = "";
@@ -529,12 +708,10 @@
     });
   }
 
-  // 抽取下一题
   function nextQuestion() {
-    // 确保选中的字当前在树上还存在
     const remainingApples = Array.from(document.querySelectorAll(".apple:not(.apple-picked)"));
     if (remainingApples.length <= 2) {
-      renderApples(); // 苹果快摘完时重新长满一树
+      renderApples();
     }
     const availableChars = Array.from(document.querySelectorAll(".apple:not(.apple-picked)")).map(el => el.textContent);
     const candidates = wordBank.filter(w => availableChars.includes(w.char));
@@ -544,16 +721,25 @@
     speakCurrent();
   }
 
-  // 点击苹果处理
+  // 点击苹果处理（动态计算飞向嘟嘟篮子的相对偏移量，兼容所有屏幕尺寸）
   function handleAppleClick(appleEl, item) {
     if (!currentTarget) return;
     const dudu = document.getElementById("dudu");
+    const basket = document.getElementById("duduBasket");
 
     if (item.char === currentTarget.char) {
-      // 答对
       playTone("correct");
       score++;
       document.getElementById("score").textContent = score;
+
+      // 计算苹果中心点到篮子中心点的位移差
+      const appleRect = appleEl.getBoundingClientRect();
+      const basketRect = basket.getBoundingClientRect();
+      const tx = (basketRect.left + basketRect.width / 2) - (appleRect.left + appleRect.width / 2);
+      const ty = (basketRect.top + basketRect.height / 2) - (appleRect.top + appleRect.height / 2);
+
+      appleEl.style.setProperty("--tx", `${tx}px`);
+      appleEl.style.setProperty("--ty", `${ty}px`);
       appleEl.classList.add("apple-picked");
 
       dudu.classList.remove("dudu-happy", "dudu-sad");
@@ -562,7 +748,6 @@
 
       setTimeout(nextQuestion, 350);
     } else {
-      // 答错
       playTone("wrong");
       appleEl.classList.remove("apple-wrong");
       void appleEl.offsetWidth;
@@ -574,8 +759,8 @@
     }
   }
 
-  // 开始游戏
   function startGame() {
+    initAudio();
     document.getElementById("startModal").classList.add("hidden");
     document.getElementById("endModal").classList.add("hidden");
     score = 0;
