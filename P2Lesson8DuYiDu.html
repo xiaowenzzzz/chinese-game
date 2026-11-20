@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>梦想职业街 · 汉字小镇大亨 | Franky Laoshi</title>
   <style>
     :root {
@@ -17,8 +17,8 @@
       --text-sub: #5c677d;
       --success: #2ec4b6;
       --danger: #e71d36;
-      --font-kaiti: "KaiTi", "STKaiti", "BiauKai", "DFKai-SB", "楷体", "华文楷体", serif;
-      --font-en: "Comic Sans MS", "Quicksand", "Nunito", "Segoe UI", sans-serif;
+      --font-kaiti: "KaiTi", "STKaiti", "BiauKai", "DFKai-SB", "楷体", "华文楷体", "PingFang SC", "Microsoft YaHei", serif;
+      --font-en: "Comic Sans MS", "Quicksand", "Nunito", "Segoe UI", -apple-system, sans-serif;
     }
 
     * {
@@ -26,6 +26,12 @@
       margin: 0;
       padding: 0;
       user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      touch-action: manipulation;
     }
 
     body {
@@ -33,8 +39,9 @@
       background: linear-gradient(180deg, #cceeff 0%, #eaf8ff 45%, #e3f6e5 100%);
       color: var(--text-main);
       min-height: 100vh;
+      min-height: 100dvh;
       overflow-x: hidden;
-      padding-bottom: 50px;
+      padding-bottom: 40px;
     }
 
     /* 拼音样式 */
@@ -46,7 +53,7 @@
       font-size: 0.52em;
       color: #556070;
       font-weight: 600;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
     }
 
     .en-tag {
@@ -58,15 +65,16 @@
 
     /* 顶部导航与防伪标志 */
     header {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-bottom: 4px solid #bce0fd;
-      padding: 12px 24px;
+      padding: 12px 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       position: sticky;
       top: 0;
@@ -76,30 +84,32 @@
     .brand-box {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .game-logo {
-      font-size: 2.2rem;
+      font-size: 2rem;
       background: var(--accent-gold);
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 0 #e0a82e;
+      flex-shrink: 0;
     }
 
     .title-group h1 {
-      font-size: 1.65rem;
+      font-size: clamp(1.2rem, 2.5vw, 1.65rem);
       color: #1d3557;
       line-height: 1.3;
     }
 
     .title-group p {
       font-family: var(--font-en);
-      font-size: 0.85rem;
+      font-size: clamp(0.75rem, 1.5vw, 0.85rem);
       color: #457b9d;
       font-weight: bold;
     }
@@ -112,17 +122,17 @@
       background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
       border: 2px solid #ffb300;
       color: #8d5500;
-      padding: 5px 14px;
+      padding: 4px 12px;
       border-radius: 999px;
       font-family: var(--font-en);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 800;
       box-shadow: 0 3px 8px rgba(255, 179, 0, 0.25);
       letter-spacing: 0.4px;
     }
 
     .watermark-badge span.star {
-      font-size: 1rem;
+      font-size: 0.95rem;
       animation: spinSlow 6s linear infinite;
     }
 
@@ -135,19 +145,19 @@
     .stats-bar {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
     .stat-pill {
       background: #fff9db;
       border: 2px solid #fcc419;
-      padding: 6px 16px;
+      padding: 5px 14px;
       border-radius: 999px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 1.25rem;
+      gap: 6px;
+      font-size: 1.15rem;
       font-weight: bold;
       color: #b07200;
       box-shadow: 0 3px 0 #f59f00;
@@ -164,60 +174,57 @@
       background: #f3f0ff;
       border: 2px solid #b197fc;
       color: #5f3dc4;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 999px;
       font-family: var(--font-kaiti);
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 3px 0 #9775fa;
       transition: 0.2s;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
     .help-pill-btn:hover {
       transform: translateY(-2px);
       background: #e5dbff;
     }
 
-    /* 主容器 */
+    /* 主容器：PC双栏，平板/手机单栏 */
     .container {
-      max-width: 1120px;
-      margin: 22px auto;
-      padding: 0 18px;
+      max-width: 1140px;
+      margin: 18px auto;
+      padding: 0 16px;
       display: grid;
-      grid-template-columns: 1.12fr 0.88fr;
-      gap: 22px;
-    }
-
-    @media (max-width: 900px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
     }
 
     /* 面板通用卡片 */
     .panel {
       background: var(--card-bg);
-      border-radius: 26px;
-      padding: 22px;
+      border-radius: 24px;
+      padding: 20px;
       border: 4px solid #fff;
       box-shadow: 0 10px 28px rgba(43, 45, 66, 0.08);
       position: relative;
+      min-width: 0;
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
       padding-bottom: 10px;
       border-bottom: 2px dashed #e9ecef;
     }
 
     .panel-title {
-      font-size: 1.45rem;
+      font-size: clamp(1.25rem, 2.2vw, 1.45rem);
       font-weight: bold;
       color: #1d3557;
       display: flex;
@@ -229,11 +236,11 @@
     .town-stage {
       background: linear-gradient(180deg, #b5e2fa 0%, #d9f2ff 55%, #b7e4c7 55%, #95d5b2 100%);
       border-radius: 20px;
-      padding: 18px 14px 14px;
+      padding: 16px 12px 12px;
       border: 3px solid #90cdf4;
       position: relative;
       overflow: hidden;
-      min-height: 365px;
+      min-height: 350px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -241,13 +248,13 @@
 
     .cloud {
       position: absolute;
-      font-size: 2.2rem;
+      font-size: 2rem;
       opacity: 0.85;
       animation: floatCloud 22s linear infinite;
       pointer-events: none;
     }
-    .cloud.c1 { top: 12px; left: -10%; animation-duration: 26s; }
-    .cloud.c2 { top: 38px; left: 40%; animation-duration: 34s; font-size: 1.7rem; }
+    .cloud.c1 { top: 10px; left: -10%; animation-duration: 26s; }
+    .cloud.c2 { top: 34px; left: 40%; animation-duration: 34s; font-size: 1.6rem; }
 
     @keyframes floatCloud {
       0% { transform: translateX(-60px); }
@@ -257,35 +264,45 @@
     .buildings-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
       z-index: 2;
-      margin-top: 24px;
+      margin-top: 20px;
     }
 
     .building-slot {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       border: 3px dashed #74c69d;
-      border-radius: 18px;
-      padding: 12px 8px;
+      border-radius: 16px;
+      padding: 10px 6px;
       text-align: center;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .building-slot.unlocked {
       background: #ffffff;
       border: 3px solid #ffd166;
-      box-shadow: 0 6px 0 #f4a261;
+      box-shadow: 0 5px 0 #f4a261;
       transform: translateY(-2px);
     }
 
-    .building-slot:hover {
-      transform: scale(1.04);
+    .building-slot:active {
+      transform: scale(0.97);
+    }
+
+    @media (hover: hover) {
+      .building-slot:hover {
+        transform: scale(1.03);
+      }
     }
 
     .b-icon {
-      font-size: 2.6rem;
+      font-size: 2.4rem;
       display: block;
       margin-bottom: 4px;
       filter: grayscale(100%) opacity(0.45);
@@ -298,10 +315,10 @@
     }
 
     .b-name {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: bold;
       color: #2b2d42;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .b-cost {
@@ -310,7 +327,7 @@
       background: #ff8c42;
       color: white;
       font-family: var(--font-en);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: bold;
       padding: 3px 10px;
       border-radius: 999px;
@@ -327,13 +344,15 @@
       border-top: 4px solid #adb5bd;
       border-bottom: 4px solid #495057;
       border-radius: 12px;
-      height: 76px;
-      margin-top: 16px;
+      min-height: 74px;
+      margin-top: 14px;
       position: relative;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-around;
-      padding: 0 10px;
+      gap: 8px;
+      padding: 8px 10px;
       z-index: 2;
     }
 
@@ -344,20 +363,20 @@
       left: 10px;
       right: 10px;
       border-top: 3px dashed #f8f9fa;
-      opacity: 0.6;
+      opacity: 0.55;
       pointer-events: none;
     }
 
     .resident-avatar {
       position: relative;
       z-index: 3;
-      font-size: 2.2rem;
+      font-size: 2rem;
       cursor: pointer;
       transition: transform 0.2s;
       animation: walkBob 1.6s ease-in-out infinite alternate;
-      background: rgba(255, 255, 255, 0.9);
-      width: 48px;
-      height: 48px;
+      background: rgba(255, 255, 255, 0.95);
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -366,13 +385,13 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
-    .resident-avatar:hover {
-      transform: scale(1.25) rotate(-8deg);
+    .resident-avatar:active {
+      transform: scale(1.2);
     }
 
     @keyframes walkBob {
       0% { transform: translateY(0px); }
-      100% { transform: translateY(-6px); }
+      100% { transform: translateY(-5px); }
     }
 
     .speech-bubble {
@@ -385,8 +404,9 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      font-size: 1.2rem;
-      min-height: 64px;
+      font-size: 1.12rem;
+      line-height: 1.5;
+      min-height: 62px;
     }
 
     /* ================= 右侧：闯关答题与扭蛋 ================= */
@@ -394,7 +414,7 @@
       background: #f8f9fa;
       border: 3px solid #dee2e6;
       border-radius: 20px;
-      padding: 18px;
+      padding: 16px;
       margin-bottom: 16px;
     }
 
@@ -404,7 +424,7 @@
       color: white;
       padding: 3px 12px;
       border-radius: 999px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       margin-bottom: 10px;
     }
 
@@ -413,21 +433,23 @@
     }
 
     .q-prompt {
-      font-size: 1.5rem;
-      line-height: 1.9;
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      line-height: 1.95;
       color: #1d3557;
       margin-bottom: 8px;
       font-weight: bold;
+      word-break: break-word;
     }
 
     .q-en-hint {
       font-family: var(--font-en);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: #6c757d;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 8px;
     }
 
@@ -436,7 +458,7 @@
       border: 2px solid #74c0fc;
       color: #1971c2;
       border-radius: 12px;
-      padding: 4px 10px;
+      padding: 5px 10px;
       cursor: pointer;
       font-family: var(--font-en);
       font-weight: bold;
@@ -444,18 +466,19 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      transition: 0.2s;
+      transition: 0.15s;
       white-space: nowrap;
+      flex-shrink: 0;
     }
-    .speak-btn:hover {
+    .speak-btn:active {
       background: #d0ebff;
-      transform: scale(1.05);
+      transform: scale(0.96);
     }
 
     .options-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
     .options-grid.wide-options {
@@ -466,9 +489,9 @@
       background: #ffffff;
       border: 3px solid #ced4da;
       border-radius: 16px;
-      padding: 13px 12px;
+      padding: 12px 10px;
       font-family: var(--font-kaiti);
-      font-size: 1.55rem;
+      font-size: clamp(1.3rem, 2.4vw, 1.55rem);
       font-weight: bold;
       color: #2b2d42;
       cursor: pointer;
@@ -478,18 +501,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      line-height: 1.6;
+      line-height: 1.65;
+      min-height: 58px;
     }
 
     .options-grid.wide-options .opt-btn {
-      font-size: 1.32rem;
-      padding: 10px 14px;
+      font-size: clamp(1.12rem, 2.2vw, 1.32rem);
+      padding: 10px 12px;
+      text-align: center;
     }
 
-    .opt-btn:hover:not(:disabled) {
-      border-color: #4ea8de;
-      background: #f0f9ff;
-      transform: translateY(-2px);
+    @media (hover: hover) {
+      .opt-btn:hover:not(:disabled) {
+        border-color: #4ea8de;
+        background: #f0f9ff;
+        transform: translateY(-2px);
+      }
     }
 
     .opt-btn:active:not(:disabled) {
@@ -520,13 +547,14 @@
 
     .feedback-box {
       margin-top: 14px;
-      padding: 10px 14px;
+      padding: 10px 12px;
       border-radius: 14px;
-      font-size: 1.2rem;
+      font-size: 1.12rem;
       font-weight: bold;
       display: none;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 10px;
     }
 
@@ -538,17 +566,18 @@
       background: var(--primary);
       color: white;
       border: none;
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 12px;
       font-family: var(--font-kaiti);
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 3px 0 var(--primary-dark);
       white-space: nowrap;
     }
-    .next-btn:hover {
+    .next-btn:active {
       background: var(--primary-dark);
+      transform: translateY(2px);
     }
 
     /* ================= 扭蛋机 & 闪卡收藏 ================= */
@@ -556,33 +585,34 @@
       background: linear-gradient(135deg, #fff0f6 0%, #f3f0ff 100%);
       border: 3px solid #eebefa;
       border-radius: 20px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
     }
 
     .gacha-btn {
       background: linear-gradient(135deg, #f06595 0%, #cc5de8 100%);
       color: white;
       border: none;
-      padding: 10px 16px;
-      border-radius: 16px;
+      padding: 10px 14px;
+      border-radius: 14px;
       font-family: var(--font-kaiti);
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 4px 0 #a61e4d;
-      transition: 0.2s;
+      transition: 0.15s;
       white-space: nowrap;
+      flex-shrink: 0;
     }
-    .gacha-btn:hover {
-      transform: scale(1.05);
+    .gacha-btn:active {
+      transform: scale(0.96);
     }
 
     .cards-tray {
-      margin-top: 14px;
+      margin-top: 12px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 8px;
@@ -592,9 +622,9 @@
       background: #f1f3f5;
       border: 2px solid #dee2e6;
       border-radius: 12px;
-      padding: 6px 4px;
+      padding: 6px 2px;
       text-align: center;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       opacity: 0.5;
       transition: 0.3s;
     }
@@ -613,11 +643,12 @@
       inset: 0;
       background: rgba(29, 53, 87, 0.65);
       backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 999;
-      padding: 18px;
+      padding: 14px;
     }
     .modal-overlay.active {
       display: flex;
@@ -626,22 +657,21 @@
     .modal-card {
       background: #ffffff;
       border: 5px solid #ffd166;
-      border-radius: 28px;
-      padding: 26px 24px;
+      border-radius: 26px;
+      padding: 22px 18px;
       max-width: 440px;
       width: 100%;
       text-align: center;
       box-shadow: 0 18px 45px rgba(0,0,0,0.28);
-      animation: bounceIn 0.45s;
+      animation: bounceIn 0.4s;
+      max-height: 90dvh;
+      overflow-y: auto;
     }
 
-    /* 开局游戏说明弹窗专属宽卡片 */
     .modal-card.intro-card {
       max-width: 560px;
       border-color: #4ea8de;
       background: linear-gradient(180deg, #ffffff 0%, #f4faff 100%);
-      max-height: 92vh;
-      overflow-y: auto;
     }
 
     .rules-list {
@@ -649,26 +679,26 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin: 14px 0 18px;
+      margin: 12px 0 16px;
     }
 
     .rule-item {
       background: #ffffff;
       border: 2px solid #d0ebff;
-      border-radius: 16px;
-      padding: 10px 14px;
+      border-radius: 14px;
+      padding: 9px 12px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       box-shadow: 0 3px 0 #e7f5ff;
     }
 
     .rule-icon {
-      font-size: 1.9rem;
+      font-size: 1.65rem;
       background: #fff9db;
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -677,7 +707,7 @@
     }
 
     .rule-cn {
-      font-size: 1.25rem;
+      font-size: clamp(1.08rem, 2.2vw, 1.25rem);
       font-weight: bold;
       color: #1d3557;
       line-height: 1.5;
@@ -685,7 +715,7 @@
 
     .rule-en {
       font-family: var(--font-en);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: #5c677d;
       font-weight: 600;
     }
@@ -694,41 +724,145 @@
       background: linear-gradient(135deg, #2ec4b6 0%, #20a4f3 100%);
       color: white;
       border: none;
-      padding: 12px 32px;
+      padding: 12px 28px;
       border-radius: 999px;
       font-family: var(--font-kaiti);
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 5px 0 #168aad;
-      transition: 0.2s;
+      transition: 0.15s;
+      width: 100%;
+      max-width: 300px;
     }
-    .start-game-btn:hover {
-      transform: scale(1.05);
+    .start-game-btn:active {
+      transform: scale(0.97);
     }
 
     @keyframes bounceIn {
-      0% { transform: scale(0.6); opacity: 0; }
-      70% { transform: scale(1.04); opacity: 1; }
+      0% { transform: scale(0.75); opacity: 0; }
+      70% { transform: scale(1.03); opacity: 1; }
       100% { transform: scale(1); }
     }
 
     footer {
       text-align: center;
-      margin-top: 26px;
+      margin-top: 22px;
+      padding: 0 12px;
       color: #5c677d;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .footer-sign {
       display: inline-block;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.85);
       border: 1.5px solid #ffd166;
-      padding: 6px 18px;
+      padding: 6px 16px;
       border-radius: 999px;
       font-family: var(--font-en);
       font-weight: 700;
       color: #7f4f24;
+      line-height: 1.4;
+    }
+
+    /* ================= 平板端适配 (<= 960px) ================= */
+    @media (max-width: 960px) {
+      .container {
+        grid-template-columns: 1fr;
+        max-width: 720px;
+      }
+      .town-stage {
+        min-height: 310px;
+      }
+    }
+
+    /* ================= 手机端适配 (<= 600px) ================= */
+    @media (max-width: 600px) {
+      header {
+        padding: 10px 12px;
+        gap: 8px;
+      }
+      .game-logo {
+        width: 40px;
+        height: 40px;
+        font-size: 1.6rem;
+        border-radius: 12px;
+      }
+      .watermark-badge {
+        font-size: 0.75rem;
+        padding: 3px 10px;
+      }
+      .stats-bar {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .stat-pill, .help-pill-btn {
+        font-size: 0.95rem;
+        padding: 4px 11px;
+      }
+      .container {
+        margin: 12px auto;
+        padding: 0 10px;
+        gap: 14px;
+      }
+      .panel {
+        padding: 14px 12px;
+        border-radius: 20px;
+        border-width: 3px;
+      }
+      /* 手机端5个建筑改为2列布局，第5个跨两列居中，避免字太挤 */
+      .buildings-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .building-slot:last-child {
+        grid-column: span 2;
+        max-width: 65%;
+        justify-self: center;
+        width: 100%;
+      }
+      .b-icon {
+        font-size: 2rem;
+      }
+      .b-name {
+        font-size: 1.05rem;
+      }
+      .speech-bubble {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 1.05rem;
+        padding: 10px 12px;
+      }
+      .speech-bubble .speak-btn {
+        align-self: flex-end;
+      }
+      .quiz-card {
+        padding: 12px;
+      }
+      .feedback-box {
+        justify-content: center;
+        text-align: center;
+      }
+      .next-btn {
+        width: 100%;
+        padding: 10px;
+      }
+      .gacha-section {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .gacha-btn {
+        width: 100%;
+      }
+      .cards-tray {
+        gap: 5px;
+      }
+      .mini-card {
+        border-radius: 10px;
+        padding: 4px 1px;
+      }
     }
   </style>
 </head>
@@ -737,14 +871,14 @@
   <!-- ================= 开局中英文游戏说明弹窗 ================= -->
   <div class="modal-overlay active" id="intro-modal">
     <div class="modal-card intro-card">
-      <div style="margin-bottom: 8px;">
+      <div style="margin-bottom: 6px;">
         <span class="watermark-badge">⭐ Franky Laoshi · 第八课互动课堂</span>
       </div>
-      <div style="font-size: 3rem; margin-bottom: 4px;">🏘️🎉</div>
-      <h2 style="font-size: 1.8rem; color: #1d3557; line-height: 1.4;">
+      <div style="font-size: 2.6rem; margin-bottom: 2px;">🏘️🎉</div>
+      <h2 style="font-size: clamp(1.45rem, 3vw, 1.8rem); color: #1d3557; line-height: 1.4;">
         <ruby>游<rt>yóu</rt></ruby><ruby>戏<rt>xì</rt></ruby><ruby>玩<rt>wán</rt></ruby><ruby>法<rt>fǎ</rt></ruby><ruby>说<rt>shuō</rt></ruby><ruby>明<rt>míng</rt></ruby>
       </h2>
-      <p class="en-tag" style="color: #457b9d; font-size: 0.95rem;">
+      <p class="en-tag" style="color: #457b9d; font-size: 0.9rem;">
         Welcome to Dream Career Street! How to Play:
       </p>
 
@@ -761,7 +895,7 @@
           <div class="rule-icon">🏗️</div>
           <div>
             <div class="rule-cn">2. <ruby>建<rt>jiàn</rt></ruby><ruby>造<rt>zào</rt></ruby><ruby>梦<rt>mèng</rt></ruby><ruby>想<rt>xiǎng</rt></ruby><ruby>街<rt>jiē</rt></ruby>（5 座建筑）</div>
-            <div class="rule-en">Click empty plots on the left to build hospitals, markets & schools!</div>
+            <div class="rule-en">Tap empty plots to build hospitals, markets & schools!</div>
           </div>
         </div>
 
@@ -783,7 +917,7 @@
       </div>
 
       <button class="start-game-btn" onclick="startGame()">
-        🚀 <ruby>开<rt>kāi</rt></ruby><ruby>始<rt>shǐ</rt></ruby><ruby>挑<rt>tiǎo</rt></ruby><ruby>战<rt>zhàn</rt></ruby> Start Game!
+        🚀 <ruby>开<rt>kāi</rt></ruby><ruby>始<rt>shǐ</rt></ruby><ruby>挑<rt>tiǎo</rt></ruby><ruby>战<rt>zhàn</rt></ruby> Start!
       </button>
     </div>
   </div>
@@ -799,7 +933,6 @@
         </h1>
         <p>Dream Career Street · Lesson 8: Thanking People Around Me</p>
       </div>
-      <!-- 个人防伪标志 -->
       <div class="watermark-badge" title="Exclusive Teaching Resource">
         <span class="star">⭐</span>
         <span>Franky Laoshi</span>
@@ -809,7 +942,7 @@
     <div class="stats-bar">
       <button class="help-pill-btn" onclick="openIntroModal()" title="View Game Instructions">
         <span>📖</span>
-        <span>玩法说明 Help</span>
+        <span>玩法 Help</span>
       </button>
       <div class="stat-pill" title="Coins">
         <span>🪙</span>
@@ -832,7 +965,7 @@
           <span>🗺️</span>
           <span><ruby>我<rt>wǒ</rt></ruby><ruby>的<rt>de</rt></ruby><ruby>幸<rt>xìng</rt></ruby><ruby>福<rt>fú</rt></ruby><ruby>社<rt>shè</rt></ruby><ruby>区<rt>qū</rt></ruby></span>
         </div>
-        <span class="en-tag">Click unlocked plots to build!</span>
+        <span class="en-tag">Tap plots to build!</span>
       </div>
 
       <div class="town-stage">
@@ -844,7 +977,7 @@
 
         <!-- 小镇街道 -->
         <div class="street-road" id="street-road">
-          <span class="en-tag" style="color: #fff; background: rgba(0,0,0,0.35); padding: 4px 10px; border-radius: 10px;">
+          <span class="en-tag" style="color: #fff; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 10px; text-align: center; z-index: 3;">
             建造房屋后，小居民就会出来散步哦！ (Build houses to meet residents!)
           </span>
         </div>
@@ -889,10 +1022,10 @@
       <!-- 扭蛋机抽奖区 -->
       <div class="gacha-section">
         <div>
-          <div style="font-size: 1.25rem; font-weight: bold; color: #862e9c;">
+          <div style="font-size: 1.2rem; font-weight: bold; color: #862e9c;">
             🎁 <ruby>感<rt>gǎn</rt></ruby><ruby>恩<rt>ēn</rt></ruby><ruby>扭<rt>niǔ</rt></ruby><ruby>蛋<rt>dàn</rt></ruby><ruby>机<rt>jī</rt></ruby>
           </div>
-          <div class="en-tag">Gachapon · Collect all 10 character badges! (80 🪙)</div>
+          <div class="en-tag">Collect all 10 character badges! (80 🪙)</div>
         </div>
         <button class="gacha-btn" onclick="playGacha()">抽盲盒 80🪙</button>
       </div>
@@ -913,14 +1046,14 @@
   <!-- 扭蛋/建筑解锁惊喜弹窗 -->
   <div class="modal-overlay" id="reward-modal">
     <div class="modal-card">
-      <div id="modal-emoji" style="font-size: 4rem; margin-bottom: 10px;">🎉</div>
-      <h2 id="modal-title" style="font-size: 1.7rem; color: #1d3557; margin-bottom: 8px;">恭喜解锁！</h2>
-      <p id="modal-desc" style="font-size: 1.25rem; line-height: 1.6; color: #2b2d42; margin-bottom: 10px;"></p>
-      <p id="modal-en" class="en-tag" style="margin-bottom: 18px;"></p>
+      <div id="modal-emoji" style="font-size: 3.5rem; margin-bottom: 8px;">🎉</div>
+      <h2 id="modal-title" style="font-size: 1.55rem; color: #1d3557; margin-bottom: 8px;">恭喜解锁！</h2>
+      <p id="modal-desc" style="font-size: 1.18rem; line-height: 1.6; color: #2b2d42; margin-bottom: 10px;"></p>
+      <p id="modal-en" class="en-tag" style="margin-bottom: 16px;"></p>
       <div style="margin-bottom: 14px;">
         <span class="watermark-badge">⭐ Franky Laoshi 荣誉奖励</span>
       </div>
-      <button class="next-btn" style="font-size: 1.25rem; padding: 10px 28px;" onclick="closeModal()">太棒了！Awesome!</button>
+      <button class="next-btn" style="font-size: 1.2rem; padding: 10px 28px; width: 100%;" onclick="closeModal()">太棒了！Awesome!</button>
     </div>
   </div>
 
@@ -1264,7 +1397,7 @@
         slot.innerHTML = `
           <span class="b-icon">${b.icon}</span>
           <div class="b-name">${b.nameHtml}</div>
-          <div class="en-tag" style="font-size: 0.75rem;">${b.enName}</div>
+          <div class="en-tag" style="font-size: 0.72rem;">${b.enName}</div>
           <div class="b-cost">${b.unlocked ? "✅ 已建成 Built" : `建造 ${b.cost} 🪙`}</div>
         `;
         grid.appendChild(slot);
@@ -1298,7 +1431,7 @@
       const bubble = document.getElementById("speech-bubble");
       bubble.innerHTML = `
         <div>
-          <span style="font-size: 1.5rem;">${emoji}</span>
+          <span style="font-size: 1.4rem;">${emoji}</span>
           <strong>居民说：</strong>${text}
         </div>
         <button class="speak-btn" onclick="speakCurrentBubble()">🔊 朗读</button>
@@ -1334,8 +1467,8 @@
         const need = b.cost - coins;
         showResidentSpeech(
           "💡",
-          `金币还差 ${need} 枚哦！快去右边答对字句题赚金币吧！`,
-          `金币还差 ${need} 枚哦！快去右边答对字句题赚金币吧！`
+          `金币还差 ${need} 枚哦！快去答对字句题赚金币吧！`,
+          `金币还差 ${need} 枚哦！快去答对字句题赚金币吧！`
         );
       }
     }
@@ -1430,10 +1563,10 @@
         card.className = "mini-card" + (isGot ? " collected" : "");
         card.title = `${item.word} (${item.en})`;
         card.innerHTML = `
-          <div style="font-size: 1.35rem; font-weight: bold;">
+          <div style="font-size: 1.25rem; font-weight: bold;">
             <ruby>${item.char}<rt>${item.pinyin}</rt></ruby>
           </div>
-          <div style="font-size: 0.78rem; color: #5c677d;">${isGot ? item.word : "❓"}</div>
+          <div style="font-size: 0.72rem; color: #5c677d;">${isGot ? item.word : "❓"}</div>
         `;
         if (isGot) {
           card.style.cursor = "pointer";
@@ -1447,8 +1580,8 @@
       if (coins < 80) {
         showResidentSpeech(
           "🎁",
-          "扭蛋机需要 80 金币哦！先去右边答题赚金币吧！",
-          "扭蛋机需要 80 金币哦！先去右边答题赚金币吧！"
+          "扭蛋机需要 80 金币哦！先去答题赚金币吧！",
+          "扭蛋机需要 80 金币哦！先去答题赚金币吧！"
         );
         return;
       }
@@ -1472,14 +1605,33 @@
       );
     }
 
-    // ================= 6. 语音朗读与弹窗控制 =================
+    // ================= 6. 语音朗读（兼容 iOS / Android / 桌面端） =================
     function speakText(text) {
       if (!("speechSynthesis" in window)) return;
-      window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = "zh-CN";
-      utter.rate = 0.88;
-      window.speechSynthesis.speak(utter);
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "zh-CN";
+        utter.rate = 0.88;
+
+        // 优先匹配中文语音包（提升移动端兼容性）
+        const voices = window.speechSynthesis.getVoices();
+        const zhVoice = voices.find(v => v.lang.includes("zh-CN") || v.lang.includes("zh"));
+        if (zhVoice) {
+          utter.voice = zhVoice;
+        }
+
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        console.warn("Speech synthesis unavailable:", e);
+      }
+    }
+
+    // 预加载移动端语音列表
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
     }
 
     function speakQuestion() {
